@@ -1,12 +1,15 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center">
-            <h2 class="h4 mb-0 fw-semibold">{{ __('Roles') }}</h2>
-            <a href="{{ route('admin.roles.create') }}" class="btn btn-primary btn-sm">
-                <i class="bi bi-plus-circle me-1"></i>{{ __('Add Role') }}
-            </a>
-        </div>
-    </x-slot>
+@extends('layouts.app')
+
+@section('content')
+    <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="h4 mb-0 fw-semibold">{{ __('Roles') }}</h2>
+                    <a href="{{ route('admin.roles.create') }}" class="btn btn-primary btn-sm">
+                        <i class="bi bi-plus-circle me-1"></i>{{ __('Add Role') }}
+                    </a>
+                </div>
+    </div>
+
 
     <!-- Roles Table -->
     <div class="card">
@@ -49,4 +52,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

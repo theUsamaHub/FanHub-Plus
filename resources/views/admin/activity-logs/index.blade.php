@@ -1,16 +1,19 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center">
-            <h2 class="h4 mb-0 fw-semibold">{{ __('Activity Log') }}</h2>
-            <div class="d-flex gap-2">
-                <a href="{{ route('admin.activity-logs.export') . '?' . http_build_query(request()->only(['search', 'event', 'user_id'])) }}" class="btn btn-outline-success btn-sm"><i class="bi bi-download me-1"></i>{{ __('Export CSV') }}</a>
-                <form action="{{ route('admin.activity-logs.destroy') }}" method="POST" onsubmit="return confirm('{{ __('Clear all logs?') }}')">
-                    @csrf @method('DELETE')
-                    <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash me-1"></i>{{ __('Clear Logs') }}</button>
-                </form>
-            </div>
-        </div>
-    </x-slot>
+@extends('layouts.app')
+
+@section('content')
+    <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="h4 mb-0 fw-semibold">{{ __('Activity Log') }}</h2>
+                    <div class="d-flex gap-2">
+                        <a href="{{ route('admin.activity-logs.export') . '?' . http_build_query(request()->only(['search', 'event', 'user_id'])) }}" class="btn btn-outline-success btn-sm"><i class="bi bi-download me-1"></i>{{ __('Export CSV') }}</a>
+                        <form action="{{ route('admin.activity-logs.destroy') }}" method="POST" onsubmit="return confirm('{{ __('Clear all logs?') }}')">
+                            @csrf @method('DELETE')
+                            <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash me-1"></i>{{ __('Clear Logs') }}</button>
+                        </form>
+                    </div>
+                </div>
+    </div>
+
 
     <!-- Stats -->
     <div class="row g-3 mb-4">
@@ -96,4 +99,4 @@
     </div>
     @if ($logs->hasPages())<div class="card-footer bg-white">{{ $logs->links() }}</div>@endif
     </div>
-</x-app-layout>
+@endsection

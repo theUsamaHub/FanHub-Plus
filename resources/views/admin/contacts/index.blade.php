@@ -1,9 +1,12 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center">
-            <h2 class="h4 mb-0 fw-semibold">{{ __('Contact Messages') }}</h2>
-        </div>
-    </x-slot>
+@extends('layouts.app')
+
+@section('content')
+    <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="h4 mb-0 fw-semibold">{{ __('Contact Messages') }}</h2>
+                </div>
+    </div>
+
 
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -146,4 +149,4 @@
             </div>
         @endif
     </div>
-</x-app-layout>
+@endsection

@@ -1,7 +1,9 @@
-<x-app-layout>
-    <x-slot name="header">
+@extends('layouts.app')
+
+@section('content')
+    <div class="mb-4">
         <h2 class="h4 mb-0 fw-semibold">{{ __('Admin Dashboard') }}</h2>
-    </x-slot>
+    </div>
 
     <!-- Stats Cards -->
     <div class="row g-4 mb-4">
@@ -130,4 +132,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

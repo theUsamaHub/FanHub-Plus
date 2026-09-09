@@ -1,7 +1,9 @@
-<x-app-layout>
-    <x-slot name="header">
+@extends('layouts.app')
+
+@section('content')
+    <div class="mb-4">
         <h2 class="h4 mb-0 fw-semibold">{{ __('IP Restrictions') }}</h2>
-    </x-slot>
+    </div>
 
     <div class="alert alert-info">
         <i class="bi bi-info-circle me-1"></i>
@@ -28,4 +30,4 @@
             </div>
         </div>
     </form>
-</x-app-layout>
+@endsection

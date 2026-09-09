@@ -1,16 +1,19 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center">
-            <h2 class="h4 mb-0 fw-semibold">{{ __('Application Logs') }}</h2>
-            <div class="d-flex gap-2">
-                <a href="{{ route('admin.logs.download') }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-download me-1"></i>{{ __('Download') }}</a>
-                <form action="{{ route('admin.logs.clear') }}" method="POST" onsubmit="return confirm('{{ __('Clear all logs?') }}')">
-                    @csrf @method('DELETE')
-                    <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash me-1"></i>{{ __('Clear') }}</button>
-                </form>
-            </div>
-        </div>
-    </x-slot>
+@extends('layouts.app')
+
+@section('content')
+    <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="h4 mb-0 fw-semibold">{{ __('Application Logs') }}</h2>
+                    <div class="d-flex gap-2">
+                        <a href="{{ route('admin.logs.download') }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-download me-1"></i>{{ __('Download') }}</a>
+                        <form action="{{ route('admin.logs.clear') }}" method="POST" onsubmit="return confirm('{{ __('Clear all logs?') }}')">
+                            @csrf @method('DELETE')
+                            <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash me-1"></i>{{ __('Clear') }}</button>
+                        </form>
+                    </div>
+                </div>
+    </div>
+
 
     <div class="card">
         <div class="card-body p-0">
@@ -29,4 +32,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

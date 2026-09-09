@@ -1,6 +1,6 @@
 <aside class="sidebar d-none d-lg-flex flex-column" id="sidebar">
     <div class="p-3 border-bottom border-secondary">
-        <a href="{{ route('dashboard') }}" class="text-decoration-none d-flex align-items-center">
+        <a href="{{ route('admin.dashboard') }}" class="text-decoration-none d-flex align-items-center">
             <x-application-logo class="w-8 h-8" />
             <span class="text-white fw-semibold ms-2 fs-6">{{ config('app.name', 'LSK') }}</span>
         </a>
@@ -9,8 +9,8 @@
     <nav class="flex-grow-1 py-3 overflow-auto">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
-                    <i class="bi bi-grid-1x2"></i> {{ __('Dashboard') }}
+                <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
+                    <i class="bi bi-speedometer2"></i> {{ __('Dashboard') }}
                 </a>
             </li>
             <li class="nav-item">
@@ -19,43 +19,40 @@
                 </a>
             </li>
 
-            @if(auth()->check() && auth()->user()->hasAnyRole(['admin', 'user']))
-                <li class="nav-item mt-2">
-                    <small class="text-uppercase text-secondary px-3 fw-semibold" style="font-size:0.7rem;letter-spacing:0.05em;">{{ __('Browse') }}</small>
-                </li>
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.categories.index') || request()->routeIs('admin.categories.show') ? 'active' : '' }}" href="{{ route('admin.categories.index') }}"><i class="bi bi-tags"></i> {{ __('Categories') }}</a></li>
-            @endif
+            <li class="nav-item mt-2">
+                <small class="text-uppercase text-secondary px-3 fw-semibold" style="font-size:0.7rem;letter-spacing:0.05em;">{{ __('Content') }}</small>
+            </li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}" href="{{ route('admin.categories.index') }}"><i class="bi bi-tags"></i> {{ __('Categories') }}</a></li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.categories.trashed') ? 'active' : '' }}" href="{{ route('admin.categories.trashed') }}"><i class="bi bi-trash"></i> {{ __('Recycle Bin') }}</a></li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.tags.*') ? 'active' : '' }}" href="{{ route('admin.tags.index') }}"><i class="bi bi-bookmark"></i> {{ __('Tags') }}</a></li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.media.*') ? 'active' : '' }}" href="{{ route('admin.media.index') }}"><i class="bi bi-folder"></i> {{ __('Media') }}</a></li>
 
-            @if(auth()->check() && auth()->user()->hasRole('admin'))
-                <li class="nav-item mt-2">
-                    <small class="text-uppercase text-secondary px-3 fw-semibold" style="font-size:0.7rem;letter-spacing:0.05em;">{{ __('Administration') }}</small>
-                </li>
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}"><i class="bi bi-speedometer2"></i> {{ __('Admin Dashboard') }}</a></li>
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.categories.index') || request()->routeIs('admin.categories.create') || request()->routeIs('admin.categories.edit') || request()->routeIs('admin.categories.show') ? 'active' : '' }}" href="{{ route('admin.categories.index') }}"><i class="bi bi-tags"></i> {{ __('Categories') }}</a></li>
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.categories.trashed') ? 'active' : '' }}" href="{{ route('admin.categories.trashed') }}"><i class="bi bi-trash"></i> {{ __('Recycle Bin') }}</a></li>
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}" href="{{ route('admin.users.index') }}"><i class="bi bi-people"></i> {{ __('Users') }}</a></li>
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}" href="{{ route('admin.contacts.index') }}">
-                        <i class="bi bi-envelope"></i> {{ __('Contacts') }}
-                        @php $nc = cache()->remember('contacts.new_count', 60, fn() => \App\Models\Contact::where('status', 'new')->count()); @endphp
-                        @if ($nc > 0)<span class="badge bg-danger ms-1">{{ $nc }}</span>@endif
-                    </a>
-                </li>
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.tags.*') ? 'active' : '' }}" href="{{ route('admin.tags.index') }}"><i class="bi bi-bookmark"></i> {{ __('Tags') }}</a></li>
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}" href="{{ route('admin.roles.index') }}"><i class="bi bi-shield-check"></i> {{ __('Roles') }}</a></li>
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.media.*') ? 'active' : '' }}" href="{{ route('admin.media.index') }}"><i class="bi bi-folder"></i> {{ __('Media') }}</a></li>
+            <li class="nav-item mt-2">
+                <small class="text-uppercase text-secondary px-3 fw-semibold" style="font-size:0.7rem;letter-spacing:0.05em;">{{ __('Users') }}</small>
+            </li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}" href="{{ route('admin.users.index') }}"><i class="bi bi-people"></i> {{ __('Users') }}</a></li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}" href="{{ route('admin.roles.index') }}"><i class="bi bi-shield-check"></i> {{ __('Roles') }}</a></li>
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}" href="{{ route('admin.contacts.index') }}">
+                    <i class="bi bi-envelope"></i> {{ __('Contacts') }}
+                    @php $nc = cache()->remember('contacts.new_count', 60, fn() => \App\Models\Contact::where('status', 'new')->count()); @endphp
+                    @if ($nc > 0)<span class="badge bg-danger ms-1">{{ $nc }}</span>@endif
+                </a>
+            </li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.subscribers.*') ? 'active' : '' }}" href="{{ route('admin.subscribers.index') }}"><i class="bi bi-envelope-paper"></i> {{ __('Subscribers') }}</a></li>
 
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" href="{{ route('admin.settings.index') }}"><i class="bi bi-gear"></i> {{ __('Settings') }}</a></li>
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.maintenance.*') ? 'active' : '' }}" href="{{ route('admin.maintenance.index') }}"><i class="bi bi-shield-exclamation"></i> {{ __('Maintenance') }}</a></li>
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.health.*') ? 'active' : '' }}" href="{{ route('admin.health.index') }}"><i class="bi bi-heart-pulse"></i> {{ __('Health') }}</a></li>
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.notifications.*') ? 'active' : '' }}" href="{{ route('admin.notifications.index') }}"><i class="bi bi-bell"></i> {{ __('Notifications') }} @php $nc = cache()->remember('notifications.unread.' . auth()->id(), 60, fn() => auth()->user()->unreadNotifications()->count()); @endphp @if($nc > 0)<span class="badge bg-danger ms-1">{{ $nc }}</span>@endif</a></li>
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.subscribers.*') ? 'active' : '' }}" href="{{ route('admin.subscribers.index') }}"><i class="bi bi-envelope-paper"></i> {{ __('Subscribers') }}</a></li>
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.activity-logs.*') ? 'active' : '' }}" href="{{ route('admin.activity-logs.index') }}"><i class="bi bi-clock-history"></i> {{ __('Activity') }}</a></li>
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.ip-restrictions.*') ? 'active' : '' }}" href="{{ route('admin.ip-restrictions.index') }}"><i class="bi bi-shield-lock"></i> {{ __('IP Restrictions') }}</a></li>
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.sessions.*') ? 'active' : '' }}" href="{{ route('admin.sessions.index') }}"><i class="bi bi-person-badge"></i> {{ __('Sessions') }}</a></li>
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.logs.*') ? 'active' : '' }}" href="{{ route('admin.logs.index') }}"><i class="bi bi-journal-text"></i> {{ __('Logs') }}</a></li>
-                <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.backup.*') ? 'active' : '' }}" href="{{ route('admin.backup.index') }}"><i class="bi bi-database"></i> {{ __('Backup') }}</a></li>
-            @endif
+            <li class="nav-item mt-2">
+                <small class="text-uppercase text-secondary px-3 fw-semibold" style="font-size:0.7rem;letter-spacing:0.05em;">{{ __('System') }}</small>
+            </li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}" href="{{ route('admin.settings.index') }}"><i class="bi bi-gear"></i> {{ __('Settings') }}</a></li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.notifications.*') ? 'active' : '' }}" href="{{ route('admin.notifications.index') }}"><i class="bi bi-bell"></i> {{ __('Notifications') }} @php $nc = cache()->remember('notifications.unread.' . auth()->id(), 60, fn() => auth()->user()->unreadNotifications()->count()); @endphp @if($nc > 0)<span class="badge bg-danger ms-1">{{ $nc }}</span>@endif</a></li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.activity-logs.*') ? 'active' : '' }}" href="{{ route('admin.activity-logs.index') }}"><i class="bi bi-clock-history"></i> {{ __('Activity') }}</a></li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.sessions.*') ? 'active' : '' }}" href="{{ route('admin.sessions.index') }}"><i class="bi bi-person-badge"></i> {{ __('Sessions') }}</a></li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.ip-restrictions.*') ? 'active' : '' }}" href="{{ route('admin.ip-restrictions.index') }}"><i class="bi bi-shield-lock"></i> {{ __('IP Restrictions') }}</a></li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.maintenance.*') ? 'active' : '' }}" href="{{ route('admin.maintenance.index') }}"><i class="bi bi-shield-exclamation"></i> {{ __('Maintenance') }}</a></li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.health.*') ? 'active' : '' }}" href="{{ route('admin.health.index') }}"><i class="bi bi-heart-pulse"></i> {{ __('Health') }}</a></li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.logs.*') ? 'active' : '' }}" href="{{ route('admin.logs.index') }}"><i class="bi bi-journal-text"></i> {{ __('Logs') }}</a></li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.backup.*') ? 'active' : '' }}" href="{{ route('admin.backup.index') }}"><i class="bi bi-database"></i> {{ __('Backup') }}</a></li>
         </ul>
     </nav>
 

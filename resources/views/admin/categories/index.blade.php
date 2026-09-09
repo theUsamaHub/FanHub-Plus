@@ -1,12 +1,16 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center">
-            <h2 class="h4 mb-0 fw-semibold">{{ __('Categories') }}</h2>
-            <a href="{{ route('admin.categories.create') }}" class="btn btn-primary btn-sm">
-                <i class="bi bi-plus-circle me-1"></i>{{ __('Add Category') }}
-            </a>
-        </div>
-    </x-slot>
+@php $layout = auth()->user()->hasRole('admin') ? 'layouts.app' : 'layouts.user.app'; @endphp
+@extends($layout)
+
+@section('content')
+    <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="h4 mb-0 fw-semibold">{{ __('Categories') }}</h2>
+                    <a href="{{ route('admin.categories.create') }}" class="btn btn-primary btn-sm">
+                        <i class="bi bi-plus-circle me-1"></i>{{ __('Add Category') }}
+                    </a>
+                </div>
+    </div>
+
 
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -111,4 +115,4 @@
             </div>
         @endif
     </div>
-</x-app-layout>
+@endsection

@@ -1,7 +1,9 @@
-<x-app-layout>
-    <x-slot name="header">
+@extends('layouts.app')
+
+@section('content')
+    <div class="mb-4">
         <h2 class="h4 mb-0 fw-semibold">{{ __('Health Dashboard') }}</h2>
-    </x-slot>
+    </div>
 
     <div class="row g-3">
         <!-- PHP & Laravel -->
@@ -150,4 +152,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

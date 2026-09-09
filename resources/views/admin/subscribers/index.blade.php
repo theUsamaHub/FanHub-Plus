@@ -1,14 +1,17 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center">
-            <h2 class="h4 mb-0 fw-semibold">{{ __('Subscribers') }}</h2>
-            <div class="d-flex gap-2">
-                <a href="{{ route('admin.subscribers.export') . '?' . http_build_query(request()->only(['search', 'filter', 'from', 'to'])) }}" class="btn btn-outline-success btn-sm">
-                    <i class="bi bi-download me-1"></i>{{ __('Export CSV') }}
-                </a>
-            </div>
-        </div>
-    </x-slot>
+@extends('layouts.app')
+
+@section('content')
+    <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="h4 mb-0 fw-semibold">{{ __('Subscribers') }}</h2>
+                    <div class="d-flex gap-2">
+                        <a href="{{ route('admin.subscribers.export') . '?' . http_build_query(request()->only(['search', 'filter', 'from', 'to'])) }}" class="btn btn-outline-success btn-sm">
+                            <i class="bi bi-download me-1"></i>{{ __('Export CSV') }}
+                        </a>
+                    </div>
+                </div>
+    </div>
+
 
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -119,4 +122,4 @@
             <div class="card-footer bg-white">{{ $subscribers->links() }}</div>
         @endif
     </div>
-</x-app-layout>
+@endsection

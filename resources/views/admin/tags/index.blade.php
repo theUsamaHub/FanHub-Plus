@@ -1,10 +1,13 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center">
-            <h2 class="h4 mb-0 fw-semibold">{{ __('Tags') }}</h2>
-            <a href="{{ route('admin.tags.create') }}" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle me-1"></i>{{ __('Add Tag') }}</a>
-        </div>
-    </x-slot>
+@extends('layouts.app')
+
+@section('content')
+    <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="h4 mb-0 fw-semibold">{{ __('Tags') }}</h2>
+                    <a href="{{ route('admin.tags.create') }}" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle me-1"></i>{{ __('Add Tag') }}</a>
+                </div>
+    </div>
+
 
     <!-- Stats -->
     <div class="row g-3 mb-4">
@@ -67,4 +70,4 @@
         </div>
         @if ($tags->hasPages())<div class="card-footer bg-white">{{ $tags->links() }}</div>@endif
     </div>
-</x-app-layout>
+@endsection

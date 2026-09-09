@@ -1,7 +1,4 @@
-@php
-    $layout = auth()->user()->hasRole('admin') ? 'layouts.app' : 'layouts.user.app';
-@endphp
-@extends($layout)
+@extends('layouts.user.app')
 
 @section('content')
     <div class="mb-4">
@@ -25,7 +22,7 @@
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
@@ -34,39 +31,23 @@
                         </div>
                         <div class="ms-3">
                             <div class="text-muted" style="font-size: 0.75rem;">{{ __('Categories') }}</div>
-                            <div class="fs-5 fw-semibold">{{ \App\Models\Category::count() }}</div>
+                            <div class="fs-5 fw-semibold">{{ $categoryCount }}</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex align-items-center">
-                        <div class="bg-warning bg-opacity-10 rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                            <i class="bi bi-people text-warning"></i>
-                        </div>
-                        <div class="ms-3">
-                            <div class="text-muted" style="font-size: 0.75rem;">{{ __('Users') }}</div>
-                            <div class="fs-5 fw-semibold">{{ \App\Models\User::count() }}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="bg-info bg-opacity-10 rounded-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
-                            <i class="bi bi-envelope text-info"></i>
+                            <i class="bi bi-clock-history text-info"></i>
                         </div>
                         <div class="ms-3">
-                            <div class="text-muted" style="font-size: 0.75rem;">{{ __('Contact Messages') }}</div>
-                            <div class="fs-5 fw-semibold">{{ \App\Models\Contact::count() }}</div>
+                            <div class="text-muted" style="font-size: 0.75rem;">{{ __('Your Activity') }}</div>
+                            <div class="fs-5 fw-semibold">{{ $recentActivityCount }}</div>
                         </div>
                     </div>
                 </div>
@@ -92,7 +73,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse(\App\Models\Category::latest()->take(5)->get() as $category)
+                                @forelse($recentCategories as $category)
                                     <tr>
                                         <td class="fw-medium">{{ $category->name }}</td>
                                         <td>
@@ -123,14 +104,9 @@
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
-                        @if(auth()->user()->hasRole('admin'))
-                            <a href="{{ route('admin.categories.create') }}" class="btn btn-outline-primary btn-sm text-start">
-                                <i class="bi bi-plus-circle me-2"></i>{{ __('Create Category') }}
-                            </a>
-                            <a href="{{ route('admin.categories.index') }}" class="btn btn-outline-secondary btn-sm text-start">
-                                <i class="bi bi-tags me-2"></i>{{ __('Manage Categories') }}
-                            </a>
-                        @endif
+                        <a href="{{ route('admin.categories.index') }}" class="btn btn-outline-primary btn-sm text-start">
+                            <i class="bi bi-tags me-2"></i>{{ __('Browse Categories') }}
+                        </a>
                         <a href="{{ route('profile.edit') }}" class="btn btn-outline-info btn-sm text-start">
                             <i class="bi bi-person me-2"></i>{{ __('Edit Profile') }}
                         </a>

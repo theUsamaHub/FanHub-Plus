@@ -21,10 +21,18 @@ Route::get('/', function () {
 // Contact form
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
-// Dashboard (authenticated users)
+// Dashboard - redirect based on role
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    if (auth()->user()->hasRole('admin')) {
+        return redirect()->route('admin.dashboard');
+    }
+    return redirect()->route('user.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// User Dashboard
+Route::get('/user/dashboard', [\App\Http\Controllers\User\DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified', 'role:user'])
+    ->name('user.dashboard');
 
 // Profile
 Route::middleware(['auth', 'verified'])->group(function () {

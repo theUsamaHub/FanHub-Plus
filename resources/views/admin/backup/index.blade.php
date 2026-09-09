@@ -1,13 +1,16 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center">
-            <h2 class="h4 mb-0 fw-semibold">{{ __('Database Backup') }}</h2>
-            <form action="{{ route('admin.backup.create') }}" method="POST">
-                @csrf
-                <button class="btn btn-primary btn-sm"><i class="bi bi-download me-1"></i>{{ __('Create Backup') }}</button>
-            </form>
-        </div>
-    </x-slot>
+@extends('layouts.app')
+
+@section('content')
+    <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="h4 mb-0 fw-semibold">{{ __('Database Backup') }}</h2>
+                    <form action="{{ route('admin.backup.create') }}" method="POST">
+                        @csrf
+                        <button class="btn btn-primary btn-sm"><i class="bi bi-download me-1"></i>{{ __('Create Backup') }}</button>
+                    </form>
+                </div>
+    </div>
+
 
     <div class="card">
         <div class="card-body p-0">
@@ -40,4 +43,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection

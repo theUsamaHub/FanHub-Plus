@@ -1,24 +1,27 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center">
-            <h2 class="h4 mb-0 fw-semibold">{{ __('Notifications') }}</h2>
-            <div class="d-flex gap-2">
-                <a href="{{ route('admin.notifications.index', ['filter' => 'unread']) }}" class="btn btn-outline-secondary btn-sm {{ request('filter') === 'unread' ? 'active' : '' }}">
-                    <i class="bi bi-bell me-1"></i>{{ __('Unread') }}
-                </a>
-                <a href="{{ route('admin.notifications.index') }}" class="btn btn-outline-secondary btn-sm {{ !request('filter') ? 'active' : '' }}">
-                    <i class="bi bi-list me-1"></i>{{ __('All') }}
-                </a>
-                @php $unreadCount = auth()->user()->unreadNotifications()->count(); @endphp
-                @if ($unreadCount > 0)
-                    <form action="{{ route('admin.notifications.read-all') }}" method="POST" class="d-inline">
-                        @csrf
-                        <button class="btn btn-outline-primary btn-sm"><i class="bi bi-check-all me-1"></i>{{ __('Mark All Read') }}</button>
-                    </form>
-                @endif
-            </div>
-        </div>
-    </x-slot>
+@extends('layouts.app')
+
+@section('content')
+    <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="h4 mb-0 fw-semibold">{{ __('Notifications') }}</h2>
+                    <div class="d-flex gap-2">
+                        <a href="{{ route('admin.notifications.index', ['filter' => 'unread']) }}" class="btn btn-outline-secondary btn-sm {{ request('filter') === 'unread' ? 'active' : '' }}">
+                            <i class="bi bi-bell me-1"></i>{{ __('Unread') }}
+                        </a>
+                        <a href="{{ route('admin.notifications.index') }}" class="btn btn-outline-secondary btn-sm {{ !request('filter') ? 'active' : '' }}">
+                            <i class="bi bi-list me-1"></i>{{ __('All') }}
+                        </a>
+                        @php $unreadCount = auth()->user()->unreadNotifications()->count(); @endphp
+                        @if ($unreadCount > 0)
+                            <form action="{{ route('admin.notifications.read-all') }}" method="POST" class="d-inline">
+                                @csrf
+                                <button class="btn btn-outline-primary btn-sm"><i class="bi bi-check-all me-1"></i>{{ __('Mark All Read') }}</button>
+                            </form>
+                        @endif
+                    </div>
+                </div>
+    </div>
+
 
     <div class="card">
         <div class="card-body p-0">
@@ -72,4 +75,4 @@
             <div class="card-footer bg-white">{{ $notifications->links() }}</div>
         @endif
     </div>
-</x-app-layout>
+@endsection

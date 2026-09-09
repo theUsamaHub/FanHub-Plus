@@ -1,12 +1,15 @@
-<x-app-layout>
-    <x-slot name="header">
-        <div class="d-flex justify-content-between align-items-center">
-            <h2 class="h4 mb-0 fw-semibold">{{ __('Site Settings') }}</h2>
-            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addSettingModal">
-                <i class="bi bi-plus-circle me-1"></i>{{ __('Add Setting') }}
-            </button>
-        </div>
-    </x-slot>
+@extends('layouts.app')
+
+@section('content')
+    <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="h4 mb-0 fw-semibold">{{ __('Site Settings') }}</h2>
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addSettingModal">
+                        <i class="bi bi-plus-circle me-1"></i>{{ __('Add Setting') }}
+                    </button>
+                </div>
+    </div>
+
 
     <form action="{{ route('admin.settings.update') }}" method="POST">
         @csrf
@@ -198,4 +201,4 @@
     });
 </script>
 @endpush
-</x-app-layout>
+@endsection

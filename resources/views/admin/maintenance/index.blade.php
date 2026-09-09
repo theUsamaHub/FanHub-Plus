@@ -1,7 +1,9 @@
-<x-app-layout>
-    <x-slot name="header">
+@extends('layouts.app')
+
+@section('content')
+    <div class="mb-4">
         <h2 class="h4 mb-0 fw-semibold">{{ __('Maintenance Mode') }}</h2>
-    </x-slot>
+    </div>
 
     @if (session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -75,4 +77,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+@endsection
