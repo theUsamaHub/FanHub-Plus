@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
@@ -38,25 +37,47 @@ class BackupController extends Controller
         $filepath = $backupPath . '/' . $filename;
 
         $driver = DB::getDriverName();
+
+        $sql = "-- FurShield Database Backup\n";
+        $sql .= "-- Date: " . now()->format('Y-m-d H:i:s') . "\n";
+        $sql .= "-- Driver: {$driver}\n\n";
+
+        if (in_array($driver, ['mysql', 'mariadb'])) {
+            $sql .= "SET FOREIGN_KEY_CHECKS = 0;\n";
+            $sql .= "SET NAMES utf8mb4;\n\n";
+        } elseif ($driver === 'pgsql') {
+            $sql .= "SET client_encoding = 'UTF8';\n\n";
+        }
+
         $tables = match ($driver) {
-            'mysql', 'mariadb' => array_map(fn($row) => array_values((array) $row)[0], DB::select('SHOW TABLES')),
-            'pgsql' => array_map(fn($row) => $row->tablename, DB::select("SELECT tablename FROM pg_tables WHERE schemaname = 'public'")),
-            'sqlite' => array_map(fn($row) => $row->name, DB::select("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")),
+            'mysql', 'mariadb' => array_map(
+                fn($row) => array_values((array) $row)[0],
+                DB::select('SHOW TABLES')
+            ),
+            'pgsql' => array_map(
+                fn($row) => $row->tablename,
+                DB::select("SELECT tablename FROM pg_tables WHERE schemaname = 'public'")
+            ),
+            'sqlite' => array_map(
+                fn($row) => $row->name,
+                DB::select("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")
+            ),
             default => [],
         };
-        $sql = "-- Laravel Starter Kit Database Backup\n";
-        $sql .= "-- Date: " . now()->format('Y-m-d H:i:s') . "\n\n";
 
         foreach ($tables as $tableName) {
+            $sql .= "-- {$tableName}\n";
+
+            $createTable = $this->getCreateTableStatement($tableName, $driver);
+            if ($createTable) {
+                $sql .= $createTable . ";\n\n";
+            }
+
             $rows = DB::table($tableName)->get();
-
-            if ($rows->isEmpty()) continue;
-
-            $sql .= "-- Table: {$tableName}\n";
-            $sql .= match ($driver) {
-                'pgsql' => "TRUNCATE TABLE \"{$tableName}\" CASCADE;\n",
-                default => "TRUNCATE TABLE `{$tableName}`;\n",
-            };
+            if ($rows->isEmpty()) {
+                $sql .= "\n";
+                continue;
+            }
 
             foreach ($rows as $row) {
                 $rowArray = (array) $row;
@@ -64,15 +85,57 @@ class BackupController extends Controller
                     'pgsql' => array_map(fn($k) => "\"{$k}\"", array_keys($rowArray)),
                     default => array_map(fn($k) => "`{$k}`", array_keys($rowArray)),
                 };
-                $values = array_map(fn($v) => $v === null ? 'NULL' : "'" . addslashes($v) . "'", array_values($rowArray));
+                $values = array_map(function ($v) use ($driver) {
+                    if ($v === null) return 'NULL';
+                    if (is_int($v) || is_float($v)) return $v;
+                    $escaped = $driver === 'pgsql'
+                        ? str_replace(["'", "\\'"], ["'", "\\'"], $v)
+                        : addslashes($v);
+                    return "'" . $escaped . "'";
+                }, array_values($rowArray));
+
                 $sql .= "INSERT INTO `{$tableName}` (" . implode(', ', $columns) . ") VALUES (" . implode(', ', $values) . ");\n";
             }
             $sql .= "\n";
         }
 
+        if (in_array($driver, ['mysql', 'mariadb'])) {
+            $sql .= "SET FOREIGN_KEY_CHECKS = 1;\n";
+        }
+
         File::put($filepath, $sql);
 
+        if (!File::exists($filepath) || File::size($filepath) === 0) {
+            return back()->with('error', 'Backup failed: file was not created.');
+        }
+
         return back()->with('success', "Backup created: {$filename}");
+    }
+
+    private function getCreateTableStatement(string $tableName, string $driver): ?string
+    {
+        try {
+            $result = match ($driver) {
+                'mysql', 'mariadb' => DB::select("SHOW CREATE TABLE `{$tableName}`"),
+                'pgsql' => null,
+                'sqlite' => DB::select("SELECT sql FROM sqlite_master WHERE type='table' AND name=?", [$tableName]),
+                default => null,
+            };
+
+            if ($result === null) return null;
+
+            if ($driver === 'mysql' || $driver === 'mariadb') {
+                return $result[0]->{'Create Table'} ?? null;
+            }
+
+            if ($driver === 'sqlite') {
+                return $result[0]->sql ?? null;
+            }
+
+            return null;
+        } catch (\Throwable $e) {
+            return null;
+        }
     }
 
     public function download(string $filename): \Symfony\Component\HttpFoundation\BinaryFileResponse
