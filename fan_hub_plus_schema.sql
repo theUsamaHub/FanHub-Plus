@@ -140,6 +140,7 @@ CREATE TABLE contents (
     popularity_score     INT NOT NULL DEFAULT 0 COMMENT 'Precomputed ranking score for "most popular" sort option',
     view_count          BIGINT UNSIGNED NOT NULL DEFAULT 0,
     status              ENUM('draft','pending_review','published','rejected') NOT NULL DEFAULT 'draft' COMMENT 'Drives the admin moderation queue',
+    is_featured         BOOLEAN DEFAULT FALSE
     is_user_submitted   TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'TRUE if a registered user submitted this as fan content, per SRS approval requirement',
     submitted_by        BIGINT UNSIGNED NULL COMMENT 'The user who submitted it (NULL for admin/staff-authored content)',
     reviewed_by         BIGINT UNSIGNED NULL COMMENT 'Admin who approved/rejected it',

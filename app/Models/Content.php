@@ -21,6 +21,7 @@ class Content extends Model
         'popularity_score',
         'view_count',
         'status',
+        'is_featured',
         'is_user_submitted',
         'submitted_by',
         'reviewed_by',
@@ -33,6 +34,7 @@ class Content extends Model
             'release_date' => 'date',
             'popularity_score' => 'integer',
             'view_count' => 'integer',
+            'is_featured' => 'boolean',
             'is_user_submitted' => 'boolean',
             'published_at' => 'datetime',
         ];
