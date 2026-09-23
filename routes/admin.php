@@ -21,6 +21,8 @@ Route::prefix('admin')
 
         Route::get('/media', [\App\Http\Controllers\Admin\MediaController::class, 'index'])->name('media.index');
         Route::post('/media', [\App\Http\Controllers\Admin\MediaController::class, 'store'])->name('media.store');
+        Route::get('/media/{media}/edit', [\App\Http\Controllers\Admin\MediaController::class, 'edit'])->name('media.edit');
+        Route::put('/media/{media}', [\App\Http\Controllers\Admin\MediaController::class, 'update'])->name('media.update');
         Route::delete('/media/{media}', [\App\Http\Controllers\Admin\MediaController::class, 'destroy'])->name('media.destroy');
 
         Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');

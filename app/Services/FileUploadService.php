@@ -36,6 +36,16 @@ class FileUploadService
             'extensions' => ['xls', 'xlsx', 'csv'],
             'max_size' => 10240, // 10MB
         ],
+        'videos' => [
+            'mime_types' => ['video/mp4', 'video/webm', 'video/ogg', 'video/quicktime'],
+            'extensions' => ['mp4', 'webm', 'ogv', 'mov'],
+            'max_size' => 51200, // 50MB
+        ],
+        'audio' => [
+            'mime_types' => ['audio/mpeg', 'audio/wav', 'audio/ogg', 'audio/mp4', 'audio/aac'],
+            'extensions' => ['mp3', 'wav', 'ogg', 'm4a', 'aac'],
+            'max_size' => 20480, // 20MB
+        ],
     ];
 
     /**
@@ -45,20 +55,35 @@ class FileUploadService
         UploadedFile $file,
         string $directory = 'uploads',
         ?string $disk = null,
-        ?int $createdBy = null
+        ?int $uploadedBy = null,
+        ?string $altText = null,
+        ?float $duration = null
     ): Media {
-        $disk = $disk ?? 'public';
+        $disk = $disk ?? config('filesystems.media_disk', 'public');
         $path = $file->store($directory, $disk);
+        $mimeType = $file->getMimeType();
 
-        return Media::create([
-            'name' => pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME),
-            'original_name' => $file->getClientOriginalName(),
-            'mime_type' => $file->getMimeType(),
-            'size' => $file->getSize(),
+        $data = [
+            'uploaded_by' => $uploadedBy ?? auth()->id(),
             'path' => $path,
+            'original_filename' => $file->getClientOriginalName(),
+            'mime_type' => $mimeType,
+            'media_type' => self::mediaTypeFromMime($mimeType),
+            'size_bytes' => $file->getSize(),
             'disk' => $disk,
-            'created_by' => $createdBy ?? auth()->id(),
-        ]);
+            'alt_text' => $altText,
+            'duration' => $duration,
+        ];
+
+        if ($data['media_type'] === 'image') {
+            $info = @getimagesize($file->getRealPath());
+            if ($info !== false) {
+                $data['width'] = $info[0];
+                $data['height'] = $info[1];
+            }
+        }
+
+        return Media::create($data);
     }
 
     /**
@@ -75,6 +100,7 @@ class FileUploadService
                 $media[] = $this->upload($file, $directory, $disk);
             }
         }
+
         return $media;
     }
 
@@ -84,7 +110,53 @@ class FileUploadService
     public function delete(Media $media): bool
     {
         Storage::disk($media->disk)->delete($media->path);
+
         return $media->delete();
+    }
+
+    /**
+     * Update media metadata (alt text, duration).
+     */
+    public function updateMetadata(Media $media, array $data): Media
+    {
+        $media->fill([
+            'alt_text' => $data['alt_text'] ?? null,
+            'duration' => $data['duration'] ?? null,
+        ])->save();
+
+        return $media->fresh();
+    }
+
+    /**
+     * File-type category for a given MIME type (images|documents|spreadsheets|videos|audio).
+     */
+    public static function categoryFromMime(string $mimeType): string
+    {
+        return match (true) {
+            str_starts_with($mimeType, 'image/') => 'images',
+            str_starts_with($mimeType, 'video/') => 'videos',
+            str_starts_with($mimeType, 'audio/') => 'audio',
+            in_array($mimeType, self::FILE_TYPES['spreadsheets']['mime_types'], true) => 'spreadsheets',
+            default => 'documents',
+        };
+    }
+
+    /**
+     * Map a MIME type to the media_type enum value.
+     */
+    public static function mediaTypeFromMime(string $mimeType): string
+    {
+        if (str_starts_with($mimeType, 'image/')) {
+            return 'image';
+        }
+        if (str_starts_with($mimeType, 'video/')) {
+            return 'video';
+        }
+        if (str_starts_with($mimeType, 'audio/')) {
+            return 'audio';
+        }
+
+        return 'document';
     }
 
     /**
@@ -97,8 +169,8 @@ class FileUploadService
         return [
             'required',
             'file',
-            'mimes:' . implode(',', $type['extensions']),
-            'max:' . $type['max_size'],
+            'mimes:'.implode(',', $type['extensions']),
+            'max:'.$type['max_size'],
         ];
     }
 
@@ -111,6 +183,7 @@ class FileUploadService
         foreach (self::FILE_TYPES as $category) {
             $extensions = array_merge($extensions, $category['extensions']);
         }
+
         return array_unique($extensions);
     }
 
@@ -122,6 +195,7 @@ class FileUploadService
         if (str_starts_with($mimeType, 'image/')) {
             return 'image';
         }
+
         return match ($mimeType) {
             'application/pdf' => 'pdf',
             'text/csv',

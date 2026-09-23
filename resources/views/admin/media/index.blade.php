@@ -7,7 +7,6 @@
                 </div>
     </div>
 
-
     <!-- Upload Form -->
     <div class="card mb-4">
         <div class="card-header">
@@ -17,8 +16,22 @@
             <form action="{{ route('admin.media.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
-                    <input type="file" class="form-control" name="files[]" multiple accept=".jpg,.jpeg,.png,.gif,.webp,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt" required>
-                    <small class="text-muted">{{ __('Supported: JPG, PNG, GIF, WebP, PDF, DOC, DOCX, XLS, XLSX, CSV, TXT (max 10MB each, up to 10 files)') }}</small>
+                    <label for="alt_text" class="form-label">{{ __('Alt text (applied to all uploaded files)') }}</label>
+                    <input type="text" class="form-control" name="alt_text" id="alt_text" maxlength="255" value="{{ old('alt_text') }}" placeholder="{{ __('Descriptive text for accessibility') }}">
+                </div>
+                <div class="mb-3">
+                    <label for="duration" class="form-label">{{ __('Duration in seconds (video/audio only)') }}</label>
+                    <input type="number" class="form-control" name="duration" id="duration" step="0.01" min="0" max="86400" value="{{ old('duration') }}">
+                </div>
+                <div class="mb-3">
+                    <input type="file" class="form-control @error('files') is-invalid @enderror" name="files[]" multiple accept=".jpg,.jpeg,.png,.gif,.webp,.svg,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.mp4,.webm,.ogv,.mov,.mp3,.wav,.ogg,.m4a,.aac" required>
+                    <small class="text-muted">{{ __('Images max 5MB, documents 10MB, audio 20MB, video 50MB. Up to 10 files per upload.') }}</small>
+                    @error('files')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                    @error('files.*')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
                 </div>
                 <button type="submit" class="btn btn-primary btn-sm">
                     <i class="bi bi-upload me-1"></i>{{ __('Upload') }}
@@ -38,9 +51,9 @@
                     <select class="form-select" name="type">
                         <option value="">{{ __('All Types') }}</option>
                         <option value="image" {{ request('type') === 'image' ? 'selected' : '' }}>{{ __('Images') }}</option>
-                        <option value="application/pdf" {{ request('type') === 'application/pdf' ? 'selected' : '' }}>{{ __('PDF') }}</option>
-                        <option value="application/vnd" {{ request('type') === 'application/vnd' ? 'selected' : '' }}>{{ __('Office Documents') }}</option>
-                        <option value="text/csv" {{ request('type') === 'text/csv' ? 'selected' : '' }}>{{ __('CSV') }}</option>
+                        <option value="video" {{ request('type') === 'video' ? 'selected' : '' }}>{{ __('Video') }}</option>
+                        <option value="audio" {{ request('type') === 'audio' ? 'selected' : '' }}>{{ __('Audio') }}</option>
+                        <option value="document" {{ request('type') === 'document' ? 'selected' : '' }}>{{ __('Documents') }}</option>
                     </select>
                 </div>
                 <div class="col-md-2">
@@ -64,23 +77,29 @@
                     <div class="card h-100 border">
                         <div class="card-body p-2 text-center">
                             @if ($item->isImage())
-                                <img src="{{ $item->url }}" alt="{{ $item->name }}" class="img-fluid rounded mb-2" style="max-height: 80px; object-fit: cover;">
-                            @elseif ($item->isPdf())
+                                <img src="{{ $item->url }}" alt="{{ $item->alt_text ?: $item->original_filename }}" class="img-fluid rounded mb-2" style="max-height: 80px; object-fit: cover;">
+                            @elseif ($item->isVideo())
+                                <i class="bi bi-film text-primary fs-1"></i>
+                            @elseif ($item->isAudio())
+                                <i class="bi bi-music-note-beamed text-info fs-1"></i>
+                            @elseif ($item->mime_type === 'application/pdf')
                                 <i class="bi bi-file-earmark-pdf text-danger fs-1"></i>
-                            @elseif ($item->isExcel())
-                                <i class="bi bi-file-earmark-excel text-success fs-1"></i>
                             @else
                                 <i class="bi bi-file-earmark text-secondary fs-1"></i>
                             @endif
-                            <div class="text-truncate" style="font-size: 0.75rem;" title="{{ $item->original_name }}">{{ $item->original_name }}</div>
-                            <div class="text-muted" style="font-size: 0.65rem;">{{ $item->size_formatted }}</div>
+                            <div class="text-truncate" style="font-size: 0.75rem;" title="{{ $item->original_filename }}">{{ $item->original_filename ?: __('Untitled') }}</div>
+                            <div class="text-muted" style="font-size: 0.65rem;">{{ $item->size_formatted }} &middot; {{ $item->media_type }}</div>
+                            @if ($item->isReferenced())
+                                <div class="text-warning" style="font-size: 0.65rem;"><i class="bi bi-link-45deg"></i> {{ __('In use') }}</div>
+                            @endif
                         </div>
                         <div class="card-footer bg-transparent p-1 text-center">
-                            <a href="{{ $item->url }}" class="btn btn-outline-info btn-sm" style="font-size: 0.7rem;"><i class="bi bi-eye"></i></a>
+                            <a href="{{ $item->url }}" class="btn btn-outline-info btn-sm" style="font-size: 0.7rem;" target="_blank" rel="noopener"><i class="bi bi-eye"></i></a>
+                            <a href="{{ route('admin.media.edit', $item) }}" class="btn btn-outline-primary btn-sm" style="font-size: 0.7rem;" title="{{ __('Edit') }}"><i class="bi bi-pencil"></i></a>
                             <form action="{{ route('admin.media.destroy', $item) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Delete this file?') }}')">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-outline-danger btn-sm" style="font-size: 0.7rem;"><i class="bi bi-trash"></i></button>
+                                <button type="submit" class="btn btn-outline-danger btn-sm" style="font-size: 0.7rem;" @if ($item->isReferenced()) disabled title="{{ __('Referenced by other records') }}" @endif><i class="bi bi-trash"></i></button>
                             </form>
                         </div>
                     </div>

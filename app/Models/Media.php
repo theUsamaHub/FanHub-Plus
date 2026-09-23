@@ -80,4 +80,22 @@ class Media extends Model
     {
         return $this->media_type === 'document';
     }
+
+    /**
+     * Count entities that still point at this media record.
+     */
+    public function referenceCount(): int
+    {
+        return Category::where('icon_media_id', $this->id)->count()
+            + CharacterProfile::where('image_media_id', $this->id)->count()
+            + MerchandiseItem::where('image_media_id', $this->id)->count()
+            + Event::where('cover_media_id', $this->id)->count()
+            + UserProfile::where('avatar_media_id', $this->id)->count()
+            + ContentMedia::where('media_id', $this->id)->count();
+    }
+
+    public function isReferenced(): bool
+    {
+        return $this->referenceCount() > 0;
+    }
 }

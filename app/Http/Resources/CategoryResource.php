@@ -14,24 +14,12 @@ class CategoryResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'description' => $this->description,
-            'image' => $this->image ? asset('storage/' . $this->image) : null,
-            'is_active' => $this->is_active,
-            'sort_order' => $this->sort_order,
-            'created_by' => $this->createdBy?->name,
-            'updated_by' => $this->updatedBy?->name,
-            'media' => $this->whenLoaded('media', function () {
-                return $this->media->map(fn ($item) => [
-                    'id' => $item->id,
-                    'name' => $item->original_name,
-                    'mime_type' => $item->mime_type,
-                    'size' => $item->size,
-                    'size_formatted' => $item->size_formatted,
-                    'url' => $item->url,
-                    'is_image' => $item->isImage(),
-                ]);
-            }),
+            'icon_media_id' => $this->icon_media_id,
+            'icon_url' => $this->icon_url,
+            'contents_count' => $this->whenCounted('contents'),
             'created_at' => $this->created_at?->toIso8601String(),
             'updated_at' => $this->updated_at?->toIso8601String(),
+            'deleted_at' => $this->deleted_at?->toIso8601String(),
         ];
     }
 }

@@ -10,14 +10,6 @@
                 </div>
     </div>
 
-
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
-
     <div class="card">
         <div class="card-body p-0">
             <div class="table-responsive">
@@ -26,7 +18,6 @@
                         <tr>
                             <th>{{ __('Name') }}</th>
                             <th>{{ __('Slug') }}</th>
-                            <th>{{ __('Deleted By') }}</th>
                             <th>{{ __('Deleted At') }}</th>
                             <th class="text-end">{{ __('Actions') }}</th>
                         </tr>
@@ -36,7 +27,6 @@
                             <tr>
                                 <td class="fw-medium">{{ $category->name }}</td>
                                 <td><code>{{ $category->slug }}</code></td>
-                                <td>{{ $category->createdBy?->name ?? '-' }}</td>
                                 <td class="text-muted">{{ $category->deleted_at->diffForHumans() }}</td>
                                 <td class="text-end">
                                     <div class="btn-group btn-group-sm">
@@ -58,7 +48,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center py-5">
+                                <td colspan="4" class="text-center py-5">
                                     <div class="empty-state">
                                         <i class="bi bi-trash"></i>
                                         <p>{{ __('Trash is empty.') }}</p>
