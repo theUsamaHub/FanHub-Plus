@@ -87,7 +87,6 @@
                             <thead>
                                 <tr>
                                     <th>{{ __('Name') }}</th>
-                                    <th>{{ __('Status') }}</th>
                                     <th>{{ __('Created') }}</th>
                                 </tr>
                             </thead>
@@ -95,18 +94,11 @@
                                 @forelse(\App\Models\Category::latest()->take(5)->get() as $category)
                                     <tr>
                                         <td class="fw-medium">{{ $category->name }}</td>
-                                        <td>
-                                            @if ($category->is_active)
-                                                <span class="badge bg-success">{{ __('Active') }}</span>
-                                            @else
-                                                <span class="badge bg-secondary">{{ __('Inactive') }}</span>
-                                            @endif
-                                        </td>
                                         <td class="text-muted">{{ $category->created_at->diffForHumans() }}</td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="3" class="text-center text-muted py-4">{{ __('No categories yet.') }}</td>
+                                        <td colspan="2" class="text-center text-muted py-4">{{ __('No categories yet.') }}</td>
                                     </tr>
                                 @endforelse
                             </tbody>

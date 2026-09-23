@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Media;
+use App\Models\UserProfile;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,20 +15,35 @@ class ProfileController extends Controller
 {
     public function edit(Request $request): View
     {
+        $user = $request->user()->load(['profile.avatarMedia']);
+
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
+            'images' => Media::where('media_type', 'image')->orderBy('original_filename')->get(['id', 'original_filename']),
         ]);
     }
 
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $user->fill($request->safe()->only(['name', 'email']));
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        $user->save();
+
+        UserProfile::updateOrCreate(
+            ['user_id' => $user->id],
+            $request->safe()->only([
+                'display_name',
+                'bio',
+                'avatar_media_id',
+                'theme_preference',
+                'font_size_preference',
+            ])
+        );
 
         return Redirect::route('profile.edit');
     }

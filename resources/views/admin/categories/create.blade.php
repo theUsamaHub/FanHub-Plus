@@ -10,7 +10,6 @@
                 </div>
     </div>
 
-
     <div class="row">
         <div class="col-lg-8">
             <div class="card">
@@ -33,38 +32,18 @@
 
                         <div class="mb-3">
                             <x-input-label for="description" :value="__('Description')" />
-                            <x-tinymce name="description" rows="8">{{ old('description') }}</x-tinymce>
+                            <textarea id="description" name="description" rows="4" maxlength="500" class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
+                            <small class="text-muted">{{ __('Maximum 500 characters.') }}</small>
                             <x-input-error :messages="$errors->get('description')" class="mt-1" />
                         </div>
 
                         <div class="mb-3">
-                            <x-input-label for="image" :value="__('Category Image')" />
-                            <input type="file" class="form-control @error('image') is-invalid @enderror" name="image" id="image" accept=".jpg,.jpeg,.png,.gif,.webp">
-                            <small class="text-muted">{{ __('Accepted: JPG, PNG, GIF, WebP (max 5MB)') }}</small>
-                            @error('image')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            <div id="image-preview" class="mt-2" style="display: none;">
-                                <img id="preview-img" src="" alt="Preview" class="img-thumbnail" style="max-height: 150px;">
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <x-input-label :value="__('Attachments')" />
-                            <input type="file" class="form-control" name="attachments[]" multiple accept=".jpg,.jpeg,.png,.gif,.webp,.pdf,.doc,.docx,.xls,.xlsx,.csv">
-                            <small class="text-muted">{{ __('Upload multiple files (images, PDFs, Excel). Max 10MB each.') }}</small>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" name="is_active" value="1" id="is_active" {{ old('is_active', '1') ? 'checked' : '' }}>
-                                    <label class="form-check-label" for="is_active">{{ __('Active') }}</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <x-input-label for="sort_order" :value="__('Sort Order')" />
-                                <x-text-input id="sort_order" name="sort_order" type="number" class="form-control" :value="old('sort_order', 0)" min="0" />
+                            <x-input-label for="icon" :value="__('Icon')" />
+                            <input type="file" class="form-control @error('icon') is-invalid @enderror" name="icon" id="icon" accept=".jpg,.jpeg,.png,.gif,.webp,.svg">
+                            <small class="text-muted">{{ __('Accepted: JPG, PNG, GIF, WebP, SVG (max 2MB)') }}</small>
+                            <x-input-error :messages="$errors->get('icon')" class="mt-1" />
+                            <div id="icon-preview" class="mt-2" style="display: none;">
+                                <img id="preview-img" src="" alt="{{ __('Icon preview') }}" class="img-thumbnail" style="max-height: 100px;">
                             </div>
                         </div>
 
@@ -86,9 +65,7 @@
                     <ul class="mb-0" style="font-size: 0.875rem;">
                         <li class="mb-2">{{ __('Keep category names short and descriptive.') }}</li>
                         <li class="mb-2">{{ __('Slugs are used in URLs and should be lowercase.') }}</li>
-                        <li class="mb-2">{{ __('Sort order determines display priority (0 = first).') }}</li>
-                        <li class="mb-2">{{ __('Category images appear in listings and detail views.') }}</li>
-                        <li class="mb-0">{{ __('Attachments can be PDFs, Excel files, or additional images.') }}</li>
+                        <li class="mb-0">{{ __('Icons appear in category listings and detail views.') }}</li>
                     </ul>
                 </div>
             </div>
@@ -97,8 +74,8 @@
 
     @push('scripts')
     <script>
-        document.getElementById('image').addEventListener('change', function(e) {
-            const preview = document.getElementById('image-preview');
+        document.getElementById('icon').addEventListener('change', function(e) {
+            const preview = document.getElementById('icon-preview');
             const img = document.getElementById('preview-img');
             if (e.target.files && e.target.files[0]) {
                 const reader = new FileReader();

@@ -15,12 +15,47 @@ Route::prefix('admin')
         Route::delete('/categories/{id}/force-delete', [\App\Http\Controllers\Admin\CategoryController::class, 'forceDelete'])->name('categories.force-delete')->withTrashed();
         Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
 
-        Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
+        Route::patch('/contents/{content}/feature', [\App\Http\Controllers\Admin\ContentController::class, 'toggleFeatured'])->name('contents.feature');
+        Route::patch('/contents/{content}/status', [\App\Http\Controllers\Admin\ContentController::class, 'updateStatus'])->name('contents.status');
+        Route::resource('contents', \App\Http\Controllers\Admin\ContentController::class);
+
+        Route::get('/submissions', [\App\Http\Controllers\Admin\SubmissionController::class, 'index'])->name('submissions.index');
+        Route::get('/submissions/{content}', [\App\Http\Controllers\Admin\SubmissionController::class, 'show'])->name('submissions.show');
+        Route::patch('/submissions/{content}/approve', [\App\Http\Controllers\Admin\SubmissionController::class, 'approve'])->name('submissions.approve');
+        Route::patch('/submissions/{content}/reject', [\App\Http\Controllers\Admin\SubmissionController::class, 'reject'])->name('submissions.reject');
+
+        Route::post('/characters/{character}/contents', [\App\Http\Controllers\Admin\CharacterController::class, 'attachContent'])->name('characters.contents.attach');
+        Route::delete('/characters/{character}/contents/{content}', [\App\Http\Controllers\Admin\CharacterController::class, 'detachContent'])->name('characters.contents.detach');
+        Route::resource('characters', \App\Http\Controllers\Admin\CharacterController::class);
+
+        Route::resource('merchandise', \App\Http\Controllers\Admin\MerchandiseController::class)->parameters(['merchandise' => 'merchandise']);
+
+        Route::resource('events', \App\Http\Controllers\Admin\EventController::class);
+
+        Route::get('/reviews', [\App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('reviews.index');
+        Route::get('/reviews/{review}', [\App\Http\Controllers\Admin\ReviewController::class, 'show'])->name('reviews.show');
+        Route::patch('/reviews/{review}/approve', [\App\Http\Controllers\Admin\ReviewController::class, 'approve'])->name('reviews.approve');
+        Route::patch('/reviews/{review}/reject', [\App\Http\Controllers\Admin\ReviewController::class, 'reject'])->name('reviews.reject');
+        Route::delete('/reviews/{review}', [\App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('reviews.destroy');
+
+        Route::get('/ratings', [\App\Http\Controllers\Admin\RatingController::class, 'index'])->name('ratings.index');
+        Route::delete('/ratings/{rating}', [\App\Http\Controllers\Admin\RatingController::class, 'destroy'])->name('ratings.destroy');
+
+        Route::get('/feedback', [\App\Http\Controllers\Admin\FeedbackController::class, 'index'])->name('feedback.index');
+        Route::get('/feedback/{feedback}', [\App\Http\Controllers\Admin\FeedbackController::class, 'show'])->name('feedback.show');
+        Route::patch('/feedback/{feedback}/status', [\App\Http\Controllers\Admin\FeedbackController::class, 'updateStatus'])->name('feedback.status');
+        Route::delete('/feedback/{feedback}', [\App\Http\Controllers\Admin\FeedbackController::class, 'destroy'])->name('feedback.destroy');
+
+        Route::get('/analytics', [\App\Http\Controllers\Admin\AnalyticsController::class, 'index'])->name('analytics.index');
+
+        Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
 
         Route::resource('contacts', \App\Http\Controllers\Admin\ContactController::class)->only(['index', 'show', 'destroy']);
 
         Route::get('/media', [\App\Http\Controllers\Admin\MediaController::class, 'index'])->name('media.index');
         Route::post('/media', [\App\Http\Controllers\Admin\MediaController::class, 'store'])->name('media.store');
+        Route::get('/media/{media}/edit', [\App\Http\Controllers\Admin\MediaController::class, 'edit'])->name('media.edit');
+        Route::put('/media/{media}', [\App\Http\Controllers\Admin\MediaController::class, 'update'])->name('media.update');
         Route::delete('/media/{media}', [\App\Http\Controllers\Admin\MediaController::class, 'destroy'])->name('media.destroy');
 
         Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');

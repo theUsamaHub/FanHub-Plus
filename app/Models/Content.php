@@ -65,7 +65,7 @@ class Content extends Model
 
     public function characters(): BelongsToMany
     {
-        return $this->belongsToMany(CharacterProfile::class, 'character_contents', 'content_id', 'character_id');
+        return $this->belongsToMany(CharacterProfile::class, 'character_contents', 'content_id', 'character_id')->withTimestamps();
     }
 
     public function reviews(): MorphMany
@@ -75,7 +75,17 @@ class Content extends Model
 
     public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(Tag::class, 'content_tags');
+        return $this->belongsToMany(Tag::class, 'content_tags')->withTimestamps();
+    }
+
+    public function getCoverAttribute(): ?Media
+    {
+        return $this->media->firstWhere('pivot.role', 'cover');
+    }
+
+    public function mediaByRole(string $role)
+    {
+        return $this->media->where('pivot.role', $role)->values();
     }
 
     public function scopePublished(Builder $query): Builder

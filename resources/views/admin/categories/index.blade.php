@@ -1,37 +1,26 @@
-@php $layout = auth()->user()->hasRole('admin') ? 'layouts.app' : 'layouts.user.app'; @endphp
-@extends($layout)
+@extends('layouts.app')
 
 @section('content')
     <div class="mb-4">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 class="h4 mb-0 fw-semibold">{{ __('Categories') }}</h2>
-                    <a href="{{ route('admin.categories.create') }}" class="btn btn-primary btn-sm">
-                        <i class="bi bi-plus-circle me-1"></i>{{ __('Add Category') }}
-                    </a>
+                    <div class="d-flex gap-2">
+                        <a href="{{ route('admin.categories.trashed') }}" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-trash me-1"></i>{{ __('Trash') }}
+                        </a>
+                        <a href="{{ route('admin.categories.create') }}" class="btn btn-primary btn-sm">
+                            <i class="bi bi-plus-circle me-1"></i>{{ __('Add Category') }}
+                        </a>
+                    </div>
                 </div>
     </div>
 
-
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
-
-    <!-- Search & Filters -->
+    <!-- Search -->
     <div class="card mb-4">
         <div class="card-body">
             <form method="GET" action="{{ route('admin.categories.index') }}" class="row g-3">
-                <div class="col-md-6">
+                <div class="col-md-9">
                     <input type="text" class="form-control" name="search" placeholder="{{ __('Search categories...') }}" value="{{ request('search') }}">
-                </div>
-                <div class="col-md-3">
-                    <select class="form-select" name="is_active">
-                        <option value="">{{ __('All Status') }}</option>
-                        <option value="1" {{ request('is_active') === '1' ? 'selected' : '' }}>{{ __('Active') }}</option>
-                        <option value="0" {{ request('is_active') === '0' ? 'selected' : '' }}>{{ __('Inactive') }}</option>
-                    </select>
                 </div>
                 <div class="col-md-3">
                     <button type="submit" class="btn btn-outline-secondary w-100">
@@ -51,9 +40,7 @@
                         <tr>
                             <th>{{ __('Name') }}</th>
                             <th>{{ __('Slug') }}</th>
-                            <th>{{ __('Status') }}</th>
-                            <th>{{ __('Order') }}</th>
-                            <th>{{ __('Created By') }}</th>
+                            <th>{{ __('Description') }}</th>
                             <th>{{ __('Created') }}</th>
                             <th class="text-end">{{ __('Actions') }}</th>
                         </tr>
@@ -63,15 +50,7 @@
                             <tr>
                                 <td class="fw-medium">{{ $category->name }}</td>
                                 <td><code>{{ $category->slug }}</code></td>
-                                <td>
-                                    @if ($category->is_active)
-                                        <span class="badge bg-success">{{ __('Active') }}</span>
-                                    @else
-                                        <span class="badge bg-secondary">{{ __('Inactive') }}</span>
-                                    @endif
-                                </td>
-                                <td>{{ $category->sort_order }}</td>
-                                <td>{{ $category->createdBy?->name ?? '-' }}</td>
+                                <td class="text-muted">{{ \Illuminate\Support\Str::limit($category->description, 60) ?: '-' }}</td>
                                 <td class="text-muted">{{ $category->created_at->diffForHumans() }}</td>
                                 <td class="text-end">
                                     <div class="btn-group btn-group-sm">
@@ -93,7 +72,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center py-5">
+                                <td colspan="5" class="text-center py-5">
                                     <div class="empty-state">
                                         <i class="bi bi-tags"></i>
                                         <p>{{ __('No categories found.') }}</p>

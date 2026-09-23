@@ -1,8 +1,8 @@
 <div
     x-data="commandPalette()"
-    x-on:keydown.window.prevent.cmd.k="toggle()"
     x-on:keydown.window.prevent.ctrl.k="toggle()"
-    x-on:keydown.escape="close()"
+    x-on:keydown.window.prevent.meta.k="toggle()"
+    x-on:keydown.escape.window="close()"
     x-on:toggle-command-palette.window="open = true; $nextTick(() => { query = ''; activeIndex = 0; $refs.searchInput?.focus(); })"
     x-cloak
 >
@@ -21,7 +21,7 @@
                             class="form-control border-0 shadow-none px-0"
                             x-ref="searchInput"
                             x-model="query"
-                            x-on:keydown="handleKeydown"
+                            x-on:keydown="handleKeydown($event)"
                             placeholder="Search pages..."
                             style="outline:none;font-size:0.95rem;caret-color:var(--bs-primary);"
                         >
@@ -65,16 +65,6 @@
 </div>
 
 <script>
-document.addEventListener('keydown', function(e) {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-        e.preventDefault();
-        const el = document.querySelector('[x-data="commandPalette()"]');
-        if (el && el.__x) {
-            el.__x.toggle();
-        }
-    }
-});
-
 function commandPalette() {
     return {
         open: false,
@@ -83,38 +73,46 @@ function commandPalette() {
         pages: [
             { name: 'Dashboard', url: '{{ route("dashboard") }}', icon: 'bi bi-grid-1x2', category: 'General' },
             { name: 'Profile', url: '{{ route("profile.edit") }}', icon: 'bi bi-person', category: 'General' },
-            @if(auth()->user()->hasAnyRole(['admin', 'registered-user']))
-            { name: 'Categories', url: '{{ route("admin.categories.index") }}', icon: 'bi bi-tags', category: 'Browse' },
-            @endif
             @if(auth()->user()->hasRole('admin'))
             { name: 'Admin Dashboard', url: '{{ route("admin.dashboard") }}', icon: 'bi bi-speedometer2', category: 'Admin' },
-            { name: 'Recycle Bin', url: '{{ route("admin.categories.trashed") }}', icon: 'bi bi-trash', category: 'Admin' },
-            { name: 'Users', url: '{{ route("admin.users.index") }}', icon: 'bi bi-people', category: 'Admin' },
-            { name: 'Contacts', url: '{{ route("admin.contacts.index") }}', icon: 'bi bi-envelope', category: 'Admin' },
-            { name: 'Tags', url: '{{ route("admin.tags.index") }}', icon: 'bi bi-bookmark', category: 'Admin' },
-            { name: 'Roles', url: '{{ route("admin.roles.index") }}', icon: 'bi bi-shield-check', category: 'Admin' },
-            { name: 'Media Library', url: '{{ route("admin.media.index") }}', icon: 'bi bi-folder', category: 'Admin' },
-
-            { name: 'Settings', url: '{{ route("admin.settings.index") }}', icon: 'bi bi-gear', category: 'Admin' },
-            { name: 'Maintenance', url: '{{ route("admin.maintenance.index") }}', icon: 'bi bi-shield-exclamation', category: 'Admin' },
-            { name: 'Health Dashboard', url: '{{ route("admin.health.index") }}', icon: 'bi bi-heart-pulse', category: 'Admin' },
-            { name: 'IP Restrictions', url: '{{ route("admin.ip-restrictions.index") }}', icon: 'bi bi-shield-lock', category: 'Admin' },
-            { name: 'Subscribers', url: '{{ route("admin.subscribers.index") }}', icon: 'bi bi-envelope-paper', category: 'Admin' },
-            { name: 'Notifications', url: '{{ route("admin.notifications.index") }}', icon: 'bi bi-bell', category: 'Admin' },
-            { name: 'Sessions', url: '{{ route("admin.sessions.index") }}', icon: 'bi bi-person-badge', category: 'Admin' },
-            { name: 'Activity Logs', url: '{{ route("admin.activity-logs.index") }}', icon: 'bi bi-clock-history', category: 'Admin' },
-            { name: 'Log Viewer', url: '{{ route("admin.logs.index") }}', icon: 'bi bi-journal-text', category: 'Admin' },
-            { name: 'Backups', url: '{{ route("admin.backup.index") }}', icon: 'bi bi-database', category: 'Admin' },
+            { name: 'Content', url: '{{ route("admin.contents.index") }}', icon: 'bi bi-file-earmark-text', category: 'Content' },
+            { name: 'Submissions', url: '{{ route("admin.submissions.index") }}', icon: 'bi bi-inbox', category: 'Content' },
+            { name: 'Characters', url: '{{ route("admin.characters.index") }}', icon: 'bi bi-person-badge', category: 'Content' },
+            { name: 'Merchandise', url: '{{ route("admin.merchandise.index") }}', icon: 'bi bi-box-seam', category: 'Discovery' },
+            { name: 'Events', url: '{{ route("admin.events.index") }}', icon: 'bi bi-calendar-event', category: 'Discovery' },
+            { name: 'Reviews', url: '{{ route("admin.reviews.index") }}', icon: 'bi bi-chat-left-text', category: 'Community' },
+            { name: 'Ratings', url: '{{ route("admin.ratings.index") }}', icon: 'bi bi-star', category: 'Community' },
+            { name: 'Feedback', url: '{{ route("admin.feedback.index") }}', icon: 'bi bi-megaphone', category: 'Community' },
+            { name: 'Categories', url: '{{ route("admin.categories.index") }}', icon: 'bi bi-tags', category: 'Content' },
+            { name: 'Recycle Bin', url: '{{ route("admin.categories.trashed") }}', icon: 'bi bi-trash', category: 'Content' },
+            { name: 'Tags', url: '{{ route("admin.tags.index") }}', icon: 'bi bi-bookmark', category: 'Content' },
+            { name: 'Media Library', url: '{{ route("admin.media.index") }}', icon: 'bi bi-folder', category: 'Content' },
+            { name: 'Users', url: '{{ route("admin.users.index") }}', icon: 'bi bi-people', category: 'Users' },
+            { name: 'Add User', url: '{{ route("admin.users.create") }}', icon: 'bi bi-person-plus', category: 'Users' },
+            { name: 'Roles', url: '{{ route("admin.roles.index") }}', icon: 'bi bi-shield-check', category: 'Users' },
+            { name: 'Contacts', url: '{{ route("admin.contacts.index") }}', icon: 'bi bi-envelope', category: 'Users' },
+            { name: 'Subscribers', url: '{{ route("admin.subscribers.index") }}', icon: 'bi bi-envelope-paper', category: 'Users' },
+            { name: 'Analytics', url: '{{ route("admin.analytics.index") }}', icon: 'bi bi-graph-up', category: 'Reports' },
+            { name: 'Settings', url: '{{ route("admin.settings.index") }}', icon: 'bi bi-gear', category: 'System' },
+            { name: 'Maintenance', url: '{{ route("admin.maintenance.index") }}', icon: 'bi bi-shield-exclamation', category: 'System' },
+            { name: 'Health Dashboard', url: '{{ route("admin.health.index") }}', icon: 'bi bi-heart-pulse', category: 'System' },
+            { name: 'IP Restrictions', url: '{{ route("admin.ip-restrictions.index") }}', icon: 'bi bi-shield-lock', category: 'System' },
+            { name: 'Notifications', url: '{{ route("admin.notifications.index") }}', icon: 'bi bi-bell', category: 'System' },
+            { name: 'Sessions', url: '{{ route("admin.sessions.index") }}', icon: 'bi bi-person-badge', category: 'System' },
+            { name: 'Activity Logs', url: '{{ route("admin.activity-logs.index") }}', icon: 'bi bi-clock-history', category: 'System' },
+            { name: 'Log Viewer', url: '{{ route("admin.logs.index") }}', icon: 'bi bi-journal-text', category: 'System' },
+            { name: 'Backups', url: '{{ route("admin.backup.index") }}', icon: 'bi bi-database', category: 'System' },
+            @else
+            { name: 'Categories', url: '{{ route("admin.categories.index") }}', icon: 'bi bi-tags', category: 'Browse' },
             @endif
         ],
         get filtered() {
             if (!this.query) return this.pages;
             const q = this.query.toLowerCase();
-            const results = this.pages.filter(p =>
+            return this.pages.filter(p =>
                 p.name.toLowerCase().includes(q) ||
                 p.category.toLowerCase().includes(q)
             );
-            return results;
         },
         toggle() {
             this.open = !this.open;
