@@ -34,4 +34,9 @@ class Rating extends Model
     {
         return $this->morphTo();
     }
+
+    public function getTargetLabelAttribute(): string
+    {
+        return Review::friendlyTargetLabel($this->rateable_type, $this->rateable_id, $this->rateable);
+    }
 }
