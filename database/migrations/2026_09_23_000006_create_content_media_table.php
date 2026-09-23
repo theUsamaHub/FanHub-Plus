@@ -14,7 +14,6 @@ return new class extends Migration
             $table->foreignId('media_id')->constrained('media')->cascadeOnDelete();
             $table->enum('role', ['cover', 'gallery', 'trailer', 'audio_clip', 'attachment'])->default('gallery');
             $table->unsignedInteger('sort_order')->default(0);
-            $table->timestamps();
             $table->unique(['content_id', 'media_id', 'role'], 'uq_content_media_role');
         });
     }

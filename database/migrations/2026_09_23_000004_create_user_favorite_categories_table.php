@@ -9,11 +9,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_favorite_categories', function (Blueprint $table) {
-            $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
-            $table->timestamps();
-            $table->unique(['user_id', 'category_id']);
+            $table->timestamp('created_at')->nullable()->useCurrent();
+            $table->primary(['user_id', 'category_id']);
         });
     }
 
