@@ -23,7 +23,7 @@
 
             <!-- Main Content -->
             <div class="flex-grow-1" style="min-height: 100vh;">
-                <!-- Top Navbar -->
+                <!-- Topbar -->
                 @include('layouts.topbar')
 
                 <!-- Page Content -->
@@ -42,12 +42,18 @@
                         </div>
                     @endif
 
+                    @if(session('status'))
+                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            {{ session('status') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
+
                     @yield('content')
                 </main>
             </div>
         </div>
 
         @stack('scripts')
-        @include('partials.command-palette')
     </body>
 </html>

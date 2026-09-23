@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -41,5 +42,32 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    /**
+     * Indicate that the model is an administrator.
+     */
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [], function (User $user) {
+            $role = Role::firstOrCreate(
+                ['slug' => 'admin'],
+                ['name' => 'Admin']
+            );
+            $user->assignRole('admin');
+        });
+    }
+
+    public function configure(): static
+    {
+        return $this->afterCreating(function (User $user) {
+            if (! $user->roles()->exists()) {
+                $role = Role::firstOrCreate(
+                    ['slug' => 'user'],
+                    ['name' => 'User']
+                );
+                $user->roles()->attach($role);
+            }
+        });
     }
 }

@@ -23,19 +23,26 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 
 // Dashboard - redirect based on role
 Route::get('/dashboard', function () {
-    if (auth()->user()->hasRole('admin')) {
+    $user = auth()->user();
+
+    if ($user->hasRole('admin')) {
         return redirect()->route('admin.dashboard');
     }
-    return redirect()->route('user.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
+    if ($user->hasRole('user')) {
+        return redirect()->route('user.dashboard');
+    }
+
+    return redirect()->route('profile.edit')->with('error', __('Your account has no role assigned. Please contact an administrator.'));
+})->middleware(['auth'])->name('dashboard');
 
 // User Dashboard
 Route::get('/user/dashboard', [\App\Http\Controllers\User\DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified', 'role:user'])
+    ->middleware(['auth', 'role:user'])
     ->name('user.dashboard');
 
 // Profile
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

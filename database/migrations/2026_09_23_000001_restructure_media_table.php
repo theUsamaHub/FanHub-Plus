@@ -32,6 +32,15 @@ return new class extends Migration
             ]);
         });
 
+        // Drop indexes that reference columns about to be removed (required on SQLite)
+        foreach (Schema::getIndexes('media') as $index) {
+            if (array_intersect($index['columns'], ['name', 'original_name', 'mediable_type', 'mediable_id', 'created_by'])) {
+                Schema::table('media', function (Blueprint $table) use ($index) {
+                    $table->dropIndex($index['name']);
+                });
+            }
+        }
+
         Schema::table('media', function (Blueprint $table) {
             $table->dropMorphs('mediable');
             $table->dropConstrainedForeignId('created_by');
