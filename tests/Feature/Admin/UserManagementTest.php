@@ -53,6 +53,36 @@ class UserManagementTest extends TestCase
             ->assertSee('Recent submissions');
     }
 
+    public function test_admin_can_create_another_admin(): void
+    {
+        Role::firstOrCreate(['slug' => 'registered-user'], ['name' => 'Registered User']);
+
+        $this->actingAs($this->admin)
+            ->get(route('admin.users.create'))
+            ->assertOk()
+            ->assertSee('Add User')
+            ->assertSee('Roles');
+
+        $this->actingAs($this->admin)->post(route('admin.users.store'), [
+            'name' => 'Second Admin',
+            'email' => 'admin2@example.com',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+            'roles' => ['admin'],
+        ])->assertRedirect(route('admin.users.index'));
+
+        $created = User::firstWhere('email', 'admin2@example.com');
+        $this->assertNotNull($created);
+        $this->assertTrue($created->hasRole('admin'));
+    }
+
+    public function test_user_create_requires_name_email_password_and_roles(): void
+    {
+        $this->actingAs($this->admin)
+            ->post(route('admin.users.store'), [])
+            ->assertSessionHasErrors(['name', 'email', 'password', 'roles']);
+    }
+
     public function test_admin_can_update_user_and_roles(): void
     {
         $member = User::factory()->create();

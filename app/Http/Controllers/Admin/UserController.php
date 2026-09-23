@@ -77,6 +77,36 @@ class UserController extends Controller
         return view('admin.users.show', compact('user', 'counts'));
     }
 
+    public function create(): View
+    {
+        return view('admin.users.create', [
+            'roles' => Role::orderBy('name')->get(),
+        ]);
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'roles' => ['required', 'array', 'min:1'],
+            'roles.*' => ['exists:roles,slug'],
+        ]);
+
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => $validated['password'],
+        ]);
+
+        $roleIds = Role::whereIn('slug', $validated['roles'])->pluck('id');
+        $user->roles()->sync($roleIds);
+
+        return redirect()->route('admin.users.index')
+            ->with('success', 'User created successfully.');
+    }
+
     public function edit(User $user): View
     {
         $user->load('roles');

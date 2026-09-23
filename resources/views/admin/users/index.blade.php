@@ -4,6 +4,9 @@
     <div class="mb-4">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 class="h4 mb-0 fw-semibold">{{ __('Users') }}</h2>
+                    <a href="{{ route('admin.users.create') }}" class="btn btn-primary btn-sm">
+                        <i class="bi bi-person-plus me-1"></i>{{ __('Add User') }}
+                    </a>
                 </div>
     </div>
 

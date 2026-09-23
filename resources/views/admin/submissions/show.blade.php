@@ -5,7 +5,6 @@
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="h4 mb-0 fw-semibold">{{ __('Submission Review') }}</h2>
             <div class="d-flex gap-2">
-                <a href="{{ route('admin.contents.edit', $content) }}" class="btn btn-outline-primary btn-sm"><i class="bi bi-pencil me-1"></i>{{ __('Edit') }}</a>
                 <a href="{{ route('admin.submissions.index') }}" class="btn btn-outline-secondary btn-sm"><i class="bi bi-arrow-left me-1"></i>{{ __('Back') }}</a>
             </div>
         </div>
@@ -57,6 +56,10 @@
                                 </td>
                             </tr>
                             <tr><td class="fw-semibold">{{ __('Reviewed by') }}</td><td>{{ $content->reviewedBy?->name ?? '-' }}</td></tr>
+                            <tr>
+                                <td class="fw-semibold">{{ __('Note') }}</td>
+                                <td class="text-muted">{{ __('Review is approve/reject only. Submitter account and role cannot be changed from this screen.') }}</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

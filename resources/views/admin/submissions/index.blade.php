@@ -62,7 +62,6 @@
                                 <td class="text-end">
                                     <div class="btn-group btn-group-sm">
                                         <a href="{{ route('admin.submissions.show', $item) }}" class="btn btn-outline-info" title="{{ __('Preview') }}"><i class="bi bi-eye"></i></a>
-                                        <a href="{{ route('admin.contents.edit', $item) }}" class="btn btn-outline-primary" title="{{ __('Edit') }}"><i class="bi bi-pencil"></i></a>
                                         @if ($item->status === 'pending_review')
                                             <form action="{{ route('admin.submissions.approve', $item) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Approve and publish this submission?') }}')">
                                                 @csrf
