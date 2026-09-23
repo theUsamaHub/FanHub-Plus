@@ -129,15 +129,34 @@ class MediaCategoryTest extends TestCase
         $this->actingAs($this->admin)
             ->put(route('admin.media.update', $media), [
                 'alt_text' => 'Trailer clip',
-                'duration' => 125.5,
+                'duration_hours' => 1,
+                'duration_minutes' => 2,
+                'duration_seconds' => 5.5,
             ])
             ->assertRedirect(route('admin.media.index'));
 
+        // 1h 2m 5.5s = 3725.5 seconds
         $this->assertDatabaseHas('media', [
             'id' => $media->id,
             'alt_text' => 'Trailer clip',
-            'duration' => 125.5,
+            'duration' => 3725.5,
         ]);
+    }
+
+    public function test_media_duration_parts_convert_to_seconds(): void
+    {
+        $media = $this->media(['media_type' => 'audio', 'mime_type' => 'audio/mpeg', 'original_filename' => 'song.mp3']);
+
+        $this->actingAs($this->admin)
+            ->put(route('admin.media.update', $media), [
+                'duration_hours' => 0,
+                'duration_minutes' => 3,
+                'duration_seconds' => 30,
+            ])
+            ->assertRedirect(route('admin.media.index'));
+
+        $this->assertSame(210.0, (float) $media->fresh()->duration);
+        $this->assertSame('0:03:30', $media->fresh()->duration_formatted);
     }
 
     public function test_media_delete_blocked_when_referenced(): void

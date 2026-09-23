@@ -46,6 +46,12 @@
                                     <td>{{ $media->width }} &times; {{ $media->height }} px</td>
                                 </tr>
                             @endif
+                            @if ($media->duration !== null)
+                                <tr>
+                                    <td class="fw-semibold">{{ __('Duration') }}</td>
+                                    <td>{{ $media->duration_formatted }} ({{ $media->duration }} {{ __('seconds') }})</td>
+                                </tr>
+                            @endif
                             <tr>
                                 <td class="fw-semibold">{{ __('References') }}</td>
                                 <td>{{ $media->referenceCount() }}</td>
@@ -69,10 +75,27 @@
                         </div>
 
                         @if ($media->isVideo() || $media->isAudio())
+                            @php $durationParts = $media->duration_parts; @endphp
                             <div class="mb-3">
-                                <x-input-label for="duration" :value="__('Duration (seconds)')" />
-                                <x-text-input id="duration" name="duration" type="number" step="0.01" min="0" max="86400" class="form-control" :value="old('duration', $media->duration)" />
-                                <x-input-error :messages="$errors->get('duration')" class="mt-1" />
+                                <x-input-label :value="__('Duration')" />
+                                <div class="row g-2">
+                                    <div class="col-4">
+                                        <input type="number" class="form-control" name="duration_hours" min="0" max="23" value="{{ old('duration_hours', $durationParts['hours']) }}">
+                                        <small class="text-muted">{{ __('Hours') }}</small>
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="number" class="form-control" name="duration_minutes" min="0" max="59" value="{{ old('duration_minutes', $durationParts['minutes']) }}">
+                                        <small class="text-muted">{{ __('Minutes') }}</small>
+                                    </div>
+                                    <div class="col-4">
+                                        <input type="number" class="form-control" name="duration_seconds" min="0" max="59.99" step="0.01" value="{{ old('duration_seconds', $durationParts['seconds']) }}">
+                                        <small class="text-muted">{{ __('Seconds') }}</small>
+                                    </div>
+                                </div>
+                                <small class="text-muted">{{ __('Automatically saved as total seconds.') }}</small>
+                                <x-input-error :messages="$errors->get('duration_hours')" class="mt-1" />
+                                <x-input-error :messages="$errors->get('duration_minutes')" class="mt-1" />
+                                <x-input-error :messages="$errors->get('duration_seconds')" class="mt-1" />
                             </div>
                         @endif
 

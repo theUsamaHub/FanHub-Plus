@@ -20,8 +20,31 @@
                     <input type="text" class="form-control" name="alt_text" id="alt_text" maxlength="255" value="{{ old('alt_text') }}" placeholder="{{ __('Descriptive text for accessibility') }}">
                 </div>
                 <div class="mb-3">
-                    <label for="duration" class="form-label">{{ __('Duration in seconds (video/audio only)') }}</label>
-                    <input type="number" class="form-control" name="duration" id="duration" step="0.01" min="0" max="86400" value="{{ old('duration') }}">
+                    <label class="form-label">{{ __('Duration (video/audio only)') }}</label>
+                    <div class="row g-2">
+                        <div class="col-4">
+                            <input type="number" class="form-control" name="duration_hours" id="duration_hours" min="0" max="23" value="{{ old('duration_hours', 0) }}" placeholder="0">
+                            <small class="text-muted">{{ __('Hours') }}</small>
+                        </div>
+                        <div class="col-4">
+                            <input type="number" class="form-control" name="duration_minutes" id="duration_minutes" min="0" max="59" value="{{ old('duration_minutes', 0) }}" placeholder="0">
+                            <small class="text-muted">{{ __('Minutes') }}</small>
+                        </div>
+                        <div class="col-4">
+                            <input type="number" class="form-control" name="duration_seconds" id="duration_seconds" min="0" max="59.99" step="0.01" value="{{ old('duration_seconds', 0) }}" placeholder="0">
+                            <small class="text-muted">{{ __('Seconds') }}</small>
+                        </div>
+                    </div>
+                    <small class="text-muted">{{ __('Automatically saved as total seconds.') }}</small>
+                    @error('duration_hours')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                    @error('duration_minutes')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                    @error('duration_seconds')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-3">
                     <input type="file" class="form-control @error('files') is-invalid @enderror" name="files[]" multiple accept=".jpg,.jpeg,.png,.gif,.webp,.svg,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.mp4,.webm,.ogv,.mov,.mp3,.wav,.ogg,.m4a,.aac" required>

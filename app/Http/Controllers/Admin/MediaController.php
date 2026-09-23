@@ -41,7 +41,9 @@ class MediaController extends Controller
             'files' => ['required', 'array', 'max:10'],
             'files.*' => ['file', 'max:51200'],
             'alt_text' => ['nullable', 'string', 'max:255'],
-            'duration' => ['nullable', 'numeric', 'min:0', 'max:86400'],
+            'duration_hours' => ['nullable', 'integer', 'min:0', 'max:23'],
+            'duration_minutes' => ['nullable', 'integer', 'min:0', 'max:59'],
+            'duration_seconds' => ['nullable', 'numeric', 'min:0', 'max:59.99'],
         ]);
 
         foreach ($request->file('files') as $file) {
@@ -62,7 +64,7 @@ class MediaController extends Controller
             }
         }
 
-        $duration = $request->input('duration') !== null ? (float) $request->input('duration') : null;
+        $duration = $this->durationFromParts($request);
 
         foreach ($request->file('files') as $file) {
             $this->fileService->upload(
@@ -87,13 +89,32 @@ class MediaController extends Controller
     {
         $request->validate([
             'alt_text' => ['nullable', 'string', 'max:255'],
-            'duration' => ['nullable', 'numeric', 'min:0', 'max:86400'],
+            'duration_hours' => ['nullable', 'integer', 'min:0', 'max:23'],
+            'duration_minutes' => ['nullable', 'integer', 'min:0', 'max:59'],
+            'duration_seconds' => ['nullable', 'numeric', 'min:0', 'max:59.99'],
         ]);
 
-        $this->fileService->updateMetadata($media, $request->only(['alt_text', 'duration']));
+        $this->fileService->updateMetadata($media, [
+            'alt_text' => $request->input('alt_text'),
+            'duration' => $this->durationFromParts($request),
+        ]);
 
         return redirect()->route('admin.media.index')
             ->with('success', 'Media updated successfully.');
+    }
+
+    /**
+     * Convert hours + minutes + seconds inputs into total seconds.
+     */
+    private function durationFromParts(Request $request): ?float
+    {
+        $hours = (int) $request->input('duration_hours', 0);
+        $minutes = (int) $request->input('duration_minutes', 0);
+        $seconds = (float) $request->input('duration_seconds', 0);
+
+        $total = ($hours * 3600) + ($minutes * 60) + $seconds;
+
+        return $total > 0 ? round($total, 2) : null;
     }
 
     public function destroy(Media $media): RedirectResponse
