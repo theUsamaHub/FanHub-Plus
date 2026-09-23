@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home.index');
 })->name('home');
 
 // Contact form
@@ -30,7 +30,7 @@ Route::get('/dashboard', function () {
     }
 
     if ($user->hasRole('registered-user')) {
-        return redirect()->route('user.dashboard');
+        return redirect()->route('home');
     }
 
     return redirect()->route('profile.edit')->with('error', __('Your account has no role assigned. Please contact an administrator.'));
