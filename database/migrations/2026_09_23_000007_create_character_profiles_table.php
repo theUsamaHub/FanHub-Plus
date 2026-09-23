@@ -11,8 +11,8 @@ return new class extends Migration
         Schema::create('character_profiles', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->constrained('categories')->restrictOnDelete();
-            $table->string('name', 150);
-            $table->string('slug', 180)->unique();
+            $table->string('name', 255);
+            $table->string('slug', 300)->unique();
             $table->text('bio')->nullable();
             $table->foreignId('image_media_id')->nullable()->constrained('media')->nullOnDelete();
             $table->timestamps();

@@ -42,6 +42,6 @@ class DatabaseSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
-        $user->assignRole('user');
+        $user->assignRole('registered-user');
     }
 }

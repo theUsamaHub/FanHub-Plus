@@ -17,9 +17,9 @@ class Media extends Model
         'mime_type',
         'media_type',
         'size_bytes',
-        'width_px',
-        'height_px',
-        'duration_seconds',
+        'width',
+        'height',
+        'duration',
         'alt_text',
     ];
 
@@ -27,9 +27,9 @@ class Media extends Model
     {
         return [
             'size_bytes' => 'integer',
-            'width_px' => 'integer',
-            'height_px' => 'integer',
-            'duration_seconds' => 'integer',
+            'width' => 'integer',
+            'height' => 'integer',
+            'duration' => 'decimal:2',
         ];
     }
 

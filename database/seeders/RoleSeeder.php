@@ -9,21 +9,25 @@ class RoleSeeder extends Seeder
 {
     public function run(): void
     {
+        // Migrate legacy 'user' role to the final schema naming
+        Role::where('slug', 'user')->update([
+            'slug' => 'registered-user',
+            'name' => 'Registered User',
+        ]);
+
         Role::updateOrCreate(
             ['slug' => 'admin'],
             [
                 'name' => 'Admin',
                 'description' => 'Full system access. Can manage all resources, users, and settings.',
-                'permissions' => null,
             ]
         );
 
         Role::updateOrCreate(
-            ['slug' => 'user'],
+            ['slug' => 'registered-user'],
             [
-                'name' => 'User',
-                'description' => 'Standard user access. Can view and manage own profile.',
-                'permissions' => null,
+                'name' => 'Registered User',
+                'description' => 'Standard registered user access. Can view and manage own profile.',
             ]
         );
     }

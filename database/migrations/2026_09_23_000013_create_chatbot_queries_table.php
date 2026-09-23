@@ -11,9 +11,9 @@ return new class extends Migration
         Schema::create('chatbot_queries', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
-            $table->string('session_id', 100)->nullable();
+            $table->string('session_id', 255)->nullable();
             $table->text('message');
-            $table->text('response')->nullable();
+            $table->longText('response')->nullable();
             $table->timestamp('created_at')->nullable()->useCurrent();
             $table->index('session_id', 'idx_chatbot_session');
         });

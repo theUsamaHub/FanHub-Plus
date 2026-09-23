@@ -12,12 +12,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('category_id')->constrained('categories')->restrictOnDelete();
             $table->string('title');
-            $table->string('slug', 280)->unique();
+            $table->string('slug', 300)->unique();
             $table->enum('type', ['article', 'video', 'audio', 'image'])->default('article');
-            $table->string('excerpt', 500)->nullable();
+            $table->text('excerpt')->nullable();
             $table->longText('body')->nullable();
             $table->date('release_date')->nullable();
-            $table->integer('popularity_score')->default(0);
+            $table->decimal('popularity_score', 10, 2)->default(0);
             $table->unsignedBigInteger('view_count')->default(0);
             $table->enum('status', ['draft', 'pending_review', 'published', 'rejected'])->default('draft');
             $table->boolean('is_featured')->default(false);

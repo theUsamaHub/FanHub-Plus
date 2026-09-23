@@ -26,7 +26,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        $user->assignRole('user');
+        $user->assignRole('registered-user');
 
         $token = $user->createToken('auth-token')->plainTextToken;
 

@@ -26,7 +26,7 @@ class RoleMiddleware
 
             $home = match (true) {
                 $user->hasRole('admin') => 'admin.dashboard',
-                $user->hasRole('user') => 'user.dashboard',
+                $user->hasRole('registered-user') => 'user.dashboard',
                 default => 'profile.edit',
             };
 

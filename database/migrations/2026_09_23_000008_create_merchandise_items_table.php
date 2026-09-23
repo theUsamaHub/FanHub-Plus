@@ -11,8 +11,8 @@ return new class extends Migration
         Schema::create('merchandise_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->constrained('categories')->restrictOnDelete();
-            $table->string('name', 200);
-            $table->string('slug', 220)->unique();
+            $table->string('name', 255);
+            $table->string('slug', 300)->unique();
             $table->text('description')->nullable();
             $table->foreignId('image_media_id')->nullable()->constrained('media')->nullOnDelete();
             $table->enum('tag', ['limited_edition', 'pre_order', 'collectible', 'standard'])->default('standard');
