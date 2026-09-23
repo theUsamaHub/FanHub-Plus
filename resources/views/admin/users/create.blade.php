@@ -3,7 +3,7 @@
 @section('content')
     <div class="mb-4">
         <div class="d-flex justify-content-between align-items-center">
-            <h2 class="h4 mb-0 fw-semibold">{{ __('Add User') }}</h2>
+            <h2 class="h4 mb-0 fw-semibold">{{ __('Add Admin User') }}</h2>
             <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary btn-sm">
                 <i class="bi bi-arrow-left me-1"></i>{{ __('Back') }}
             </a>
@@ -35,29 +35,21 @@
                             <x-input-error :messages="$errors->get('password')" class="mt-1" />
                         </div>
 
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
                             <x-text-input id="password_confirmation" name="password_confirmation" type="password" class="form-control" autocomplete="new-password" required />
                         </div>
 
                         <div class="mb-4">
-                            <x-input-label :value="__('Roles')" />
-                            <div class="d-flex gap-3">
-                                @foreach ($roles as $role)
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $role->slug }}" id="role_{{ $role->slug }}" {{ in_array($role->slug, old('roles', [])) ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="role_{{ $role->slug }}">
-                                            {{ $role->name }}
-                                        </label>
-                                    </div>
-                                @endforeach
-                            </div>
-                            <x-input-error :messages="$errors->get('roles')" class="mt-1" />
+                            <x-input-label :value="__('Role')" />
+                            <input type="hidden" name="roles[]" value="admin">
+                            <span class="badge bg-primary">Admin</span>
+                            <div class="form-text">{{ __('This form creates admin accounts only. The Admin role is assigned automatically.') }}</div>
                         </div>
 
                         <div class="d-flex justify-content-end gap-2">
                             <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary">{{ __('Cancel') }}</a>
-                            <x-primary-button>{{ __('Create User') }}</x-primary-button>
+                            <x-primary-button>{{ __('Create Admin') }}</x-primary-button>
                         </div>
                     </form>
                 </div>
@@ -69,9 +61,9 @@
                 <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Notes') }}</h6></div>
                 <div class="card-body">
                     <ul class="mb-0" style="font-size: 0.875rem;">
-                        <li class="mb-2">{{ __('Use this form to create another admin or a registered user.') }}</li>
-                        <li class="mb-2">{{ __('Assign the Admin role to grant full admin panel access.') }}</li>
-                        <li class="mb-0">{{ __('The password is hashed; it is never stored or shown in plain text.') }}</li>
+                        <li class="mb-2">{{ __('Use this form only to create another admin.') }}</li>
+                        <li class="mb-2">{{ __('Registered users sign up themselves on the public site.') }}</li>
+                        <li class="mb-0">{{ __('The password is hashed and never shown in plain text.') }}</li>
                     </ul>
                 </div>
             </div>

@@ -5,9 +5,6 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 class="h4 mb-0 fw-semibold">{{ __('User Details') }}</h2>
                     <div class="d-flex gap-2">
-                        <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-outline-primary btn-sm">
-                            <i class="bi bi-pencil me-1"></i>{{ __('Edit') }}
-                        </a>
                         <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary btn-sm">
                             <i class="bi bi-arrow-left me-1"></i>{{ __('Back') }}
                         </a>

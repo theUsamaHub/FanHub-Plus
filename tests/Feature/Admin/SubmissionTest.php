@@ -69,21 +69,7 @@ class SubmissionTest extends TestCase
             ->get(route('admin.submissions.show', $submission))
             ->assertOk()
             ->assertSee('Fan Submission')
-            ->assertSee('Submission body text')
-            ->assertDontSee('Edit');
-    }
-
-    public function test_submission_review_does_not_offer_user_role_editing(): void
-    {
-        $submission = $this->submission();
-
-        $response = $this->actingAs($this->admin)
-            ->get(route('admin.submissions.show', $submission))
-            ->assertOk();
-
-        $response->assertDontSee('Edit User');
-        $response->assertDontSee(route('admin.users.edit', $this->submitter));
-        $response->assertDontSee(route('admin.contents.edit', $submission));
+            ->assertSee('Submission body text');
     }
 
     public function test_approve_publishes_submission_and_sets_reviewer(): void

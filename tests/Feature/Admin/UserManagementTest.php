@@ -53,52 +53,42 @@ class UserManagementTest extends TestCase
             ->assertSee('Recent submissions');
     }
 
-    public function test_admin_can_create_another_admin(): void
+    public function test_admin_can_create_another_admin_only(): void
     {
-        Role::firstOrCreate(['slug' => 'registered-user'], ['name' => 'Registered User']);
-
         $this->actingAs($this->admin)
             ->get(route('admin.users.create'))
             ->assertOk()
-            ->assertSee('Add User')
-            ->assertSee('Roles');
+            ->assertSee('Add Admin User')
+            ->assertSee('Admin');
 
         $this->actingAs($this->admin)->post(route('admin.users.store'), [
             'name' => 'Second Admin',
             'email' => 'admin2@example.com',
             'password' => 'password123',
             'password_confirmation' => 'password123',
-            'roles' => ['admin'],
         ])->assertRedirect(route('admin.users.index'));
 
         $created = User::firstWhere('email', 'admin2@example.com');
         $this->assertNotNull($created);
         $this->assertTrue($created->hasRole('admin'));
+        $this->assertFalse($created->hasRole('registered-user'));
     }
 
-    public function test_user_create_requires_name_email_password_and_roles(): void
+    public function test_user_create_requires_name_email_password(): void
     {
         $this->actingAs($this->admin)
             ->post(route('admin.users.store'), [])
-            ->assertSessionHasErrors(['name', 'email', 'password', 'roles']);
+            ->assertSessionHasErrors(['name', 'email', 'password']);
     }
 
-    public function test_admin_can_update_user_and_roles(): void
+    public function test_user_edit_is_not_available(): void
     {
         $member = User::factory()->create();
-        Role::firstOrCreate(['slug' => 'registered-user'], ['name' => 'Registered User']);
 
-        $this->actingAs($this->admin)->put(route('admin.users.update', $member), [
-            'name' => 'Updated Name',
-            'email' => 'updated@example.com',
-            'roles' => ['registered-user'],
-        ])->assertRedirect(route('admin.users.index'));
+        $this->assertFalse(\Illuminate\Support\Facades\Route::has('admin.users.edit'));
+        $this->assertFalse(\Illuminate\Support\Facades\Route::has('admin.users.update'));
 
-        $member->refresh();
-        $this->assertSame('Updated Name', $member->name);
-        $this->assertSame('updated@example.com', $member->email);
-        $this->assertTrue($member->hasRole('registered-user'));
-        $this->assertFalse($member->hasRole('admin'));
+        $this->actingAs($this->admin)->get('/admin/users/'.$member->id.'/edit')->assertNotFound();
     }
 
     public function test_admin_cannot_delete_own_account(): void

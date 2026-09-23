@@ -8,7 +8,6 @@ use App\Models\Role;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -79,9 +78,7 @@ class UserController extends Controller
 
     public function create(): View
     {
-        return view('admin.users.create', [
-            'roles' => Role::orderBy('name')->get(),
-        ]);
+        return view('admin.users.create');
     }
 
     public function store(Request $request): RedirectResponse
@@ -90,8 +87,6 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'roles' => ['required', 'array', 'min:1'],
-            'roles.*' => ['exists:roles,slug'],
         ]);
 
         $user = User::create([
@@ -100,41 +95,12 @@ class UserController extends Controller
             'password' => $validated['password'],
         ]);
 
-        $roleIds = Role::whereIn('slug', $validated['roles'])->pluck('id');
-        $user->roles()->sync($roleIds);
+        // Admin-created accounts always get the admin role only.
+        Role::firstOrCreate(['slug' => 'admin'], ['name' => 'Admin']);
+        $user->assignRole('admin');
 
         return redirect()->route('admin.users.index')
-            ->with('success', 'User created successfully.');
-    }
-
-    public function edit(User $user): View
-    {
-        $user->load('roles');
-        $roles = Role::all();
-        return view('admin.users.edit', compact('user', 'roles'));
-    }
-
-    public function update(Request $request, User $user): RedirectResponse
-    {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
-            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
-            'roles' => ['required', 'array'],
-            'roles.*' => ['exists:roles,slug'],
-        ]);
-
-        $user->update([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            ...(!empty($validated['password']) ? ['password' => Hash::make($validated['password'])] : []),
-        ]);
-
-        $roleIds = Role::whereIn('slug', $validated['roles'])->pluck('id');
-        $user->roles()->sync($roleIds);
-
-        return redirect()->route('admin.users.index')
-            ->with('success', 'User updated successfully.');
+            ->with('success', 'Admin user created successfully.');
     }
 
     public function destroy(User $user): RedirectResponse

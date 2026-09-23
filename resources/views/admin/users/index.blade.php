@@ -5,7 +5,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 class="h4 mb-0 fw-semibold">{{ __('Users') }}</h2>
                     <a href="{{ route('admin.users.create') }}" class="btn btn-primary btn-sm">
-                        <i class="bi bi-person-plus me-1"></i>{{ __('Add User') }}
+                        <i class="bi bi-person-plus me-1"></i>{{ __('Add Admin') }}
                     </a>
                 </div>
     </div>
@@ -106,9 +106,6 @@
                                     <div class="btn-group btn-group-sm">
                                         <a href="{{ route('admin.users.show', $user) }}" class="btn btn-outline-info" title="{{ __('View') }}">
                                             <i class="bi bi-eye"></i>
-                                        </a>
-                                        <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-outline-primary" title="{{ __('Edit') }}">
-                                            <i class="bi bi-pencil"></i>
                                         </a>
                                     </div>
                                 </td>
