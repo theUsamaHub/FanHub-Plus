@@ -19,6 +19,11 @@ Route::prefix('admin')
         Route::patch('/contents/{content}/status', [\App\Http\Controllers\Admin\ContentController::class, 'updateStatus'])->name('contents.status');
         Route::resource('contents', \App\Http\Controllers\Admin\ContentController::class);
 
+        Route::get('/submissions', [\App\Http\Controllers\Admin\SubmissionController::class, 'index'])->name('submissions.index');
+        Route::get('/submissions/{content}', [\App\Http\Controllers\Admin\SubmissionController::class, 'show'])->name('submissions.show');
+        Route::patch('/submissions/{content}/approve', [\App\Http\Controllers\Admin\SubmissionController::class, 'approve'])->name('submissions.approve');
+        Route::patch('/submissions/{content}/reject', [\App\Http\Controllers\Admin\SubmissionController::class, 'reject'])->name('submissions.reject');
+
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
 
         Route::resource('contacts', \App\Http\Controllers\Admin\ContactController::class)->only(['index', 'show', 'destroy']);
