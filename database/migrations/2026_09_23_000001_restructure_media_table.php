@@ -14,10 +14,10 @@ return new class extends Migration
             $table->string('original_filename')->nullable()->after('path');
             $table->enum('media_type', ['image', 'video', 'audio', 'document'])->default('image')->after('mime_type');
             $table->unsignedBigInteger('size_bytes')->nullable()->after('media_type');
-            $table->unsignedInteger('width_px')->nullable()->after('size_bytes');
-            $table->unsignedInteger('height_px')->nullable()->after('width_px');
-            $table->unsignedInteger('duration_seconds')->nullable()->after('height_px');
-            $table->string('alt_text')->nullable()->after('duration_seconds');
+            $table->unsignedInteger('width')->nullable()->after('size_bytes');
+            $table->unsignedInteger('height')->nullable()->after('width');
+            $table->decimal('duration', 10, 2)->nullable()->after('height')->comment('Duration in seconds; UI takes hours+minutes input and converts automatically');
+            $table->string('alt_text')->nullable()->after('duration');
             $table->string('path', 500)->change();
             $table->string('mime_type', 100)->nullable()->change();
             $table->string('disk', 50)->default('public')->change();
@@ -79,9 +79,9 @@ return new class extends Migration
                 'original_filename',
                 'media_type',
                 'size_bytes',
-                'width_px',
-                'height_px',
-                'duration_seconds',
+                'width',
+                'height',
+                'duration',
                 'alt_text',
             ]);
             $table->string('path')->change();

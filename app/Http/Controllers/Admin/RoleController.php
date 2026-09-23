@@ -25,8 +25,8 @@ class RoleController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255', 'unique:roles,name'],
-            'slug' => ['required', 'string', 'max:255', 'unique:roles,slug'],
+            'name' => ['required', 'string', 'max:50', 'unique:roles,name'],
+            'slug' => ['required', 'string', 'max:50', 'unique:roles,slug'],
             'description' => ['nullable', 'string', 'max:500'],
         ]);
 
@@ -48,7 +48,7 @@ class RoleController extends Controller
     public function update(Request $request, Role $role): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255', 'unique:roles,name,' . $role->id],
+            'name' => ['required', 'string', 'max:50', 'unique:roles,name,' . $role->id],
             'description' => ['nullable', 'string', 'max:500'],
         ]);
 

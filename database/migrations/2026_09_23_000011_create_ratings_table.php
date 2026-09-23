@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('ratings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->string('rateable_type', 100);
+            $table->string('rateable_type', 255);
             $table->unsignedBigInteger('rateable_id');
             $table->enum('rating_type', ['star', 'thumbs'])->default('star');
             $table->unsignedTinyInteger('stars')->nullable();

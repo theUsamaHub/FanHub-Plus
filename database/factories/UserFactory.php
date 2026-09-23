@@ -63,8 +63,8 @@ class UserFactory extends Factory
         return $this->afterCreating(function (User $user) {
             if (! $user->roles()->exists()) {
                 $role = Role::firstOrCreate(
-                    ['slug' => 'user'],
-                    ['name' => 'User']
+                    ['slug' => 'registered-user'],
+                    ['name' => 'Registered User']
                 );
                 $user->roles()->attach($role);
             }

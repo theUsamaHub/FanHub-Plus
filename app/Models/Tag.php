@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Tag extends Model
@@ -12,6 +13,11 @@ class Tag extends Model
     public function categories(): MorphToMany
     {
         return $this->morphedByMany(Category::class, 'taggable');
+    }
+
+    public function contents(): BelongsToMany
+    {
+        return $this->belongsToMany(Content::class, 'content_tags');
     }
 
     public static function boot(): void

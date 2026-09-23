@@ -11,8 +11,8 @@ return new class extends Migration
         Schema::create('chatbot_faqs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->nullable()->constrained('categories')->nullOnDelete();
-            $table->string('question', 500);
-            $table->text('answer');
+            $table->text('question');
+            $table->longText('answer');
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });

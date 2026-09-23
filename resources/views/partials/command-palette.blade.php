@@ -83,7 +83,7 @@ function commandPalette() {
         pages: [
             { name: 'Dashboard', url: '{{ route("dashboard") }}', icon: 'bi bi-grid-1x2', category: 'General' },
             { name: 'Profile', url: '{{ route("profile.edit") }}', icon: 'bi bi-person', category: 'General' },
-            @if(auth()->user()->hasAnyRole(['admin', 'user']))
+            @if(auth()->user()->hasAnyRole(['admin', 'registered-user']))
             { name: 'Categories', url: '{{ route("admin.categories.index") }}', icon: 'bi bi-tags', category: 'Browse' },
             @endif
             @if(auth()->user()->hasRole('admin'))

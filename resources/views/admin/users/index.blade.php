@@ -54,7 +54,7 @@
                     <select class="form-select" name="role">
                         <option value="">{{ __('All Roles') }}</option>
                         <option value="admin" {{ request('role') === 'admin' ? 'selected' : '' }}>{{ __('Admin') }}</option>
-                        <option value="user" {{ request('role') === 'user' ? 'selected' : '' }}>{{ __('User') }}</option>
+                        <option value="registered-user" {{ request('role') === 'registered-user' ? 'selected' : '' }}>{{ __('Registered User') }}</option>
                     </select>
                 </div>
                 <div class="col-md-3 d-flex gap-2">

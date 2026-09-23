@@ -48,6 +48,11 @@ class Category extends Model
         return $this->hasMany(Event::class);
     }
 
+    public function chatbotFaqs(): HasMany
+    {
+        return $this->hasMany(ChatbotFaq::class);
+    }
+
     public function favoritedBy(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'user_favorite_categories')->withPivot('created_at');

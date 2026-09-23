@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Str;
 
 class Content extends Model
@@ -32,7 +33,7 @@ class Content extends Model
     {
         return [
             'release_date' => 'date',
-            'popularity_score' => 'integer',
+            'popularity_score' => 'decimal:2',
             'view_count' => 'integer',
             'is_featured' => 'boolean',
             'is_user_submitted' => 'boolean',
@@ -60,6 +61,21 @@ class Content extends Model
         return $this->belongsToMany(Media::class, 'content_media')
             ->withPivot(['role', 'sort_order'])
             ->orderBy('content_media.sort_order');
+    }
+
+    public function characters(): BelongsToMany
+    {
+        return $this->belongsToMany(CharacterProfile::class, 'character_contents', 'content_id', 'character_id');
+    }
+
+    public function reviews(): MorphMany
+    {
+        return $this->morphMany(Review::class, 'reviewable');
+    }
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class, 'content_tags');
     }
 
     public function scopePublished(Builder $query): Builder

@@ -8,20 +8,18 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Bookmark extends Model
 {
-    public const UPDATED_AT = null;
-
     protected $fillable = [
         'user_id',
         'bookmarkable_type',
         'bookmarkable_id',
         'note',
-        'created_at',
     ];
 
     protected function casts(): array
     {
         return [
             'created_at' => 'datetime',
+            'updated_at' => 'datetime',
         ];
     }
 

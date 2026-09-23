@@ -11,10 +11,10 @@
 
 /* ── CSS Custom Properties (Design Tokens) ── */
 :root {
-    --bs-primary: #4f46e5;
-    --bs-primary-rgb: 79, 70, 229;
-    --bs-link-color: #4f46e5;
-    --bs-link-hover-color: #4338ca;
+    --bs-primary: #6B3FD1;
+    --bs-primary-rgb: 107, 63, 209;
+    --bs-link-color: #6B3FD1;
+    --bs-link-hover-color: #5331A3;
     --bs-body-font-family: 'Saira', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     --bs-heading-font-family: 'Rajdhani', 'Saira', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 
@@ -235,7 +235,7 @@ h1, h2, h3, h4, h5, h6 {
 .form-control:focus,
 .form-select:focus {
     border-color: var(--bs-primary);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+    box-shadow: 0 0 0 3px rgba(107, 63, 209, 0.15);
 }
 
 .form-label {
@@ -259,8 +259,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary:hover {
-    background-color: #4338ca;
-    border-color: #4338ca;
+    background-color: #5331A3;
+    border-color: #5331A3;
 }
 
 /* ── Table Enhancements ── */

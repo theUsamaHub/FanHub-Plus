@@ -52,9 +52,24 @@ class User extends Authenticatable
         return $this->hasMany(Rating::class);
     }
 
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function chatbotQueries(): HasMany
+    {
+        return $this->hasMany(ChatbotQuery::class);
+    }
+
     public function submittedContents(): HasMany
     {
         return $this->hasMany(Content::class, 'submitted_by');
+    }
+
+    public function reviewedContents(): HasMany
+    {
+        return $this->hasMany(Content::class, 'reviewed_by');
     }
 
     public function feedbacks(): HasMany

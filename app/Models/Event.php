@@ -21,6 +21,7 @@ class Event extends Model
         'end_at',
         'ticket_url',
         'cover_media_id',
+        'status',
     ];
 
     protected function casts(): array

@@ -11,10 +11,10 @@ return new class extends Migration
         Schema::create('bookmarks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->string('bookmarkable_type', 100);
+            $table->string('bookmarkable_type', 255);
             $table->unsignedBigInteger('bookmarkable_id');
-            $table->string('note', 500)->nullable();
-            $table->timestamp('created_at')->nullable()->useCurrent();
+            $table->text('note')->nullable();
+            $table->timestamps();
             $table->unique(['user_id', 'bookmarkable_type', 'bookmarkable_id'], 'uq_bookmark_unique');
             $table->index(['bookmarkable_type', 'bookmarkable_id'], 'idx_bookmark_target');
         });

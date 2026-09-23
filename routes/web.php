@@ -29,7 +29,7 @@ Route::get('/dashboard', function () {
         return redirect()->route('admin.dashboard');
     }
 
-    if ($user->hasRole('user')) {
+    if ($user->hasRole('registered-user')) {
         return redirect()->route('user.dashboard');
     }
 
@@ -38,7 +38,7 @@ Route::get('/dashboard', function () {
 
 // User Dashboard
 Route::get('/user/dashboard', [\App\Http\Controllers\User\DashboardController::class, 'index'])
-    ->middleware(['auth', 'role:user'])
+    ->middleware(['auth', 'role:registered-user'])
     ->name('user.dashboard');
 
 // Profile
