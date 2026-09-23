@@ -10,9 +10,9 @@ return new class extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 100);
-            $table->string('slug', 120)->unique();
-            $table->string('color')->default('#4f46e5'); // admin-panel color picker extension
+            $table->string('name');
+            $table->string('slug')->unique();
+            $table->string('color')->default('#4f46e5');
             $table->timestamps();
         });
 
