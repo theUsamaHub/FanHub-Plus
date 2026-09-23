@@ -32,10 +32,22 @@ return new class extends Migration
             ]);
         });
 
+        // Drop the foreign key first — MySQL refuses to drop an index backing an FK constraint
         Schema::table('media', function (Blueprint $table) {
-            $table->dropMorphs('mediable');
-            $table->dropConstrainedForeignId('created_by');
-            $table->dropColumn(['name', 'original_name', 'size']);
+            $table->dropForeign(['created_by']);
+        });
+
+        // Drop indexes that reference columns about to be removed (required on SQLite)
+        foreach (Schema::getIndexes('media') as $index) {
+            if (array_intersect($index['columns'], ['name', 'original_name', 'mediable_type', 'mediable_id', 'created_by'])) {
+                Schema::table('media', function (Blueprint $table) use ($index) {
+                    $table->dropIndex($index['name']);
+                });
+            }
+        }
+
+        Schema::table('media', function (Blueprint $table) {
+            $table->dropColumn(['mediable_type', 'mediable_id', 'name', 'original_name', 'size', 'created_by']);
         });
     }
 

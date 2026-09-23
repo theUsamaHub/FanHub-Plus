@@ -17,8 +17,26 @@ class RoleMiddleware
 
         $user = Auth::user();
 
-        if (!$user->hasAnyRole($roles)) {
-            abort(403, 'Unauthorized. You do not have the required role.');
+        if (! $user->hasAnyRole($roles)) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Forbidden. You do not have permission to access this resource.',
+                ], 403);
+            }
+
+            $home = match (true) {
+                $user->hasRole('admin') => 'admin.dashboard',
+                $user->hasRole('user') => 'user.dashboard',
+                default => 'profile.edit',
+            };
+
+            if ($request->routeIs($home)) {
+                abort(403, 'Your account does not have a role assigned. Please contact an administrator.');
+            }
+
+            return redirect()
+                ->route($home)
+                ->with('error', __('You do not have permission to access that page.'));
         }
 
         return $next($request);

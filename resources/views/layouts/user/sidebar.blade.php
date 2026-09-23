@@ -18,15 +18,6 @@
                     <i class="bi bi-person"></i> {{ __('Profile') }}
                 </a>
             </li>
-
-            <li class="nav-item mt-2">
-                <small class="text-uppercase text-secondary px-3 fw-semibold" style="font-size:0.7rem;letter-spacing:0.05em;">{{ __('Browse') }}</small>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('admin.categories.index') || request()->routeIs('admin.categories.show') ? 'active' : '' }}" href="{{ route('admin.categories.index') }}">
-                    <i class="bi bi-tags"></i> {{ __('Categories') }}
-                </a>
-            </li>
         </ul>
     </nav>
 
@@ -37,7 +28,7 @@
             </div>
             <div class="ms-2 overflow-hidden">
                 <div class="text-white fw-medium text-truncate" style="font-size:0.875rem;">{{ Auth::user()->name }}</div>
-                <div class="text-secondary text-truncate" style="font-size:0.75rem;">{{ Auth::user()->email }}</div>
+                <div class="text-secondary text-truncate" style="font-size:0.75rem;">{{ __('User') }}</div>
             </div>
         </div>
     </div>

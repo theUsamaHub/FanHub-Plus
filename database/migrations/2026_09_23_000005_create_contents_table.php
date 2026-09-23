@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('popularity_score')->default(0);
             $table->unsignedBigInteger('view_count')->default(0);
             $table->enum('status', ['draft', 'pending_review', 'published', 'rejected'])->default('draft');
+            $table->boolean('is_featured')->default(false);
             $table->boolean('is_user_submitted')->default(false);
             $table->foreignId('submitted_by')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('reviewed_by')->nullable()->constrained('users')->nullOnDelete();
