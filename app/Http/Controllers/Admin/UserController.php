@@ -27,7 +27,15 @@ class UserController extends Controller
             $query->whereHas('roles', fn($q) => $q->where('slug', $role));
         }
 
-        $users = $query->latest()->paginate(15);
+        if ($request->has('verified') && $request->input('verified') !== '') {
+            if ($request->boolean('verified')) {
+                $query->whereNotNull('email_verified_at');
+            } else {
+                $query->whereNull('email_verified_at');
+            }
+        }
+
+        $users = $query->latest()->paginate(15)->withQueryString();
 
         $userCounts = User::selectRaw("count(*) as total")
             ->selectRaw("count(case when exists (select 1 from role_user inner join roles on roles.id = role_user.role_id where role_user.user_id = users.id and roles.slug = 'admin') then 1 end) as admins")
@@ -47,8 +55,26 @@ class UserController extends Controller
 
     public function show(User $user): View
     {
-        $user->load('roles');
-        return view('admin.users.show', compact('user'));
+        $user->load([
+            'roles',
+            'profile',
+            'favoriteCategories',
+            'submittedContents' => fn ($q) => $q->latest()->take(10),
+            'bookmarks' => fn ($q) => $q->latest()->take(10),
+            'ratings' => fn ($q) => $q->latest()->take(10),
+            'reviews' => fn ($q) => $q->latest()->take(10),
+            'feedbacks' => fn ($q) => $q->latest()->take(10),
+        ]);
+
+        $counts = [
+            'submissions' => $user->submittedContents()->count(),
+            'bookmarks' => $user->bookmarks()->count(),
+            'ratings' => $user->ratings()->count(),
+            'reviews' => $user->reviews()->count(),
+            'feedback' => $user->feedbacks()->count(),
+        ];
+
+        return view('admin.users.show', compact('user', 'counts'));
     }
 
     public function edit(User $user): View

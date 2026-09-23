@@ -57,6 +57,13 @@
                         <option value="registered-user" {{ request('role') === 'registered-user' ? 'selected' : '' }}>{{ __('Registered User') }}</option>
                     </select>
                 </div>
+                <div class="col-md-2">
+                    <select class="form-select" name="verified">
+                        <option value="">{{ __('Verification') }}</option>
+                        <option value="1" {{ request('verified') === '1' ? 'selected' : '' }}>{{ __('Verified') }}</option>
+                        <option value="0" {{ request('verified') === '0' ? 'selected' : '' }}>{{ __('Unverified') }}</option>
+                    </select>
+                </div>
                 <div class="col-md-3 d-flex gap-2">
                     <button type="submit" class="btn btn-outline-secondary flex-grow-1">
                         <i class="bi bi-search me-1"></i>{{ __('Filter') }}
