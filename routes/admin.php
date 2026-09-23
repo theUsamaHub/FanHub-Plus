@@ -30,6 +30,8 @@ Route::prefix('admin')
 
         Route::resource('merchandise', \App\Http\Controllers\Admin\MerchandiseController::class)->parameters(['merchandise' => 'merchandise']);
 
+        Route::resource('events', \App\Http\Controllers\Admin\EventController::class);
+
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
 
         Route::resource('contacts', \App\Http\Controllers\Admin\ContactController::class)->only(['index', 'show', 'destroy']);
