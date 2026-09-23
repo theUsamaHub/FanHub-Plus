@@ -30,6 +30,7 @@
             <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}" href="{{ route('admin.reviews.index') }}"><i class="bi bi-chat-left-text"></i> {{ __('Reviews') }}</a></li>
             <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.ratings.*') ? 'active' : '' }}" href="{{ route('admin.ratings.index') }}"><i class="bi bi-star"></i> {{ __('Ratings') }}</a></li>
             <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.feedback.*') ? 'active' : '' }}" href="{{ route('admin.feedback.index') }}"><i class="bi bi-megaphone"></i> {{ __('Feedback') }}</a></li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.analytics.*') ? 'active' : '' }}" href="{{ route('admin.analytics.index') }}"><i class="bi bi-graph-up"></i> {{ __('Analytics') }}</a></li>
             <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}" href="{{ route('admin.categories.index') }}"><i class="bi bi-tags"></i> {{ __('Categories') }}</a></li>
             <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.categories.trashed') ? 'active' : '' }}" href="{{ route('admin.categories.trashed') }}"><i class="bi bi-trash"></i> {{ __('Recycle Bin') }}</a></li>
             <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.tags.*') ? 'active' : '' }}" href="{{ route('admin.tags.index') }}"><i class="bi bi-bookmark"></i> {{ __('Tags') }}</a></li>
