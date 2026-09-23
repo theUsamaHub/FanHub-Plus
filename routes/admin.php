@@ -15,6 +15,10 @@ Route::prefix('admin')
         Route::delete('/categories/{id}/force-delete', [\App\Http\Controllers\Admin\CategoryController::class, 'forceDelete'])->name('categories.force-delete')->withTrashed();
         Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
 
+        Route::patch('/contents/{content}/feature', [\App\Http\Controllers\Admin\ContentController::class, 'toggleFeatured'])->name('contents.feature');
+        Route::patch('/contents/{content}/status', [\App\Http\Controllers\Admin\ContentController::class, 'updateStatus'])->name('contents.status');
+        Route::resource('contents', \App\Http\Controllers\Admin\ContentController::class);
+
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
 
         Route::resource('contacts', \App\Http\Controllers\Admin\ContactController::class)->only(['index', 'show', 'destroy']);
