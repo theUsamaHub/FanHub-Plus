@@ -68,3 +68,23 @@
 3. **Poppins** — Friendly and approachable
 4. **Montserrat** — Strong headings and branding
 5. **Open Sans** — Highly readable anywhere
+
+
+
+**Recommended pairing:**
+
+**1. Rajdhani** — headings, nav, category titles, buttons
+Techy/angular letterforms, very common in gaming & anime UI (works well with your neon violet/magenta palette). Use weights 600–700 for headers, 500 for buttons/tags.
+`https://fonts.google.com/specimen/Rajdhani`
+
+**2. Saira** — body text, descriptions, article content
+Same design family feel as Rajdhani (both condensed/geometric) but far more readable at small sizes for paragraphs — avoids the fatigue Rajdhani causes in long text blocks. Use weight 400 for body, 500 for subheadings/labels.
+`https://fonts.google.com/specimen/Saira`
+
+Why this pair works: they share a similar geometric DNA so they don't clash, but Rajdhani's sharp diagonal cuts give you that "sci-fi/anime HUD" energy for titles while Saira stays clean and legible for the actual reading content (character bios, articles, feedback forms) — important since your SRS wants rich text and long-form featured articles.
+
+**A couple of alternate heading options if you want to compare:**
+- **Orbitron** — more futuristic/robotic, heavier and rounder than Rajdhani, good if you want a more "sci-fi con" vibe over "streetwear/gaming" vibe.
+- **Russo One** — bolder, blockier, reads more "bold poster/gaming logo" — good for a hero banner or logo lockup specifically, less ideal for repeated nav items.
+
+Stick with Rajdhani + Saira as your default — both are free on Google Fonts, load fast, and pair cleanly with the dark violet/magenta palette without fighting for attention.

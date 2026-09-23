@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg bg-white border-bottom">
     <div class="container">
         <a class="navbar-brand fw-bold" href="/" style="color: var(--bs-primary);">
-            {{ config('app.name', 'LSK') }}
+            {{ config('app.name', 'FanHubPlus') }}
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#publicNav">
             <span class="navbar-toggler-icon"></span>

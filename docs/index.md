@@ -1,6 +1,6 @@
-# Laravel Starter Kit — Documentation
+# FanHubPlus — Documentation
 
-Welcome! This documentation covers everything you need to set up, customize, and extend your Laravel Starter Kit.
+Welcome! This documentation covers everything you need to set up, customize, and extend your FanHubPlus.
 
 ## Getting Started
 

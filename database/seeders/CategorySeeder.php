@@ -10,11 +10,14 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'Technology', 'slug' => 'technology', 'description' => 'Technology related items', 'sort_order' => 1],
-            ['name' => 'Business', 'slug' => 'business', 'description' => 'Business related items', 'sort_order' => 2],
-            ['name' => 'Healthcare', 'slug' => 'healthcare', 'description' => 'Healthcare related items', 'sort_order' => 3],
-            ['name' => 'Education', 'slug' => 'education', 'description' => 'Education related items', 'sort_order' => 4],
-            ['name' => 'Finance', 'slug' => 'finance', 'description' => 'Finance related items', 'sort_order' => 5],
+            ['name' => 'Anime', 'slug' => 'anime', 'description' => 'Anime series, films, and studios'],
+            ['name' => 'Gaming', 'slug' => 'gaming', 'description' => 'Video games, esports, and gaming culture'],
+            ['name' => 'Movies', 'slug' => 'movies', 'description' => 'Films, franchises, and cinema'],
+            ['name' => 'TV Shows', 'slug' => 'tv-shows', 'description' => 'Television series and streaming shows'],
+            ['name' => 'K-Pop', 'slug' => 'k-pop', 'description' => 'Korean pop music, groups, and fandoms'],
+            ['name' => 'Comics', 'slug' => 'comics', 'description' => 'Western comics and graphic novels'],
+            ['name' => 'Manga', 'slug' => 'manga', 'description' => 'Japanese manga and manhua'],
+            ['name' => 'Cosplay', 'slug' => 'cosplay', 'description' => 'Cosplay culture, costumes, and events'],
         ];
 
         foreach ($categories as $category) {

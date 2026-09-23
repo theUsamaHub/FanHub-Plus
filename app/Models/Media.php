@@ -4,40 +4,54 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Storage;
 
 class Media extends Model
 {
     protected $fillable = [
-        'mediable_type',
-        'mediable_id',
-        'name',
-        'original_name',
-        'mime_type',
-        'size',
-        'path',
+        'uploaded_by',
         'disk',
-        'created_by',
+        'path',
+        'original_filename',
+        'mime_type',
+        'media_type',
+        'size_bytes',
+        'width_px',
+        'height_px',
+        'duration_seconds',
+        'alt_text',
     ];
 
-    public function mediable(): MorphTo
+    protected function casts(): array
     {
-        return $this->morphTo();
+        return [
+            'size_bytes' => 'integer',
+            'width_px' => 'integer',
+            'height_px' => 'integer',
+            'duration_seconds' => 'integer',
+        ];
     }
 
-    public function createdBy(): BelongsTo
+    public function uploadedBy(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'created_by');
+        return $this->belongsTo(User::class, 'uploaded_by');
+    }
+
+    public function contents(): BelongsToMany
+    {
+        return $this->belongsToMany(Content::class, 'content_media')
+            ->withPivot(['role', 'sort_order']);
     }
 
     public function getUrlAttribute(): string
     {
-        return \Illuminate\Support\Facades\Storage::disk($this->disk)->url($this->path);
+        return Storage::disk($this->disk)->url($this->path);
     }
 
     public function getSizeFormattedAttribute(): string
     {
-        $bytes = $this->size;
+        $bytes = $this->size_bytes ?? 0;
         $units = ['B', 'KB', 'MB', 'GB'];
         $i = 0;
         while ($bytes >= 1024 && $i < count($units) - 1) {
@@ -49,20 +63,21 @@ class Media extends Model
 
     public function isImage(): bool
     {
-        return str_starts_with($this->mime_type, 'image/');
+        return $this->media_type === 'image';
     }
 
-    public function isPdf(): bool
+    public function isVideo(): bool
     {
-        return $this->mime_type === 'application/pdf';
+        return $this->media_type === 'video';
     }
 
-    public function isExcel(): bool
+    public function isAudio(): bool
     {
-        return in_array($this->mime_type, [
-            'application/vnd.ms-excel',
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            'text/csv',
-        ]);
+        return $this->media_type === 'audio';
+    }
+
+    public function isDocument(): bool
+    {
+        return $this->media_type === 'document';
     }
 }

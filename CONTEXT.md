@@ -1,4 +1,4 @@
-# Laravel Starter Kit — Full Project Context
+# FanHubPlus — Full Project Context
 
 > Use this document to give any AI complete context about this Laravel 13 project without reading every file.
 
@@ -393,7 +393,7 @@ Pages with full filter+stats treatment:
 6. **Scheduled publishing**: Categories can be scheduled for future publish/unpublish, processed by a cron-driven artisan command every minute
 7. **Synchronous notifications**: Contact form notifications are NOT queued (to ensure immediate in-app delivery without a running queue worker)
 8. **IP whitelist middleware**: Applied to all admin routes, supports exact IP, CIDR, and wildcard patterns
-9. **Starter kit philosophy**: Features are self-contained and can be disabled by removing the route/controller without breaking the rest
+9. **platform philosophy**: Features are self-contained and can be disabled by removing the route/controller without breaking the rest
 
 ---
 

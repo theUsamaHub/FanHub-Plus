@@ -1,15 +1,15 @@
-# Laravel Starter Kit - AI Context File
+# FanHubPlus - AI Context File
 
 > This file provides persistent context for AI models working on this project.
 
 ## Project Overview
 
-Production-ready Laravel 13 starter kit with Bootstrap 5, Alpine.js, and PostgreSQL. Designed to be reused for hackathons, competitions, client projects, SaaS products, and business management systems. Includes full admin panel, REST API with Sanctum, file uploads, dynamic validation, and maintenance mode.
+Production-ready FanHubPlus with Bootstrap 5, Alpine.js, and PostgreSQL. Designed to be reused for hackathons, competitions, client projects, SaaS products, and business management systems. Includes full admin panel, REST API with Sanctum, file uploads, and maintenance mode.
 
 ## Tech Stack
 
-- PHP 8.5.8
-- Laravel 13.18.0
+- PHP 8.2.0
+- Laravel 11.0.0
 - PostgreSQL (not MySQL) — host=127.0.0.1:5432, db=laravel_starter, user=postgres, password=Falcon47#
 - Bootstrap 5.3 (SCSS compiled via Vite)
 - Bootstrap Icons

@@ -15,10 +15,10 @@
                     <div class="col-lg-8 text-center">
                         <h1 class="fw-bold mb-4">{{ __('About Us') }}</h1>
                         <p class="lead text-muted">
-                            {{ __('Laravel Starter Kit is a production-ready foundation built to accelerate development of any web application.') }}
+                            {{ __('FanHubPlus is a production-ready foundation built to accelerate development of any web application.') }}
                         </p>
                         <p class="text-muted">
-                            {{ __('Built with Laravel 13, PHP 8.5+, Bootstrap 5, and following SOLID principles, this starter kit provides everything you need to build scalable applications from hackathons to enterprise systems.') }}
+                            {{ __('Built with Laravel 13, PHP 8.5+, Bootstrap 5, and following SOLID principles, this platform provides everything you need to build scalable applications from hackathons to enterprise systems.') }}
                         </p>
                     </div>
                 </div>

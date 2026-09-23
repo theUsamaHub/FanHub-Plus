@@ -13,14 +13,14 @@
             <div class="container py-5">
                 <div class="text-center mb-5">
                     <h1 class="fw-bold">{{ __('One Price. Everything Included.') }}</h1>
-                    <p class="lead text-muted">{{ __('Get the complete Laravel Starter Kit with every feature, no tiers or upgrades.') }}</p>
+                    <p class="lead text-muted">{{ __('Get the complete FanHubPlus with every feature, no tiers or upgrades.') }}</p>
                 </div>
 
                 <div class="row justify-content-center">
                     <div class="col-lg-5 col-md-7">
                         <div class="card h-100 border-0 shadow-sm">
                             <div class="card-body p-4 text-center">
-                                <h5 class="fw-semibold text-muted mb-1">{{ __('Laravel Starter Kit') }}</h5>
+                                <h5 class="fw-semibold text-muted mb-1">{{ __('FanHubPlus') }}</h5>
                                 <div class="my-4">
                                     <span class="display-4 fw-bold">$99</span>
                                     <span class="text-muted">{{ __('one-time') }}</span>

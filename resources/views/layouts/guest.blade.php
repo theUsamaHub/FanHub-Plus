@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel Starter Kit') }}</title>
+        <title>{{ config('app.name', 'FanHubPlus') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -20,7 +20,7 @@
                 <a href="/" class="text-decoration-none">
                     <x-application-logo class="w-16 h-16 mx-auto" />
                 </a>
-                <h4 class="mt-2 fw-semibold text-dark">{{ config('app.name', 'Laravel Starter Kit') }}</h4>
+                <h4 class="mt-2 fw-semibold text-dark">{{ config('app.name', 'FanHubPlus') }}</h4>
             </div>
 
             {{ $slot }}

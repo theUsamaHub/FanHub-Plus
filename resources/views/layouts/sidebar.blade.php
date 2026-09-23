@@ -2,7 +2,7 @@
     <div class="p-3 border-bottom border-secondary">
         <a href="{{ route('admin.dashboard') }}" class="text-decoration-none d-flex align-items-center">
             <x-application-logo class="w-8 h-8" />
-            <span class="text-white fw-semibold ms-2 fs-6">{{ config('app.name', 'LSK') }}</span>
+            <span class="text-white fw-semibold ms-2 fs-6">{{ config('app.name', 'FanHubPlus') }}</span>
         </a>
     </div>
 

@@ -8,46 +8,54 @@ use App\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class Category extends Model
 {
-    use HasFactory, SoftDeletes, HasMedia, HasTags, LogsActivity;
+    use HasFactory, HasMedia, HasTags, LogsActivity;
 
     protected $fillable = [
         'name',
         'slug',
         'description',
-        'body',
-        'image',
-        'is_active',
-        'sort_order',
-        'created_by',
-        'updated_by',
+        'icon_media_id',
     ];
 
-    protected function casts(): array
+    public function iconMedia(): BelongsTo
     {
-        return [
-            'is_active' => 'boolean',
-            'sort_order' => 'integer',
-        ];
+        return $this->belongsTo(Media::class, 'icon_media_id');
     }
 
-    public function createdBy(): BelongsTo
+    public function contents(): HasMany
     {
-        return $this->belongsTo(User::class, 'created_by');
+        return $this->hasMany(Content::class);
     }
 
-    public function updatedBy(): BelongsTo
+    public function characterProfiles(): HasMany
     {
-        return $this->belongsTo(User::class, 'updated_by');
+        return $this->hasMany(CharacterProfile::class);
     }
 
-    public function getImageUrlAttribute(): ?string
+    public function merchandiseItems(): HasMany
     {
-        return $this->image ? asset('storage/' . $this->image) : null;
+        return $this->hasMany(MerchandiseItem::class);
+    }
+
+    public function events(): HasMany
+    {
+        return $this->hasMany(Event::class);
+    }
+
+    public function favoritedBy(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'user_favorite_categories')->withPivot('created_at');
+    }
+
+    public function getIconUrlAttribute(): ?string
+    {
+        return $this->iconMedia?->url;
     }
 
     public static function boot(): void
@@ -58,14 +66,12 @@ class Category extends Model
             if (empty($category->slug)) {
                 $category->slug = Str::slug($category->name);
             }
-            $category->created_by = auth()->id() ?? $category->created_by;
         });
 
         static::updating(function (Category $category) {
             if ($category->isDirty('name') && !$category->slug) {
                 $category->slug = Str::slug($category->name);
             }
-            $category->updated_by = auth()->id() ?? $category->updated_by;
         });
     }
 }

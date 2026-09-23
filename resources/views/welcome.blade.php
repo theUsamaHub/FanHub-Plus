@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{{ config('app.name', 'Laravel Starter Kit') }}</title>
+        <title>{{ config('app.name', 'FanHubPlus') }}</title>
         @vite(['resources/css/app.scss', 'resources/js/app.js'])
     </head>
     <body>
@@ -17,10 +17,10 @@
                         <h1 class="display-5 fw-bold mb-3">
                             {{ __('Build something') }}
                             <span style="color: var(--bs-primary);">{{ __('amazing') }}</span>
-                            {{ __('with Laravel Starter Kit') }}
+                            {{ __('with FanHubPlus') }}
                         </h1>
                         <p class="lead text-muted mb-4">
-                            {{ __('A production-ready Laravel starter kit with Bootstrap 5, authentication, RBAC, API support, and a clean architecture that scales from hackathons to enterprise systems.') }}
+                            {{ __('A production-ready FanHubPlus with Bootstrap 5, authentication, RBAC, API support, and a clean architecture that scales from hackathons to enterprise systems.') }}
                         </p>
                         <div class="d-flex gap-3">
                             @auth

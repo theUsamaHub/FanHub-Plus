@@ -1,6 +1,6 @@
-# Laravel Starter Kit
+# FanHubPlus
 
-A production-ready Laravel 11 starter kit with 17+ admin modules, RBAC, REST API, Bootstrap 5, and clean architecture. Scales from side projects to enterprise systems.
+A production-ready FanHubPlus with 17+ admin modules, RBAC, REST API, Bootstrap 5, and clean architecture. Scales from side projects to enterprise systems.
 
 ## What's Included
 
