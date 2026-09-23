@@ -65,7 +65,7 @@ class Content extends Model
 
     public function characters(): BelongsToMany
     {
-        return $this->belongsToMany(CharacterProfile::class, 'character_contents', 'content_id', 'character_id');
+        return $this->belongsToMany(CharacterProfile::class, 'character_contents', 'content_id', 'character_id')->withTimestamps();
     }
 
     public function reviews(): MorphMany

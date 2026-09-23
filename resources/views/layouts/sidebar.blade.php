@@ -24,6 +24,7 @@
             </li>
             <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.contents.*') ? 'active' : '' }}" href="{{ route('admin.contents.index') }}"><i class="bi bi-file-earmark-text"></i> {{ __('Content') }}</a></li>
             <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.submissions.*') ? 'active' : '' }}" href="{{ route('admin.submissions.index') }}"><i class="bi bi-inbox"></i> {{ __('Submissions') }}</a></li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.characters.*') ? 'active' : '' }}" href="{{ route('admin.characters.index') }}"><i class="bi bi-person-badge"></i> {{ __('Characters') }}</a></li>
             <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}" href="{{ route('admin.categories.index') }}"><i class="bi bi-tags"></i> {{ __('Categories') }}</a></li>
             <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.categories.trashed') ? 'active' : '' }}" href="{{ route('admin.categories.trashed') }}"><i class="bi bi-trash"></i> {{ __('Recycle Bin') }}</a></li>
             <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.tags.*') ? 'active' : '' }}" href="{{ route('admin.tags.index') }}"><i class="bi bi-bookmark"></i> {{ __('Tags') }}</a></li>

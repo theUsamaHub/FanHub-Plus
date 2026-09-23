@@ -24,6 +24,10 @@ Route::prefix('admin')
         Route::patch('/submissions/{content}/approve', [\App\Http\Controllers\Admin\SubmissionController::class, 'approve'])->name('submissions.approve');
         Route::patch('/submissions/{content}/reject', [\App\Http\Controllers\Admin\SubmissionController::class, 'reject'])->name('submissions.reject');
 
+        Route::post('/characters/{character}/contents', [\App\Http\Controllers\Admin\CharacterController::class, 'attachContent'])->name('characters.contents.attach');
+        Route::delete('/characters/{character}/contents/{content}', [\App\Http\Controllers\Admin\CharacterController::class, 'detachContent'])->name('characters.contents.detach');
+        Route::resource('characters', \App\Http\Controllers\Admin\CharacterController::class);
+
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
 
         Route::resource('contacts', \App\Http\Controllers\Admin\ContactController::class)->only(['index', 'show', 'destroy']);

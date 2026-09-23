@@ -30,7 +30,7 @@ class CharacterProfile extends Model
 
     public function contents(): BelongsToMany
     {
-        return $this->belongsToMany(Content::class, 'character_contents', 'character_id', 'content_id');
+        return $this->belongsToMany(Content::class, 'character_contents', 'character_id', 'content_id')->withTimestamps();
     }
 
     public function scopeForCategory(Builder $query, int $categoryId): Builder
