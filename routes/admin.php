@@ -28,6 +28,8 @@ Route::prefix('admin')
         Route::delete('/characters/{character}/contents/{content}', [\App\Http\Controllers\Admin\CharacterController::class, 'detachContent'])->name('characters.contents.detach');
         Route::resource('characters', \App\Http\Controllers\Admin\CharacterController::class);
 
+        Route::resource('merchandise', \App\Http\Controllers\Admin\MerchandiseController::class)->parameters(['merchandise' => 'merchandise']);
+
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class)->only(['index', 'show', 'edit', 'update', 'destroy']);
 
         Route::resource('contacts', \App\Http\Controllers\Admin\ContactController::class)->only(['index', 'show', 'destroy']);
