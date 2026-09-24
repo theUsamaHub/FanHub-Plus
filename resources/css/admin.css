@@ -1736,10 +1736,10 @@ body.fh-admin.is-sidebar-collapsed .fh-adm-nav::before {
 body.fh-admin.is-sidebar-collapsed .fh-adm-nav-link {
     justify-content: center !important;
     gap: 0 !important;
-    width: 44px !important;
-    min-width: 44px !important;
-    height: 44px !important;
-    margin: 4px auto !important;
+    width: 42px !important;
+    min-width: 42px !important;
+    height: 42px !important;
+    margin: 5px auto !important;
     padding: 0 !important;
     clip-path: none !important;
     overflow: visible !important;
@@ -1753,14 +1753,25 @@ body.fh-admin.is-sidebar-collapsed .fh-adm-nav-link {
 body.fh-admin.is-sidebar-collapsed .fh-adm-nav-link .bi {
     margin: 0 !important;
     width: auto !important;
-    font-size: 1.15rem !important;
+    font-size: 1.08rem !important;
     flex-shrink: 0;
+    position: relative;
+    z-index: 1;
 }
 
+/* glass orb plate */
 body.fh-admin.is-sidebar-collapsed .fh-adm-nav-link::before {
     inset: 0;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.04);
+    opacity: 1;
+    background: color-mix(in srgb, var(--fh-adm-panel-2) 72%, transparent);
+    box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--fh-adm-line) 85%, transparent),
+        0 2px 10px rgba(0, 0, 0, 0.18);
+    transition:
+        background 0.25s ease,
+        box-shadow 0.28s ease,
+        transform 0.35s var(--fh-ease-spring);
 }
 
 body.fh-admin.is-sidebar-collapsed .fh-adm-nav-link:hover {
@@ -1770,7 +1781,11 @@ body.fh-admin.is-sidebar-collapsed .fh-adm-nav-link:hover {
 
 body.fh-admin.is-sidebar-collapsed .fh-adm-nav-link:hover::before {
     opacity: 1;
-    background: color-mix(in srgb, var(--fh-accent) 10%, transparent);
+    background: color-mix(in srgb, var(--fh-accent) 12%, var(--fh-adm-panel-2));
+    box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--fh-accent) 40%, transparent),
+        0 0 14px color-mix(in srgb, var(--fh-accent) 18%, transparent);
+    transform: scale(1.06);
 }
 
 body.fh-admin.is-sidebar-collapsed .fh-adm-nav-link.is-active {
@@ -1780,19 +1795,27 @@ body.fh-admin.is-sidebar-collapsed .fh-adm-nav-link.is-active {
 
 body.fh-admin.is-sidebar-collapsed .fh-adm-nav-link.is-active::before {
     opacity: 1;
-    background: linear-gradient(145deg, color-mix(in srgb, var(--fh-accent) 16%, transparent), color-mix(in srgb, var(--fh-cyan) 8%, transparent));
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--fh-accent) 28%, transparent);
+    background:
+        radial-gradient(circle at 32% 28%, color-mix(in srgb, var(--fh-cyan) 16%, transparent), transparent 58%),
+        color-mix(in srgb, var(--fh-accent) 14%, var(--fh-adm-panel-2));
+    box-shadow:
+        inset 0 0 0 1.5px color-mix(in srgb, var(--fh-accent) 55%, transparent),
+        inset 0 0 0 3.5px color-mix(in srgb, var(--fh-adm-bg) 88%, transparent),
+        inset 0 0 0 4.5px color-mix(in srgb, var(--fh-cyan) 30%, transparent),
+        0 0 16px color-mix(in srgb, var(--fh-accent) 20%, transparent);
+    transform: none;
 }
 
+/* blade tick under orb */
 body.fh-admin.is-sidebar-collapsed .fh-adm-nav-link::after {
     left: 50%;
     right: auto;
-    bottom: 3px;
-    width: 14px;
+    bottom: -2px;
+    width: 16px;
     height: 2px;
     border-radius: 2px;
-    transform: translateX(-50%) scaleX(0.3);
-    background: linear-gradient(90deg, var(--fh-accent), var(--fh-cyan));
+    transform: translateX(-50%) scaleX(0.35);
+    background: linear-gradient(90deg, transparent, var(--fh-accent), var(--fh-cyan), transparent);
 }
 
 body.fh-admin.is-sidebar-collapsed .fh-adm-nav-link.is-active::after {
@@ -1800,23 +1823,29 @@ body.fh-admin.is-sidebar-collapsed .fh-adm-nav-link.is-active::after {
     transform: translateX(-50%) scaleX(1);
 }
 
-body.fh-admin.is-sidebar-collapsed .fh-adm-nav-link .bi {
-    margin: 0;
-    width: auto;
-    font-size: 1.12rem;
-}
-
 [data-theme='light'] body.fh-admin.is-sidebar-collapsed .fh-adm-nav-link::before {
-    background: rgba(28, 22, 51, 0.04);
+    background: color-mix(in srgb, var(--fh-adm-surface) 88%, transparent);
+    box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--fh-adm-line) 100%, transparent),
+        0 2px 8px rgba(40, 24, 80, 0.06);
 }
 
 [data-theme='light'] body.fh-admin.is-sidebar-collapsed .fh-adm-nav-link:hover::before {
-    background: color-mix(in srgb, var(--fh-accent) 8%, transparent);
+    background: color-mix(in srgb, var(--fh-accent) 10%, var(--fh-adm-surface));
+    box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--fh-accent) 35%, transparent),
+        0 0 12px color-mix(in srgb, var(--fh-accent) 14%, transparent);
 }
 
 [data-theme='light'] body.fh-admin.is-sidebar-collapsed .fh-adm-nav-link.is-active::before {
-    background: linear-gradient(145deg, color-mix(in srgb, var(--fh-accent) 12%, transparent), color-mix(in srgb, var(--fh-cyan) 8%, transparent));
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--fh-accent) 25%, transparent);
+    background:
+        radial-gradient(circle at 32% 28%, color-mix(in srgb, var(--fh-cyan) 12%, transparent), transparent 58%),
+        color-mix(in srgb, var(--fh-accent) 10%, var(--fh-adm-surface));
+    box-shadow:
+        inset 0 0 0 1.5px color-mix(in srgb, var(--fh-accent) 45%, transparent),
+        inset 0 0 0 3.5px color-mix(in srgb, var(--fh-adm-surface) 92%, transparent),
+        inset 0 0 0 4.5px color-mix(in srgb, var(--fh-cyan) 25%, transparent),
+        0 0 12px color-mix(in srgb, var(--fh-accent) 14%, transparent);
 }
 
 body.fh-admin.is-sidebar-collapsed .fh-adm-sidebar-foot {
