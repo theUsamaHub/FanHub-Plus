@@ -40,3 +40,8 @@ Route::get('/contact', function () {
 })->name('public.contact');
 
 Route::post('/subscribe', [\App\Http\Controllers\SubscriberController::class, 'store'])->name('public.subscribe');
+
+// Live Chat
+Route::get('/live-chat', [\App\Http\Controllers\LiveChatController::class, 'index'])->name('public.live-chat');
+Route::post('/live-chat/send', [\App\Http\Controllers\LiveChatController::class, 'store'])->name('public.live-chat.send');
+Route::get('/live-chat/messages', [\App\Http\Controllers\LiveChatController::class, 'fetch'])->name('public.live-chat.fetch');

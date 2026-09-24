@@ -20,6 +20,7 @@
             @foreach(['characters' => 'Characters', 'upcoming' => 'Upcoming', 'merchandise' => 'Merchandise'] as $slug => $label)
                 <a class="fh-nav-link {{ request()->is('discover/'.$slug) ? 'is-active' : '' }}" href="{{ route('public.section', $slug) }}">{{ $label }}</a>
             @endforeach
+            <a class="fh-nav-link fh-nav-link--live {{ request()->routeIs('public.live-chat') ? 'is-active' : '' }}" href="{{ route('public.live-chat') }}"><span class="fh-nav-live-dot" aria-hidden="true"></span> Live Chat</a>
         </div>
         <div class="fh-nav-actions">
             <button class="fh-icon-button fh-search-toggle" type="button" aria-label="Search Fan Hub Plus" data-search-open><x-site-icon name="search" /><span>Find your fandom...</span></button>
