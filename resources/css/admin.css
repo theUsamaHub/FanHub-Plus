@@ -1179,6 +1179,60 @@ body.fh-admin .text-danger { color: #ff8d8d !important; }
 [data-theme='light'] body.fh-admin .text-danger { color: var(--fh-crimson) !important; }
 body.fh-admin .text-secondary { color: var(--fh-steel) !important; }
 
+/* ── Profile page ── */
+body.fh-admin .fh-adm-page-head {
+    animation: fh-adm-enter 0.5s var(--fh-ease-out) both;
+}
+
+body.fh-admin .fh-adm-profile-card {
+    border: 1px solid transparent;
+    background:
+        linear-gradient(var(--fh-adm-panel), var(--fh-adm-panel)) padding-box,
+        linear-gradient(115deg, rgba(220, 99, 255, 0.35), rgba(42, 39, 72, 0.45) 45%, rgba(68, 217, 255, 0.3)) border-box;
+    animation: fh-adm-enter 0.55s var(--fh-ease-out) both;
+}
+
+body.fh-admin .fh-adm-profile-card:nth-child(2) {
+    animation-delay: 0.06s;
+}
+
+body.fh-admin .fh-adm-profile-card:nth-child(3) {
+    animation-delay: 0.12s;
+}
+
+body.fh-admin .fh-adm-profile-card:hover {
+    border-color: transparent;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
+    transform: translateY(-2px);
+}
+
+body.fh-admin .fh-adm-profile-summary {
+    border: 1px solid transparent;
+    background:
+        linear-gradient(var(--fh-adm-panel), var(--fh-adm-panel)) padding-box,
+        linear-gradient(160deg, rgba(220, 99, 255, 0.45), rgba(68, 217, 255, 0.3)) border-box;
+    animation: fh-adm-enter 0.6s var(--fh-ease-out) 0.08s both;
+}
+
+body.fh-admin .fh-adm-profile-rule {
+    height: 1px;
+    margin: 12px 0 16px;
+    background: linear-gradient(90deg, var(--fh-accent), var(--fh-cyan), transparent);
+    opacity: 0.55;
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-profile-card {
+    background:
+        linear-gradient(#ffffff, #ffffff) padding-box,
+        linear-gradient(115deg, rgba(155, 47, 201, 0.35), rgba(217, 210, 238, 0.8) 45%, rgba(10, 126, 164, 0.28)) border-box;
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-profile-summary {
+    background:
+        linear-gradient(#ffffff, #ffffff) padding-box,
+        linear-gradient(160deg, rgba(155, 47, 201, 0.4), rgba(10, 126, 164, 0.28)) border-box;
+}
+
 /* ── Sidebar spirit (blends into sidebar, no card frame) ── */
 body.fh-admin .fh-adm-spirit {
     position: relative;
