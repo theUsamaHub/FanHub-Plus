@@ -1,4 +1,5 @@
 <aside class="fh-adm-sidebar d-none d-lg-flex" id="sidebar">
+    <div class="fh-adm-sidebar-sticky">
     <button type="button" class="fh-adm-sidebar-toggle" onclick="toggleSidebarCollapse()" aria-label="{{ __('Collapse sidebar') }}" title="{{ __('Collapse sidebar') }}">
         <i class="bi bi-chevron-double-left"></i>
     </button>
@@ -62,6 +63,7 @@
             <div class="fh-adm-user-name">{{ Auth::user()->name }}</div>
             <div class="fh-adm-user-role">{{ __('Admin') }}</div>
         </div>
+    </div>
     </div>
 </aside>
 

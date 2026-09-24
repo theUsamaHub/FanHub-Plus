@@ -231,6 +231,8 @@ body.fh-admin .fh-adm-panel {
 body.fh-admin .fh-adm-shell {
     display: flex;
     min-height: 100vh;
+    /* overflow-x: hidden breaks position:sticky — use clip instead */
+    overflow-x: clip;
 }
 
 body.fh-admin .fh-adm-main {
@@ -239,24 +241,20 @@ body.fh-admin .fh-adm-main {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow-x: hidden;
+    overflow-x: clip;
 }
 
 body.fh-admin .fh-adm-main-inner {
     flex: 1;
     padding: 28px 28px 48px;
     min-width: 0;
-    overflow-x: hidden;
+    overflow-x: clip;
     animation: fh-adm-enter 0.55s var(--fh-ease-out) both;
 }
 
 body.fh-admin .table-responsive {
     overflow-x: auto;
     max-width: 100%;
-}
-
-body.fh-admin .fh-adm-shell {
-    overflow-x: hidden;
 }
 
 body.fh-admin .fh-adm-main-inner > * {
@@ -286,18 +284,26 @@ body.fh-admin .dropdown-menu {
 /* ── Sidebar ── */
 body.fh-admin .fh-adm-sidebar {
     width: var(--fh-adm-sidebar-w);
-    height: 100vh;
-    max-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    position: sticky;
-    top: 0;
+    flex-shrink: 0;
+    align-self: stretch;
+    min-height: 100vh;
+    display: block;
+    position: relative;
     z-index: 260;
-    overflow: visible;
     background:
         linear-gradient(180deg, rgba(18, 19, 38, 0.97) 0%, rgba(5, 5, 13, 0.98) 100%);
     box-shadow: 8px 0 32px rgba(0, 0, 0, 0.35);
     transition: width 0.35s var(--fh-ease-out);
+}
+
+body.fh-admin .fh-adm-sidebar-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
 }
 
 body.fh-admin .fh-adm-sidebar::after {
