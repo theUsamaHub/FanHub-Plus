@@ -28,8 +28,8 @@ body.fh-admin {
 
     --fh-adm-radius: 14px;
     --fh-adm-radius-sm: 10px;
-    --fh-adm-sidebar-w: 260px;
-    --fh-adm-sidebar-collapsed: 78px;
+    --fh-adm-sidebar-w: 220px;
+    --fh-adm-sidebar-collapsed: 72px;
     --fh-adm-topbar-h: 68px;
 
     --fh-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -1634,7 +1634,7 @@ body.fh-admin.is-sidebar-collapsed .fh-adm-spirit-svg {
 body.fh-admin .fh-adm-sidebar-toggle {
     position: absolute;
     top: 22px;
-    right: -40px;
+    right: 0px;
     z-index: 400;
     width: 28px;
     height: 28px;
