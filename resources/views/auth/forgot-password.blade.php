@@ -1,27 +1,9 @@
-<x-guest-layout>
-    <div class="mb-4 text-muted" style="font-size: 0.875rem;">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
-    </div>
-
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-3" :status="session('status')" />
-
-    <form method="POST" action="{{ route('password.email') }}">
-        @csrf
-
-        <!-- Email Address -->
-        <div class="mb-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="form-control" type="email" name="email" :value="old('email')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-1" />
-        </div>
-
-        <x-primary-button class="w-100">
-            {{ __('Email Password Reset Link') }}
-        </x-primary-button>
-
-        <div class="text-center mt-3">
-            <a href="{{ route('login') }}" class="text-decoration-none" style="font-size: 0.875rem; color: var(--bs-primary);">{{ __('Back to login') }}</a>
-        </div>
-    </form>
-</x-guest-layout>
+<x-auth-shell title="Forgot password?" subtitle="No worries. We will send you a reset link.">
+<x-auth-session-status class="fh-auth-status" :status="session('status')" />
+<form method="POST" action="{{ route('password.email') }}">
+@csrf
+<x-auth-field name="email" label="Email address" type="email" autocomplete="username" placeholder="you@example.com" />
+<button type="submit" class="fh-auth-submit">Send reset link <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+<p class="fh-auth-switch"><a href="{{ route('login') }}">← Back to login</a></p>
+</form>
+</x-auth-shell>
