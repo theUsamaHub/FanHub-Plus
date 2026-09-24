@@ -48,6 +48,8 @@
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.backup.*') ? 'is-active' : '' }}" href="{{ route('admin.backup.index') }}" title="{{ __('Backup') }}"><i class="bi bi-database"></i> <span>{{ __('Backup') }}</span></a>
     </nav>
 
+    <x-sidebar-spirit />
+
     <div class="fh-adm-sidebar-foot">
         <div class="fh-adm-avatar">{{ substr(Auth::user()->name, 0, 1) }}</div>
         <div class="overflow-hidden">

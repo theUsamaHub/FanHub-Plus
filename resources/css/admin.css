@@ -83,28 +83,52 @@ body.fh-admin {
 }
 
 [data-theme='light'] body.fh-admin .fh-adm-sidebar {
-    background: linear-gradient(180deg, #1a1430 0%, #120d24 100%);
-    color: #f3f0ff;
+    background: linear-gradient(180deg, #f7f4ff 0%, #ebe6f8 55%, #e4ddf5 100%);
+    color: var(--fh-adm-text);
+    box-shadow: 8px 0 28px rgba(40, 24, 80, 0.08);
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-sidebar::after {
+    background: linear-gradient(180deg, rgba(155, 47, 201, 0.45), rgba(10, 126, 164, 0.3) 55%, transparent);
 }
 
 [data-theme='light'] body.fh-admin .fh-adm-brand,
 [data-theme='light'] body.fh-admin .fh-adm-user-name {
-    color: #f3f0ff;
+    color: var(--fh-adm-text);
 }
 
 [data-theme='light'] body.fh-admin .fh-adm-nav-link {
-    color: #a29bc4;
+    color: var(--fh-adm-muted);
 }
 
 [data-theme='light'] body.fh-admin .fh-adm-nav-link:hover,
 [data-theme='light'] body.fh-admin .fh-adm-nav-link.is-active {
-    color: #ffffff;
+    color: var(--fh-adm-text);
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-nav-link .bi {
+    color: var(--fh-adm-dim);
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-nav-link:hover .bi,
+[data-theme='light'] body.fh-admin .fh-adm-nav-link.is-active .bi {
+    color: var(--fh-accent);
 }
 
 [data-theme='light'] body.fh-admin .fh-adm-nav-group,
 [data-theme='light'] body.fh-admin .fh-adm-user-role,
 [data-theme='light'] body.fh-admin .fh-adm-brand-sub {
-    color: #8a84a8;
+    color: var(--fh-adm-dim);
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-brand-word.fh-brand {
+    color: #1c1633 !important;
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-sidebar-toggle {
+    background: #ffffff;
+    color: var(--fh-accent);
+    border-color: var(--fh-adm-line);
 }
 
 [data-theme='light'] body.fh-admin .fh-adm-topbar {
@@ -1126,6 +1150,164 @@ body.fh-admin .text-warning { color: var(--fh-gold) !important; }
 body.fh-admin .text-danger { color: #ff8d8d !important; }
 [data-theme='light'] body.fh-admin .text-danger { color: var(--fh-crimson) !important; }
 body.fh-admin .text-secondary { color: var(--fh-steel) !important; }
+
+/* ── Sidebar spirit (anime energy vignette) ── */
+body.fh-admin .fh-adm-spirit {
+    position: relative;
+    margin: 8px 12px 4px;
+    border-radius: var(--fh-adm-radius);
+    overflow: hidden;
+    border: 1px solid var(--fh-adm-line-soft);
+    background:
+        radial-gradient(120% 90% at 50% 20%, rgba(220, 99, 255, 0.18), transparent 55%),
+        linear-gradient(180deg, rgba(8, 8, 18, 0.35), rgba(5, 5, 13, 0.7));
+    box-shadow: inset 0 0 24px rgba(156, 112, 237, 0.12);
+    flex-shrink: 0;
+}
+
+body.fh-admin .fh-adm-spirit-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+body.fh-admin .fh-adm-spirit-caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 8px;
+    text-align: center;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--fh-adm-dim);
+    pointer-events: none;
+}
+
+body.fh-admin .spirit-aura {
+    transform-origin: 130px 96px;
+    animation: spirit-aura 5.5s ease-in-out infinite;
+}
+
+body.fh-admin .spirit-core {
+    transform-origin: 130px 88px;
+    animation: spirit-core 3.8s ease-in-out infinite;
+}
+
+body.fh-admin .spirit-ribbon {
+    stroke-dasharray: 280;
+    stroke-dashoffset: 0;
+    animation: spirit-flow 6s linear infinite;
+}
+
+body.fh-admin .spirit-ribbon--b {
+    animation-duration: 7.5s;
+    animation-direction: reverse;
+}
+
+body.fh-admin .spirit-ribbon--c {
+    animation-duration: 9s;
+}
+
+body.fh-admin .spirit-slash {
+    stroke-dasharray: 220;
+    stroke-dashoffset: 220;
+    animation: spirit-slash 4.5s ease-in-out infinite;
+}
+
+body.fh-admin .spirit-slash--thin {
+    animation-delay: 0.35s;
+}
+
+body.fh-admin .spirit-figure {
+    transform-origin: 130px 110px;
+    animation: spirit-figure 5s ease-in-out infinite;
+}
+
+body.fh-admin .spirit-scarf {
+    stroke-dasharray: 90;
+    animation: spirit-scarf 2.8s ease-in-out infinite;
+}
+
+body.fh-admin .spirit-scarf--b {
+    animation-delay: 0.4s;
+    animation-duration: 3.4s;
+}
+
+body.fh-admin .spirit-eye {
+    animation: spirit-eye 2.4s ease-in-out infinite;
+}
+
+body.fh-admin .spirit-eye--r {
+    animation-delay: 1.2s;
+}
+
+body.fh-admin .spirit-ground {
+    stroke-dasharray: 180;
+    animation: spirit-ground 4s ease-in-out infinite;
+}
+
+@keyframes spirit-aura {
+    0%, 100% { opacity: 0.55; transform: scale(1); }
+    50% { opacity: 0.9; transform: scale(1.05); }
+}
+
+@keyframes spirit-core {
+    0%, 100% { opacity: 0.65; transform: scale(0.95); }
+    50% { opacity: 1; transform: scale(1.08); }
+}
+
+@keyframes spirit-flow {
+    from { stroke-dashoffset: 280; }
+    to { stroke-dashoffset: -280; }
+}
+
+@keyframes spirit-slash {
+    0%, 70%, 100% { stroke-dashoffset: 220; opacity: 0.35; }
+    20%, 45% { stroke-dashoffset: 0; opacity: 1; }
+}
+
+@keyframes spirit-figure {
+    0%, 100% { transform: translate(118px, 52px) translateY(0); }
+    50% { transform: translate(118px, 52px) translateY(-4px); }
+}
+
+@keyframes spirit-scarf {
+    0%, 100% { stroke-dashoffset: 0; opacity: 0.85; }
+    50% { stroke-dashoffset: 18; opacity: 1; }
+}
+
+@keyframes spirit-eye {
+    0%, 100% { opacity: 0.45; r: 1.1; }
+    50% { opacity: 1; }
+}
+
+@keyframes spirit-ground {
+    0%, 100% { opacity: 0.2; stroke-dashoffset: 0; }
+    50% { opacity: 0.55; stroke-dashoffset: -40; }
+}
+
+body.fh-admin.is-sidebar-collapsed .fh-adm-spirit-caption {
+    display: none;
+}
+
+body.fh-admin.is-sidebar-collapsed .fh-adm-spirit {
+    margin-inline: 8px;
+    padding-block: 4px;
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-spirit {
+    background:
+        radial-gradient(120% 90% at 50% 20%, rgba(155, 47, 201, 0.12), transparent 55%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(235, 230, 248, 0.85));
+    border-color: #d9d2ee;
+    box-shadow: inset 0 0 18px rgba(155, 47, 201, 0.08);
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-spirit-caption {
+    color: var(--fh-adm-dim);
+}
 
 /* ── Sidebar collapse (desktop) ── */
 body.fh-admin .fh-adm-sidebar-toggle {
