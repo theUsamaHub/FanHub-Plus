@@ -17,6 +17,7 @@
     @include('home.sections.trending')
 
     @include('home.sections.featured-story')
+    // section for featured story is optional, so we use includeIf to avoid errors if the section is not defined
 
     @include('home.sections.multimedia')
 
