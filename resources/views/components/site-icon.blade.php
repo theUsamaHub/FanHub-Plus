@@ -1,6 +1,10 @@
 @props(['name'])
 <svg {{ $attributes->class('fh-icon') }} viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     @switch($name)
+        @case('arrow') <path d="M3 16h25m-8-8 8 8-8 8"/> @break
+        @case('next') <path d="m12 6 10 10-10 10"/> @break
+        @case('clock') <circle cx="16" cy="16" r="12"/><path d="M16 8v8l5 3"/> @break
+        @case('bag') <path d="M6 10h20l2 19H4l2-19Z"/><path d="M11 13V7a5 5 0 0 1 10 0v6"/> @break
         @case('crown') <path d="m3 8 7 6 6-12 6 12 7-6-3 17H6L3 8Z"/><path d="M7 27h18l-9 4-9-4" stroke="#219eff"/> @break
         @case('search') <circle cx="14" cy="14" r="9"/><path d="m21 21 7 7"/> @break
         @case('sun') <circle cx="16" cy="16" r="6"/><path d="M16 2v4m0 20v4M2 16h4m20 0h4M6 6l3 3m14 14 3 3M6 26l3-3M23 9l3-3"/> @break

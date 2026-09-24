@@ -1,0 +1,203 @@
+:root {
+    /* FanHub sunset palette: shared by the public website and assistant. */
+    --brand-orange: #FF922E;
+    --brand-yellow: #FFD65A;
+    --brand-red-orange: #F45132;
+    --brand-lavender: #C9B6F5;
+    --brand-ink: #181320;
+    --brand-surface: #241C30;
+    --brand-cream: #FFF9F2;
+    --brand-orange-ink: #9B4300;
+    --brand-lavender-ink: #64458C;
+    --bs-primary: #6B3FD1;
+    --bs-primary-rgb: 107, 63, 209;
+    --bs-link-color: #6B3FD1;
+    --bs-link-hover-color: #5331A3;
+    --bs-body-font-family: 'Saira', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --bs-heading-font-family: 'Rajdhani', 'Saira', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+    /* ── Theme Colors ── */
+    /* ── Dark theme ── */
+    /* dark-bg */
+    --dark-bg-50: #F7F7F8;
+    --dark-bg-100: #DBD9E2;
+    --dark-bg-200: #9F9ABC;
+    --dark-bg-300: #605899;
+    --dark-bg-400: #342E5D;
+    --dark-bg: #0D0B1A;
+    --dark-bg-500: #0D0B1A;
+    --dark-bg-600: #0D0B18;
+    --dark-bg-700: #0D0C16;
+    --dark-bg-800: #0D0C14;
+    --dark-bg-900: #0D0C12;
+
+    /* dark-surface */
+    --dark-surface-50: #F7F7F8;
+    --dark-surface-100: #DDDCE3;
+    --dark-surface-200: #A5A1BE;
+    --dark-surface-300: #69609E;
+    --dark-surface-400: #3E3768;
+    --dark-surface: #17142B;
+    --dark-surface-500: #17142B;
+    --dark-surface-600: #151324;
+    --dark-surface-700: #13111E;
+    --dark-surface-800: #100F18;
+    --dark-surface-900: #0D0D12;
+
+    /* dark-primary */
+    --dark-primary-50: #F6F4FB;
+    --dark-primary-100: #EAE7F6;
+    --dark-primary-200: #D4CCEC;
+    --dark-primary-300: #BDB1E2;
+    --dark-primary-400: #A797D8;
+    --dark-primary: #7F5AF0;
+    --dark-primary-500: #7F5AF0;
+    --dark-primary-600: #6246B9;
+    --dark-primary-700: #453183;
+    --dark-primary-800: #291D4D;
+    --dark-primary-900: #0C0816;
+
+    /* dark-accent */
+    --dark-accent-50: #FCF3F7;
+    --dark-accent-100: #F8E3ED;
+    --dark-accent-200: #F0C3D9;
+    --dark-accent-300: #E9A3C4;
+    --dark-accent-400: #E184B0;
+    --dark-accent: #FF3E9A;
+    --dark-accent-500: #FF3E9A;
+    --dark-accent-600: #C53077;
+    --dark-accent-700: #8C2254;
+    --dark-accent-800: #521432;
+    --dark-accent-900: #19060F;
+
+    /* dark-highlight */
+    --dark-highlight-50: #F2FDFB;
+    --dark-highlight-100: #DEF9F4;
+    --dark-highlight-200: #B5F1E6;
+    --dark-highlight-300: #8CE9D9;
+    --dark-highlight-400: #63E1CB;
+    --dark-highlight: #2CE8C7;
+    --dark-highlight-500: #2CE8C7;
+    --dark-highlight-600: #22B49B;
+    --dark-highlight-700: #18816F;
+    --dark-highlight-800: #0F4D42;
+    --dark-highlight-900: #051A16;
+
+    /* dark-warning */
+    --dark-warning-50: #FCFAF3;
+    --dark-warning-100: #F8F3E3;
+    --dark-warning-200: #F0E6C4;
+    --dark-warning-300: #E9D8A4;
+    --dark-warning-400: #E1CB85;
+    --dark-warning: #FFD23F;
+    --dark-warning-500: #FFD23F;
+    --dark-warning-600: #C5A331;
+    --dark-warning-700: #8C7323;
+    --dark-warning-800: #524414;
+    --dark-warning-900: #191406;
+
+    /* dark-text */
+    --dark-text-50: #F7F7F7;
+    --dark-text-100: #F7F7F8;
+    --dark-text-200: #F8F8F8;
+    --dark-text-300: #F8F8F8;
+    --dark-text-400: #F8F8F8;
+    --dark-text: #F4F2FF;
+    --dark-text-500: #F4F2FF;
+    --dark-text-600: #BDBDC0;
+    --dark-text-700: #828186;
+    --dark-text-800: #49484B;
+    --dark-text-900: #0F0F10;
+
+    /* dark-text-secondary */
+    --dark-text-secondary-50: #F7F7F8;
+    --dark-text-secondary-100: #EFEFF0;
+    --dark-text-secondary-200: #E0DFE2;
+    --dark-text-secondary-300: #CFCED5;
+    --dark-text-secondary-400: #BFBDC8;
+    --dark-text-secondary: #A6A0C7;
+    --dark-text-secondary-500: #A6A0C7;
+    --dark-text-secondary-600: #837F96;
+    --dark-text-secondary-700: #5C5969;
+    --dark-text-secondary-800: #36353C;
+    --dark-text-secondary-900: #0F0E10;
+
+    /* ── Light theme ── */
+    /* light-bg */
+    --light-bg-50: #F7F7F7;
+    --light-bg-100: #F8F8F8;
+    --light-bg-200: #F9F9F9;
+    --light-bg-300: #FAFAFA;
+    --light-bg-400: #FAFAFA;
+    --light-bg: #FAF9FF;
+    --light-bg-500: #FAF9FF;
+    --light-bg-600: #C0C0C1;
+    --light-bg-700: #858587;
+    --light-bg-800: #4A4A4B;
+    --light-bg-900: #0F0F0F;
+
+    /* light-surface */
+    --light-surface-50: #F7F7F7;
+    --light-surface-100: #F8F8F8;
+    --light-surface-200: #FAFAFA;
+    --light-surface-300: #FAFAFA;
+    --light-surface-400: #FAFAFA;
+    --light-surface: #FFFFFF;
+    --light-surface-500: #FFFFFF;
+    --light-surface-600: #C3C3C3;
+    --light-surface-700: #878787;
+    --light-surface-800: #4B4B4B;
+    --light-surface-900: #0F0F0F;
+
+    /* light-primary */
+    --light-primary-50: #F6F3FB;
+    --light-primary-100: #E7E0F6;
+    --light-primary-200: #C9BAEA;
+    --light-primary-300: #AB94DF;
+    --light-primary-400: #8D6ED3;
+    --light-primary: #6B3FD1;
+    --light-primary-500: #6B3FD1;
+    --light-primary-600: #5331A3;
+    --light-primary-700: #3C2374;
+    --light-primary-800: #241546;
+    --light-primary-900: #0C0718;
+
+    /* light-accent */
+    --light-accent-50: #FDF1F7;
+    --light-accent-100: #FADAEA;
+    --light-accent-200: #F5AACF;
+    --light-accent-300: #EF7BB4;
+    --light-accent-400: #E94B99;
+    --light-accent: #E31C7E;
+    --light-accent-500: #E31C7E;
+    --light-accent-600: #B11662;
+    --light-accent-700: #7F1047;
+    --light-accent-800: #4D0A2B;
+    --light-accent-900: #1B030F;
+
+    /* light-highlight */
+    --light-highlight-50: #F1FEFB;
+    --light-highlight-100: #D1FBF3;
+    --light-highlight-200: #92F5E1;
+    --light-highlight-300: #52F0D0;
+    --light-highlight-400: #15E8BE;
+    --light-highlight: #0FA98A;
+    --light-highlight-500: #0FA98A;
+    --light-highlight-600: #0C866D;
+    --light-highlight-700: #096350;
+    --light-highlight-800: #063F34;
+    --light-highlight-900: #021C17;
+
+    /* light-text */
+    --light-text-50: #F7F7F8;
+    --light-text-100: #DDDCE3;
+    --light-text-200: #A6A3BF;
+    --light-text-300: #6B649F;
+    --light-text-400: #403A6B;
+    --light-text: #1A1730;
+    --light-text-500: #1A1730;
+    --light-text-600: #171528;
+    --light-text-700: #141320;
+    --light-text-800: #111019;
+    --light-text-900: #0D0D12;
+}
