@@ -12,7 +12,7 @@
 
     <div class="row">
         <div class="col-lg-8">
-            <div class="card fh-adm-table-card">
+            <div class="card fh-adm-form-card">
                 <div class="card-body p-4">
                     <div class="mb-4 text-center">
                         @if ($media->isImage())

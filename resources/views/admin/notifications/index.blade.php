@@ -23,7 +23,7 @@
     </div>
 
 
-    <div class="card fh-adm-table-card">
+    <div class="card fh-adm-form-card">
         <div class="card-body p-0">
             <div class="list-group list-group-flush">
                 @forelse ($notifications as $notif)

@@ -59,7 +59,7 @@
 
         <!-- Bypass Routes -->
         <div class="col-12">
-            <div class="card fh-adm-table-card">
+            <div class="card fh-adm-form-card">
                 <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Bypass Routes') }}</h6></div>
                 <div class="card-body">
                     <p class="text-muted small">{{ __('Comma-separated URI patterns that bypass maintenance mode. Uses Laravel request->is() pattern matching. Examples: login, register, forgot-password, reset-password*, admin/*.') }}</p>

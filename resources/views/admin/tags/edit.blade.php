@@ -9,7 +9,7 @@
     </div>
 
     <div class="row"><div class="col-lg-6">
-        <div class="card fh-adm-table-card"><div class="card-body p-4">
+        <div class="card fh-adm-form-card"><div class="card-body p-4">
             <form action="{{ route('admin.tags.update', $tag) }}" method="POST">
                 @csrf @method('PUT')
                 <div class="mb-3">

@@ -39,9 +39,9 @@
         </div>
     </div>
 
-    <div class="card fh-adm-table-card">
+    <div class="card fh-adm-form-card">
         <div class="card-body p-0">
-            <div class="table-responsive">
+            <div class="table-responsive fh-adm-table-scroll">
                 <table class="table table-hover mb-0">
                     <thead><tr><th>{{ __('Name') }}</th><th>{{ __('Slug') }}</th><th>{{ __('Color') }}</th><th>{{ __('Categories') }}</th><th class="text-end">{{ __('Actions') }}</th></tr></thead>
                     <tbody>

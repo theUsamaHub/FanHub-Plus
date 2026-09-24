@@ -1227,6 +1227,68 @@ body.fh-admin .text-danger { color: #ff8d8d !important; }
 [data-theme='light'] body.fh-admin .text-danger { color: var(--fh-crimson) !important; }
 body.fh-admin .text-secondary { color: var(--fh-steel) !important; }
 
+body.fh-admin .card,
+body.fh-admin .fh-adm-panel,
+body.fh-admin .fh-adm-table-card,
+body.fh-admin .fh-adm-form-card,
+body.fh-admin .fh-adm-detail-card,
+body.fh-admin .fh-adm-stat,
+body.fh-admin .fh-adm-kpi {
+    overflow: hidden;
+    max-width: 100%;
+}
+
+body.fh-admin .fh-adm-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 180px;
+    width: 100%;
+    overflow: hidden;
+}
+
+body.fh-admin .fh-adm-chart-bar {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    overflow: hidden;
+}
+
+body.fh-admin .fh-adm-chart-bar span {
+    width: 100%;
+    max-width: 12px;
+    border-radius: 3px 3px 0 0;
+    background: linear-gradient(180deg, var(--fh-accent), var(--fh-accent-2));
+    min-height: 2px;
+}
+
+body.fh-admin .fh-adm-chart-bar small {
+    margin-top: 6px;
+    font-size: 0.55rem;
+    color: var(--fh-adm-dim);
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 100%;
+    transform: rotate(-45deg);
+    transform-origin: center top;
+    height: 28px;
+    line-height: 1;
+}
+
+body.fh-admin .row > * {
+    min-width: 0;
+}
+
+body.fh-admin .fh-adm-table-scroll {
+    overflow-x: auto;
+    max-width: 100%;
+    width: 100%;
+}
+
 /* ── Shared page pieces (all colors via variables) ── */
 body.fh-admin .fh-adm-stats {
     display: flex;

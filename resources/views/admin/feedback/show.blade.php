@@ -12,7 +12,7 @@
 
     <div class="row">
         <div class="col-lg-8">
-            <div class="card fh-adm-table-card">
+            <div class="card fh-adm-form-card">
                 <div class="card-body">
                     <table class="table mb-0 fh-adm-detail-table">
                         <tbody>

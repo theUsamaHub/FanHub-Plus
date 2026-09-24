@@ -13,7 +13,7 @@
     <form method="POST" action="{{ route('admin.ip-restrictions.update') }}">
         @csrf @method('PUT')
 
-        <div class="card fh-adm-table-card">
+        <div class="card fh-adm-form-card">
             <div class="card-body">
                 <div class="mb-3">
                     <label for="ips" class="form-label">{{ __('Allowed IPs') }}</label>

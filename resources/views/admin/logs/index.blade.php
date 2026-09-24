@@ -15,7 +15,7 @@
     </div>
 
 
-    <div class="card fh-adm-table-card">
+    <div class="card fh-adm-form-card">
         <div class="card-body p-0">
             <div class="bg-dark text-light p-3" style="max-height: 70vh; overflow-y: auto; font-family: monospace; font-size: 0.75rem; line-height: 1.8;">
                 @forelse ($logs as $line)

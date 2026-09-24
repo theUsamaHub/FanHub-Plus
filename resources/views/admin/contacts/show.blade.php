@@ -15,7 +15,7 @@
 
     <div class="row">
         <div class="col-lg-8">
-            <div class="card fh-adm-table-card">
+            <div class="card fh-adm-form-card">
                 <div class="card-body p-4">
                     <table class="table mb-0 fh-adm-detail-table">
                         <tbody>
@@ -69,7 +69,7 @@
         </div>
 
         <div class="col-lg-4">
-            <div class="card fh-adm-table-card">
+            <div class="card fh-adm-form-card">
                 <div class="card-header">
                     <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Actions') }}</h6>
                 </div>

@@ -11,7 +11,7 @@
 
     <div class="row">
         <div class="col-lg-8">
-            <div class="card fh-adm-table-card">
+            <div class="card fh-adm-form-card">
                 <div class="card-body p-4">
                     <form action="{{ route('admin.roles.store') }}" method="POST">
                         @csrf

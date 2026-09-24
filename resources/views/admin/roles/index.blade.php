@@ -12,9 +12,9 @@
 
 
     <!-- Roles Table -->
-    <div class="card fh-adm-table-card">
+    <div class="card fh-adm-form-card">
         <div class="card-body p-0">
-            <div class="table-responsive">
+            <div class="table-responsive fh-adm-table-scroll">
                 <table class="table table-hover mb-0">
                     <thead>
                         <tr>

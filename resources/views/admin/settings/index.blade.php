@@ -108,7 +108,7 @@
                 </div>
             </div>
         @empty
-            <div class="card fh-adm-table-card">
+            <div class="card fh-adm-form-card">
                 <div class="card-body">
                     <div class="fh-adm-empty">
                         <i class="bi bi-gear"></i>

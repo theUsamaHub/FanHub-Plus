@@ -173,10 +173,10 @@
         </div>
 
         <div class="col-12">
-            <div class="card fh-adm-table-card">
+            <div class="card fh-adm-form-card">
                 <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('User growth (last 30 days)') }}</h6></div>
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive fh-adm-table-scroll">
                         <table class="table table-sm mb-0">
                             <thead>
                                 <tr>

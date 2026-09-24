@@ -52,11 +52,11 @@
                 <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('User growth (last 30 days)') }}</h6></div>
                 <div class="card-body">
                     @php $maxVal = max(1, collect($chartData)->max('users')); @endphp
-                    <div class="d-flex align-items-end gap-1" style="height: 180px;">
+                    <div class="fh-adm-chart">
                         @foreach ($chartData as $day)
-                            <div class="flex-grow-1 d-flex flex-column align-items-center justify-content-end" style="height: 100%;">
-                                <div class="rounded-top" style="width:100%; height: {{ ($day['users'] / $maxVal) * 160 }}px; background: var(--bs-primary); min-height: 2px;" title="{{ $day['users'] }} users"></div>
-                                <small class="text-muted mt-1" style="font-size:0.6rem;">{{ $day['label'] }}</small>
+                            <div class="fh-adm-chart-bar" title="{{ $day['label'] }}: {{ $day['users'] }}">
+                                <span style="height: {{ ($day['users'] / $maxVal) * 140 }}px;"></span>
+                                <small>{{ $day['label'] }}</small>
                             </div>
                         @endforeach
                     </div>

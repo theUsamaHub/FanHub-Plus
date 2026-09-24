@@ -12,7 +12,7 @@
 
     <div class="row">
         <div class="col-lg-8">
-            <div class="card fh-adm-table-card">
+            <div class="card fh-adm-form-card">
                 <div class="card-body p-4">
                     <form method="POST" action="{{ route('admin.users.store') }}">
                         @csrf
@@ -57,7 +57,7 @@
         </div>
 
         <div class="col-lg-4">
-            <div class="card fh-adm-table-card">
+            <div class="card fh-adm-form-card">
                 <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Notes') }}</h6></div>
                 <div class="card-body">
                     <ul class="mb-0" style="font-size: 0.875rem;">

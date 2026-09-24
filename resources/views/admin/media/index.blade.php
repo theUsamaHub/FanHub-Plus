@@ -89,7 +89,7 @@
     </div>
 
     <!-- Files Grid -->
-    <div class="card fh-adm-table-card">
+    <div class="card fh-adm-form-card">
         <div class="card-body">
             @forelse ($media as $item)
                 @if ($loop->first || ($loop->index % 6 === 0))
