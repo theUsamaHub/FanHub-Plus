@@ -5,7 +5,6 @@ namespace Tests\Feature\Admin;
 use App\Models\Media;
 use App\Models\Role;
 use App\Models\User;
-use App\Models\UserProfile;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -24,68 +23,83 @@ class AdminProfileTest extends TestCase
         $this->admin->roles()->attach($role);
     }
 
-    public function test_admin_can_update_profile_preferences(): void
+    public function test_admin_profile_is_basic_only(): void
     {
-        $avatar = Media::create([
-            'uploaded_by' => $this->admin->id,
-            'path' => 'uploads/images/avatar.png',
-            'original_filename' => 'avatar.png',
-            'mime_type' => 'image/png',
-            'media_type' => 'image',
-            'size_bytes' => 100,
-            'disk' => 'public',
-        ]);
-
-        $this->actingAs($this->admin)
+        $response = $this->actingAs($this->admin)
             ->get(route('profile.edit'))
             ->assertOk()
-            ->assertSee('Display name')
-            ->assertSee('Theme')
-            ->assertSee('Font size');
+            ->assertSee('Name')
+            ->assertSee('Email');
 
+        $response->assertDontSee('Display name');
+        $response->assertDontSee('Font size');
+        $response->assertDontSee('theme_preference');
+    }
+
+    public function test_admin_can_update_name_and_email(): void
+    {
+        $this->actingAs($this->admin)->patch(route('profile.update'), [
+            'name' => 'Admin User',
+            'email' => 'admin-updated@example.com',
+        ])->assertRedirect(route('profile.edit'));
+
+        $this->admin->refresh();
+        $this->assertSame('Admin User', $this->admin->name);
+        $this->assertSame('admin-updated@example.com', $this->admin->email);
+    }
+
+    public function test_admin_update_ignores_registered_user_profile_fields(): void
+    {
         $this->actingAs($this->admin)->patch(route('profile.update'), [
             'name' => 'Admin User',
             'email' => $this->admin->email,
-            'display_name' => 'Admin Display',
-            'bio' => 'Fandom platform admin.',
+            'display_name' => 'Should Be Ignored',
+            'theme_preference' => 'neon',
+            'font_size_preference' => 'huge',
+        ])->assertRedirect(route('profile.edit'));
+
+        $this->assertDatabaseCount('user_profiles', 0);
+    }
+
+    public function test_registered_user_sees_profile_extras(): void
+    {
+        $member = User::factory()->create();
+
+        $this->actingAs($member)
+            ->get(route('profile.edit'))
+            ->assertOk()
+            ->assertSee('Display name')
+            ->assertSee('Font size');
+    }
+
+    public function test_registered_user_can_update_profile_preferences(): void
+    {
+        $member = User::factory()->create();
+        $avatar = Media::create([
+            'uploaded_by' => $member->id,
+            'path' => 'uploads/images/a.png',
+            'original_filename' => 'a.png',
+            'mime_type' => 'image/png',
+            'media_type' => 'image',
+            'size_bytes' => 10,
+            'disk' => 'public',
+        ]);
+
+        $this->actingAs($member)->patch(route('profile.update'), [
+            'name' => $member->name,
+            'email' => $member->email,
+            'display_name' => 'Member Display',
+            'bio' => 'Hello',
             'avatar_media_id' => $avatar->id,
             'theme_preference' => 'dark',
             'font_size_preference' => 'large',
         ])->assertRedirect(route('profile.edit'));
 
-        $profile = UserProfile::firstWhere('user_id', $this->admin->id);
-        $this->assertSame('Admin Display', $profile->display_name);
-        $this->assertSame('Fandom platform admin.', $profile->bio);
-        $this->assertSame($avatar->id, $profile->avatar_media_id);
-        $this->assertSame('dark', $profile->theme_preference);
-        $this->assertSame('large', $profile->font_size_preference);
-    }
-
-    public function test_profile_preferences_reject_invalid_values(): void
-    {
-        $this->actingAs($this->admin)->patch(route('profile.update'), [
-            'name' => 'Admin User',
-            'email' => $this->admin->email,
-            'theme_preference' => 'neon',
-            'font_size_preference' => 'huge',
-        ])->assertSessionHasErrors(['theme_preference', 'font_size_preference']);
-    }
-
-    public function test_profile_preferences_can_be_updated_without_avatar(): void
-    {
-        $this->actingAs($this->admin)->patch(route('profile.update'), [
-            'name' => 'Admin User',
-            'email' => $this->admin->email,
-            'display_name' => 'Just Display',
-            'theme_preference' => 'system',
-            'font_size_preference' => 'medium',
-        ])->assertRedirect(route('profile.edit'));
-
         $this->assertDatabaseHas('user_profiles', [
-            'user_id' => $this->admin->id,
-            'display_name' => 'Just Display',
-            'theme_preference' => 'system',
-            'font_size_preference' => 'medium',
+            'user_id' => $member->id,
+            'display_name' => 'Member Display',
+            'theme_preference' => 'dark',
+            'font_size_preference' => 'large',
         ]);
     }
 }

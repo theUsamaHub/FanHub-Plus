@@ -43,48 +43,50 @@
             @endif
         </div>
 
-        <div class="mb-3">
-            <x-input-label for="display_name" :value="__('Display name')" />
-            <x-text-input id="display_name" name="display_name" type="text" class="form-control" :value="old('display_name', $user->profile?->display_name)" maxlength="100" />
-            <x-input-error class="mt-1" :messages="$errors->get('display_name')" />
-        </div>
+        @unless ($user->hasRole('admin'))
+            <div class="mb-3">
+                <x-input-label for="display_name" :value="__('Display name')" />
+                <x-text-input id="display_name" name="display_name" type="text" class="form-control" :value="old('display_name', $user->profile?->display_name)" maxlength="100" />
+                <x-input-error class="mt-1" :messages="$errors->get('display_name')" />
+            </div>
 
-        <div class="mb-3">
-            <x-input-label for="bio" :value="__('Bio')" />
-            <textarea id="bio" name="bio" rows="3" class="form-control @error('bio') is-invalid @enderror">{{ old('bio', $user->profile?->bio) }}</textarea>
-            <x-input-error class="mt-1" :messages="$errors->get('bio')" />
-        </div>
+            <div class="mb-3">
+                <x-input-label for="bio" :value="__('Bio')" />
+                <textarea id="bio" name="bio" rows="3" class="form-control @error('bio') is-invalid @enderror">{{ old('bio', $user->profile?->bio) }}</textarea>
+                <x-input-error class="mt-1" :messages="$errors->get('bio')" />
+            </div>
 
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <x-input-label for="avatar_media_id" :value="__('Avatar')" />
-                <select name="avatar_media_id" id="avatar_media_id" class="form-select">
-                    <option value="">{{ __('None') }}</option>
-                    @foreach ($images as $image)
-                        <option value="{{ $image->id }}" @selected((int) old('avatar_media_id', $user->profile?->avatar_media_id) === $image->id)>{{ $image->original_filename }}</option>
-                    @endforeach
-                </select>
-                <x-input-error class="mt-1" :messages="$errors->get('avatar_media_id')" />
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <x-input-label for="avatar_media_id" :value="__('Avatar')" />
+                    <select name="avatar_media_id" id="avatar_media_id" class="form-select">
+                        <option value="">{{ __('None') }}</option>
+                        @foreach ($images as $image)
+                            <option value="{{ $image->id }}" @selected((int) old('avatar_media_id', $user->profile?->avatar_media_id) === $image->id)>{{ $image->original_filename }}</option>
+                        @endforeach
+                    </select>
+                    <x-input-error class="mt-1" :messages="$errors->get('avatar_media_id')" />
+                </div>
+                <div class="col-md-3 mb-3">
+                    <x-input-label for="theme_preference" :value="__('Theme')" />
+                    <select name="theme_preference" id="theme_preference" class="form-select">
+                        @foreach (['system', 'light', 'dark'] as $theme)
+                            <option value="{{ $theme }}" @selected(old('theme_preference', $user->profile?->theme_preference ?? 'system') === $theme)>{{ ucfirst($theme) }}</option>
+                        @endforeach
+                    </select>
+                    <x-input-error class="mt-1" :messages="$errors->get('theme_preference')" />
+                </div>
+                <div class="col-md-3 mb-3">
+                    <x-input-label for="font_size_preference" :value="__('Font size')" />
+                    <select name="font_size_preference" id="font_size_preference" class="form-select">
+                        @foreach (['small', 'medium', 'large'] as $size)
+                            <option value="{{ $size }}" @selected(old('font_size_preference', $user->profile?->font_size_preference ?? 'medium') === $size)>{{ ucfirst($size) }}</option>
+                        @endforeach
+                    </select>
+                    <x-input-error class="mt-1" :messages="$errors->get('font_size_preference')" />
+                </div>
             </div>
-            <div class="col-md-3 mb-3">
-                <x-input-label for="theme_preference" :value="__('Theme')" />
-                <select name="theme_preference" id="theme_preference" class="form-select">
-                    @foreach (['system', 'light', 'dark'] as $theme)
-                        <option value="{{ $theme }}" @selected(old('theme_preference', $user->profile?->theme_preference ?? 'system') === $theme)>{{ ucfirst($theme) }}</option>
-                    @endforeach
-                </select>
-                <x-input-error class="mt-1" :messages="$errors->get('theme_preference')" />
-            </div>
-            <div class="col-md-3 mb-3">
-                <x-input-label for="font_size_preference" :value="__('Font size')" />
-                <select name="font_size_preference" id="font_size_preference" class="form-select">
-                    @foreach (['small', 'medium', 'large'] as $size)
-                        <option value="{{ $size }}" @selected(old('font_size_preference', $user->profile?->font_size_preference ?? 'medium') === $size)>{{ ucfirst($size) }}</option>
-                    @endforeach
-                </select>
-                <x-input-error class="mt-1" :messages="$errors->get('font_size_preference')" />
-            </div>
-        </div>
+        @endunless
 
         <div class="d-flex align-items-center gap-3">
             <x-primary-button>{{ __('Save') }}</x-primary-button>

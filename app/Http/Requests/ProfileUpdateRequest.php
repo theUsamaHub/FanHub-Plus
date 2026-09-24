@@ -16,7 +16,7 @@ class ProfileUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
             'email' => [
                 'required',
@@ -26,11 +26,19 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
-            'display_name' => ['nullable', 'string', 'max:100'],
-            'bio' => ['nullable', 'string'],
-            'avatar_media_id' => ['nullable', 'integer', Rule::exists('media', 'id')],
-            'theme_preference' => ['nullable', Rule::in(['light', 'dark', 'system'])],
-            'font_size_preference' => ['nullable', Rule::in(['small', 'medium', 'large'])],
         ];
+
+        // Registered-user profile extras only — admin profile is basic.
+        if (! $this->user()->hasRole('admin')) {
+            $rules += [
+                'display_name' => ['nullable', 'string', 'max:100'],
+                'bio' => ['nullable', 'string'],
+                'avatar_media_id' => ['nullable', 'integer', Rule::exists('media', 'id')],
+                'theme_preference' => ['nullable', Rule::in(['light', 'dark', 'system'])],
+                'font_size_preference' => ['nullable', Rule::in(['small', 'medium', 'large'])],
+            ];
+        }
+
+        return $rules;
     }
 }

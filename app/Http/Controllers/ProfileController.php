@@ -34,16 +34,18 @@ class ProfileController extends Controller
 
         $user->save();
 
-        UserProfile::updateOrCreate(
-            ['user_id' => $user->id],
-            $request->safe()->only([
-                'display_name',
-                'bio',
-                'avatar_media_id',
-                'theme_preference',
-                'font_size_preference',
-            ])
-        );
+        if (! $user->hasRole('admin')) {
+            UserProfile::updateOrCreate(
+                ['user_id' => $user->id],
+                $request->safe()->only([
+                    'display_name',
+                    'bio',
+                    'avatar_media_id',
+                    'theme_preference',
+                    'font_size_preference',
+                ])
+            );
+        }
 
         return Redirect::route('profile.edit');
     }
