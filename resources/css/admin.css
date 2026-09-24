@@ -1362,47 +1362,60 @@ body.fh-admin.is-sidebar-collapsed .fh-adm-spirit-svg {
     height: 64px;
 }
 
-/* ── Theme toggle ── */
-body.fh-admin .fh-adm-theme-toggle {
+/* ── Theme orb (single glowing sigil, no box track) ── */
+body.fh-admin .fh-adm-theme-orb {
     position: relative;
-    width: 52px;
-    height: 32px;
-    border-radius: 999px;
-    border: 1px solid var(--fh-adm-line);
-    background: linear-gradient(120deg, rgba(18, 19, 38, 0.95), rgba(12, 13, 24, 0.95));
-    cursor: pointer;
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 50%;
     padding: 0;
-    transition: border-color 0.25s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    background:
+        radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.12), transparent 45%),
+        linear-gradient(145deg, #1a1430, #0a0a14);
+    box-shadow:
+        inset 0 0 0 1px rgba(220, 99, 255, 0.35),
+        0 0 16px rgba(220, 99, 255, 0.25);
+    transition: box-shadow 0.3s ease, transform 0.35s var(--fh-ease-spring);
 }
 
-body.fh-admin .fh-adm-theme-toggle:hover {
-    border-color: rgba(220, 99, 255, 0.5);
-    box-shadow: 0 0 14px rgba(220, 99, 255, 0.2);
+body.fh-admin .fh-adm-theme-orb:hover {
+    transform: scale(1.06);
+    box-shadow:
+        inset 0 0 0 1px rgba(68, 217, 255, 0.55),
+        0 0 22px rgba(220, 99, 255, 0.4);
 }
 
-[data-theme='light'] body.fh-admin .fh-adm-theme-toggle {
-    background: #ffffff;
+body.fh-admin .fh-adm-theme-orb:active {
+    transform: scale(0.96);
+}
+
+body.fh-admin .fh-adm-theme-orb-ring {
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    background: conic-gradient(from 40deg, #dc63ff, #44d9ff, #dc63ff);
+    opacity: 0.55;
+    mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
+    animation: spirit-orb-spin 6s linear infinite;
 }
 
 body.fh-admin .fh-adm-theme-knob {
     position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--fh-accent), var(--fh-cyan));
-    color: #fff;
+    inset: 0;
     display: grid;
     place-items: center;
-    box-shadow: 0 0 12px rgba(220, 99, 255, 0.45);
-    transition: left 0.35s var(--fh-ease-out), background 0.35s ease, box-shadow 0.35s ease;
+    color: #f3e8ff;
+    transition: transform 0.45s var(--fh-ease-spring), color 0.3s ease;
 }
 
 body.fh-admin .fh-adm-theme-glyph {
     grid-area: 1 / 1;
-    font-size: 0.78rem;
+    font-size: 1.05rem;
     line-height: 1;
+    filter: drop-shadow(0 0 6px rgba(220, 99, 255, 0.55));
 }
 
 body.fh-admin .fh-adm-theme-glyph--light {
@@ -1417,10 +1430,31 @@ body.fh-admin .fh-adm-theme-glyph--light {
     display: inline-block;
 }
 
+[data-theme='light'] body.fh-admin .fh-adm-theme-orb {
+    background:
+        radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.7), transparent 50%),
+        linear-gradient(145deg, #fff7e0, #f0e6ff);
+    box-shadow:
+        inset 0 0 0 1px rgba(184, 134, 11, 0.35),
+        0 0 16px rgba(255, 210, 63, 0.25);
+}
+
 [data-theme='light'] body.fh-admin .fh-adm-theme-knob {
-    left: 22px;
-    background: linear-gradient(135deg, var(--fh-gold), var(--fh-sail));
-    box-shadow: 0 0 12px rgba(255, 210, 63, 0.4);
+    color: #7a5a00;
+    transform: rotate(180deg);
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-theme-glyph {
+    filter: drop-shadow(0 0 6px rgba(255, 210, 63, 0.55));
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-theme-orb-ring {
+    background: conic-gradient(from 40deg, #ffd23f, #ff5a5a, #ffd23f);
+    opacity: 0.65;
+}
+
+@keyframes spirit-orb-spin {
+    to { transform: rotate(360deg); }
 }
 
 /* ── Focus (a11y) ── */

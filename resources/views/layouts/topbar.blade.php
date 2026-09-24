@@ -10,7 +10,8 @@
     </button>
 
     <div class="ms-auto d-flex align-items-center gap-2">
-        <button type="button" class="fh-adm-theme-toggle" onclick="toggleTheme()" aria-label="{{ __('Toggle dark mode') }}" title="{{ __('Toggle dark mode') }}">
+        <button type="button" class="fh-adm-theme-orb" onclick="toggleTheme()" aria-label="{{ __('Toggle dark mode') }}" title="{{ __('Toggle dark mode') }}">
+            <span class="fh-adm-theme-orb-ring" aria-hidden="true"></span>
             <span class="fh-adm-theme-knob">
                 <i class="bi bi-moon-stars fh-adm-theme-glyph fh-adm-theme-glyph--dark" aria-hidden="true"></i>
                 <i class="bi bi-sun fh-adm-theme-glyph fh-adm-theme-glyph--light" aria-hidden="true"></i>
