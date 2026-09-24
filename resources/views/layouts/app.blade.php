@@ -61,10 +61,6 @@
                     root.dataset.theme = theme;
                     body.dataset.theme = theme;
                     try { localStorage.setItem('fanhub-theme', theme); } catch (e) {}
-                    const icon = document.querySelector('[data-theme-icon]');
-                    if (icon) {
-                        icon.className = 'bi ' + (theme === 'light' ? 'bi-sun' : 'bi-moon-stars');
-                    }
                 }
 
                 function applySidebar(state) {

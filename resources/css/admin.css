@@ -1379,6 +1379,24 @@ body.fh-admin .fh-adm-theme-knob {
     transition: transform 0.4s var(--fh-ease-spring), left 0.35s var(--fh-ease-out), background 0.35s ease;
 }
 
+body.fh-admin .fh-adm-theme-glyph {
+    grid-area: 1 / 1;
+    font-size: 0.75rem;
+    line-height: 1;
+}
+
+body.fh-admin .fh-adm-theme-glyph--light {
+    display: none;
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-theme-glyph--dark {
+    display: none;
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-theme-glyph--light {
+    display: inline-block;
+}
+
 [data-theme='light'] body.fh-admin .fh-adm-theme-knob {
     left: 35px;
     background: linear-gradient(135deg, var(--fh-gold), var(--fh-sail));
