@@ -1,28 +1,24 @@
-<!-- Topbar -->
-<nav class="navbar bg-white border-bottom px-3" style="min-height: 64px;">
-    <div class="d-flex align-items-center">
-        <!-- Mobile Hamburger -->
-        <button class="btn btn-link text-dark d-lg-none p-1" onclick="toggleSidebar()">
-            <i class="bi bi-list fs-4"></i>
-        </button>
-    </div>
+<nav class="fh-adm-topbar" aria-label="{{ __('Admin toolbar') }}">
+    <button type="button" class="fh-adm-hamburger d-lg-none" onclick="toggleSidebar()" aria-label="{{ __('Open menu') }}">
+        <i class="bi bi-list fs-4"></i>
+    </button>
 
-    <div class="ms-auto d-flex align-items-center">
-        <!-- User Dropdown -->
+    <button type="button" class="fh-adm-search-trigger" onclick="window.dispatchEvent(new Event('toggle-command-palette'))">
+        <i class="bi bi-search"></i>
+        <span>{{ __('Search pages...') }}</span>
+        <kbd class="fh-adm-kbd">Ctrl K</kbd>
+    </button>
+
+    <div class="ms-auto d-flex align-items-center gap-2">
         <div class="dropdown">
-            <button class="btn btn-link text-dark text-decoration-none d-flex align-items-center p-0" data-bs-toggle="dropdown" aria-expanded="false">
-                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
-                    <span class="text-white fw-semibold" style="font-size: 0.75rem;">{{ substr(Auth::user()->name, 0, 1) }}</span>
-                </div>
-                <span class="ms-2 d-none d-md-inline" style="font-size: 0.875rem;">{{ Auth::user()->name }}</span>
-                <span class="badge bg-label-primary ms-2 d-none d-md-inline-flex text-primary" style="font-size: 0.65rem;">
-                    {{ Auth::user()->hasRole('admin') ? __('Admin') : __('User') }}
-                </span>
-                <i class="bi bi-chevron-down ms-1" style="font-size: 0.75rem;"></i>
+            <button class="fh-adm-user-chip" data-bs-toggle="dropdown" aria-expanded="false" type="button">
+                <span class="fh-adm-avatar" style="width:32px;height:32px;font-size:0.8rem;">{{ substr(Auth::user()->name, 0, 1) }}</span>
+                <span class="d-none d-md-inline" style="font-size:0.875rem;">{{ Auth::user()->name }}</span>
+                <i class="bi bi-chevron-down" style="font-size:0.75rem;color:var(--fh-adm-dim);"></i>
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
                 <li>
-                    <span class="dropdown-item-text text-muted" style="font-size: 0.75rem;">
+                    <span class="dropdown-item-text" style="font-size: 0.75rem; color: var(--fh-adm-dim);">
                         {{ Auth::user()->email }}
                     </span>
                 </li>
