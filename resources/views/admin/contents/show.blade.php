@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="h4 mb-0 fw-semibold">{{ $content->title }}</h2>
             <div class="d-flex gap-2">
@@ -13,9 +13,9 @@
 
     <div class="row">
         <div class="col-lg-8">
-            <div class="card mb-4">
+            <div class="card mb-4 fh-adm-form-card">
                 <div class="card-body">
-                    <table class="table mb-0">
+                    <table class="table mb-0 fh-adm-detail-table">
                         <tbody>
                             <tr><td class="fw-semibold" style="width:180px;">{{ __('Slug') }}</td><td><code>{{ $content->slug }}</code></td></tr>
                             <tr><td class="fw-semibold">{{ __('Category') }}</td><td>{{ $content->category?->name ?? '-' }}</td></tr>
@@ -23,8 +23,8 @@
                             <tr>
                                 <td class="fw-semibold">{{ __('Status') }}</td>
                                 <td>
-                                    @php $statusClass = ['draft' => 'secondary', 'pending_review' => 'warning', 'published' => 'success', 'rejected' => 'danger'][$content->status] ?? 'secondary'; @endphp
-                                    <span class="badge text-bg-{{ $statusClass }}">{{ ucwords(str_replace('_', ' ', $content->status)) }}</span>
+                                    @php $statusTone = ['draft' => 'muted', 'pending_review' => 'warning', 'published' => 'success', 'rejected' => 'danger'][$content->status] ?? 'muted'; @endphp
+                                    <span class="fh-adm-chip" data-tone="{{ $statusTone }}">{{ ucwords(str_replace('_', ' ', $content->status)) }}</span>
                                 </td>
                             </tr>
                             <tr><td class="fw-semibold">{{ __('Featured') }}</td><td>{{ $content->is_featured ? __('Yes') : __('No') }}</td></tr>
@@ -40,7 +40,7 @@
                                 <td class="fw-semibold">{{ __('Tags') }}</td>
                                 <td>
                                     @forelse ($content->tags as $tag)
-                                        <span class="badge text-bg-light border">{{ $tag->name }}</span>
+                                        <span class="fh-adm-chip" data-tone-x="light border">{{ $tag->name }}</span>
                                     @empty
                                         -
                                     @endforelse
@@ -51,7 +51,7 @@
                                 <td>
                                     @forelse ($content->media as $media)
                                         <div class="mb-1">
-                                            <span class="badge text-bg-secondary">{{ $media->pivot->role }}</span>
+                                            <span class="fh-adm-chip" data-tone-x="secondary">{{ $media->pivot->role }}</span>
                                             {{ $media->original_filename }}
                                         </div>
                                     @empty
@@ -66,7 +66,7 @@
         </div>
 
         <div class="col-lg-4">
-            <div class="card mb-4">
+            <div class="card mb-4 fh-adm-form-card">
                 <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Quick status') }}</h6></div>
                 <div class="card-body d-grid gap-2">
                     @foreach (['draft', 'pending_review', 'published', 'rejected'] as $status)
@@ -82,7 +82,7 @@
                 </div>
             </div>
 
-            <div class="card border-danger">
+            <div class="card border-danger fh-adm-danger-card">
                 <div class="card-header"><h6 class="mb-0 fw-semibold text-danger">{{ __('Danger Zone') }}</h6></div>
                 <div class="card-body">
                     <p class="text-muted" style="font-size: 0.875rem;">{{ __('Deleting content removes it permanently along with its media links and tags.') }}</p>

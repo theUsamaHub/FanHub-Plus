@@ -8,7 +8,7 @@
             @csrf
             @method($method)
 
-            <div class="card mb-4">
+            <div class="card mb-4 fh-adm-form-card">
                 <div class="card-body">
                     <div class="mb-3">
                         <x-input-label for="name" :value="__('Name')" />
@@ -71,7 +71,7 @@
     </div>
 
     <div class="col-lg-4">
-        <div class="card">
+        <div class="card fh-adm-detail-card">
             <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Scope') }}</h6></div>
             <div class="card-body">
                 <p class="mb-0 text-muted" style="font-size: 0.875rem;">

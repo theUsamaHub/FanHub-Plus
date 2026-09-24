@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="h4 mb-0 fw-semibold">{{ __('Review Detail') }}</h2>
             <a href="{{ route('admin.reviews.index') }}" class="btn btn-outline-secondary btn-sm">
@@ -12,9 +12,9 @@
 
     <div class="row">
         <div class="col-lg-8">
-            <div class="card">
+            <div class="card fh-adm-detail-card">
                 <div class="card-body">
-                    <table class="table mb-0">
+                    <table class="table mb-0 fh-adm-detail-table">
                         <tbody>
                             <tr><td class="fw-semibold" style="width:180px;">{{ __('User') }}</td><td>{{ $review->user?->name ?? '-' }} @if ($review->user) &lt;{{ $review->user->email }}&gt; @endif</td></tr>
                             <tr><td class="fw-semibold">{{ __('Target') }}</td><td>{{ $review->target_label }}</td></tr>
@@ -23,8 +23,8 @@
                             <tr>
                                 <td class="fw-semibold">{{ __('Status') }}</td>
                                 <td>
-                                    @php $statusClass = ['pending' => 'warning', 'approved' => 'success', 'rejected' => 'danger'][$review->status] ?? 'secondary'; @endphp
-                                    <span class="badge text-bg-{{ $statusClass }}">{{ ucfirst($review->status) }}</span>
+                                    @php $statusTone = ['pending' => 'warning', 'approved' => 'success', 'rejected' => 'danger'][$review->status] ?? 'muted'; @endphp
+                                    <span class="fh-adm-chip" data-tone="{{ $statusTone }}">{{ ucfirst($review->status) }}</span>
                                 </td>
                             </tr>
                             <tr><td class="fw-semibold">{{ __('Date') }}</td><td>{{ $review->created_at->format('M d, Y H:i') }}</td></tr>
@@ -35,7 +35,7 @@
         </div>
 
         <div class="col-lg-4">
-            <div class="card mb-4">
+            <div class="card mb-4 fh-adm-form-card">
                 <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Moderation') }}</h6></div>
                 <div class="card-body d-grid gap-2">
                     @if ($review->status !== 'approved')
@@ -55,7 +55,7 @@
                 </div>
             </div>
 
-            <div class="card border-danger">
+            <div class="card border-danger fh-adm-danger-card">
                 <div class="card-header"><h6 class="mb-0 fw-semibold text-danger">{{ __('Danger Zone') }}</h6></div>
                 <div class="card-body">
                     <form action="{{ route('admin.reviews.destroy', $review) }}" method="POST" onsubmit="return confirm('{{ __('Delete this review?') }}')">

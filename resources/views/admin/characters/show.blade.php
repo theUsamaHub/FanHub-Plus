@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="h4 mb-0 fw-semibold">{{ $character->name }}</h2>
             <div class="d-flex gap-2">
@@ -13,9 +13,9 @@
 
     <div class="row">
         <div class="col-lg-8">
-            <div class="card mb-4">
+            <div class="card mb-4 fh-adm-form-card">
                 <div class="card-body">
-                    <table class="table mb-0">
+                    <table class="table mb-0 fh-adm-detail-table">
                         <tbody>
                             <tr>
                                 <td class="fw-semibold" style="width:180px;">{{ __('Image') }}</td>
@@ -36,12 +36,12 @@
                 </div>
             </div>
 
-            <div class="card">
+            <div class="card fh-adm-detail-card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h6 class="mb-0 fw-semibold">{{ __('Related content') }}</h6>
                 </div>
                 <div class="card-body p-0">
-                    <table class="table mb-0">
+                    <table class="table mb-0 fh-adm-detail-table">
                         <thead>
                             <tr>
                                 <th>{{ __('Title') }}</th>
@@ -76,7 +76,7 @@
         </div>
 
         <div class="col-lg-4">
-            <div class="card mb-4">
+            <div class="card mb-4 fh-adm-form-card">
                 <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Attach content') }}</h6></div>
                 <div class="card-body">
                     <form action="{{ route('admin.characters.contents.attach', $character) }}" method="POST">
@@ -96,7 +96,7 @@
                 </div>
             </div>
 
-            <div class="card border-danger">
+            <div class="card border-danger fh-adm-danger-card">
                 <div class="card-header"><h6 class="mb-0 fw-semibold text-danger">{{ __('Danger Zone') }}</h6></div>
                 <div class="card-body">
                     <p class="text-muted" style="font-size: 0.875rem;">{{ __('Deleting a character removes its related content links. Content items themselves are kept.') }}</p>

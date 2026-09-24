@@ -1317,6 +1317,49 @@ body.fh-admin .fh-adm-empty .bi {
     margin-bottom: 12px;
 }
 
+/* ── Detail / form sections ── */
+body.fh-admin .fh-adm-form-card,
+body.fh-admin .fh-adm-detail-card {
+    border: 1px solid transparent;
+    background:
+        linear-gradient(var(--fh-adm-panel), var(--fh-adm-panel)) padding-box,
+        linear-gradient(115deg, color-mix(in srgb, var(--fh-accent) 35%, transparent), color-mix(in srgb, var(--fh-adm-line) 60%, transparent) 45%, color-mix(in srgb, var(--fh-cyan) 30%, transparent)) border-box;
+    animation: fh-adm-enter 0.5s var(--fh-ease-out) both;
+}
+
+body.fh-admin .fh-adm-form-card:hover,
+body.fh-admin .fh-adm-detail-card:hover {
+    border-color: transparent;
+    box-shadow: 0 12px 28px color-mix(in srgb, var(--fh-adm-bg-deep) 55%, transparent);
+}
+
+body.fh-admin .fh-adm-section-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    color: var(--fh-accent);
+    margin-bottom: 16px;
+}
+
+body.fh-admin .fh-adm-detail-table td:first-child {
+    color: var(--fh-adm-label);
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    width: 180px;
+}
+
+body.fh-admin .fh-adm-danger-card {
+    border: 1px solid color-mix(in srgb, var(--fh-crimson) 45%, transparent) !important;
+}
+
+body.fh-admin .fh-adm-danger-card .card-header,
+body.fh-admin .fh-adm-danger-card .fh-adm-section-title {
+    color: var(--fh-crimson);
+}
+
 /* ── Profile page ── */
 body.fh-admin .fh-adm-page-head {
     animation: fh-adm-enter 0.5s var(--fh-ease-out) both;
