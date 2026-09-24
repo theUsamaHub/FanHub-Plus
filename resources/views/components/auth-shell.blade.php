@@ -22,7 +22,9 @@
 <section class="fh-auth-panel" aria-labelledby="auth-title">
 <div class="fh-auth-glow" aria-hidden="true"></div>
 <div class="fh-auth-heading"><span class="fh-auth-eyebrow">YOUR FANDOM. YOUR SPACE.</span><h1 id="auth-title">{{ $title }}</h1><p>{{ $subtitle }}</p></div>
+@if(request()->routeIs('login') || request()->routeIs('register'))
 <nav class="fh-auth-tabs" aria-label="Account access"><a href="{{ route('login') }}" @if(request()->routeIs('login')) aria-current="page" @endif>Log in</a><a href="{{ route('register') }}" @if(request()->routeIs('register')) aria-current="page" @endif>Sign up</a></nav>
+@endif
 {{ $slot }}
 </section>
 </main>
