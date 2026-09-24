@@ -30,11 +30,23 @@
 .fh-chat__suggestions button { text-align: left; border: 1px solid color-mix(in srgb, var(--chat-muted) 20%, transparent); border-radius: 11px; padding: 12px 14px; background: var(--chat-surface); color: var(--chat-text); font-size: 12px; overflow-wrap: anywhere; }
 .fh-chat__suggestions button:hover { border-color: var(--chat-primary); }
 .fh-chat__messages { display: flex; flex-direction: column; gap: 16px; }
-.fh-chat__message { max-width: 92%; align-self: flex-start; }
-.fh-chat__message p { margin: 0; padding: 12px 14px; border-radius: 14px 14px 14px 3px; background: var(--chat-surface); white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13px; line-height: 1.8; }
+.fh-chat__message { max-width: 92%; align-self: flex-start; position: relative; }
+.fh-chat__message p, .fh-chat__message-content { margin: 0; padding: 12px 14px; border-radius: 14px 14px 14px 3px; background: var(--chat-surface); overflow-wrap: anywhere; font-size: 13px; line-height: 1.8; }
+.fh-chat__message-content { display: block; }
+.fh-chat__message-content ul, .fh-chat__message-content ol { margin: 6px 0; padding-left: 20px; }
+.fh-chat__message-content li { margin: 3px 0; }
+.fh-chat__message-content code { background: color-mix(in srgb, var(--chat-muted) 15%, transparent); padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+.fh-chat__message-content a { color: var(--chat-primary); text-decoration: underline; }
+.fh-chat__message-content strong { font-weight: 600; }
 .fh-chat__message small { display: block; margin: 6px 3px 0; color: var(--chat-muted); font-size: 9px; }
+.fh-chat__copy { position: absolute; top: 8px; right: 8px; border: 0; background: color-mix(in srgb, var(--chat-surface) 80%, var(--chat-text)); color: var(--chat-muted); border-radius: 6px; width: 28px; height: 28px; display: grid; place-items: center; opacity: 0; transition: opacity .2s, color .15s; }
+.fh-chat__message:hover .fh-chat__copy { opacity: 1; }
+.fh-chat__copy:hover { color: var(--chat-primary); }
 .fh-chat__message--user { align-self: flex-end; }
 .fh-chat__message--user p { background: var(--chat-primary); color: var(--brand-ink); border-radius: 14px 14px 3px 14px; }
+.fh-chat__quick-replies { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 4px; }
+.fh-chat__quick-replies button { border: 1px solid color-mix(in srgb, var(--chat-primary) 35%, transparent); border-radius: 100px; padding: 7px 14px; background: color-mix(in srgb, var(--chat-primary) 8%, var(--chat-bg)); color: var(--chat-text); font-size: 11px; white-space: nowrap; transition: background .15s, border-color .15s; }
+.fh-chat__quick-replies button:hover { background: color-mix(in srgb, var(--chat-primary) 18%, var(--chat-bg)); border-color: var(--chat-primary); }
 .fh-chat__status, .fh-chat__error { font-size: 12px; color: var(--chat-muted); margin: 18px 0 0; }
 .fh-chat__typing { display: flex; margin: 8px 0; }
 .fh-chat__typing-bubble { display: flex; align-items: center; gap: 5px; padding: 12px 16px; border-radius: 14px 14px 14px 3px; background: var(--chat-surface); }
