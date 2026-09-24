@@ -242,7 +242,7 @@ body.fh-admin .fh-adm-sidebar {
     flex-direction: column;
     position: sticky;
     top: 0;
-    z-index: var(--z-sticky);
+    z-index: 260;
     overflow: visible;
     background:
         linear-gradient(180deg, rgba(18, 19, 38, 0.97) 0%, rgba(5, 5, 13, 0.98) 100%);
@@ -1025,6 +1025,10 @@ body.fh-admin .fh-adm-kpi:hover {
     color: var(--fh-adm-text);
 }
 
+body.fh-admin .fh-adm-kpi .card-body {
+    padding-left: 1.35rem !important;
+}
+
 body.fh-admin .fh-adm-kpi-label {
     display: block;
     font-family: 'Rajdhani', sans-serif;
@@ -1097,7 +1101,7 @@ body.fh-admin .fh-adm-sidebar-toggle {
     position: absolute;
     top: 22px;
     right: -14px;
-    z-index: 2;
+    z-index: 260;
     width: 28px;
     height: 28px;
     border-radius: 50%;
