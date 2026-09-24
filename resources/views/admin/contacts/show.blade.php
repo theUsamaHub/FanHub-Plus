@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 class="h4 mb-0 fw-semibold">{{ __('Contact Message') }}</h2>
                     <div class="d-flex gap-2">
@@ -15,9 +15,9 @@
 
     <div class="row">
         <div class="col-lg-8">
-            <div class="card">
+            <div class="card fh-adm-table-card">
                 <div class="card-body p-4">
-                    <table class="table mb-0">
+                    <table class="table mb-0 fh-adm-detail-table">
                         <tbody>
                             <tr>
                                 <td class="fw-semibold" style="width: 200px;">{{ __('Name') }}</td>
@@ -69,7 +69,7 @@
         </div>
 
         <div class="col-lg-4">
-            <div class="card">
+            <div class="card fh-adm-table-card">
                 <div class="card-header">
                     <h6 class="mb-0 fw-semibold">{{ __('Actions') }}</h6>
                 </div>

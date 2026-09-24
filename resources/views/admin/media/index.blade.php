@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 class="h4 mb-0 fw-semibold">{{ __('Media Library') }}</h2>
                 </div>
     </div>
 
     <!-- Upload Form -->
-    <div class="card mb-4">
+    <div class="card mb-4 fh-adm-filter">
         <div class="card-header">
             <h6 class="mb-0 fw-semibold">{{ __('Upload Files') }}</h6>
         </div>
@@ -64,7 +64,7 @@
     </div>
 
     <!-- Filters -->
-    <div class="card mb-4">
+    <div class="card mb-4 fh-adm-filter">
         <div class="card-body">
             <form method="GET" action="{{ route('admin.media.index') }}" class="row g-3">
                 <div class="col-md-6">
@@ -89,7 +89,7 @@
     </div>
 
     <!-- Files Grid -->
-    <div class="card">
+    <div class="card fh-adm-table-card">
         <div class="card-body">
             @forelse ($media as $item)
                 @if ($loop->first || ($loop->index % 6 === 0))
@@ -132,7 +132,7 @@
                     </div>
                 @endif
             @empty
-                <div class="empty-state">
+                <div class="fh-adm-empty">
                     <i class="bi bi-folder"></i>
                     <p>{{ __('No files uploaded yet.') }}</p>
                 </div>

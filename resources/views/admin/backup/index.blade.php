@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 class="h4 mb-0 fw-semibold">{{ __('Database Backup') }}</h2>
                     <form action="{{ route('admin.backup.create') }}" method="POST">
@@ -12,7 +12,7 @@
     </div>
 
 
-    <div class="card">
+    <div class="card fh-adm-table-card">
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
@@ -35,7 +35,7 @@
                             </tr>
                         @empty
                             <tr><td colspan="4" class="text-center py-5">
-                                <div class="empty-state"><i class="bi bi-database"></i><p>{{ __('No backups yet.') }}</p></div>
+                                <div class="fh-adm-empty"><i class="bi bi-database"></i><p>{{ __('No backups yet.') }}</p></div>
                             </td></tr>
                         @endforelse
                     </tbody>

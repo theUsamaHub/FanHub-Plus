@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="h4 mb-0 fw-semibold">{{ __('Edit Media') }}</h2>
             <a href="{{ route('admin.media.index') }}" class="btn btn-outline-secondary btn-sm">
@@ -12,7 +12,7 @@
 
     <div class="row">
         <div class="col-lg-8">
-            <div class="card">
+            <div class="card fh-adm-table-card">
                 <div class="card-body p-4">
                     <div class="mb-4 text-center">
                         @if ($media->isImage())
@@ -109,7 +109,7 @@
         </div>
 
         <div class="col-lg-4">
-            <div class="card border-danger">
+            <div class="card border-danger fh-adm-danger-card">
                 <div class="card-header">
                     <h6 class="mb-0 fw-semibold text-danger">{{ __('Danger Zone') }}</h6>
                 </div>

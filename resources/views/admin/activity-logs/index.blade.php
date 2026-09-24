@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 class="h4 mb-0 fw-semibold">{{ __('Activity Log') }}</h2>
                     <div class="d-flex gap-2">
@@ -47,7 +47,7 @@
         </div>
     </div>
 
-    <div class="card mb-4"><div class="card-body">
+    <div class="card mb-4 fh-adm-filter"><div class="card-body">
         <form method="GET" class="row g-3">
             <div class="col-md-3"><input type="text" class="form-control" name="search" placeholder="{{ __('Search...') }}" value="{{ request('search') }}"></div>
             <div class="col-md-2">
@@ -71,7 +71,7 @@
         </form>
     </div></div>
 
-    <div class="card"><div class="card-body p-0">
+    <div class="card fh-adm-table-card"><div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-hover mb-0">
                 <thead><tr><th>{{ __('Time') }}</th><th>{{ __('User') }}</th><th>{{ __('Event') }}</th><th>{{ __('Model') }}</th><th>{{ __('Details') }}</th></tr></thead>

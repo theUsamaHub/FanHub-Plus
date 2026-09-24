@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
         <h2 class="h4 mb-0 fw-semibold">{{ __('Health Dashboard') }}</h2>
     </div>
 

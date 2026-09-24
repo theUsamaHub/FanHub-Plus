@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 class="h4 mb-0 fw-semibold">{{ __('Notifications') }}</h2>
                     <div class="d-flex gap-2">
@@ -23,7 +23,7 @@
     </div>
 
 
-    <div class="card">
+    <div class="card fh-adm-table-card">
         <div class="card-body p-0">
             <div class="list-group list-group-flush">
                 @forelse ($notifications as $notif)

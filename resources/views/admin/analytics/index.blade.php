@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="h4 mb-0 fw-semibold">{{ __('Analytics') }}</h2>
         </div>
@@ -12,7 +12,7 @@
             <div class="card h-100">
                 <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Top content by views') }}</h6></div>
                 <div class="card-body p-0">
-                    <table class="table mb-0">
+                    <table class="table mb-0 fh-adm-detail-table">
                         <thead>
                             <tr>
                                 <th>{{ __('Title') }}</th>
@@ -40,7 +40,7 @@
             <div class="card h-100">
                 <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Top merchandise by views') }}</h6></div>
                 <div class="card-body p-0">
-                    <table class="table mb-0">
+                    <table class="table mb-0 fh-adm-detail-table">
                         <thead>
                             <tr>
                                 <th>{{ __('Name') }}</th>
@@ -68,7 +68,7 @@
             <div class="card h-100">
                 <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Content by category') }}</h6></div>
                 <div class="card-body p-0">
-                    <table class="table mb-0">
+                    <table class="table mb-0 fh-adm-detail-table">
                         <thead>
                             <tr>
                                 <th>{{ __('Category') }}</th>
@@ -94,7 +94,7 @@
             <div class="card h-100">
                 <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Content by status') }}</h6></div>
                 <div class="card-body p-0">
-                    <table class="table mb-0">
+                    <table class="table mb-0 fh-adm-detail-table">
                         <thead>
                             <tr>
                                 <th>{{ __('Status') }}</th>
@@ -120,7 +120,7 @@
             <div class="card h-100">
                 <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Review moderation volume') }}</h6></div>
                 <div class="card-body p-0">
-                    <table class="table mb-0">
+                    <table class="table mb-0 fh-adm-detail-table">
                         <thead>
                             <tr>
                                 <th>{{ __('Status') }}</th>
@@ -146,7 +146,7 @@
             <div class="card h-100">
                 <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Feedback volume') }}</h6></div>
                 <div class="card-body p-0">
-                    <table class="table mb-0">
+                    <table class="table mb-0 fh-adm-detail-table">
                         <thead>
                             <tr>
                                 <th>{{ __('Type') }}</th>
@@ -173,7 +173,7 @@
         </div>
 
         <div class="col-12">
-            <div class="card">
+            <div class="card fh-adm-table-card">
                 <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('User growth (last 30 days)') }}</h6></div>
                 <div class="card-body">
                     <div class="table-responsive">

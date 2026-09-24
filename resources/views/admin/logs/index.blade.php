@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 class="h4 mb-0 fw-semibold">{{ __('Application Logs') }}</h2>
                     <div class="d-flex gap-2">
@@ -15,7 +15,7 @@
     </div>
 
 
-    <div class="card">
+    <div class="card fh-adm-table-card">
         <div class="card-body p-0">
             <div class="bg-dark text-light p-3" style="max-height: 70vh; overflow-y: auto; font-family: monospace; font-size: 0.75rem; line-height: 1.8;">
                 @forelse ($logs as $line)

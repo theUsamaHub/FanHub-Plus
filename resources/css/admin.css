@@ -277,7 +277,8 @@ body.fh-admin .dropdown-menu {
 /* ── Sidebar ── */
 body.fh-admin .fh-adm-sidebar {
     width: var(--fh-adm-sidebar-w);
-    min-height: 100vh;
+    height: 100vh;
+    max-height: 100vh;
     display: flex;
     flex-direction: column;
     position: sticky;
@@ -382,6 +383,7 @@ body.fh-admin .fh-adm-brand-sub {
 
 body.fh-admin .fh-adm-nav {
     flex: 1;
+    min-height: 0;
     overflow-y: auto;
     padding: 12px 0 24px;
     scrollbar-width: thin;

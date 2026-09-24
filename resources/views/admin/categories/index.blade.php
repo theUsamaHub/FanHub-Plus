@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 class="h4 mb-0 fw-semibold">{{ __('Categories') }}</h2>
                     <div class="d-flex gap-2">
@@ -16,7 +16,7 @@
     </div>
 
     <!-- Search -->
-    <div class="card mb-4">
+    <div class="card mb-4 fh-adm-filter">
         <div class="card-body">
             <form method="GET" action="{{ route('admin.categories.index') }}" class="row g-3">
                 <div class="col-md-9">
@@ -32,7 +32,7 @@
     </div>
 
     <!-- Categories Table -->
-    <div class="card">
+    <div class="card fh-adm-table-card">
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
@@ -73,7 +73,7 @@
                         @empty
                             <tr>
                                 <td colspan="5" class="text-center py-5">
-                                    <div class="empty-state">
+                                    <div class="fh-adm-empty">
                                         <i class="bi bi-tags"></i>
                                         <p>{{ __('No categories found.') }}</p>
                                         <a href="{{ route('admin.categories.create') }}" class="btn btn-primary btn-sm mt-2">

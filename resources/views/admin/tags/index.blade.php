@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 class="h4 mb-0 fw-semibold">{{ __('Tags') }}</h2>
                     <a href="{{ route('admin.tags.create') }}" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle me-1"></i>{{ __('Add Tag') }}</a>
@@ -29,7 +29,7 @@
         </div>
     </div>
 
-    <div class="card mb-4">
+    <div class="card mb-4 fh-adm-filter">
         <div class="card-body">
             <form method="GET" class="row g-3">
                 <div class="col-md-8"><input type="text" class="form-control" name="search" placeholder="{{ __('Search tags...') }}" value="{{ request('search') }}"></div>
@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <div class="card">
+    <div class="card fh-adm-table-card">
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover mb-0">

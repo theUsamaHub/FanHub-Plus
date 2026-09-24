@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 class="h4 mb-0 fw-semibold">{{ __('Create Category') }}</h2>
                     <a href="{{ route('admin.categories.index') }}" class="btn btn-outline-secondary btn-sm">
@@ -12,7 +12,7 @@
 
     <div class="row">
         <div class="col-lg-8">
-            <div class="card">
+            <div class="card fh-adm-table-card">
                 <div class="card-body p-4">
                     <form action="{{ route('admin.categories.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -57,7 +57,7 @@
         </div>
 
         <div class="col-lg-4">
-            <div class="card">
+            <div class="card fh-adm-table-card">
                 <div class="card-header">
                     <h6 class="mb-0 fw-semibold">{{ __('Tips') }}</h6>
                 </div>
