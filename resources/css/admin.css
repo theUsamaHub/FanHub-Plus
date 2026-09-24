@@ -1634,9 +1634,8 @@ body.fh-admin.is-sidebar-collapsed .fh-adm-spirit-svg {
 body.fh-admin .fh-adm-sidebar-toggle {
     position: absolute;
     top: 22px;
-    right: 0;
-    transform: translateX(50%);
-    z-index: 260;
+    right: -40px;
+    z-index: 400;
     width: 28px;
     height: 28px;
     border-radius: 50%;
