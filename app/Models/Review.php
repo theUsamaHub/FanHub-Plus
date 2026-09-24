@@ -42,4 +42,28 @@ class Review extends Model
     {
         return $query->where('status', 'rejected');
     }
+
+    public function getTargetLabelAttribute(): string
+    {
+        return self::friendlyTargetLabel($this->reviewable_type, $this->reviewable_id, $this->reviewable);
+    }
+
+    public static function friendlyTargetLabel(string $type, int $id, ?Model $target = null): string
+    {
+        $label = match (class_basename($type)) {
+            'Content' => 'Content',
+            'MerchandiseItem' => 'Merchandise',
+            'CharacterProfile' => 'Character',
+            'Event' => 'Event',
+            default => class_basename($type),
+        };
+
+        if (! $target) {
+            return "{$label}: Unavailable resource";
+        }
+
+        $title = $target->title ?? $target->name ?? "#{$id}";
+
+        return "{$label}: \"{$title}\"";
+    }
 }

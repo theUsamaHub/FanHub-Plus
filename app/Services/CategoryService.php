@@ -11,42 +11,35 @@ class CategoryService
 {
     public function getPaginated(array $filters = [], int $perPage = 15): LengthAwarePaginator
     {
-        $query = Category::query()->with(['createdBy', 'updatedBy']);
+        $query = Category::query()->with(['iconMedia']);
 
-        if (!empty($filters['search'])) {
+        if (! empty($filters['search'])) {
             $search = $filters['search'];
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%");
             });
         }
 
-        if (isset($filters['is_active'])) {
-            $query->where('is_active', $filters['is_active']);
-        }
-
-        return $query->orderBy('sort_order')
-            ->orderBy('name')
+        return $query->orderBy('name')
             ->paginate($perPage);
     }
 
     public function getAll(): Collection
     {
-        return Category::where('is_active', true)
-            ->orderBy('sort_order')
-            ->orderBy('name')
-            ->get();
+        return Category::orderBy('name')->get();
     }
 
     public function getById(int $id): Category
     {
-        return Category::with(['createdBy', 'updatedBy'])->findOrFail($id);
+        return Category::with(['iconMedia'])->findOrFail($id);
     }
 
     public function create(array $data): Category
     {
         $category = Category::create($data);
         $this->refreshCache();
+
         return $category;
     }
 
@@ -54,6 +47,7 @@ class CategoryService
     {
         $category->update($data);
         $this->refreshCache();
+
         return $category->fresh();
     }
 
@@ -61,6 +55,7 @@ class CategoryService
     {
         $result = $category->delete();
         $this->refreshCache();
+
         return $result;
     }
 
@@ -69,6 +64,7 @@ class CategoryService
         $category = Category::withTrashed()->findOrFail($id);
         $category->restore();
         $this->refreshCache();
+
         return $category;
     }
 
@@ -77,12 +73,13 @@ class CategoryService
         $category = Category::withTrashed()->findOrFail($id);
         $result = $category->forceDelete();
         $this->refreshCache();
+
         return $result;
     }
 
     public function count(): int
     {
-        return Cache::remember('categories.count', 3600, fn() => Category::count());
+        return Cache::remember('categories.count', 3600, fn () => Category::count());
     }
 
     public function refreshCache(): void

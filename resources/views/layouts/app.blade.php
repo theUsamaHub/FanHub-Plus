@@ -55,6 +55,7 @@
             </div>
         </div>
 
+        @include('partials.command-palette')
         @stack('scripts')
     </body>
 </html>

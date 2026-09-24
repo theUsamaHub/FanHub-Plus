@@ -8,7 +8,6 @@ use App\Models\Role;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -27,7 +26,15 @@ class UserController extends Controller
             $query->whereHas('roles', fn($q) => $q->where('slug', $role));
         }
 
-        $users = $query->latest()->paginate(15);
+        if ($request->has('verified') && $request->input('verified') !== '') {
+            if ($request->boolean('verified')) {
+                $query->whereNotNull('email_verified_at');
+            } else {
+                $query->whereNull('email_verified_at');
+            }
+        }
+
+        $users = $query->latest()->paginate(15)->withQueryString();
 
         $userCounts = User::selectRaw("count(*) as total")
             ->selectRaw("count(case when exists (select 1 from role_user inner join roles on roles.id = role_user.role_id where role_user.user_id = users.id and roles.slug = 'admin') then 1 end) as admins")
@@ -47,38 +54,53 @@ class UserController extends Controller
 
     public function show(User $user): View
     {
-        $user->load('roles');
-        return view('admin.users.show', compact('user'));
+        $user->load([
+            'roles',
+            'profile',
+            'favoriteCategories',
+            'submittedContents' => fn ($q) => $q->latest()->take(10),
+            'bookmarks' => fn ($q) => $q->latest()->take(10),
+            'ratings' => fn ($q) => $q->latest()->take(10),
+            'reviews' => fn ($q) => $q->latest()->take(10),
+            'feedbacks' => fn ($q) => $q->latest()->take(10),
+        ]);
+
+        $counts = [
+            'submissions' => $user->submittedContents()->count(),
+            'bookmarks' => $user->bookmarks()->count(),
+            'ratings' => $user->ratings()->count(),
+            'reviews' => $user->reviews()->count(),
+            'feedback' => $user->feedbacks()->count(),
+        ];
+
+        return view('admin.users.show', compact('user', 'counts'));
     }
 
-    public function edit(User $user): View
+    public function create(): View
     {
-        $user->load('roles');
-        $roles = Role::all();
-        return view('admin.users.edit', compact('user', 'roles'));
+        return view('admin.users.create');
     }
 
-    public function update(Request $request, User $user): RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
-            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
-            'roles' => ['required', 'array'],
-            'roles.*' => ['exists:roles,slug'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
-        $user->update([
+        $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            ...(!empty($validated['password']) ? ['password' => Hash::make($validated['password'])] : []),
+            'password' => $validated['password'],
         ]);
 
-        $roleIds = Role::whereIn('slug', $validated['roles'])->pluck('id');
-        $user->roles()->sync($roleIds);
+        // Admin-created accounts always get the admin role only.
+        Role::firstOrCreate(['slug' => 'admin'], ['name' => 'Admin']);
+        $user->assignRole('admin');
 
         return redirect()->route('admin.users.index')
-            ->with('success', 'User updated successfully.');
+            ->with('success', 'Admin user created successfully.');
     }
 
     public function destroy(User $user): RedirectResponse

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\HasMedia;
 use App\Traits\HasTags;
 use App\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,11 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Category extends Model
 {
-    use HasFactory, HasMedia, HasTags, LogsActivity;
+    use HasFactory, HasTags, LogsActivity, SoftDeletes;
 
     protected $fillable = [
         'name',
@@ -74,7 +74,7 @@ class Category extends Model
         });
 
         static::updating(function (Category $category) {
-            if ($category->isDirty('name') && !$category->slug) {
+            if ($category->isDirty('name') && ! $category->slug) {
                 $category->slug = Str::slug($category->name);
             }
         });

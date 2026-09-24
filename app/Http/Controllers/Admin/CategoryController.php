@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use App\Models\Media;
 use App\Services\CategoryService;
 use App\Services\FileUploadService;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -21,7 +23,7 @@ class CategoryController extends Controller
     public function index(Request $request): View
     {
         $categories = $this->categoryService->getPaginated(
-            $request->only(['search', 'is_active']),
+            $request->only(['search']),
             15
         );
 
@@ -35,22 +37,15 @@ class CategoryController extends Controller
 
     public function store(CategoryRequest $request): RedirectResponse
     {
-        $data = collect($request->validated())->except(['image', 'attachments', 'remove_image'])->toArray();
+        $data = collect($request->validated())
+            ->except(['icon', 'remove_icon'])
+            ->toArray();
+
         $category = $this->categoryService->create($data);
 
-        // Handle main image upload
-        if ($request->hasFile('image')) {
-            $media = $category->addMediaFromRequest('image');
-            if ($media) {
-                $category->update(['image' => $media->path]);
-            }
-        }
-
-        // Handle multiple attachments
-        if ($request->hasFile('attachments')) {
-            foreach ($request->file('attachments') as $file) {
-                $category->addMedia($file);
-            }
+        if ($request->hasFile('icon')) {
+            $media = $this->fileService->upload($request->file('icon'), 'uploads/categories');
+            $category->update(['icon_media_id' => $media->id]);
         }
 
         return redirect()->route('admin.categories.index')
@@ -59,46 +54,42 @@ class CategoryController extends Controller
 
     public function show(Category $category): View
     {
-        $category->load(['createdBy', 'updatedBy', 'media']);
+        $category->load(['iconMedia'])
+            ->loadCount(['contents', 'characterProfiles', 'merchandiseItems', 'events']);
+
         return view('admin.categories.show', compact('category'));
     }
 
     public function edit(Category $category): View
     {
-        $category->load('media');
+        $category->load('iconMedia');
+
         return view('admin.categories.edit', compact('category'));
     }
 
     public function update(CategoryRequest $request, Category $category): RedirectResponse
     {
-        $data = collect($request->validated())->except(['image', 'attachments', 'remove_image'])->toArray();
+        $oldMediaId = $category->icon_media_id;
+
+        $data = collect($request->validated())
+            ->except(['icon', 'remove_icon'])
+            ->toArray();
+
+        if ($request->boolean('remove_icon')) {
+            $data['icon_media_id'] = null;
+        }
+
         $this->categoryService->update($category, $data);
 
-        // Handle main image update
-        $existingMedia = $category->getFirstMedia();
+        if ($request->hasFile('icon')) {
+            $media = $this->fileService->upload($request->file('icon'), 'uploads/categories');
+            $category->update(['icon_media_id' => $media->id]);
 
-        if ($request->boolean('remove_image') && $category->image) {
-            if ($existingMedia) {
-                $category->removeMedia($existingMedia);
-            }
-            $category->update(['image' => null]);
-            $existingMedia = null;
-        }
-
-        if ($request->hasFile('image')) {
-            if ($existingMedia) {
-                $category->removeMedia($existingMedia);
-            }
-            $media = $category->addMediaFromRequest('image');
-            if ($media) {
-                $category->update(['image' => $media->path]);
-            }
-        }
-
-        // Handle additional attachments
-        if ($request->hasFile('attachments')) {
-            foreach ($request->file('attachments') as $file) {
-                $category->addMedia($file);
+            if ($oldMediaId && $oldMediaId !== $media->id) {
+                $oldMedia = Media::find($oldMediaId);
+                if ($oldMedia && ! $oldMedia->isReferenced()) {
+                    $this->fileService->delete($oldMedia);
+                }
             }
         }
 
@@ -117,7 +108,6 @@ class CategoryController extends Controller
     public function trashed(): View
     {
         $categories = Category::onlyTrashed()
-            ->with(['createdBy', 'updatedBy'])
             ->orderBy('deleted_at', 'desc')
             ->paginate(15);
 
@@ -134,9 +124,12 @@ class CategoryController extends Controller
 
     public function forceDelete(int $id): RedirectResponse
     {
-        $category = Category::withTrashed()->findOrFail($id);
-        $category->clearMedia();
-        $this->categoryService->forceDelete($id);
+        try {
+            $this->categoryService->forceDelete($id);
+        } catch (QueryException) {
+            return redirect()->route('admin.categories.trashed')
+                ->with('error', 'This category cannot be permanently deleted because content, characters, or merchandise still reference it.');
+        }
 
         return redirect()->route('admin.categories.trashed')
             ->with('success', 'Category permanently deleted.');
