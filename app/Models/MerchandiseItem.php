@@ -17,6 +17,7 @@ class MerchandiseItem extends Model
         'image_media_id',
         'tag',
         'is_upcoming',
+        'release_date',
         'view_count',
     ];
 
@@ -24,6 +25,7 @@ class MerchandiseItem extends Model
     {
         return [
             'is_upcoming' => 'boolean',
+            'release_date' => 'date',
             'view_count' => 'integer',
         ];
     }

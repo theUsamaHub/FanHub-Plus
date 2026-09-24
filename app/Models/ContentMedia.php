@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ContentMedia extends Model
 {
+    public $timestamps = false;
     protected $fillable = [
         'content_id',
         'media_id',

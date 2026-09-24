@@ -19,6 +19,7 @@ class Content extends Model
         'excerpt',
         'body',
         'release_date',
+        'release_label',
         'popularity_score',
         'view_count',
         'status',
@@ -81,6 +82,19 @@ class Content extends Model
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('status', 'published');
+    }
+
+    public function scopeVisibleToPublic(Builder $query): Builder
+    {
+        return $query->published()->where(fn (Builder $query) => $query
+            ->whereNull('published_at')->orWhere('published_at', '<=', now()));
+    }
+
+    public function getReadingMinutesAttribute(): int
+    {
+        $words = preg_split('/\s+/u', trim(strip_tags($this->body ?? $this->excerpt ?? '')), -1, PREG_SPLIT_NO_EMPTY);
+
+        return max(1, (int) ceil(count($words ?: []) / 200));
     }
 
     public function scopePendingReview(Builder $query): Builder

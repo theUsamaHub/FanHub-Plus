@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,35 +11,38 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
-        // Seed roles first
+        // 1. Roles & Core Auth
         $this->call(RoleSeeder::class);
+        $this->call(UserSeeder::class);
 
-        // Seed categories
+        // 2. Base Categories, Media, Tags, Settings
         $this->call(CategorySeeder::class);
-
-        // Seed settings
+        $this->call(MediaSeeder::class);
+        $this->call(TagSeeder::class);
         $this->call(SettingsSeeder::class);
 
-        // Create admin user
-        $admin = User::updateOrCreate(
-            ['email' => 'admin@example.com'],
-            [
-                'name' => 'Admin User',
-                'password' => Hash::make('password'),
-                'email_verified_at' => now(),
-            ]
-        );
-        $admin->assignRole('admin');
+        // 3. User Relations
+        $this->call(UserProfileSeeder::class);
+        $this->call(UserFavoriteCategorySeeder::class);
 
-        // Create regular user
-        $user = User::updateOrCreate(
-            ['email' => 'user@example.com'],
-            [
-                'name' => 'Test User',
-                'password' => Hash::make('password'),
-                'email_verified_at' => now(),
-            ]
-        );
-        $user->assignRole('registered-user');
+        // 4. Main Domain Models (Characters, Content, Media Pivots, Merch, Events)
+        $this->call(CharacterProfileSeeder::class);
+        $this->call(ContentSeeder::class);
+        $this->call(ContentMediaSeeder::class);
+        $this->call(MerchandiseItemSeeder::class);
+        $this->call(EventSeeder::class);
+
+        // 5. User Interaction Models (Bookmarks, Ratings, Reviews, Feedback)
+        $this->call(BookmarkSeeder::class);
+        $this->call(RatingSeeder::class);
+        $this->call(ReviewSeeder::class);
+        $this->call(FeedbackSeeder::class);
+
+        // 6. Support & Communication Models (Contacts, Subscribers, Chatbot, Auditing)
+        $this->call(ContactSeeder::class);
+        $this->call(SubscriberSeeder::class);
+        $this->call(ChatbotFaqSeeder::class);
+        $this->call(ChatbotQuerySeeder::class);
+        $this->call(ActivityLogSeeder::class);
     }
 }

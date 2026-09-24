@@ -2,7 +2,13 @@
 
 @section('main-class', 'fh-home-stage')
 
+@push('styles')
+    @vite('resources/js/pages/home.js')
+@endpush
+
 @section('content')
+<div class="home-page" data-page="home" style="--home-dark-art: url('{{ asset(config('homepage.images.dark_background')) }}'); --home-light-art: url('{{ asset(config('homepage.images.light_background')) }}')">
+    <h1 class="home-sr-only">Fan Hub Plus — Every Universe. One Home.</h1>
 
     @include('home.sections.hero')
 
@@ -23,5 +29,5 @@
     @include('home.sections.merchandise')
 
     @include('home.sections.join-cta')
-
+</div>
 @endsection
