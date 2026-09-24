@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="h4 mb-0 fw-semibold">{{ __('Add Admin User') }}</h2>
             <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary btn-sm">
@@ -12,7 +12,7 @@
 
     <div class="row">
         <div class="col-lg-8">
-            <div class="card">
+            <div class="card fh-adm-form-card">
                 <div class="card-body p-4">
                     <form method="POST" action="{{ route('admin.users.store') }}">
                         @csrf
@@ -35,12 +35,12 @@
                             <x-input-error :messages="$errors->get('password')" class="mt-1" />
                         </div>
 
-                        <div class="mb-4">
+                        <div class="mb-4 fh-adm-page-head">
                             <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
                             <x-text-input id="password_confirmation" name="password_confirmation" type="password" class="form-control" autocomplete="new-password" required />
                         </div>
 
-                        <div class="mb-4">
+                        <div class="mb-4 fh-adm-page-head">
                             <x-input-label :value="__('Role')" />
                             <input type="hidden" name="roles[]" value="admin">
                             <span class="badge bg-primary">Admin</span>
@@ -57,8 +57,8 @@
         </div>
 
         <div class="col-lg-4">
-            <div class="card">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Notes') }}</h6></div>
+            <div class="card fh-adm-form-card">
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Notes') }}</h6></div>
                 <div class="card-body">
                     <ul class="mb-0" style="font-size: 0.875rem;">
                         <li class="mb-2">{{ __('Use this form only to create another admin.') }}</li>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 class="h4 mb-0 fw-semibold">{{ __('Activity Log') }}</h2>
                     <div class="d-flex gap-2">
@@ -47,7 +47,7 @@
         </div>
     </div>
 
-    <div class="card mb-4"><div class="card-body">
+    <div class="card mb-4 fh-adm-filter"><div class="card-body">
         <form method="GET" class="row g-3">
             <div class="col-md-3"><input type="text" class="form-control" name="search" placeholder="{{ __('Search...') }}" value="{{ request('search') }}"></div>
             <div class="col-md-2">
@@ -71,8 +71,8 @@
         </form>
     </div></div>
 
-    <div class="card"><div class="card-body p-0">
-        <div class="table-responsive">
+    <div class="card fh-adm-table-card"><div class="card-body p-0">
+        <div class="table-responsive fh-adm-table-scroll">
             <table class="table table-hover mb-0">
                 <thead><tr><th>{{ __('Time') }}</th><th>{{ __('User') }}</th><th>{{ __('Event') }}</th><th>{{ __('Model') }}</th><th>{{ __('Details') }}</th></tr></thead>
                 <tbody>
@@ -83,9 +83,21 @@
                             <td><span class="badge bg-{{ match($log->event) { 'created' => 'success', 'updated' => 'warning', 'deleted' => 'danger', default => 'secondary' } }}">{{ $log->event }}</span></td>
                             <td><code style="font-size:0.75rem;">{{ class_basename($log->auditable_type) }}</code> #{{ $log->auditable_id }}</td>
                             <td style="font-size:0.8rem; max-width:300px;">
-                                @if ($log->new_values)
-                                    @foreach (array_slice($log->new_values, 0, 3) as $key => $val)
-                                        <span class="text-muted">{{ $key }}:</span> {{ is_array($val) ? json_encode($val) : Str::limit($val, 30) }}<br>
+                                @php
+                                    $details = $log->new_values;
+                                    if (is_string($details)) {
+                                        $decoded = json_decode($details, true);
+                                        $details = is_array($decoded) ? $decoded : ['value' => $details];
+                                    }
+                                    if (! is_array($details)) {
+                                        $details = [];
+                                    }
+                                @endphp
+                                @if ($details)
+                                    @foreach (array_slice($details, 0, 3) as $key => $val)
+                                        <span class="text-muted">{{ $key }}:</span>
+                                        {{ is_array($val) || is_object($val) ? json_encode($val) : \Illuminate\Support\Str::limit((string) $val, 30) }}
+                                        <br>
                                     @endforeach
                                 @endif
                             </td>

@@ -1,4 +1,4 @@
-<a {{ $attributes->class('fh-brand fh-brand--premium') }} href="{{ route('home') }}" aria-label="Fan Hub Plus home">
+<a {{ $attributes->merge(['href' => route('home'), 'aria-label' => 'Fan Hub Plus home'])->class('fh-brand fh-brand--premium') }}>
     <svg class="fh-brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
         <path d="M24 2 43 13v22L24 46 5 35V13Z" fill="#ff951b"/>
         <path d="M24 2v44L5 35V13Z" fill="#ffbe47"/>

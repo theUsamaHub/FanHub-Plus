@@ -1,20 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="h4 mb-0 fw-semibold">{{ __('Reviews') }}</h2>
         </div>
     </div>
 
-    <div class="row g-3 mb-4">
-        <div class="col"><div class="card border-start border-warning border-3"><div class="card-body py-2"><div class="text-muted small">{{ __('Pending') }}</div><div class="fw-semibold">{{ $stats['pending'] }}</div></div></div></div>
-        <div class="col"><div class="card border-start border-success border-3"><div class="card-body py-2"><div class="text-muted small">{{ __('Approved') }}</div><div class="fw-semibold">{{ $stats['approved'] }}</div></div></div></div>
-        <div class="col"><div class="card border-start border-danger border-3"><div class="card-body py-2"><div class="text-muted small">{{ __('Rejected') }}</div><div class="fw-semibold">{{ $stats['rejected'] }}</div></div></div></div>
-        <div class="col"><div class="card border-start border-secondary border-3"><div class="card-body py-2"><div class="text-muted small">{{ __('Total') }}</div><div class="fw-semibold">{{ $stats['total'] }}</div></div></div></div>
-    </div>
+    <x-admin-stats :items="[
+        ['label' => __('Pending'), 'value' => $stats['pending'], 'accent' => 'warning'],
+        ['label' => __('Approved'), 'value' => $stats['approved'], 'accent' => 'success'],
+        ['label' => __('Rejected'), 'value' => $stats['rejected'], 'accent' => 'danger'],
+        ['label' => __('Total'), 'value' => $stats['total'], 'accent' => 'secondary'],
+    ]" />
 
-    <div class="card mb-4">
+    <div class="card fh-adm-filter">
         <div class="card-body">
             <form method="GET" action="{{ route('admin.reviews.index') }}" class="row g-2">
                 <div class="col-md-4">
@@ -36,9 +36,9 @@
         </div>
     </div>
 
-    <div class="card">
+    <div class="card fh-adm-form-card">
         <div class="card-body p-0">
-            <div class="table-responsive">
+            <div class="table-responsive fh-adm-table-scroll">
                 <table class="table table-hover mb-0">
                     <thead>
                         <tr>
@@ -57,8 +57,8 @@
                                 <td>{{ $review->target_label }}</td>
                                 <td>{{ \Illuminate\Support\Str::limit($review->title ?: $review->body, 40) }}</td>
                                 <td>
-                                    @php $statusClass = ['pending' => 'warning', 'approved' => 'success', 'rejected' => 'danger'][$review->status] ?? 'secondary'; @endphp
-                                    <span class="badge text-bg-{{ $statusClass }}">{{ ucfirst($review->status) }}</span>
+                                    @php $statusTone = ['pending' => 'warning', 'approved' => 'success', 'rejected' => 'danger'][$review->status] ?? 'muted'; @endphp
+                                    <span class="fh-adm-chip" data-tone="{{ $statusTone }}">{{ ucfirst($review->status) }}</span>
                                 </td>
                                 <td>{{ $review->created_at->diffForHumans() }}</td>
                                 <td class="text-end">
@@ -82,7 +82,7 @@
                         @empty
                             <tr>
                                 <td colspan="6" class="text-center py-5">
-                                    <div class="empty-state">
+                                    <div class="fh-adm-empty">
                                         <i class="bi bi-chat-left-text"></i>
                                         <p>{{ __('No reviews found.') }}</p>
                                     </div>

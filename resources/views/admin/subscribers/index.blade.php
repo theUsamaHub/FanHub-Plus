@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 class="h4 mb-0 fw-semibold">{{ __('Subscribers') }}</h2>
                     <div class="d-flex gap-2">
@@ -49,7 +49,7 @@
     </div>
 
     <!-- Filters -->
-    <div class="card mb-4">
+    <div class="card mb-4 fh-adm-filter">
         <div class="card-body">
             <form method="GET" class="row g-3">
                 <div class="col-md-3">
@@ -76,9 +76,9 @@
         </div>
     </div>
 
-    <div class="card">
+    <div class="card fh-adm-form-card">
         <div class="card-body p-0">
-            <div class="table-responsive">
+            <div class="table-responsive fh-adm-table-scroll">
                 <table class="table table-hover mb-0">
                     <thead>
                         <tr>

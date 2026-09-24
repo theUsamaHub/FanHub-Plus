@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
         <h2 class="h4 mb-0 fw-semibold">{{ __('IP Restrictions') }}</h2>
     </div>
 
@@ -13,7 +13,7 @@
     <form method="POST" action="{{ route('admin.ip-restrictions.update') }}">
         @csrf @method('PUT')
 
-        <div class="card">
+        <div class="card fh-adm-form-card">
             <div class="card-body">
                 <div class="mb-3">
                     <label for="ips" class="form-label">{{ __('Allowed IPs') }}</label>

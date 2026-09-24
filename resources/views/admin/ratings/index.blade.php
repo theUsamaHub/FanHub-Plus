@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="h4 mb-0 fw-semibold">{{ __('Ratings') }}</h2>
         </div>
@@ -15,7 +15,7 @@
         <div class="col"><div class="card border-start border-danger border-3"><div class="card-body py-2"><div class="text-muted small">{{ __('Thumbs down') }}</div><div class="fw-semibold">{{ $stats['thumbs_down'] }}</div></div></div></div>
     </div>
 
-    <div class="card mb-4">
+    <div class="card mb-4 fh-adm-filter">
         <div class="card-body">
             <form method="GET" action="{{ route('admin.ratings.index') }}" class="row g-2">
                 <div class="col-md-3">
@@ -33,9 +33,9 @@
         </div>
     </div>
 
-    <div class="card">
+    <div class="card fh-adm-form-card">
         <div class="card-body p-0">
-            <div class="table-responsive">
+            <div class="table-responsive fh-adm-table-scroll">
                 <table class="table table-hover mb-0">
                     <thead>
                         <tr>
@@ -72,7 +72,7 @@
                         @empty
                             <tr>
                                 <td colspan="6" class="text-center py-5">
-                                    <div class="empty-state">
+                                    <div class="fh-adm-empty">
                                         <i class="bi bi-star"></i>
                                         <p>{{ __('No ratings found.') }}</p>
                                     </div>

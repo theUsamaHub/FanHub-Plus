@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="h4 mb-0 fw-semibold">{{ __('Feedback Detail') }}</h2>
             <a href="{{ route('admin.feedback.index') }}" class="btn btn-outline-secondary btn-sm">
@@ -12,9 +12,9 @@
 
     <div class="row">
         <div class="col-lg-8">
-            <div class="card">
+            <div class="card fh-adm-form-card">
                 <div class="card-body">
-                    <table class="table mb-0">
+                    <table class="table mb-0 fh-adm-detail-table">
                         <tbody>
                             <tr><td class="fw-semibold" style="width:180px;">{{ __('From') }}</td><td>{{ $feedback->user?->name ?? __('Guest') }} @if ($feedback->user) &lt;{{ $feedback->user->email }}&gt; @endif</td></tr>
                             <tr><td class="fw-semibold">{{ __('Type') }}</td><td>{{ ucfirst($feedback->type) }}</td></tr>
@@ -34,8 +34,8 @@
         </div>
 
         <div class="col-lg-4">
-            <div class="card mb-4">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Update status') }}</h6></div>
+            <div class="card mb-4 fh-adm-filter">
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Update status') }}</h6></div>
                 <div class="card-body">
                     <form action="{{ route('admin.feedback.status', $feedback) }}" method="POST">
                         @csrf
@@ -52,7 +52,7 @@
                 </div>
             </div>
 
-            <div class="card border-danger">
+            <div class="card border-danger fh-adm-danger-card">
                 <div class="card-header"><h6 class="mb-0 fw-semibold text-danger">{{ __('Danger Zone') }}</h6></div>
                 <div class="card-body">
                     <form action="{{ route('admin.feedback.destroy', $feedback) }}" method="POST" onsubmit="return confirm('{{ __('Delete this feedback?') }}')">

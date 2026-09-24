@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 class="h4 mb-0 fw-semibold">{{ __('Site Settings') }}</h2>
                     <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addSettingModal">
@@ -16,7 +16,7 @@
         @method('PUT')
 
         @forelse ($grouped as $group => $items)
-            <div class="card mb-4">
+            <div class="card mb-4 fh-adm-filter">
                 <div class="card-header">
                     <h6 class="mb-0 fw-semibold text-capitalize">{{ str_replace('_', ' ', $group) }} {{ __('Settings') }}</h6>
                 </div>
@@ -108,9 +108,9 @@
                 </div>
             </div>
         @empty
-            <div class="card">
+            <div class="card fh-adm-form-card">
                 <div class="card-body">
-                    <div class="empty-state">
+                    <div class="fh-adm-empty">
                         <i class="bi bi-gear"></i>
                         <p>{{ __('No settings configured yet.') }}</p>
                     </div>

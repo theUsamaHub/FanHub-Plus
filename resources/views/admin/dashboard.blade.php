@@ -17,17 +17,15 @@
     <div class="row g-3 mb-4">
         @foreach ($stats as $stat)
             <div class="col-md-4 col-xl-3">
-                <a href="{{ route($stat['route'], $stat['params'] ?? []) }}" class="text-decoration-none">
-                    <div class="card border-start border-{{ $stat['color'] }} border-3 h-100">
-                        <div class="card-body py-3">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <div class="text-muted" style="font-size: 0.7rem;">{{ $stat['label'] }}</div>
-                                    <div class="fs-4 fw-bold">{{ $stat['count'] }}</div>
-                                </div>
-                                <div class="bg-{{ $stat['color'] }} bg-opacity-10 rounded-3 d-flex align-items-center justify-content-center" style="width:36px;height:36px;">
-                                    <i class="bi {{ $stat['icon'] }} text-{{ $stat['color'] }}"></i>
-                                </div>
+                <a href="{{ route($stat['route'], $stat['params'] ?? []) }}" class="fh-adm-kpi" data-accent="{{ $stat['color'] }}">
+                    <div class="card-body py-3">
+                        <div class="d-flex justify-content-between align-items-center gap-2">
+                            <div class="min-w-0">
+                                <span class="fh-adm-kpi-label">{{ $stat['label'] }}</span>
+                                <div class="fh-adm-kpi-value">{{ $stat['count'] }}</div>
+                            </div>
+                            <div class="fh-adm-kpi-icon flex-shrink-0">
+                                <i class="bi {{ $stat['icon'] }}"></i>
                             </div>
                         </div>
                     </div>
@@ -51,14 +49,14 @@
     <div class="row g-4 mb-4">
         <div class="col-lg-8">
             <div class="card h-100">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('User growth (last 30 days)') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('User growth (last 30 days)') }}</h6></div>
                 <div class="card-body">
                     @php $maxVal = max(1, collect($chartData)->max('users')); @endphp
-                    <div class="d-flex align-items-end gap-1" style="height: 180px;">
+                    <div class="fh-adm-chart">
                         @foreach ($chartData as $day)
-                            <div class="flex-grow-1 d-flex flex-column align-items-center justify-content-end" style="height: 100%;">
-                                <div class="rounded-top" style="width:100%; height: {{ ($day['users'] / $maxVal) * 160 }}px; background: var(--bs-primary); min-height: 2px;" title="{{ $day['users'] }} users"></div>
-                                <small class="text-muted mt-1" style="font-size:0.6rem;">{{ $day['label'] }}</small>
+                            <div class="fh-adm-chart-bar" title="{{ $day['label'] }}: {{ $day['users'] }}">
+                                <span style="height: {{ ($day['users'] / $maxVal) * 140 }}px;"></span>
+                                <small>{{ $day['label'] }}</small>
                             </div>
                         @endforeach
                     </div>
@@ -68,7 +66,7 @@
 
         <div class="col-lg-4">
             <div class="card h-100">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Content by status') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Content by status') }}</h6></div>
                 <div class="card-body p-0">
                     <table class="table mb-0">
                         <tbody>
@@ -89,7 +87,7 @@
         <div class="col-lg-6">
             <div class="card h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-semibold">{{ __('Recent user submissions') }}</h6>
+                    <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Recent user submissions') }}</h6>
                     <a href="{{ route('admin.submissions.index') }}" class="btn btn-sm btn-link text-decoration-none">{{ __('View all') }}</a>
                 </div>
                 <div class="card-body p-0">
@@ -126,7 +124,7 @@
         <div class="col-lg-6">
             <div class="card h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-semibold">{{ __('Pending reviews') }}</h6>
+                    <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Pending reviews') }}</h6>
                     <a href="{{ route('admin.reviews.index') }}" class="btn btn-sm btn-link text-decoration-none">{{ __('View all') }}</a>
                 </div>
                 <div class="card-body p-0">
@@ -161,7 +159,7 @@
         <div class="col-lg-6">
             <div class="card h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-semibold">{{ __('Recent feedback') }}</h6>
+                    <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Recent feedback') }}</h6>
                     <a href="{{ route('admin.feedback.index') }}" class="btn btn-sm btn-link text-decoration-none">{{ __('View all') }}</a>
                 </div>
                 <div class="card-body p-0">
@@ -200,7 +198,7 @@
         <div class="col-lg-6">
             <div class="card h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-semibold">{{ __('Upcoming events') }}</h6>
+                    <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Upcoming events') }}</h6>
                     <a href="{{ route('admin.events.index') }}" class="btn btn-sm btn-link text-decoration-none">{{ __('View all') }}</a>
                 </div>
                 <div class="card-body p-0">
@@ -239,7 +237,7 @@
 
         <div class="col-12">
             <div class="card">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Popular content') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Popular content') }}</h6></div>
                 <div class="card-body p-0">
                     <table class="table mb-0">
                         <thead>

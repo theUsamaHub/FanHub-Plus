@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="h4 mb-0 fw-semibold">{{ $event->title }}</h2>
             <div class="d-flex gap-2">
@@ -13,9 +13,9 @@
 
     <div class="row">
         <div class="col-lg-8">
-            <div class="card">
+            <div class="card fh-adm-detail-card">
                 <div class="card-body">
-                    <table class="table mb-0">
+                    <table class="table mb-0 fh-adm-detail-table">
                         <tbody>
                             <tr>
                                 <td class="fw-semibold" style="width:180px;">{{ __('Cover') }}</td>
@@ -39,8 +39,8 @@
                             <tr>
                                 <td class="fw-semibold">{{ __('Status') }}</td>
                                 <td>
-                                    @php $statusClass = ['draft' => 'secondary', 'published' => 'success', 'cancelled' => 'danger'][$event->status] ?? 'secondary'; @endphp
-                                    <span class="badge text-bg-{{ $statusClass }}">{{ ucfirst($event->status) }}</span>
+                                    @php $statusTone = ['draft' => 'muted', 'published' => 'success', 'cancelled' => 'danger'][$event->status] ?? 'muted'; @endphp
+                                    <span class="fh-adm-chip" data-tone="{{ $statusTone }}">{{ ucfirst($event->status) }}</span>
                                 </td>
                             </tr>
                             <tr>
@@ -60,7 +60,7 @@
         </div>
 
         <div class="col-lg-4">
-            <div class="card border-danger">
+            <div class="card border-danger fh-adm-danger-card">
                 <div class="card-header"><h6 class="mb-0 fw-semibold text-danger">{{ __('Danger Zone') }}</h6></div>
                 <div class="card-body">
                     <form action="{{ route('admin.events.destroy', $event) }}" method="POST" onsubmit="return confirm('{{ __('Delete this event?') }}')">

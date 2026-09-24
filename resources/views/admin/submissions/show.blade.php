@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="h4 mb-0 fw-semibold">{{ __('Submission Review') }}</h2>
             <div class="d-flex gap-2">
@@ -13,9 +13,9 @@
 
     <div class="row">
         <div class="col-lg-8">
-            <div class="card mb-4">
+            <div class="card mb-4 fh-adm-form-card">
                 <div class="card-body">
-                    <table class="table mb-0">
+                    <table class="table mb-0 fh-adm-detail-table">
                         <tbody>
                             <tr><td class="fw-semibold" style="width:180px;">{{ __('Title') }}</td><td>{{ $content->title }}</td></tr>
                             <tr><td class="fw-semibold">{{ __('Slug') }}</td><td><code>{{ $content->slug }}</code></td></tr>
@@ -25,8 +25,8 @@
                             <tr>
                                 <td class="fw-semibold">{{ __('Status') }}</td>
                                 <td>
-                                    @php $statusClass = ['draft' => 'secondary', 'pending_review' => 'warning', 'published' => 'success', 'rejected' => 'danger'][$content->status] ?? 'secondary'; @endphp
-                                    <span class="badge text-bg-{{ $statusClass }}">{{ ucwords(str_replace('_', ' ', $content->status)) }}</span>
+                                    @php $statusTone = ['draft' => 'muted', 'pending_review' => 'warning', 'published' => 'success', 'rejected' => 'danger'][$content->status] ?? 'muted'; @endphp
+                                    <span class="fh-adm-chip" data-tone="{{ $statusTone }}">{{ ucwords(str_replace('_', ' ', $content->status)) }}</span>
                                 </td>
                             </tr>
                             <tr><td class="fw-semibold">{{ __('Submitted') }}</td><td>{{ $content->created_at->format('M d, Y H:i') }}</td></tr>
@@ -37,7 +37,7 @@
                                 <td class="fw-semibold">{{ __('Tags') }}</td>
                                 <td>
                                     @forelse ($content->tags as $tag)
-                                        <span class="badge text-bg-light border">{{ $tag->name }}</span>
+                                        <span class="fh-adm-chip" data-tone="accent">{{ $tag->name }}</span>
                                     @empty
                                         -
                                     @endforelse
@@ -48,7 +48,7 @@
                                 <td>
                                     @forelse ($content->media as $media)
                                         <div class="mb-1">
-                                            <span class="badge text-bg-secondary">{{ $media->pivot->role }}</span>
+                                            <span class="fh-adm-chip" data-tone="muted">{{ $media->pivot->role }}</span>
                                             {{ $media->original_filename }}
                                         </div>
                                     @empty
@@ -64,8 +64,8 @@
         </div>
 
         <div class="col-lg-4">
-            <div class="card">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Moderation') }}</h6></div>
+            <div class="card fh-adm-detail-card">
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Moderation') }}</h6></div>
                 <div class="card-body d-grid gap-2">
                     @if ($content->status === 'pending_review')
                         <form action="{{ route('admin.submissions.approve', $content) }}" method="POST" onsubmit="return confirm('{{ __('Approve and publish this submission?') }}')">

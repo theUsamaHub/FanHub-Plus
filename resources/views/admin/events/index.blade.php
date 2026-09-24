@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="h4 mb-0 fw-semibold">{{ __('Events') }}</h2>
             <a href="{{ route('admin.events.create') }}" class="btn btn-primary btn-sm">
@@ -10,7 +10,7 @@
         </div>
     </div>
 
-    <div class="card mb-4">
+    <div class="card fh-adm-filter">
         <div class="card-body">
             <form method="GET" action="{{ route('admin.events.index') }}" class="row g-2">
                 <div class="col-md-4">
@@ -47,9 +47,9 @@
         </div>
     </div>
 
-    <div class="card">
+    <div class="card fh-adm-form-card">
         <div class="card-body p-0">
-            <div class="table-responsive">
+            <div class="table-responsive fh-adm-table-scroll">
                 <table class="table table-hover mb-0">
                     <thead>
                         <tr>
@@ -69,8 +69,8 @@
                                 <td>{{ $event->start_at->format('M d, Y H:i') }}</td>
                                 <td>{{ $event->end_at?->format('M d, Y H:i') ?? '-' }}</td>
                                 <td>
-                                    @php $statusClass = ['draft' => 'secondary', 'published' => 'success', 'cancelled' => 'danger'][$event->status] ?? 'secondary'; @endphp
-                                    <span class="badge text-bg-{{ $statusClass }}">{{ ucfirst($event->status) }}</span>
+                                    @php $statusTone = ['draft' => 'muted', 'published' => 'success', 'cancelled' => 'danger'][$event->status] ?? 'muted'; @endphp
+                                    <span class="fh-adm-chip" data-tone="{{ $statusTone }}">{{ ucfirst($event->status) }}</span>
                                 </td>
                                 <td class="text-end">
                                     <div class="btn-group btn-group-sm">
@@ -87,7 +87,7 @@
                         @empty
                             <tr>
                                 <td colspan="6" class="text-center py-5">
-                                    <div class="empty-state">
+                                    <div class="fh-adm-empty">
                                         <i class="bi bi-calendar-event"></i>
                                         <p>{{ __('No events found.') }}</p>
                                         <a href="{{ route('admin.events.create') }}" class="btn btn-primary btn-sm mt-2">{{ __('Add Event') }}</a>

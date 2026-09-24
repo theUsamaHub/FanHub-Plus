@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
         <h2 class="h4 mb-0 fw-semibold">{{ __('Health Dashboard') }}</h2>
     </div>
 
@@ -9,7 +9,7 @@
         <!-- PHP & Laravel -->
         <div class="col-md-6">
             <div class="card h-100">
-                <div class="card-header"><h6 class="mb-0 fw-semibold"><i class="bi bi-info-circle me-1"></i>{{ __('Application') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title"><i class="bi bi-info-circle me-1"></i>{{ __('Application') }}</h6></div>
                 <div class="card-body">
                     <dl class="row mb-0">
                         <dt class="col-sm-5">{{ __('PHP Version') }}</dt>
@@ -40,7 +40,7 @@
         <!-- Database & Cache -->
         <div class="col-md-6">
             <div class="card h-100">
-                <div class="card-header"><h6 class="mb-0 fw-semibold"><i class="bi bi-database me-1"></i>{{ __('Services') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title"><i class="bi bi-database me-1"></i>{{ __('Services') }}</h6></div>
                 <div class="card-body">
                     <dl class="row mb-0">
                         <dt class="col-sm-5">{{ __('Database') }}</dt>
@@ -83,7 +83,7 @@
         <!-- Storage -->
         <div class="col-md-6">
             <div class="card h-100">
-                <div class="card-header"><h6 class="mb-0 fw-semibold"><i class="bi bi-hdd me-1"></i>{{ __('Storage') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title"><i class="bi bi-hdd me-1"></i>{{ __('Storage') }}</h6></div>
                 <div class="card-body">
                     <dl class="row mb-0">
                         <dt class="col-sm-5">{{ __('Total Space') }}</dt>
@@ -107,7 +107,7 @@
         <!-- Jobs & Queue -->
         <div class="col-md-6">
             <div class="card h-100">
-                <div class="card-header"><h6 class="mb-0 fw-semibold"><i class="bi bi-gear me-1"></i>{{ __('Jobs & Queue') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title"><i class="bi bi-gear me-1"></i>{{ __('Jobs & Queue') }}</h6></div>
                 <div class="card-body">
                     <dl class="row mb-0">
                         <dt class="col-sm-5">{{ __('Failed Jobs') }}</dt>
@@ -136,7 +136,7 @@
         <!-- System -->
         <div class="col-md-6">
             <div class="card h-100">
-                <div class="card-header"><h6 class="mb-0 fw-semibold"><i class="bi bi-cpu me-1"></i>{{ __('System') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title"><i class="bi bi-cpu me-1"></i>{{ __('System') }}</h6></div>
                 <div class="card-body">
                     <dl class="row mb-0">
                         <dt class="col-sm-5">{{ __('Server') }}</dt>

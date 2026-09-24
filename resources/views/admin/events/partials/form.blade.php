@@ -4,8 +4,8 @@
             @csrf
             @method($method)
 
-            <div class="card mb-4">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Basic') }}</h6></div>
+            <div class="card mb-4 fh-adm-form-card">
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Basic') }}</h6></div>
                 <div class="card-body">
                     <div class="mb-3">
                         <x-input-label for="title" :value="__('Title')" />
@@ -30,8 +30,8 @@
                 </div>
             </div>
 
-            <div class="card mb-4">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Location') }}</h6></div>
+            <div class="card mb-4 fh-adm-form-card">
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Location') }}</h6></div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4 mb-3">
@@ -63,8 +63,8 @@
                 </div>
             </div>
 
-            <div class="card mb-4">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Schedule') }}</h6></div>
+            <div class="card mb-4 fh-adm-form-card">
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Schedule') }}</h6></div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6 mb-3">
@@ -81,8 +81,8 @@
                 </div>
             </div>
 
-            <div class="card mb-4">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Publishing') }}</h6></div>
+            <div class="card mb-4 fh-adm-form-card">
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Publishing') }}</h6></div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4 mb-3">
@@ -121,8 +121,8 @@
     </div>
 
     <div class="col-lg-4">
-        <div class="card">
-            <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Validation rules') }}</h6></div>
+        <div class="card fh-adm-detail-card">
+            <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Validation rules') }}</h6></div>
             <div class="card-body">
                 <ul class="mb-0" style="font-size: 0.875rem;">
                     <li class="mb-2">{{ __('Start date and time is required.') }}</li>

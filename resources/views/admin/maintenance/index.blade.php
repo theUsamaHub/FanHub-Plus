@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
         <h2 class="h4 mb-0 fw-semibold">{{ __('Maintenance Mode') }}</h2>
     </div>
 
@@ -16,7 +16,7 @@
         <!-- Toggle -->
         <div class="col-md-6">
             <div class="card h-100">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Status') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Status') }}</h6></div>
                 <div class="card-body text-center py-4">
                     <div class="mb-3">
                         @if ($isMaintenance)
@@ -41,7 +41,7 @@
         <!-- Message -->
         <div class="col-md-6">
             <div class="card h-100">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Maintenance Message') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Maintenance Message') }}</h6></div>
                 <div class="card-body">
                     <form action="{{ route('admin.maintenance.message') }}" method="POST">
                         @csrf
@@ -59,8 +59,8 @@
 
         <!-- Bypass Routes -->
         <div class="col-12">
-            <div class="card">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Bypass Routes') }}</h6></div>
+            <div class="card fh-adm-form-card">
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Bypass Routes') }}</h6></div>
                 <div class="card-body">
                     <p class="text-muted small">{{ __('Comma-separated URI patterns that bypass maintenance mode. Uses Laravel request->is() pattern matching. Examples: login, register, forgot-password, reset-password*, admin/*.') }}</p>
                     <form action="{{ route('admin.maintenance.bypass-routes') }}" method="POST">
