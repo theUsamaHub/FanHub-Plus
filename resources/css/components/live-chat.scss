@@ -1,23 +1,25 @@
 /* ── Live Chat — Standalone Page ── */
-.fh-live {
+body.fh-live {
     --live-muted: #8b87a5;
     --live-text: #e8e6f0;
     --live-border: #2a254580;
     --live-surface: #161822;
     --live-bg: #0d0b14;
     --live-accent: #ffab42;
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: var(--live-bg);
-    color: var(--live-text);
-    font-family: 'Saira', sans-serif;
-    overflow: hidden;
+    position: relative !important;
+    min-height: 100vh !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 20px !important;
+    background: var(--live-bg) !important;
+    color: var(--live-text) !important;
+    font-family: 'Saira', sans-serif !important;
+    font-size: 14px !important;
+    overflow: hidden !important;
 }
-[data-theme='light'] .fh-live {
+html[data-theme='light'] body.fh-live,
+body.fh-live[data-theme='light'] {
     --live-muted: #7a7590;
     --live-text: #1a1730;
     --live-border: #ddd8ea;
@@ -37,6 +39,7 @@
     background: radial-gradient(circle, #ffab4218, transparent 70%);
     pointer-events: none;
     animation: liveGlow 8s ease-in-out infinite;
+    z-index: 0;
 }
 @keyframes liveGlow {
     0%, 100% { opacity: .5; transform: translateX(-50%) scale(1); }
@@ -45,7 +48,7 @@
 
 /* Back button */
 .fh-live__back {
-    position: absolute;
+    position: fixed;
     top: 24px;
     left: 24px;
     z-index: 10;
@@ -59,6 +62,7 @@
 /* Container */
 .fh-live__container {
     position: relative;
+    z-index: 1;
     width: 100%;
     max-width: 660px;
     height: min(660px, calc(100dvh - 40px));
@@ -81,7 +85,7 @@
 }
 .fh-live__header-top { display: flex; align-items: center; justify-content: space-between; }
 .fh-live__header-left { display: flex; align-items: center; gap: 10px; }
-.fh-live__header h1 { font: 700 22px/1 'Rajdhani', sans-serif; margin: 0; }
+.fh-live__header h1 { font: 700 22px/1 'Rajdhani', sans-serif; margin: 0; color: var(--live-text); }
 .fh-live__dot {
     width: 10px; height: 10px; border-radius: 50%;
     background: #22c55e;
@@ -145,7 +149,7 @@
     margin-bottom: 4px; padding: 0 2px;
 }
 .fh-live__msg--mine .fh-live__msg-meta { justify-content: flex-end; }
-.fh-live__msg-meta strong { font-size: 12px; color: var(--live-text); }
+.fh-live__msg-meta strong { font-size: 12px; color: var(--live-text); font-weight: 600; }
 .fh-live__msg-meta time { font-size: 10px; color: var(--live-muted); }
 
 .fh-live__msg-bubble {
@@ -157,7 +161,7 @@
     line-height: 1.6;
     overflow-wrap: anywhere;
 }
-[data-theme='light'] .fh-live__msg-bubble { background: #eeeaf8; }
+html[data-theme='light'] .fh-live__msg-bubble { background: #eeeaf8; }
 .fh-live__msg--mine .fh-live__msg-bubble {
     background: linear-gradient(135deg, #ffab42, #f45132);
     color: #fff;
@@ -204,9 +208,10 @@
 .fh-live__composer input {
     flex: 1; background: transparent; border: none; outline: none;
     color: var(--live-text); font-size: 13px; padding: 8px;
+    font-family: 'Saira', sans-serif;
 }
 .fh-live__composer input::placeholder { color: #5a577a; }
-[data-theme='light'] .fh-live__composer input::placeholder { color: #a09cb5; }
+html[data-theme='light'] .fh-live__composer input::placeholder { color: #a09cb5; }
 .fh-live__composer button {
     display: grid; place-items: center;
     width: 34px; height: 34px;
@@ -227,7 +232,7 @@
     flex-shrink: 0;
 }
 .fh-live__guest-icon { font-size: 32px; color: var(--live-accent); margin-bottom: 10px; }
-.fh-live__guest h2 { font: 700 22px/1.2 'Rajdhani', sans-serif; margin: 0 0 6px; }
+.fh-live__guest h2 { font: 700 22px/1.2 'Rajdhani', sans-serif; margin: 0 0 6px; color: var(--live-text); }
 .fh-live__guest p { font-size: 12px; color: var(--live-muted); margin: 0 0 16px; }
 .fh-live__guest-actions { display: flex; gap: 10px; justify-content: center; }
 .fh-live__btn {
@@ -251,7 +256,7 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-    .fh-live { padding: 12px; }
+    body.fh-live { padding: 12px !important; }
     .fh-live__back { top: 14px; left: 14px; }
     .fh-live__container { border-radius: 18px; height: min(580px, calc(100dvh - 24px)); }
     .fh-live__header { padding: 16px 18px; }
