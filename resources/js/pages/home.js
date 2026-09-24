@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { initReleaseTimeline } from '../modules/release-timeline';
+import { initCharacterSpotlight } from '../modules/character-spotlight';
 import { revealCards, revealHeading } from '../modules/home-reveals';
 import '../modules/hero-video';
 
@@ -12,10 +13,11 @@ const page = document.querySelector('[data-page="home"]');
 if (page) {
     gsap.registerPlugin(ScrollTrigger);
     initReleaseTimeline(page);
+    initCharacterSpotlight(page);
 
     const motion = gsap.matchMedia();
     motion.add('(prefers-reduced-motion: no-preference)', () => {
-        // GSAP owns the single animation clock; no second RAF or autoplay carousel.
+        // GSAP owns the smooth-scroll clock; Swiper is scoped to the character section.
         const lenis = new Lenis({
             autoRaf: false,
             smoothWheel: true,

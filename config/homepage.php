@@ -3,6 +3,9 @@
 return [
     'cache_seconds' => 60,
     'images' => [
+        'character' => 'images/characters/character1.jpg',
+        'characters_dark' => 'images/characters/cdark_back.png',
+        'characters_light' => 'images/characters/c_light_back.png',
         'trending' => 'images/fandoms/anime.png',
         'story' => 'images/fandoms/cinema.png',
         'upcoming' => 'images/fandoms/gaming.png',

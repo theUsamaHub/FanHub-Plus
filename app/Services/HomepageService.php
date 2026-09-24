@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Category;
+use App\Models\CharacterProfile;
 use App\Models\Content;
 use App\Models\MerchandiseItem;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -17,13 +18,15 @@ class HomepageService
     {
         $version = Cache::get('homepage:version', 'initial');
 
-        return Cache::remember('homepage:v2:'.$version.':'.today()->toDateString().':'.$key,
+        return Cache::remember('homepage:v3:'.$version.':'.today()->toDateString().':'.$key,
             config('homepage.cache_seconds'), $callback);
     }
 
     public function sections(): array
     {
         return $this->remember('sections', fn () => [
+            'characters' => CharacterProfile::with(['category:id,name,slug', 'imageMedia'])
+                ->orderByDesc('updated_at')->orderByDesc('id')->limit(6)->get(),
             'trending' => Content::visibleToPublic()->with(['category:id,name,slug', 'media'])
                 ->orderByDesc('popularity_score')->orderByDesc('view_count')->orderByDesc('id')->limit(6)->get(),
             'featuredStories' => Content::visibleToPublic()->ofType('article')->where('is_featured', true)

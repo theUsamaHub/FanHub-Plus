@@ -8,6 +8,7 @@ Route::post('/chatbot/message', [\App\Http\Controllers\ChatbotController::class,
 
 Route::get('/explore', [PublicSiteController::class, 'explore'])->name('public.explore');
 Route::get('/stories/{content:slug}', [PublicSiteController::class, 'content'])->name('public.content');
+Route::get('/characters/{character:slug}', [PublicSiteController::class, 'character'])->name('public.character');
 Route::get('/collection/{merchandise:slug}', [PublicSiteController::class, 'merchandise'])->name('public.merchandise');
 Route::get('/discover/{section}', [PublicSiteController::class, 'section'])->name('public.section');
 Route::get('/account/{section}', [PublicSiteController::class, 'account'])->middleware('auth')->name('public.account');

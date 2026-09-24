@@ -1,5 +1,6 @@
 import '../css/public.css';
 import './modules/navigation';
+import './modules/image-fallback';
 import '../css/components/chatbot.scss';
 import '../css/sunset-theme.css';
 import '../css/components/navbar-reference.css';

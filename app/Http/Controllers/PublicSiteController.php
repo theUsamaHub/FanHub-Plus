@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CharacterProfile;
 use App\Models\Content;
 use App\Models\MerchandiseItem;
 use App\Services\HomepageService;
@@ -60,6 +61,14 @@ class PublicSiteController extends Controller
         $content->load(['category', 'submittedBy', 'media']);
 
         return view('public.content', compact('content'));
+    }
+
+    public function character(CharacterProfile $character): View
+    {
+        $character->load(['category', 'imageMedia']);
+        $stories = $character->contents()->visibleToPublic()->latest('published_at')->paginate(6);
+
+        return view('public.character', compact('character', 'stories'));
     }
 
     public function merchandise(MerchandiseItem $merchandise): View
