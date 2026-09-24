@@ -1,0 +1,152 @@
+/* Public-site palette. Keep layout and artwork independent of theme colors. */
+:root {
+    --fh-bg: var(--brand-ink);
+    --fh-surface: var(--brand-surface);
+    --fh-text: #FFF9F2;
+    --fh-muted: #D0C1DF;
+    --fh-line: #51405F;
+    --fh-accent: var(--brand-orange);
+    --fh-cyan: var(--brand-yellow);
+    --fh-panel: #241C30F7;
+    --fh-secondary: var(--brand-lavender);
+    --fh-warm-gradient: linear-gradient(110deg, var(--brand-orange), var(--brand-yellow));
+    --fh-border-gradient: linear-gradient(115deg, var(--brand-orange), var(--brand-red-orange), var(--brand-lavender));
+}
+:root[data-theme='light'] {
+    --fh-bg: var(--brand-cream);
+    --fh-surface: #FFFFFF;
+    --fh-text: var(--brand-ink);
+    --fh-muted: #695774;
+    --fh-line: #DED0E7;
+    --fh-accent: var(--brand-orange-ink);
+    --fh-cyan: var(--brand-lavender-ink);
+    --fh-panel: #FFF9F2FA;
+    --fh-secondary: var(--brand-lavender-ink);
+}
+
+/* The scope keeps these overrides independent of page asset loading order. */
+:root[data-theme] .fh-site .fh-brand__accent {
+    color: var(--brand-orange);
+    background-image: var(--fh-warm-gradient);
+}
+:root[data-theme] .fh-site .fh-brand__crown { color: var(--brand-yellow); filter: none; }
+:root[data-theme] .fh-site .fh-brand__crown [stroke] { stroke: var(--brand-red-orange); }
+:root[data-theme] .fh-site .fh-button,
+:root[data-theme] .fh-site .fh-login,
+:root[data-theme] .fh-site .story-read--primary {
+    background: var(--brand-orange);
+    border-color: var(--brand-orange);
+    color: var(--brand-ink) !important;
+    box-shadow: 0 6px 20px #F451321A;
+}
+:root[data-theme] .fh-site .fh-button:hover,
+:root[data-theme] .fh-site .fh-login:hover,
+:root[data-theme] .fh-site .story-read--primary:hover { background: var(--brand-yellow); border-color: var(--brand-yellow); }
+:root[data-theme] .fh-site .fh-header,
+:root[data-theme] .fh-site .fh-header.is-scrolled {
+    background: linear-gradient(var(--fh-panel), var(--fh-panel)) padding-box, var(--fh-border-gradient) border-box;
+    box-shadow: 0 5px 24px #18132022;
+}
+:root[data-theme] .fh-site .fh-nav-link.is-active::after,
+:root[data-theme] .fh-site .fh-fandom-trigger[aria-expanded='true']::after { background: var(--fh-warm-gradient); box-shadow: none; }
+:root[data-theme] .fh-site .fh-icon-button,
+:root[data-theme] .fh-site .fh-theme-toggle { background: var(--fh-surface); border-color: var(--fh-line); }
+:root[data-theme] .fh-site .fh-theme-track { background: var(--brand-orange); }
+:root[data-theme] .fh-site .fh-theme-track .fh-icon { background: var(--brand-ink); color: var(--brand-yellow); }
+:root[data-theme] .fh-site .fh-mega,
+:root[data-theme] .fh-site .fh-mega::before,
+:root[data-theme] .fh-site .fh-account-menu,
+:root[data-theme] .fh-site .fh-search-dialog,
+:root[data-theme] .fh-site .fh-nav-links { border-color: var(--fh-line); box-shadow: 0 8px 28px #18132022; }
+:root[data-theme] .fh-site .fh-fandom-card,
+:root[data-theme] .fh-site .fh-fandom-copy { background: var(--fh-surface); color: var(--fh-text) !important; border-color: var(--fh-line); }
+:root[data-theme] .fh-site .fh-fandom-copy p { color: var(--fh-muted); }
+:root[data-theme] .fh-site .fh-fandom-copy > .fh-icon { color: var(--fh-accent); filter: none; }
+:root[data-theme] .fh-site .fh-fandom-card--gaming .fh-icon { color: var(--fh-cyan); }
+:root[data-theme] .fh-site .fh-fandom-card--movies .fh-icon { color: var(--fh-secondary); }
+:root[data-theme] .fh-site .fh-avatar { background: var(--brand-lavender); color: var(--brand-ink); }
+:root[data-theme] .fh-site .fh-account-menu a:hover,
+:root[data-theme] .fh-site .fh-account-menu button:hover { background: #FF922E20; }
+
+:root[data-theme] .fh-site .home-page {
+    --home-overlay: #181320D9;
+    --home-heading: var(--fh-text);
+    --home-subtitle: var(--fh-muted);
+    --home-card: var(--fh-surface);
+    --home-neon: var(--brand-orange);
+}
+:root[data-theme='light'] .fh-site .home-page { --home-overlay: #FFF9F2E0; }
+:root[data-theme] .fh-site .home-tone--gaming,
+:root[data-theme] .fh-site .home-tone--tv-shows,
+:root[data-theme] .fh-site .home-tone--comics { --card-accent: var(--brand-yellow); }
+:root[data-theme] .fh-site .home-tone--anime,
+:root[data-theme] .fh-site .home-tone--movies,
+:root[data-theme] .fh-site .home-tone--k-pop,
+:root[data-theme] .fh-site .home-tone--merchandise { --card-accent: var(--brand-orange); }
+:root[data-theme] .fh-site .home-section-heading h2 > span { background-image: linear-gradient(100deg, var(--brand-orange), var(--brand-lavender)); }
+:root[data-theme='light'] .fh-site .home-section-heading h2 > span { background-image: linear-gradient(100deg, var(--brand-orange-ink), var(--brand-lavender-ink)); }
+:root[data-theme] .fh-site .home-eyebrow,
+:root[data-theme] .fh-site .home-side-note,
+:root[data-theme] .fh-site .story-side-rail,
+:root[data-theme] .fh-site .story-side-rail b,
+:root[data-theme] .fh-site .story-bottom-signoff,
+:root[data-theme] .fh-site .story-bottom-signoff strong { color: var(--fh-secondary); border-color: var(--fh-line); }
+:root[data-theme] .fh-site .home-eyebrow > span,
+:root[data-theme] .fh-site .home-side-note::after,
+:root[data-theme] .fh-site .story-side-rail i { background: linear-gradient(90deg, var(--brand-orange), transparent); box-shadow: none; }
+:root[data-theme] .fh-site .home-view-all { color: var(--fh-accent) !important; }
+:root[data-theme] .fh-site .home-badge { background: var(--brand-yellow); color: var(--brand-ink); border-color: var(--brand-yellow); }
+:root[data-theme] .fh-site .home-badge .fh-icon { color: var(--brand-ink); }
+:root[data-theme] .fh-site .home-round-arrow { background: var(--brand-lavender); color: var(--brand-ink); border-color: var(--brand-lavender); box-shadow: none; }
+:root[data-theme] .fh-site .trending-card,
+:root[data-theme] .fh-site .story-card { background: var(--brand-surface); border-color: var(--brand-lavender); box-shadow: 0 8px 24px #18132022; }
+:root[data-theme] .fh-site .trending-card--1,
+:root[data-theme] .fh-site .story-card--primary { border-color: transparent; background: linear-gradient(var(--brand-surface), var(--brand-surface)) padding-box, var(--fh-border-gradient) border-box; }
+:root[data-theme] .fh-site .trending-rank { background-image: linear-gradient(#FFF9F2, var(--brand-yellow) 75%, var(--brand-orange)); filter: drop-shadow(0 2px 4px #181320AA); }
+:root[data-theme] .fh-site .trending-card-cta,
+:root[data-theme] .fh-site .story-read { color: var(--brand-yellow) !important; }
+:root[data-theme] .fh-site .story-read--primary { color: var(--brand-ink) !important; }
+:root[data-theme] .fh-site .story-featured-label { background: var(--brand-lavender); color: var(--brand-ink); border-color: var(--brand-lavender); }
+:root[data-theme] .fh-site .release-filters .fh-icon { color: var(--fh-accent); }
+:root[data-theme] .fh-site .release-filters a { border-color: var(--fh-line); }
+:root[data-theme] .fh-site .release-filters a[aria-current='true'] { background: var(--brand-orange); color: var(--brand-ink); border-color: var(--brand-orange); box-shadow: none; }
+:root[data-theme] .fh-site .release-filters a[aria-current='true'] .fh-icon { color: var(--brand-ink); }
+:root[data-theme] .fh-site .release-card { background: var(--fh-surface); color: var(--fh-text); border-color: var(--fh-line); }
+:root[data-theme] .fh-site .release-card > a { color: var(--fh-text) !important; }
+:root[data-theme] .fh-site .release-card:hover,
+:root[data-theme] .fh-site .release-card:focus-within,
+:root[data-theme] .fh-site .release-card.is-centered { border-color: var(--brand-orange); box-shadow: 0 0 16px #FF922E26; }
+:root[data-theme] .fh-site .release-date,
+:root[data-theme] .fh-site .release-label { color: var(--fh-accent); }
+:root[data-theme] .fh-site .release-node { border-color: var(--fh-bg); }
+:root[data-theme] .fh-site .release-timeline-line > span { background: var(--fh-border-gradient); box-shadow: none; }
+:root[data-theme] .fh-site .release-timeline { scrollbar-color: var(--brand-lavender) transparent; }
+:root[data-theme] .fh-site .trending-card:has(:focus-visible),
+:root[data-theme] .fh-site .release-card:has(:focus-visible) { outline-color: var(--fh-cyan); }
+
+/* Footer art stays dark, with warm accents in either theme. */
+:root[data-theme] .fh-site .fh-footer { color: #D0C1DF; --fh-accent: var(--brand-orange); }
+:root[data-theme] .fh-site .fh-footer-panel,
+:root[data-theme] .fh-site .fh-footer-bottom { background: linear-gradient(var(--brand-ink), var(--brand-surface)) padding-box, var(--fh-border-gradient) border-box; box-shadow: 0 8px 24px #18132022; }
+:root[data-theme] .fh-site .fh-footer-brand::after { background: linear-gradient(180deg, #181320 0%, #181320BB 45%, transparent 75%), linear-gradient(90deg, transparent 80%, #181320); }
+:root[data-theme] .fh-site .fh-footer-tagline,
+:root[data-theme] .fh-site .fh-footer-signoff,
+:root[data-theme] .fh-site .fh-socials a,
+:root[data-theme] .fh-site .fh-social-pending { color: var(--brand-lavender); }
+:root[data-theme] .fh-site .fh-footer-column h2,
+:root[data-theme] .fh-site .fh-footer-community b,
+:root[data-theme] .fh-site .fh-footer-column a:hover { color: var(--brand-orange); }
+:root[data-theme] .fh-site .fh-footer-rule,
+:root[data-theme] .fh-site .fh-footer-signoff span,
+:root[data-theme] .fh-site .fh-footer-motto span { background: var(--fh-warm-gradient); }
+:root[data-theme] .fh-site .fh-footer-icon { background: var(--brand-surface); border-color: var(--brand-lavender); color: var(--brand-orange); box-shadow: none; }
+:root[data-theme] .fh-site .fh-footer-icon .fh-icon { filter: none; }
+:root[data-theme] .fh-site .fh-footer-column:nth-child(even) .fh-footer-icon { color: var(--brand-yellow); }
+:root[data-theme] .fh-site .fh-footer-motto,
+:root[data-theme] .fh-site .fh-footer-column,
+:root[data-theme] .fh-site .fh-footer-links,
+:root[data-theme] .fh-site .fh-socials { border-color: #51405F; }
+.fh-chat__avatar { background: var(--brand-yellow); color: var(--brand-ink); }
+.fh-chat__welcome h3 span { color: var(--brand-lavender-ink); }
+.fh-chat__suggestions button:hover { border-color: var(--brand-lavender-ink); }
+.fh-chat :focus-visible { outline-color: var(--brand-lavender-ink); }

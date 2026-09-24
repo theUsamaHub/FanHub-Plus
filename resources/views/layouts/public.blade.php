@@ -15,6 +15,7 @@
     <x-navbar />
     <main id="main-content" tabindex="-1" class="fh-main @yield('main-class')">@yield('content')</main>
     <x-footer />
+    @include('partials.chatbot')
     @stack('scripts')
 </body>
 </html>
