@@ -31,6 +31,10 @@ Homepage queries cache for 60 seconds. Saving or deleting content, a category, m
 
 ## Interaction and animation
 
+The homepage now presents sections as overlapping, screen-height panels using `home-section-slides.js` and `home-section-slides.css`. Each following panel slides over the previous one with normal vertical scrolling. Desktop content is sized to fit below navigation; longer mobile sections scroll fully before being covered. Individual heading/card entrance staggers are disabled so each section appears together. The character reveal uses a normal-flow anchor and reserved scroll distance inside this shared layout instead of a competing GSAP pin. Reduced motion uses ordinary non-overlapping sections.
+
+Each panel has a normal-flow reading spacer (480–850px on desktop, 140–240px on mobile), with additional distance for the character reveal. A trailing spacer also lets Upcoming settle before the footer arrives. Incoming panels gently scale and dim the previous panel through a scrubbed transition. Upcoming's heading, filters, and carousel rise together while its timeline draws in; filter replacements recreate that animation safely. Lenis softens wheel movement without blocking normal page scrolling or imposing a timed lock.
+
 The homepage alone loads `resources/js/pages/home.js` and `resources/css/pages/home.css`. GSAP/ScrollTrigger handles shared heading/card reveals, subtle desktop story parallax, the timeline line, and character spreading. Lenis uses the GSAP ticker. Swiper is scoped to the character carousel; the homepage remains a normal vertically scrolling page.
 
 ## Character spotlight
@@ -47,7 +51,7 @@ Implementation references: [Swiper API](https://swiperjs.com/swiper-api) and [Sc
 
 Release arrows and keyboard navigation scroll a native horizontal timeline. Mobile uses a vertical timeline. Filters progressively enhance normal links with abortable fetch requests, loading/error feedback, an accessible result announcement, and browser Back/Forward support. Without JavaScript the filters reload the server-rendered page. Reduced-motion preference disables Lenis, reveal animations, and parallax.
 
-Card reveals use each card's viewport position, so cards further down a mobile layout do not animate before they are visible. Section heading parts reveal in sequence, the featured image moves subtly with scroll on desktop, and timeline nodes appear alongside the drawing line. Switching the operating system's reduced-motion preference also cleans up active animations without requiring a reload.
+Outside the shared panel layout, card reveals use each card's viewport position and heading parts reveal in sequence. The featured image moves subtly with scroll on desktop. Switching the operating system's reduced-motion preference also cleans up active animations without requiring a reload.
 
 If MySQL reports `Unknown column 'release_date'` on `merchandise_items`, apply the pending migrations with `php artisan migrate`. Do not reset or reseed the database. The two new columns are nullable, so existing merchandise stays intact and displays an unknown release date until one is entered.
 

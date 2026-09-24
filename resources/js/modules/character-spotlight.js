@@ -143,12 +143,13 @@ export function initCharacterSpotlight(page) {
             measure();
             // A short mobile hold also preserves the stack on direct #characters links.
             // It lasts just 180px, so normal page scrolling resumes promptly.
-            const pin = mobile || section.offsetHeight < window.innerHeight - 110;
+            const sharedSlide = page.classList.contains('has-section-overlap');
+            const pin = !sharedSlide && (mobile || section.offsetHeight < window.innerHeight - 110);
             timeline = gsap.timeline({
                 scrollTrigger: {
-                    trigger: section,
-                    start: pin ? (mobile ? 'top 78px' : 'top 96px') : 'top 62%',
-                    end: pin ? `+=${mobile ? 180 : tablet ? 320 : 460}` : 'top 16%',
+                    trigger: sharedSlide ? section.previousElementSibling : section,
+                    start: pin || sharedSlide ? (mobile ? 'top 78px' : 'top 96px') : 'top 62%',
+                    end: pin || sharedSlide ? `+=${mobile ? 180 : tablet ? 320 : 460}` : 'top 16%',
                     pin, scrub: mobile ? .3 : .7,
                     invalidateOnRefresh: true,
                     onRefresh: measure,
