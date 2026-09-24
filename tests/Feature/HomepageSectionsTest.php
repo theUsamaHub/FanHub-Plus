@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Category;
 use App\Models\Content;
+use App\Models\Media;
 use App\Models\MerchandiseItem;
 use App\Models\User;
 use App\Services\HomepageService;
@@ -53,6 +54,23 @@ class HomepageSectionsTest extends TestCase
         $this->get('/')->assertOk()->assertSeeInOrder(['Ranked 0', 'Ranked 1', 'Ranked 2'])
             ->assertSee('Published Author')->assertSee('3 min read')->assertSee('An excerpt from the database.')
             ->assertDontSee('Secret draft')->assertDontSee('Scheduled story')->assertDontSee('Ranked 8');
+    }
+
+    public function test_cards_use_uploaded_covers_and_local_fallback_artwork(): void
+    {
+        $category = Category::create(['name' => 'Gaming', 'slug' => 'gaming']);
+        $story = $this->story($category, ['is_featured' => true, 'release_date' => today()->addDay()]);
+        $this->assertSame(asset('images/fandoms/gaming.png'), $story->artwork_url);
+        foreach (array_unique(config('homepage.artwork')) as $path) {
+            $this->assertFileExists(public_path($path));
+        }
+
+        $cover = Media::create(['disk' => 'public', 'path' => 'covers/game.jpg', 'original_filename' => 'game.jpg', 'mime_type' => 'image/jpeg', 'media_type' => 'image', 'size_bytes' => 100]);
+        $story->media()->attach($cover, ['role' => 'cover', 'sort_order' => 0]);
+        $this->assertSame($cover->url, $story->fresh()->artwork_url);
+        $this->assertSame($cover->url, app(HomepageService::class)->releases()->first()['image']);
+        $this->get('/')->assertOk()->assertSee($cover->url);
+        $this->get(route('public.content', $story->slug))->assertOk()->assertSee($cover->url);
     }
 
     public function test_featured_stories_are_articles_and_cache_refreshes_after_edits(): void
