@@ -3,12 +3,11 @@
         <i class="bi bi-chevron-double-left"></i>
     </button>
     <a class="fh-adm-brand" href="{{ route('admin.dashboard') }}">
-        <svg class="fh-adm-brand-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M3 8l3.5 3L12 4l5.5 7L21 8l-1.5 10h-15L3 8z"/>
-            <path d="M7 21h10"/>
-        </svg>
-        <div>
-            <div class="fh-adm-brand-title">{{ config('app.name', 'FanHubPlus') }}</div>
+        <x-site-icon name="crown" class="fh-brand__crown fh-adm-brand-mark" />
+        <div class="fh-adm-brand-copy">
+            <div class="fh-brand fh-adm-brand-word">
+                <span>FAN<span class="fh-brand__accent">HUB+</span></span>
+            </div>
             <span class="fh-adm-brand-sub">{{ __('Guild Command') }}</span>
         </div>
     </a>
