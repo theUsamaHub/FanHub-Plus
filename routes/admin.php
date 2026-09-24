@@ -83,6 +83,10 @@ Route::prefix('admin')
         Route::get('/subscribers/export', [\App\Http\Controllers\Admin\SubscriberController::class, 'export'])->name('subscribers.export');
         Route::delete('/subscribers/{subscriber}', [\App\Http\Controllers\Admin\SubscriberController::class, 'destroy'])->name('subscribers.destroy');
 
+        Route::get('/chatbot', [\App\Http\Controllers\Admin\ChatbotController::class, 'index'])->name('chatbot.index');
+        Route::get('/chatbot/export', [\App\Http\Controllers\Admin\ChatbotController::class, 'export'])->name('chatbot.export');
+        Route::delete('/chatbot/{query}', [\App\Http\Controllers\Admin\ChatbotController::class, 'destroy'])->name('chatbot.destroy');
+
         Route::get('/sessions', [\App\Http\Controllers\Admin\SessionController::class, 'index'])->name('sessions.index');
         Route::delete('/sessions/{id}', [\App\Http\Controllers\Admin\SessionController::class, 'destroy'])->name('sessions.destroy');
 
