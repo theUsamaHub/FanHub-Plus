@@ -83,9 +83,21 @@
                             <td><span class="badge bg-{{ match($log->event) { 'created' => 'success', 'updated' => 'warning', 'deleted' => 'danger', default => 'secondary' } }}">{{ $log->event }}</span></td>
                             <td><code style="font-size:0.75rem;">{{ class_basename($log->auditable_type) }}</code> #{{ $log->auditable_id }}</td>
                             <td style="font-size:0.8rem; max-width:300px;">
-                                @if ($log->new_values)
-                                    @foreach (array_slice($log->new_values, 0, 3) as $key => $val)
-                                        <span class="text-muted">{{ $key }}:</span> {{ is_array($val) ? json_encode($val) : Str::limit($val, 30) }}<br>
+                                @php
+                                    $details = $log->new_values;
+                                    if (is_string($details)) {
+                                        $decoded = json_decode($details, true);
+                                        $details = is_array($decoded) ? $decoded : ['value' => $details];
+                                    }
+                                    if (! is_array($details)) {
+                                        $details = [];
+                                    }
+                                @endphp
+                                @if ($details)
+                                    @foreach (array_slice($details, 0, 3) as $key => $val)
+                                        <span class="text-muted">{{ $key }}:</span>
+                                        {{ is_array($val) || is_object($val) ? json_encode($val) : \Illuminate\Support\Str::limit((string) $val, 30) }}
+                                        <br>
                                     @endforeach
                                 @endif
                             </td>
