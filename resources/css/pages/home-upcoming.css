@@ -1,0 +1,62 @@
+.home-upcoming { padding-top: 65px; padding-bottom: 110px; }
+.home-upcoming .home-section-heading h2 { font-size: clamp(30px,3.55vw,60px); }
+.home-upcoming::before { background-image: linear-gradient(var(--home-overlay),var(--home-overlay)),var(--home-art); opacity: .7; }
+.release-toolbar { display: flex; align-items: center; justify-content: center; position: relative; gap: 22px; margin: 36px 0 20px; }
+.release-filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; max-width: calc(100% - 160px); margin-inline: auto; }
+.release-filters a { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-width: 92px; min-height: 49px; padding: 10px 28px; border: 1px solid #3c3a66; border-radius: 19px; font-size: 15px; color: var(--home-subtitle); background: var(--home-card); }
+.release-filters .fh-icon { color: #c079ff; width: 26px; height: 26px; }
+.release-filters a[data-release-filter='gaming'] .fh-icon { color: #27d8ff; }
+.release-filters a[aria-current='true'] { background: linear-gradient(135deg,#260e3b,#110526); border-color: #d857ff; box-shadow: inset 0 0 16px #a524e155,0 0 14px #a33dda33; color: #fff; }
+.release-toolbar > .home-view-all { position: absolute; right: 0; }
+.release-carousel { position: relative; }
+.release-timeline { overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: #7461b3 transparent; scroll-snap-type: x proximity; padding: 20px 8px 18px; }
+.release-track { --poster-height: 295px; display: flex; gap: 24px; position: relative; width: max-content; min-width: 100%; }
+.release-card { flex: 0 0 var(--release-width,260px); width: var(--release-width,260px); padding: 10px; border: 1px solid #454164; border-radius: 14px; background: linear-gradient(145deg,#10121fe6,#070815d9); position: relative; scroll-snap-align: start; transition: border-color .2s,box-shadow .2s; color: #faf5ff; }
+.release-card:hover, .release-card:focus-within, .release-card.is-centered { border-color: var(--card-accent,#c37aff); box-shadow: 0 0 15px #ae4eff44,inset 0 0 13px #504af52b; }
+.release-card > a { display: block; color: #faf5ff !important; }
+.release-card:has(:focus-visible) { outline: 2px solid #7eeaff; outline-offset: 3px; }
+.release-poster { height: var(--poster-height); overflow: hidden; border: 1px solid #494569; border-radius: 8px; position: relative; }
+.release-poster img { width: 100%; height: 100%; object-fit: cover; object-position: center 38%; transition: transform .35s; }
+.release-card:hover .release-poster img { transform: scale(1.025); }
+.release-poster .home-badge { position: absolute; top: 7px; left: 7px; }
+.release-date { display: flex; align-items: center; justify-content: center; min-height: 59px; color: var(--card-accent,#c78bff); font-size: 17px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; }
+.release-date time { display: flex; align-items: center; gap: 8px; }
+.release-date small { font-size: 11px; }
+.release-node { display: block; width: 21px; height: 21px; background: var(--card-accent,#d173ff); border: 4px solid #1c1034; outline: 2px solid var(--card-accent,#c170fb); border-radius: 50%; margin: 0 auto; position: relative; z-index: 2; box-shadow: 0 0 14px var(--card-accent,#9841fa); }
+.release-copy { text-align: center; padding: 23px 7px 10px; }
+.release-copy h3 { font-size: 16px; font-weight: 500; line-height: 1.35; margin: 0 0 14px; min-height: 44px; overflow-wrap: anywhere; }
+.release-label { display: inline-flex; justify-content: center; max-width: 100%; overflow-wrap: anywhere; padding: 4px 16px; border: 1px solid var(--card-accent,#974ae3); border-radius: 6px; color: var(--card-accent,#d288ff); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+.release-timeline-line { position: absolute; z-index: 1; left: 0; right: 0; top: calc(var(--poster-height) + 79px); height: 2px; background: #7672b266; pointer-events: none; }
+.release-timeline-line > span { display: block; height: 100%; width: 100%; background: linear-gradient(90deg,#bd53ff,#489dff,#e456ff,#489dff); box-shadow: 0 0 10px #a73bff; transform-origin: left center; }
+.release-arrow { position: absolute; top: 41%; z-index: 3; width: 52px; height: 52px; cursor: pointer; }
+.release-arrow--prev { left: -53px; }
+.release-arrow--prev .fh-icon { transform: rotate(180deg); }
+.release-arrow--next { right: -53px; }
+.release-arrow:disabled { opacity: .3; cursor: default; }
+.release-status:not(.home-sr-only) { text-align: center; color: var(--home-subtitle); }
+.home-upcoming [aria-busy='true'] { opacity: .65; }
+:root[data-theme='light'] .release-card { background: #faf7ffec; color: #26183c; border-color: #b1a3c8; }
+:root[data-theme='light'] .release-card > a { color: #26183c !important; }
+:root[data-theme='light'] .release-date, :root[data-theme='light'] .release-label { color: #64389b; }
+@media(min-width: 1450px) { .release-track { --release-width: calc((100vw - 9.3vw - 16px - 96px) / 5); } }
+@media(min-width: 1921px) { .release-track { --release-width: 325px; } }
+@media(max-width: 1449px) and (min-width: 701px) { .release-track { --release-width: 265px; } .release-arrow--prev { left: -20px; } .release-arrow--next { right: -20px; } }
+@media(max-width: 1100px) { .release-toolbar { flex-wrap: wrap; justify-content: start; } .release-toolbar > .home-view-all { position: static; margin-left: auto; } .release-filters { max-width: 100%; justify-content: start; margin: 0; } .release-filters a { min-width: 0; padding: 9px 17px; font-size: 13px; } }
+@media(max-width: 700px) {
+    .home-upcoming { padding-top: 42px; padding-bottom: 65px; }
+    .release-toolbar { margin-top: 27px; gap: 12px; }
+    .release-filters { gap: 8px; }
+    .release-filters a { min-height: 44px; border-radius: 13px; padding: 8px 12px; font-size: 12px; gap: 8px; }
+    .release-filters .fh-icon { width: 20px; height: 20px; }
+    .release-timeline { overflow: visible; padding: 10px 0 0 27px; }
+    .release-track { --poster-height: 280px; display: grid; grid-template-columns: minmax(0,1fr); width: 100%; gap: 24px; }
+    .release-card { width: auto; min-width: 0; padding: 10px; }
+    .release-poster { height: clamp(250px,70vw,380px); }
+    .release-copy { padding: 0 6px 12px; }
+    .release-copy h3 { min-height: 0; font-size: 17px; }
+    .release-date { justify-content: start; padding-left: 6px; }
+    .release-node { position: absolute; top: 34px; left: -27px; width: 17px; height: 17px; }
+    .release-timeline-line { left: -19px; top: 44px; bottom: 44px; right: auto; height: auto; width: 2px; }
+    .release-timeline-line > span { background: linear-gradient(#bd53ff,#489dff,#e456ff); transform-origin: center top; }
+    .release-arrow { display: none !important; }
+}
