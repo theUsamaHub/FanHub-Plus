@@ -11,12 +11,10 @@
 
     <div class="ms-auto d-flex align-items-center gap-2">
         <button type="button" class="fh-adm-theme-toggle" onclick="toggleTheme()" aria-label="{{ __('Toggle dark mode') }}" title="{{ __('Toggle dark mode') }}">
-            <span class="fh-adm-theme-icon-sun" aria-hidden="true"><i class="bi bi-sun"></i></span>
             <span class="fh-adm-theme-knob">
-                <i class="bi bi-moon-stars fh-adm-theme-glyph fh-adm-theme-glyph--dark"></i>
-                <i class="bi bi-sun fh-adm-theme-glyph fh-adm-theme-glyph--light"></i>
+                <i class="bi bi-moon-stars fh-adm-theme-glyph fh-adm-theme-glyph--dark" aria-hidden="true"></i>
+                <i class="bi bi-sun fh-adm-theme-glyph fh-adm-theme-glyph--light" aria-hidden="true"></i>
             </span>
-            <span class="fh-adm-theme-icon-moon" aria-hidden="true"><i class="bi bi-moon-stars"></i></span>
         </button>
 
         <div class="dropdown">

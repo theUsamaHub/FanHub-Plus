@@ -1344,8 +1344,8 @@ body.fh-admin.is-sidebar-collapsed .fh-adm-sidebar-foot {
 /* ── Theme toggle ── */
 body.fh-admin .fh-adm-theme-toggle {
     position: relative;
-    width: 64px;
-    height: 34px;
+    width: 52px;
+    height: 32px;
     border-radius: 999px;
     border: 1px solid var(--fh-adm-line);
     background: linear-gradient(120deg, rgba(18, 19, 38, 0.95), rgba(12, 13, 24, 0.95));
@@ -1365,8 +1365,8 @@ body.fh-admin .fh-adm-theme-toggle:hover {
 
 body.fh-admin .fh-adm-theme-knob {
     position: absolute;
-    top: 3px;
-    left: 3px;
+    top: 2px;
+    left: 2px;
     width: 26px;
     height: 26px;
     border-radius: 50%;
@@ -1374,14 +1374,13 @@ body.fh-admin .fh-adm-theme-knob {
     color: #fff;
     display: grid;
     place-items: center;
-    font-size: 0.75rem;
     box-shadow: 0 0 12px rgba(220, 99, 255, 0.45);
-    transition: transform 0.4s var(--fh-ease-spring), left 0.35s var(--fh-ease-out), background 0.35s ease;
+    transition: left 0.35s var(--fh-ease-out), background 0.35s ease, box-shadow 0.35s ease;
 }
 
 body.fh-admin .fh-adm-theme-glyph {
     grid-area: 1 / 1;
-    font-size: 0.75rem;
+    font-size: 0.78rem;
     line-height: 1;
 }
 
@@ -1398,23 +1397,10 @@ body.fh-admin .fh-adm-theme-glyph--light {
 }
 
 [data-theme='light'] body.fh-admin .fh-adm-theme-knob {
-    left: 35px;
+    left: 22px;
     background: linear-gradient(135deg, var(--fh-gold), var(--fh-sail));
     box-shadow: 0 0 12px rgba(255, 210, 63, 0.4);
 }
-
-body.fh-admin .fh-adm-theme-icon-sun,
-body.fh-admin .fh-adm-theme-icon-moon {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 0.7rem;
-    color: var(--fh-adm-dim);
-    pointer-events: none;
-}
-
-body.fh-admin .fh-adm-theme-icon-moon { right: 8px; }
-body.fh-admin .fh-adm-theme-icon-sun { left: 8px; }
 
 /* ── Focus (a11y) ── */
 body.fh-admin :focus-visible {
