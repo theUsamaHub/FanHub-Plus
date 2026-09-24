@@ -43,6 +43,7 @@
             <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}" href="{{ route('admin.roles.index') }}"><i class="bi bi-shield-check"></i> {{ __('Roles') }}</a></li>
             <!-- <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}" href="{{ route('admin.contacts.index') }}"><i class="bi bi-envelope"></i> {{ __('Contacts') }}</a></li> -->
             <!-- <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.subscribers.*') ? 'active' : '' }}" href="{{ route('admin.subscribers.index') }}"><i class="bi bi-envelope-paper"></i> {{ __('Subscribers') }}</a></li> -->
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.chatbot.*') ? 'active' : '' }}" href="{{ route('admin.chatbot.index') }}"><i class="bi bi-chat-dots"></i> {{ __('Chatbot') }}</a></li>
 
             <li class="nav-item mt-2">
                 <small class="text-uppercase text-secondary px-3 fw-semibold" style="font-size:0.7rem;letter-spacing:0.05em;">{{ __('System') }}</small>
