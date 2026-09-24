@@ -9,9 +9,18 @@
 <body class="fh-auth">
 <video class="fh-auth-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="{{ asset('videos/girl-behind-curtains-3.1920x1080.mp4') }}" type="video/mp4"></video>
 <div class="fh-auth-overlay" aria-hidden="true"></div>
-<header class="fh-auth-header"><x-site-brand /><a href="{{ route('home') }}" class="fh-auth-back">← Back to home</a></header>
+<div class="fh-auth-particles" aria-hidden="true">
+<span class="fh-auth-particle fh-auth-particle--1">&#x2726;</span>
+<span class="fh-auth-particle fh-auth-particle--2">&#x2727;</span>
+<span class="fh-auth-particle fh-auth-particle--3">&#x2726;</span>
+<span class="fh-auth-particle fh-auth-particle--4">&#x2736;</span>
+<span class="fh-auth-particle fh-auth-particle--5">&#x2726;</span>
+<span class="fh-auth-particle fh-auth-particle--6">&#x2727;</span>
+</div>
+<header class="fh-auth-header"><x-site-brand /><a href="{{ route('home') }}" class="fh-auth-back">&larr; Back to home</a></header>
 <main class="fh-auth-shell">
 <section class="fh-auth-panel" aria-labelledby="auth-title">
+<div class="fh-auth-glow" aria-hidden="true"></div>
 <div class="fh-auth-heading"><span class="fh-auth-eyebrow">YOUR FANDOM. YOUR SPACE.</span><h1 id="auth-title">{{ $title }}</h1><p>{{ $subtitle }}</p></div>
 <nav class="fh-auth-tabs" aria-label="Account access"><a href="{{ route('login') }}" @if(request()->routeIs('login')) aria-current="page" @endif>Log in</a><a href="{{ route('register') }}" @if(request()->routeIs('register')) aria-current="page" @endif>Sign up</a></nav>
 {{ $slot }}
