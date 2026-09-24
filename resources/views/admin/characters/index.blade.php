@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="h4 mb-0 fw-semibold">{{ __('Characters') }}</h2>
             <a href="{{ route('admin.characters.create') }}" class="btn btn-primary btn-sm">
@@ -10,7 +10,7 @@
         </div>
     </div>
 
-    <div class="card mb-4">
+    <div class="card fh-adm-filter">
         <div class="card-body">
             <form method="GET" action="{{ route('admin.characters.index') }}" class="row g-2">
                 <div class="col-md-5">
@@ -32,7 +32,7 @@
         </div>
     </div>
 
-    <div class="card">
+    <div class="card fh-adm-table-card">
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
@@ -72,7 +72,7 @@
                         @empty
                             <tr>
                                 <td colspan="5" class="text-center py-5">
-                                    <div class="empty-state">
+                                    <div class="fh-adm-empty">
                                         <i class="bi bi-person-badge"></i>
                                         <p>{{ __('No characters found.') }}</p>
                                         <a href="{{ route('admin.characters.create') }}" class="btn btn-primary btn-sm mt-2">{{ __('Create your first character') }}</a>

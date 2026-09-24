@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="h4 mb-0 fw-semibold">{{ __('Content') }}</h2>
             <a href="{{ route('admin.contents.create') }}" class="btn btn-primary btn-sm">
@@ -10,15 +10,15 @@
         </div>
     </div>
 
-    <div class="row g-3 mb-4">
-        <div class="col"><div class="card border-start border-primary border-3"><div class="card-body py-2"><div class="text-muted small">{{ __('Total') }}</div><div class="fw-semibold">{{ $stats['total'] }}</div></div></div></div>
-        <div class="col"><div class="card border-start border-success border-3"><div class="card-body py-2"><div class="text-muted small">{{ __('Published') }}</div><div class="fw-semibold">{{ $stats['published'] }}</div></div></div></div>
-        <div class="col"><div class="card border-start border-secondary border-3"><div class="card-body py-2"><div class="text-muted small">{{ __('Drafts') }}</div><div class="fw-semibold">{{ $stats['draft'] }}</div></div></div></div>
-        <div class="col"><div class="card border-start border-warning border-3"><div class="card-body py-2"><div class="text-muted small">{{ __('Pending Review') }}</div><div class="fw-semibold">{{ $stats['pending'] }}</div></div></div></div>
-        <div class="col"><div class="card border-start border-info border-3"><div class="card-body py-2"><div class="text-muted small">{{ __('Featured') }}</div><div class="fw-semibold">{{ $stats['featured'] }}</div></div></div></div>
-    </div>
+    <x-admin-stats :items="[
+        ['label' => __('Total'), 'value' => $stats['total'], 'accent' => 'primary'],
+        ['label' => __('Published'), 'value' => $stats['published'], 'accent' => 'success'],
+        ['label' => __('Drafts'), 'value' => $stats['draft'], 'accent' => 'secondary'],
+        ['label' => __('Pending Review'), 'value' => $stats['pending'], 'accent' => 'warning'],
+        ['label' => __('Featured'), 'value' => $stats['featured'], 'accent' => 'info'],
+    ]" />
 
-    <div class="card mb-4">
+    <div class="card fh-adm-filter">
         <div class="card-body">
             <form method="GET" action="{{ route('admin.contents.index') }}" class="row g-2">
                 <div class="col-md-3">
@@ -77,7 +77,7 @@
         </div>
     </div>
 
-    <div class="card">
+    <div class="card fh-adm-table-card">
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
@@ -105,8 +105,8 @@
                                 <td>{{ $item->category?->name ?? '-' }}</td>
                                 <td>{{ $item->type }}</td>
                                 <td>
-                                    @php $statusClass = ['draft' => 'secondary', 'pending_review' => 'warning', 'published' => 'success', 'rejected' => 'danger'][$item->status] ?? 'secondary'; @endphp
-                                    <span class="badge text-bg-{{ $statusClass }}">{{ ucwords(str_replace('_', ' ', $item->status)) }}</span>
+                                    @php $statusTone = ['draft' => 'muted', 'pending_review' => 'warning', 'published' => 'success', 'rejected' => 'danger'][$item->status] ?? 'muted'; @endphp
+                                    <span class="fh-adm-chip" data-tone="{{ $statusTone }}">{{ ucwords(str_replace('_', ' ', $item->status)) }}</span>
                                 </td>
                                 <td>
                                     <form action="{{ route('admin.contents.feature', $item) }}" method="POST" class="d-inline">
@@ -134,7 +134,7 @@
                         @empty
                             <tr>
                                 <td colspan="8" class="text-center py-5">
-                                    <div class="empty-state">
+                                    <div class="fh-adm-empty">
                                         <i class="bi bi-file-earmark-text"></i>
                                         <p>{{ __('No content found.') }}</p>
                                         <a href="{{ route('admin.contents.create') }}" class="btn btn-primary btn-sm mt-2">{{ __('Create your first content') }}</a>

@@ -1187,6 +1187,136 @@ body.fh-admin .text-danger { color: #ff8d8d !important; }
 [data-theme='light'] body.fh-admin .text-danger { color: var(--fh-crimson) !important; }
 body.fh-admin .text-secondary { color: var(--fh-steel) !important; }
 
+/* ── Shared page pieces (all colors via variables) ── */
+body.fh-admin .fh-adm-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+body.fh-admin .fh-adm-stat {
+    flex: 1 1 120px;
+    min-width: 120px;
+    padding: 12px 14px;
+    border: 1px solid var(--fh-adm-line);
+    border-left: 3px solid var(--stat-accent, var(--fh-accent));
+    border-radius: var(--fh-adm-radius-sm);
+    background: linear-gradient(165deg, var(--fh-adm-panel), var(--fh-adm-surface));
+    transition: transform 0.25s var(--fh-ease-out), border-color 0.25s ease;
+    animation: fh-adm-enter 0.45s var(--fh-ease-out) both;
+}
+
+body.fh-admin .fh-adm-stat:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--stat-accent, var(--fh-accent)) 40%, var(--fh-adm-line));
+}
+
+body.fh-admin .fh-adm-stat-label {
+    display: block;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fh-adm-label);
+    margin-bottom: 4px;
+}
+
+body.fh-admin .fh-adm-stat-value {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--fh-adm-text);
+    line-height: 1.1;
+}
+
+body.fh-admin .fh-adm-stat[data-accent='primary'] { --stat-accent: var(--fh-accent); }
+body.fh-admin .fh-adm-stat[data-accent='success'] { --stat-accent: var(--fh-water); }
+body.fh-admin .fh-adm-stat[data-accent='info'] { --stat-accent: var(--fh-cyan); }
+body.fh-admin .fh-adm-stat[data-accent='warning'] { --stat-accent: var(--fh-gold); }
+body.fh-admin .fh-adm-stat[data-accent='danger'] { --stat-accent: var(--fh-crimson); }
+body.fh-admin .fh-adm-stat[data-accent='secondary'] { --stat-accent: var(--fh-steel); }
+body.fh-admin .fh-adm-stat[data-accent='rose'] { --stat-accent: var(--fh-rose); }
+body.fh-admin .fh-adm-stat[data-accent='lilac'] { --stat-accent: var(--fh-lilac); }
+body.fh-admin .fh-adm-stat[data-accent='gold'] { --stat-accent: var(--fh-gold); }
+
+body.fh-admin .fh-adm-filter {
+    margin-bottom: 24px;
+    animation: fh-adm-enter 0.5s var(--fh-ease-out) 0.05s both;
+}
+
+body.fh-admin .fh-adm-table-card {
+    animation: fh-adm-enter 0.55s var(--fh-ease-out) 0.1s both;
+}
+
+body.fh-admin .fh-adm-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+
+body.fh-admin .fh-adm-chip[data-tone='success'] {
+    background: color-mix(in srgb, var(--fh-water) 14%, transparent);
+    color: var(--fh-water);
+    border-color: color-mix(in srgb, var(--fh-water) 35%, transparent);
+}
+
+body.fh-admin .fh-adm-chip[data-tone='warning'] {
+    background: color-mix(in srgb, var(--fh-gold) 14%, transparent);
+    color: var(--fh-gold);
+    border-color: color-mix(in srgb, var(--fh-gold) 35%, transparent);
+}
+
+body.fh-admin .fh-adm-chip[data-tone='danger'] {
+    background: color-mix(in srgb, var(--fh-crimson) 14%, transparent);
+    color: color-mix(in srgb, var(--fh-crimson) 80%, var(--fh-adm-text));
+    border-color: color-mix(in srgb, var(--fh-crimson) 35%, transparent);
+}
+
+body.fh-admin .fh-adm-chip[data-tone='info'] {
+    background: color-mix(in srgb, var(--fh-cyan) 14%, transparent);
+    color: var(--fh-cyan);
+    border-color: color-mix(in srgb, var(--fh-cyan) 35%, transparent);
+}
+
+body.fh-admin .fh-adm-chip[data-tone='muted'] {
+    background: color-mix(in srgb, var(--fh-steel) 14%, transparent);
+    color: var(--fh-steel);
+    border-color: color-mix(in srgb, var(--fh-steel) 30%, transparent);
+}
+
+body.fh-admin .fh-adm-chip[data-tone='accent'] {
+    background: color-mix(in srgb, var(--fh-accent) 14%, transparent);
+    color: var(--fh-accent);
+    border-color: color-mix(in srgb, var(--fh-accent) 35%, transparent);
+}
+
+body.fh-admin .fh-adm-row-actions {
+    display: inline-flex;
+    gap: 6px;
+}
+
+body.fh-admin .fh-adm-empty {
+    text-align: center;
+    padding: 48px 16px;
+    color: var(--fh-adm-muted);
+}
+
+body.fh-admin .fh-adm-empty .bi {
+    font-size: 2.5rem;
+    color: var(--fh-adm-dim);
+    margin-bottom: 12px;
+}
+
 /* ── Profile page ── */
 body.fh-admin .fh-adm-page-head {
     animation: fh-adm-enter 0.5s var(--fh-ease-out) both;

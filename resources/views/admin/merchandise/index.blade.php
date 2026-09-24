@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="mb-4">
+    <div class="mb-4 fh-adm-page-head">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="h4 mb-0 fw-semibold">{{ __('Merchandise') }}</h2>
             <a href="{{ route('admin.merchandise.create') }}" class="btn btn-primary btn-sm">
@@ -10,7 +10,7 @@
         </div>
     </div>
 
-    <div class="card mb-4">
+    <div class="card fh-adm-filter">
         <div class="card-body">
             <form method="GET" action="{{ route('admin.merchandise.index') }}" class="row g-2">
                 <div class="col-md-4">
@@ -47,7 +47,7 @@
         </div>
     </div>
 
-    <div class="card">
+    <div class="card fh-adm-table-card">
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
@@ -66,7 +66,7 @@
                             <tr>
                                 <td class="fw-medium">{{ $item->name }}</td>
                                 <td>{{ $item->category?->name ?? '-' }}</td>
-                                <td><span class="badge text-bg-light border">{{ ucwords(str_replace('_', ' ', $item->tag)) }}</span></td>
+                                <td><span class="fh-adm-chip" data-tone="accent">{{ ucwords(str_replace('_', ' ', $item->tag)) }}</span></td>
                                 <td>{{ $item->is_upcoming ? __('Yes') : __('No') }}</td>
                                 <td>{{ number_format($item->view_count) }}</td>
                                 <td class="text-end">
@@ -84,7 +84,7 @@
                         @empty
                             <tr>
                                 <td colspan="6" class="text-center py-5">
-                                    <div class="empty-state">
+                                    <div class="fh-adm-empty">
                                         <i class="bi bi-box-seam"></i>
                                         <p>{{ __('No merchandise found.') }}</p>
                                         <a href="{{ route('admin.merchandise.create') }}" class="btn btn-primary btn-sm mt-2">{{ __('Add your first merchandise item') }}</a>
