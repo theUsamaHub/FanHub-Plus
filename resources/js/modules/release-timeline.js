@@ -16,6 +16,7 @@ export function initReleaseTimeline(page) {
         previous.hidden = next.hidden = !track;
         if (!track) return;
         const update = () => {
+            previous.hidden = next.hidden = track.scrollWidth <= track.clientWidth + 2;
             previous.disabled = track.scrollLeft <= 2;
             next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
             const cards = [...track.querySelectorAll('[data-release-card]')];

@@ -57,14 +57,14 @@ class PublicSiteController extends Controller
     public function content(Content $content): View
     {
         abort_unless(Content::visibleToPublic()->whereKey($content->id)->exists(), 404);
-        $content->load(['category', 'submittedBy']);
+        $content->load(['category', 'submittedBy', 'media']);
 
         return view('public.content', compact('content'));
     }
 
     public function merchandise(MerchandiseItem $merchandise): View
     {
-        $merchandise->load('category');
+        $merchandise->load(['category', 'imageMedia']);
 
         return view('public.merchandise', compact('merchandise'));
     }
