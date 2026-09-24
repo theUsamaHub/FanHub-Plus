@@ -10,7 +10,7 @@
 <header class="fh-auth-header"><x-site-brand /><a href="{{ route('home') }}" class="fh-auth-back">← Back to home</a></header>
 <main class="fh-auth-shell">
 <aside class="fh-auth-story" aria-label="Welcome to FanHubPlus">
-<img src="{{ asset('images/fandoms/gaming.png') }}" alt="" class="fh-auth-art" fetchpriority="high">
+<video class="fh-auth-art" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="{{ asset('videos/girl-behind-curtains-3.1920x1080.mp4') }}" type="video/mp4"></video>
 <div class="fh-auth-story-content"><span class="fh-auth-eyebrow">YOUR NEXT CHAPTER STARTS HERE</span><h2>Every universe.<br>One <em>home.</em></h2><p>For the stories you love, the worlds you explore, and the fans who get it.</p><div class="fh-auth-tags"><span>Anime</span><span>Gaming</span><span>Cinema</span></div><div class="fh-auth-note">✦ &nbsp; A little more fandom. A lot more you.</div></div>
 </aside>
 <section class="fh-auth-panel" aria-labelledby="auth-title">
