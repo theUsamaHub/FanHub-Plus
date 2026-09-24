@@ -1634,7 +1634,8 @@ body.fh-admin.is-sidebar-collapsed .fh-adm-spirit-svg {
 body.fh-admin .fh-adm-sidebar-toggle {
     position: absolute;
     top: 22px;
-    right: -14px;
+    right: 0;
+    transform: translateX(50%);
     z-index: 260;
     width: 28px;
     height: 28px;
@@ -1646,14 +1647,17 @@ body.fh-admin .fh-adm-sidebar-toggle {
     place-items: center;
     cursor: pointer;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-    transition: transform 0.35s var(--fh-ease-spring), color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    transition: color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 body.fh-admin .fh-adm-sidebar-toggle:hover {
     color: var(--fh-cyan);
     border-color: rgba(68, 217, 255, 0.5);
     box-shadow: 0 0 12px rgba(68, 217, 255, 0.25);
-    transform: scale(1.08);
+}
+
+body.fh-admin .fh-adm-sidebar-toggle:hover .bi {
+    transform: scale(1.1);
 }
 
 body.fh-admin .fh-adm-sidebar-toggle .bi {
