@@ -42,7 +42,11 @@
                     <div class="fh-adm-profile-rule"></div>
                     <div class="d-flex align-items-center mb-3">
                         <div class="fh-adm-avatar" style="width: 64px; height: 64px; font-size: 1.5rem;">
-                            {{ substr(Auth::user()->name, 0, 1) }}
+                            @if ($user->profile?->avatarMedia)
+                                <img src="{{ $user->profile->avatarMedia->url }}" alt="" style="width:64px;height:64px;">
+                            @else
+                                {{ substr(Auth::user()->name, 0, 1) }}
+                            @endif
                         </div>
                         <div class="ms-3">
                             <div class="fw-semibold">{{ Auth::user()->name }}</div>

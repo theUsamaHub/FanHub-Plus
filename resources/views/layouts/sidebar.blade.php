@@ -51,7 +51,13 @@
     <x-sidebar-spirit />
 
     <div class="fh-adm-sidebar-foot">
-        <div class="fh-adm-avatar">{{ substr(Auth::user()->name, 0, 1) }}</div>
+        <div class="fh-adm-avatar">
+            @if (Auth::user()->profile?->avatarMedia)
+                <img src="{{ Auth::user()->profile->avatarMedia->url }}" alt="">
+            @else
+                {{ substr(Auth::user()->name, 0, 1) }}
+            @endif
+        </div>
         <div class="overflow-hidden">
             <div class="fh-adm-user-name">{{ Auth::user()->name }}</div>
             <div class="fh-adm-user-role">{{ __('Admin') }}</div>
