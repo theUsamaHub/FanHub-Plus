@@ -58,7 +58,32 @@ class AdminProfileTest extends TestCase
             'font_size_preference' => 'huge',
         ])->assertRedirect(route('profile.edit'));
 
-        $this->assertDatabaseCount('user_profiles', 0);
+        $this->assertDatabaseMissing('user_profiles', [
+            'user_id' => $this->admin->id,
+            'display_name' => 'Should Be Ignored',
+        ]);
+        $this->assertDatabaseMissing('user_profiles', [
+            'user_id' => $this->admin->id,
+            'theme_preference' => 'neon',
+        ]);
+    }
+
+    public function test_admin_can_upload_avatar_image(): void
+    {
+        \Illuminate\Support\Facades\Storage::fake('public');
+        $file = \Illuminate\Http\UploadedFile::fake()->create('avatar.png', 20, 'image/png');
+
+        $this->actingAs($this->admin)->patch(route('profile.update'), [
+            'name' => 'Admin User',
+            'email' => $this->admin->email,
+            'avatar' => $file,
+        ])->assertRedirect(route('profile.edit'));
+
+        $this->assertDatabaseHas('media', [
+            'original_filename' => 'avatar.png',
+            'media_type' => 'image',
+        ]);
+        $this->assertNotNull($this->admin->fresh()->profile?->avatar_media_id);
     }
 
     public function test_registered_user_sees_profile_extras(): void
