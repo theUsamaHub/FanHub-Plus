@@ -1308,6 +1308,13 @@ body.fh-admin.is-sidebar-collapsed .fh-adm-sidebar-toggle .bi {
     transform: rotate(180deg);
 }
 
+body.fh-admin.is-sidebar-collapsed .fh-adm-brand {
+    justify-content: center;
+    gap: 0;
+    padding: 22px 8px 18px;
+}
+
+body.fh-admin.is-sidebar-collapsed .fh-adm-brand-copy,
 body.fh-admin.is-sidebar-collapsed .fh-adm-brand-title,
 body.fh-admin.is-sidebar-collapsed .fh-adm-brand-sub,
 body.fh-admin.is-sidebar-collapsed .fh-adm-brand-word,
@@ -1315,30 +1322,44 @@ body.fh-admin.is-sidebar-collapsed .fh-adm-nav-group,
 body.fh-admin.is-sidebar-collapsed .fh-adm-user-name,
 body.fh-admin.is-sidebar-collapsed .fh-adm-user-role,
 body.fh-admin.is-sidebar-collapsed .fh-adm-nav-link span {
-    opacity: 0;
-    width: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    pointer-events: none;
+    display: none;
 }
 
-body.fh-admin.is-sidebar-collapsed .fh-adm-brand {
-    justify-content: center;
-    padding-inline: 10px;
+body.fh-admin.is-sidebar-collapsed .fh-adm-brand-mark {
+    margin: 0 auto;
+    width: 36px;
+    height: 40px;
+}
+
+body.fh-admin.is-sidebar-collapsed .fh-adm-nav {
+    padding-inline: 0;
 }
 
 body.fh-admin.is-sidebar-collapsed .fh-adm-nav-link {
     justify-content: center;
-    padding-inline: 0;
-    margin-inline: 10px;
+    gap: 0;
+    padding: 12px 0;
+    margin: 4px 10px;
 }
 
 body.fh-admin.is-sidebar-collapsed .fh-adm-nav-link .bi {
     margin: 0;
+    width: auto;
+    font-size: 1.15rem;
 }
 
 body.fh-admin.is-sidebar-collapsed .fh-adm-sidebar-foot {
     justify-content: center;
+    padding: 14px 8px;
+    gap: 0;
+}
+
+body.fh-admin.is-sidebar-collapsed .fh-adm-spirit {
+    height: 64px;
+}
+
+body.fh-admin.is-sidebar-collapsed .fh-adm-spirit-svg {
+    height: 64px;
 }
 
 /* ── Theme toggle ── */
