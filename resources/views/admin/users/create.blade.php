@@ -58,7 +58,7 @@
 
         <div class="col-lg-4">
             <div class="card fh-adm-table-card">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Notes') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Notes') }}</h6></div>
                 <div class="card-body">
                     <ul class="mb-0" style="font-size: 0.875rem;">
                         <li class="mb-2">{{ __('Use this form only to create another admin.') }}</li>

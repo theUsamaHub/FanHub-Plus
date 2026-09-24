@@ -9,7 +9,7 @@
             @method($method)
 
             <div class="card mb-4 fh-adm-form-card">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Profile') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Profile') }}</h6></div>
                 <div class="card-body">
                     <div class="mb-3">
                         <x-input-label for="name" :value="__('Name')" />
@@ -52,7 +52,7 @@
             </div>
 
             <div class="card mb-4 fh-adm-form-card">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Related content') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Related content') }}</h6></div>
                 <div class="card-body">
                     <select name="content_ids[]" class="form-select" multiple size="8">
                         @foreach ($contents as $item)
@@ -72,7 +72,7 @@
 
     <div class="col-lg-4">
         <div class="card fh-adm-detail-card">
-            <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Notes') }}</h6></div>
+            <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Notes') }}</h6></div>
             <div class="card-body">
                 <ul class="mb-0" style="font-size: 0.875rem;">
                     <li class="mb-2">{{ __('Category is required and must already exist.') }}</li>

@@ -75,7 +75,7 @@
             </div>
 
             <div class="card mt-4">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Activity summary') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Activity summary') }}</h6></div>
                 <div class="card-body p-0">
                     <table class="table mb-0 fh-adm-detail-table">
                         <thead>
@@ -101,7 +101,7 @@
             </div>
 
             <div class="card mt-4">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Recent submissions') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Recent submissions') }}</h6></div>
                 <div class="card-body p-0">
                     <table class="table mb-0 fh-adm-detail-table">
                         <thead>
@@ -131,7 +131,7 @@
             </div>
 
             <div class="card mt-4">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Recent reviews') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Recent reviews') }}</h6></div>
                 <div class="card-body p-0">
                     <table class="table mb-0 fh-adm-detail-table">
                         <thead>

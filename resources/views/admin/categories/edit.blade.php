@@ -68,7 +68,7 @@
         <div class="col-lg-4">
             <div class="card fh-adm-table-card">
                 <div class="card-header">
-                    <h6 class="mb-0 fw-semibold">{{ __('Category Info') }}</h6>
+                    <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Category Info') }}</h6>
                 </div>
                 <div class="card-body">
                     <div class="mb-2">

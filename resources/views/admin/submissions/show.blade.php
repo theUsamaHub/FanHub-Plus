@@ -65,7 +65,7 @@
 
         <div class="col-lg-4">
             <div class="card fh-adm-detail-card">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Moderation') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Moderation') }}</h6></div>
                 <div class="card-body d-grid gap-2">
                     @if ($content->status === 'pending_review')
                         <form action="{{ route('admin.submissions.approve', $content) }}" method="POST" onsubmit="return confirm('{{ __('Approve and publish this submission?') }}')">

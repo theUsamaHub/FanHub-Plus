@@ -67,7 +67,7 @@
 
         <div class="col-lg-4">
             <div class="card mb-4 fh-adm-form-card">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Quick status') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Quick status') }}</h6></div>
                 <div class="card-body d-grid gap-2">
                     @foreach (['draft', 'pending_review', 'published', 'rejected'] as $status)
                         <form action="{{ route('admin.contents.status', $content) }}" method="POST">

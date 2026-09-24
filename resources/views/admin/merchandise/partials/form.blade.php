@@ -72,7 +72,7 @@
 
     <div class="col-lg-4">
         <div class="card fh-adm-detail-card">
-            <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Scope') }}</h6></div>
+            <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Scope') }}</h6></div>
             <div class="card-body">
                 <p class="mb-0 text-muted" style="font-size: 0.875rem;">
                     {{ __('Merchandise is display-only. Do not add stock, pricing, checkout, or order management.') }}

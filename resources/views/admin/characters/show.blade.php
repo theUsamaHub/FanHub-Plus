@@ -38,7 +38,7 @@
 
             <div class="card fh-adm-detail-card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-semibold">{{ __('Related content') }}</h6>
+                    <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Related content') }}</h6>
                 </div>
                 <div class="card-body p-0">
                     <table class="table mb-0 fh-adm-detail-table">
@@ -77,7 +77,7 @@
 
         <div class="col-lg-4">
             <div class="card mb-4 fh-adm-form-card">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Attach content') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Attach content') }}</h6></div>
                 <div class="card-body">
                     <form action="{{ route('admin.characters.contents.attach', $character) }}" method="POST">
                         @csrf

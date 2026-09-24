@@ -35,7 +35,7 @@
 
         <div class="col-lg-4">
             <div class="card mb-4 fh-adm-filter">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Update status') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Update status') }}</h6></div>
                 <div class="card-body">
                     <form action="{{ route('admin.feedback.status', $feedback) }}" method="POST">
                         @csrf

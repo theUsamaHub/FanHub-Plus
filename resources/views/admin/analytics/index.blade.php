@@ -10,7 +10,7 @@
     <div class="row g-4">
         <div class="col-lg-6">
             <div class="card h-100">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Top content by views') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Top content by views') }}</h6></div>
                 <div class="card-body p-0">
                     <table class="table mb-0 fh-adm-detail-table">
                         <thead>
@@ -38,7 +38,7 @@
 
         <div class="col-lg-6">
             <div class="card h-100">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Top merchandise by views') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Top merchandise by views') }}</h6></div>
                 <div class="card-body p-0">
                     <table class="table mb-0 fh-adm-detail-table">
                         <thead>
@@ -66,7 +66,7 @@
 
         <div class="col-lg-6">
             <div class="card h-100">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Content by category') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Content by category') }}</h6></div>
                 <div class="card-body p-0">
                     <table class="table mb-0 fh-adm-detail-table">
                         <thead>
@@ -92,7 +92,7 @@
 
         <div class="col-lg-6">
             <div class="card h-100">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Content by status') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Content by status') }}</h6></div>
                 <div class="card-body p-0">
                     <table class="table mb-0 fh-adm-detail-table">
                         <thead>
@@ -118,7 +118,7 @@
 
         <div class="col-lg-6">
             <div class="card h-100">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Review moderation volume') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Review moderation volume') }}</h6></div>
                 <div class="card-body p-0">
                     <table class="table mb-0 fh-adm-detail-table">
                         <thead>
@@ -144,7 +144,7 @@
 
         <div class="col-lg-6">
             <div class="card h-100">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Feedback volume') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Feedback volume') }}</h6></div>
                 <div class="card-body p-0">
                     <table class="table mb-0 fh-adm-detail-table">
                         <thead>
@@ -174,7 +174,7 @@
 
         <div class="col-12">
             <div class="card fh-adm-table-card">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('User growth (last 30 days)') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('User growth (last 30 days)') }}</h6></div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-sm mb-0">

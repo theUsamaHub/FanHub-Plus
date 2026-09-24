@@ -49,7 +49,7 @@
     <div class="row g-4 mb-4">
         <div class="col-lg-8">
             <div class="card h-100">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('User growth (last 30 days)') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('User growth (last 30 days)') }}</h6></div>
                 <div class="card-body">
                     @php $maxVal = max(1, collect($chartData)->max('users')); @endphp
                     <div class="d-flex align-items-end gap-1" style="height: 180px;">
@@ -66,7 +66,7 @@
 
         <div class="col-lg-4">
             <div class="card h-100">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Content by status') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Content by status') }}</h6></div>
                 <div class="card-body p-0">
                     <table class="table mb-0">
                         <tbody>
@@ -87,7 +87,7 @@
         <div class="col-lg-6">
             <div class="card h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-semibold">{{ __('Recent user submissions') }}</h6>
+                    <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Recent user submissions') }}</h6>
                     <a href="{{ route('admin.submissions.index') }}" class="btn btn-sm btn-link text-decoration-none">{{ __('View all') }}</a>
                 </div>
                 <div class="card-body p-0">
@@ -124,7 +124,7 @@
         <div class="col-lg-6">
             <div class="card h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-semibold">{{ __('Pending reviews') }}</h6>
+                    <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Pending reviews') }}</h6>
                     <a href="{{ route('admin.reviews.index') }}" class="btn btn-sm btn-link text-decoration-none">{{ __('View all') }}</a>
                 </div>
                 <div class="card-body p-0">
@@ -159,7 +159,7 @@
         <div class="col-lg-6">
             <div class="card h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-semibold">{{ __('Recent feedback') }}</h6>
+                    <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Recent feedback') }}</h6>
                     <a href="{{ route('admin.feedback.index') }}" class="btn btn-sm btn-link text-decoration-none">{{ __('View all') }}</a>
                 </div>
                 <div class="card-body p-0">
@@ -198,7 +198,7 @@
         <div class="col-lg-6">
             <div class="card h-100">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0 fw-semibold">{{ __('Upcoming events') }}</h6>
+                    <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Upcoming events') }}</h6>
                     <a href="{{ route('admin.events.index') }}" class="btn btn-sm btn-link text-decoration-none">{{ __('View all') }}</a>
                 </div>
                 <div class="card-body p-0">
@@ -237,7 +237,7 @@
 
         <div class="col-12">
             <div class="card">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Popular content') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Popular content') }}</h6></div>
                 <div class="card-body p-0">
                     <table class="table mb-0">
                         <thead>

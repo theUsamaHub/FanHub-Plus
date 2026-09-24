@@ -10,7 +10,7 @@
     <!-- Upload Form -->
     <div class="card mb-4 fh-adm-filter">
         <div class="card-header">
-            <h6 class="mb-0 fw-semibold">{{ __('Upload Files') }}</h6>
+            <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Upload Files') }}</h6>
         </div>
         <div class="card-body">
             <form action="{{ route('admin.media.store') }}" method="POST" enctype="multipart/form-data">

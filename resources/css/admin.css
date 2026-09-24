@@ -246,8 +246,17 @@ body.fh-admin .fh-adm-main-inner {
     flex: 1;
     padding: 28px 28px 48px;
     min-width: 0;
-    overflow-x: auto;
+    overflow-x: hidden;
     animation: fh-adm-enter 0.55s var(--fh-ease-out) both;
+}
+
+body.fh-admin .table-responsive {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+body.fh-admin .fh-adm-shell {
+    overflow-x: hidden;
 }
 
 body.fh-admin .fh-adm-main-inner > * {
@@ -385,9 +394,16 @@ body.fh-admin .fh-adm-nav {
     flex: 1;
     min-height: 0;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 12px 0 24px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--fh-adm-line) transparent;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+body.fh-admin .fh-adm-nav::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
 }
 
 body.fh-admin .fh-adm-nav-group {

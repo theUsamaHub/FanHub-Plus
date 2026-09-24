@@ -36,7 +36,7 @@
 
         <div class="col-lg-4">
             <div class="card mb-4 fh-adm-form-card">
-                <div class="card-header"><h6 class="mb-0 fw-semibold">{{ __('Moderation') }}</h6></div>
+                <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Moderation') }}</h6></div>
                 <div class="card-body d-grid gap-2">
                     @if ($review->status !== 'approved')
                         <form action="{{ route('admin.reviews.approve', $review) }}" method="POST">
