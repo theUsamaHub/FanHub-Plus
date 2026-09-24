@@ -239,12 +239,28 @@ body.fh-admin .fh-adm-main {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
 }
 
 body.fh-admin .fh-adm-main-inner {
     flex: 1;
     padding: 28px 28px 48px;
+    min-width: 0;
+    overflow-x: auto;
     animation: fh-adm-enter 0.55s var(--fh-ease-out) both;
+}
+
+body.fh-admin .fh-adm-main-inner > * {
+    max-width: 100%;
+}
+
+body.fh-admin .fh-adm-filter .row,
+body.fh-admin .fh-adm-filter form {
+    min-width: 0;
+}
+
+body.fh-admin .dropdown-menu {
+    margin-top: 14px;
 }
 
 @keyframes fh-adm-enter {
