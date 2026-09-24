@@ -13,6 +13,13 @@
             <div class="fh-chat__welcome"><span class="fh-chat__eyebrow">A LITTLE HELP. A NEW DISCOVERY.</span><h3>Hey, fellow fan <span aria-hidden="true">✧</span></h3><p>Find your next anime, explore a fandom, or ask about FanHub Plus.</p></div>
             <div class="fh-chat__suggestions" aria-label="Suggested questions"></div>
             <div class="fh-chat__messages" role="log" aria-label="Conversation" aria-live="polite" aria-relevant="additions"></div>
+            <div class="fh-chat__typing" hidden aria-hidden="true">
+                <div class="fh-chat__typing-bubble">
+                    <span class="fh-chat__typing-dot"></span>
+                    <span class="fh-chat__typing-dot"></span>
+                    <span class="fh-chat__typing-dot"></span>
+                </div>
+            </div>
             <p class="fh-chat__status" role="status" hidden></p>
             <div class="fh-chat__error" role="alert" hidden><span></span> <button type="button">Retry</button></div>
         </div>

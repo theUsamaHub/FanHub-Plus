@@ -84,6 +84,11 @@ class Content extends Model
         return $this->media->firstWhere('pivot.role', 'cover');
     }
 
+    public function getArtworkUrlAttribute(): string
+    {
+        return $this->cover?->url ?? asset(config('homepage.artwork.'.($this->category?->slug ?? 'anime'), config('homepage.images.trending')));
+    }
+
     public function mediaByRole(string $role)
     {
         return $this->media->where('pivot.role', $role)->values();

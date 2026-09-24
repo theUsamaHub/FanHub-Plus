@@ -1,6 +1,6 @@
 @props(['story', 'primary' => false])
 <article class="story-card {{ $primary ? 'story-card--primary' : 'story-card--supporting' }}" data-stagger-item>
-    <div class="story-art"><img src="{{ asset(config('homepage.images.story')) }}" width="576" height="324" alt="" loading="lazy" decoding="async" @if($primary) data-parallax @endif></div>
+    <div class="story-art"><img src="{{ $story->artwork_url }}" width="576" height="324" alt="" loading="lazy" decoding="async" @if($primary) data-parallax @endif></div>
     <div class="story-copy">
         @if($primary)<span class="story-featured-label">FEATURED</span>@endif
         <p class="story-category">{{ $story->category?->name ?? 'Stories' }}@if($story->tags->isNotEmpty()) <span>|</span> {{ $story->tags->first()->name }}@endif</p>

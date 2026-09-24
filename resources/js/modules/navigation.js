@@ -3,19 +3,20 @@ const header = document.querySelector('[data-site-header]');
 if (header) {
     const mobileToggle = header.querySelector('[data-mobile-toggle]');
     const navigation = header.querySelector('[data-navigation]');
-    const fandoms = header.querySelector('[data-fandoms]');
-    const fandomToggle = header.querySelector('[data-fandom-toggle]');
-    const fandomMenu = header.querySelector('[data-fandom-menu]');
+    const fandomGroups = [...header.querySelectorAll('[data-fandoms]')];
     const accountToggle = header.querySelector('[data-account-toggle]');
     const accountMenu = header.querySelector('#account-menu');
     const desktop = matchMedia('(min-width: 1181px)');
     const hover = matchMedia('(hover: hover) and (pointer: fine)');
     let closeTimer;
 
-    const setFandoms = (open) => {
+    const setFandoms = (open, activeGroup = null) => {
         clearTimeout(closeTimer);
-        fandomToggle.setAttribute('aria-expanded', String(open));
-        fandomMenu.hidden = !open;
+        fandomGroups.forEach((group) => {
+            const expanded = open && group === activeGroup;
+            group.querySelector('[data-fandom-toggle]').setAttribute('aria-expanded', String(expanded));
+            group.querySelector('[data-fandom-menu]').hidden = !expanded;
+        });
     };
     const setAccount = (open) => {
         accountToggle?.setAttribute('aria-expanded', String(open));
@@ -33,22 +34,21 @@ if (header) {
         setAccount(false);
         setMobile(mobileToggle.getAttribute('aria-expanded') !== 'true');
     });
-    fandomToggle.addEventListener('click', () => {
-        setAccount(false);
-        setFandoms(fandomMenu.hidden);
+    fandomGroups.forEach((group) => {
+        const toggle = group.querySelector('[data-fandom-toggle]');
+        const menu = group.querySelector('[data-fandom-menu]');
+        toggle.addEventListener('click', () => { setAccount(false); setFandoms(menu.hidden, group); });
+        toggle.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowDown') {
+                event.preventDefault(); setFandoms(true, group); menu.querySelector('a').focus();
+            }
+        });
+        group.addEventListener('pointerenter', () => { if (desktop.matches && hover.matches) setFandoms(true, group); });
+        group.addEventListener('pointerleave', () => {
+            if (desktop.matches && hover.matches && !group.contains(document.activeElement)) closeTimer = setTimeout(() => setFandoms(false), 180);
+        });
+        group.addEventListener('focusout', (event) => { if (!group.contains(event.relatedTarget)) setFandoms(false); });
     });
-    fandomToggle.addEventListener('keydown', (event) => {
-        if (event.key === 'ArrowDown') {
-            event.preventDefault();
-            setFandoms(true);
-            fandomMenu.querySelector('a').focus();
-        }
-    });
-    fandoms.addEventListener('pointerenter', () => { if (desktop.matches && hover.matches) setFandoms(true); });
-    fandoms.addEventListener('pointerleave', () => {
-        if (desktop.matches && hover.matches && !fandoms.contains(document.activeElement)) closeTimer = setTimeout(() => setFandoms(false), 180);
-    });
-    fandoms.addEventListener('focusout', (event) => { if (!fandoms.contains(event.relatedTarget)) setFandoms(false); });
     accountToggle?.addEventListener('click', () => {
         const open = accountMenu.hidden;
         setMobile(false);
@@ -62,7 +62,10 @@ if (header) {
     document.addEventListener('keydown', (event) => {
         if (event.key !== 'Escape') return;
         if (accountMenu && !accountMenu.hidden) { setAccount(false); accountToggle.focus(); }
-        else if (!fandomMenu.hidden) { setFandoms(false); fandomToggle.focus(); }
+        else if (fandomGroups.some(group => !group.querySelector('[data-fandom-menu]').hidden)) {
+            const active = fandomGroups.find(group => !group.querySelector('[data-fandom-menu]').hidden);
+            setFandoms(false); active.querySelector('[data-fandom-toggle]').focus();
+        }
         else if (navigation.classList.contains('is-open')) { setMobile(false); mobileToggle.focus(); }
     });
     desktop.addEventListener('change', closeAll);

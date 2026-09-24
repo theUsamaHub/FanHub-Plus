@@ -17,17 +17,17 @@ class HomepageService
     {
         $version = Cache::get('homepage:version', 'initial');
 
-        return Cache::remember('homepage:v1:'.$version.':'.today()->toDateString().':'.$key,
+        return Cache::remember('homepage:v2:'.$version.':'.today()->toDateString().':'.$key,
             config('homepage.cache_seconds'), $callback);
     }
 
     public function sections(): array
     {
         return $this->remember('sections', fn () => [
-            'trending' => Content::visibleToPublic()->with('category:id,name,slug')
+            'trending' => Content::visibleToPublic()->with(['category:id,name,slug', 'media'])
                 ->orderByDesc('popularity_score')->orderByDesc('view_count')->orderByDesc('id')->limit(6)->get(),
             'featuredStories' => Content::visibleToPublic()->ofType('article')->where('is_featured', true)
-                ->with(['category:id,name,slug', 'submittedBy:id,name', 'tags:id,name,slug'])
+                ->with(['category:id,name,slug', 'submittedBy:id,name', 'tags:id,name,slug', 'media'])
                 ->orderByDesc('popularity_score')->orderByDesc('published_at')->orderByDesc('id')->limit(3)->get(),
         ]);
     }
@@ -45,12 +45,13 @@ class HomepageService
         return $this->remember('releases:'.$filter.':'.$limit, function () use ($filter, $limit) {
             $contents = collect();
             if ($filter !== 'merchandise') {
-                $contents = Content::visibleToPublic()->with('category:id,name,slug')
+                $contents = Content::visibleToPublic()->with(['category:id,name,slug', 'media'])
                     ->whereDate('release_date', '>=', today())
                     ->when($filter !== 'all', fn ($query) => $query->whereHas('category', fn ($query) => $query->where('slug', $filter)))
                     ->orderBy('release_date')->orderBy('id')->limit($limit)->get()
                     ->map(fn (Content $content) => [
                         'id' => 'content-'.$content->id, 'title' => $content->title,
+                        'image' => $content->artwork_url,
                         'category' => $content->category?->name ?? 'Fandom',
                         'slug' => $content->category?->slug ?? 'fandom',
                         'date' => $content->release_date,
@@ -60,11 +61,12 @@ class HomepageService
             }
             $merchandise = collect();
             if (in_array($filter, ['all', 'merchandise'], true)) {
-                $merchandise = MerchandiseItem::upcoming()
+                $merchandise = MerchandiseItem::upcoming()->with('imageMedia')
                     ->where(fn ($query) => $query->whereNull('release_date')->orWhereDate('release_date', '>=', today()))
                     ->orderByRaw('CASE WHEN release_date IS NULL THEN 1 ELSE 0 END')->orderBy('release_date')->orderBy('id')
                     ->limit($limit)->get()->map(fn (MerchandiseItem $item) => [
                         'id' => 'merchandise-'.$item->id, 'title' => $item->name,
+                        'image' => $item->imageMedia?->url ?? asset(config('homepage.images.upcoming')),
                         'category' => 'Merchandise', 'slug' => 'merchandise', 'date' => $item->release_date,
                         'label' => str_replace('_', ' ', $item->tag), 'url' => route('public.merchandise', $item->slug),
                     ]);

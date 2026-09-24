@@ -1,42 +1,11 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
-
-        <!-- Name -->
-        <div class="mb-3">
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="form-control" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-1" />
-        </div>
-
-        <!-- Email Address -->
-        <div class="mb-3">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="form-control" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-1" />
-        </div>
-
-        <!-- Password -->
-        <div class="mb-3">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="form-control" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-1" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mb-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-            <x-text-input id="password_confirmation" class="form-control" type="password" name="password_confirmation" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1" />
-        </div>
-
-        <x-primary-button class="w-100">
-            {{ __('Register') }}
-        </x-primary-button>
-
-        <div class="text-center mt-3">
-            <span class="text-muted" style="font-size: 0.875rem;">{{ __('Already registered?') }}</span>
-            <a href="{{ route('login') }}" class="text-decoration-none" style="font-size: 0.875rem; color: var(--bs-primary);">{{ __('Log in') }}</a>
-        </div>
-    </form>
-</x-guest-layout>
+<x-auth-shell title="Find your people." subtitle="Create your account. Make yourself at home.">
+<form method="POST" action="{{ route('register') }}">
+@csrf
+<x-auth-field name="name" label="Your name" autocomplete="name" placeholder="What should we call you?" maxlength="255" />
+<x-auth-field name="email" label="Email address" type="email" autocomplete="username" placeholder="you@example.com" maxlength="255" />
+<x-auth-field name="password" label="Password" type="password" autocomplete="new-password" placeholder="Create a password" hint="Use at least 8 characters." minlength="8" />
+<x-auth-field name="password_confirmation" label="Confirm password" type="password" autocomplete="new-password" placeholder="Re-enter your password" minlength="8" />
+<button type="submit" class="fh-auth-submit">Create account <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+<p class="fh-auth-switch">Already part of the fandom? <a href="{{ route('login') }}">Log in</a></p>
+</form>
+</x-auth-shell>

@@ -1,0 +1,31 @@
+.fh-footer-lite { max-width: 1440px; margin: 24px auto 0; padding: 40px clamp(24px,5vw,72px) 22px; border-top: 1px solid var(--fh-line); color: var(--fh-muted); }
+.fh-footer-lite__main { display: grid; grid-template-columns: 2fr repeat(3,1fr); gap: 40px; }
+.fh-footer-lite__brand > p { font-size: 12px; line-height: 1.9; margin: 18px 0 12px; }
+.fh-footer-lite__explore { display: inline-flex; align-items: center; gap: 10px; font-size: 12px; color: var(--fh-accent) !important; }
+.fh-footer-lite__explore .fh-icon { width: 18px; height: 18px; }
+.fh-footer-lite h2 { margin: 0 0 14px; font-size: 12px; color: var(--fh-text); font-weight: 600; }
+.fh-footer-lite ul { list-style: none; padding: 0; margin: 0; }
+.fh-footer-lite li { margin-bottom: 8px; }
+.fh-footer-lite li a { font-size: 12px; display: inline-block; padding: 2px 0; }
+.fh-footer-lite__bottom { border-top: 1px solid var(--fh-line); margin-top: 30px; padding-top: 18px; display: flex; align-items: center; gap: 20px; font-size: 11px; }
+.fh-footer-lite__bottom p { margin: 0; }
+.fh-footer-top { margin-left: auto; }
+.fh-footer-lite .fh-socials { border: 0; padding: 0; gap: 14px; }
+.fh-footer-lite .fh-socials:empty { display: none; }
+.fh-footer-lite .fh-socials .bi { width: 18px; height: 18px; }
+@media(max-width:700px) { .fh-footer-lite { padding-top: 28px; } .fh-footer-lite__main { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 26px 16px; } .fh-footer-lite__brand { grid-column: 1 / -1; } .fh-footer-lite li a { font-size: 11px; padding-block: 5px; } .fh-footer-lite h2 { font-size: 11px; } .fh-footer-lite__bottom { flex-wrap: wrap; font-size: 10px; margin-top: 22px; } }
+/* Normal document flow avoids the hero sliding underneath the cards on scroll. */
+.fh-site .home-scroll-content { border-radius: 0; box-shadow: none; border-top: 0; }
+.fh-site { overflow-x: clip; }
+.fh-site .fan-hero { --hero-nav-height: 80px; }
+.fh-site .home-section { max-width: 1440px; padding-block: 56px; }
+.fh-site .home-side-note { display: none; }
+.fh-site .home-section-heading h2 { font-size: clamp(28px,3vw,44px); }
+.fh-site .home-section-subtitle { font-size: 14px; }
+.fh-site .home-eyebrow { font-size: 10px; letter-spacing: 3px; }
+.fh-site .home-section::before { background: radial-gradient(ellipse at 50% 0,#ff982909,transparent 65%); }
+.fh-site .home-page { --home-art: none; }
+@media(max-width:700px) { .fh-site .fan-hero { --hero-nav-height: 66px; } .fh-site .home-section { padding-block: 36px; } }
+.fh-site .fan-hero__pick-art { background-size: cover; background-position: center; }
+.fh-site .release-track { min-width: 0; margin-inline: auto; }
+@media(max-width:700px) { .fh-footer-lite { padding-bottom: 85px; } }
