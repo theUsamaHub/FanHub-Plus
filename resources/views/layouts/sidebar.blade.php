@@ -37,9 +37,14 @@
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.tags.*') ? 'is-active' : '' }}" href="{{ route('admin.tags.index') }}" title="{{ __('Tags') }}"><i class="bi bi-bookmark"></i> <span>{{ __('Tags') }}</span></a>
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.media.*') ? 'is-active' : '' }}" href="{{ route('admin.media.index') }}" title="{{ __('Media') }}"><i class="bi bi-folder"></i> <span>{{ __('Media') }}</span></a>
 
-        <div class="fh-adm-nav-group">{{ __('Users') }}</div>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.users.*') ? 'is-active' : '' }}" href="{{ route('admin.users.index') }}" title="{{ __('Users') }}"><i class="bi bi-people"></i> <span>{{ __('Users') }}</span></a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.roles.*') ? 'is-active' : '' }}" href="{{ route('admin.roles.index') }}" title="{{ __('Roles') }}"><i class="bi bi-shield-check"></i> <span>{{ __('Roles') }}</span></a>
+            <li class="nav-item mt-2">
+                <small class="text-uppercase text-secondary px-3 fw-semibold" style="font-size:0.7rem;letter-spacing:0.05em;">{{ __('Users') }}</small>
+            </li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}" href="{{ route('admin.users.index') }}"><i class="bi bi-people"></i> {{ __('Users') }}</a></li>
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}" href="{{ route('admin.roles.index') }}"><i class="bi bi-shield-check"></i> {{ __('Roles') }}</a></li>
+            <!-- <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}" href="{{ route('admin.contacts.index') }}"><i class="bi bi-envelope"></i> {{ __('Contacts') }}</a></li> -->
+            <!-- <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.subscribers.*') ? 'active' : '' }}" href="{{ route('admin.subscribers.index') }}"><i class="bi bi-envelope-paper"></i> {{ __('Subscribers') }}</a></li> -->
+            <li class="nav-item"><a class="nav-link {{ request()->routeIs('admin.chatbot.*') ? 'active' : '' }}" href="{{ route('admin.chatbot.index') }}"><i class="bi bi-chat-dots"></i> {{ __('Chatbot') }}</a></li>
 
         <div class="fh-adm-nav-group">{{ __('System') }}</div>
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.activity-logs.*') ? 'is-active' : '' }}" href="{{ route('admin.activity-logs.index') }}" title="{{ __('Activity') }}"><i class="bi bi-clock-history"></i> <span>{{ __('Activity') }}</span></a>

@@ -7,15 +7,24 @@
 @vite(['resources/css/app.scss', 'resources/js/app.js'])
 </head>
 <body class="fh-auth">
-<header class="fh-auth-header"><x-site-brand /><a href="{{ route('home') }}" class="fh-auth-back">← Back to home</a></header>
+<video class="fh-auth-bg" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="{{ asset('videos/girl-behind-curtains-3.1920x1080.mp4') }}" type="video/mp4"></video>
+<div class="fh-auth-overlay" aria-hidden="true"></div>
+<div class="fh-auth-particles" aria-hidden="true">
+<span class="fh-auth-particle fh-auth-particle--1">&#x2726;</span>
+<span class="fh-auth-particle fh-auth-particle--2">&#x2727;</span>
+<span class="fh-auth-particle fh-auth-particle--3">&#x2726;</span>
+<span class="fh-auth-particle fh-auth-particle--4">&#x2736;</span>
+<span class="fh-auth-particle fh-auth-particle--5">&#x2726;</span>
+<span class="fh-auth-particle fh-auth-particle--6">&#x2727;</span>
+</div>
+<header class="fh-auth-header"><x-site-brand /><a href="{{ route('home') }}" class="fh-auth-back">&larr; Back to home</a></header>
 <main class="fh-auth-shell">
-<aside class="fh-auth-story" aria-label="Welcome to FanHubPlus">
-<img src="{{ asset('images/fandoms/gaming.png') }}" alt="" class="fh-auth-art" fetchpriority="high">
-<div class="fh-auth-story-content"><span class="fh-auth-eyebrow">YOUR NEXT CHAPTER STARTS HERE</span><h2>Every universe.<br>One <em>home.</em></h2><p>For the stories you love, the worlds you explore, and the fans who get it.</p><div class="fh-auth-tags"><span>Anime</span><span>Gaming</span><span>Cinema</span></div><div class="fh-auth-note">✦ &nbsp; A little more fandom. A lot more you.</div></div>
-</aside>
 <section class="fh-auth-panel" aria-labelledby="auth-title">
-<nav class="fh-auth-tabs" aria-label="Account access"><a href="{{ route('login') }}" @if(request()->routeIs('login')) aria-current="page" @endif>Log in</a><a href="{{ route('register') }}" @if(request()->routeIs('register')) aria-current="page" @endif>Sign up</a></nav>
+<div class="fh-auth-glow" aria-hidden="true"></div>
 <div class="fh-auth-heading"><span class="fh-auth-eyebrow">YOUR FANDOM. YOUR SPACE.</span><h1 id="auth-title">{{ $title }}</h1><p>{{ $subtitle }}</p></div>
+@if(request()->routeIs('login') || request()->routeIs('register'))
+<nav class="fh-auth-tabs" aria-label="Account access"><a href="{{ route('login') }}" @if(request()->routeIs('login')) aria-current="page" @endif>Log in</a><a href="{{ route('register') }}" @if(request()->routeIs('register')) aria-current="page" @endif>Sign up</a></nav>
+@endif
 {{ $slot }}
 </section>
 </main>
