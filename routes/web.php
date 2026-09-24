@@ -14,9 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home.index');
-})->name('home');
+Route::get('/', \App\Http\Controllers\HomeController::class)->name('home');
 
 // Contact form
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');

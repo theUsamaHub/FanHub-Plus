@@ -38,6 +38,9 @@
 .fh-result h2 { margin: 10px 0; font-size: 22px; }
 .fh-result p { color: var(--fh-muted); }
 .fh-pagination { display: flex; justify-content: space-between; margin-top: 30px; }
+.fh-detail-image { display: block; width: 100%; height: auto; max-height: 500px; object-fit: cover; border-radius: 16px; margin-block: 24px; }
+.fh-detail-image--poster { max-width: 350px; max-height: none; }
+.fh-detail-body { white-space: pre-line; line-height: 1.9; overflow-wrap: anywhere; }
 .fh-sitemap { display: grid; grid-template-columns: repeat(3,1fr); gap: 36px; }
 .fh-sitemap ul { list-style: none; padding: 0; }
 .fh-sitemap li { margin: 12px 0; }
