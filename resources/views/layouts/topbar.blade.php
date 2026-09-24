@@ -10,6 +10,12 @@
     </button>
 
     <div class="ms-auto d-flex align-items-center gap-2">
+        <button type="button" class="fh-adm-theme-toggle" onclick="toggleTheme()" aria-label="{{ __('Toggle dark mode') }}" title="{{ __('Toggle dark mode') }}">
+            <span class="fh-adm-theme-icon-sun"><i class="bi bi-sun"></i></span>
+            <span class="fh-adm-theme-knob"><i class="bi" data-theme-icon></i></span>
+            <span class="fh-adm-theme-icon-moon"><i class="bi bi-moon-stars"></i></span>
+        </button>
+
         <div class="dropdown">
             <button class="fh-adm-user-chip" data-bs-toggle="dropdown" aria-expanded="false" type="button">
                 <span class="fh-adm-avatar" style="width:32px;height:32px;font-size:0.8rem;">{{ substr(Auth::user()->name, 0, 1) }}</span>
@@ -49,11 +55,6 @@
 
 @push('scripts')
 <script>
-    function toggleSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('sidebarOverlay');
-        sidebar.classList.toggle('show-mobile');
-        overlay.style.display = sidebar.classList.contains('show-mobile') ? 'block' : 'none';
-    }
+    // toggleSidebar / toggleSidebarCollapse / toggleTheme live in layouts/app.blade.php
 </script>
 @endpush

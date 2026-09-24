@@ -1,4 +1,7 @@
 <aside class="fh-adm-sidebar d-none d-lg-flex" id="sidebar">
+    <button type="button" class="fh-adm-sidebar-toggle" onclick="toggleSidebarCollapse()" aria-label="{{ __('Collapse sidebar') }}" title="{{ __('Collapse sidebar') }}">
+        <i class="bi bi-chevron-double-left"></i>
+    </button>
     <a class="fh-adm-brand" href="{{ route('admin.dashboard') }}">
         <svg class="fh-adm-brand-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M3 8l3.5 3L12 4l5.5 7L21 8l-1.5 10h-15L3 8z"/>
@@ -12,38 +15,38 @@
 
     <nav class="fh-adm-nav" aria-label="{{ __('Admin navigation') }}">
         <div class="fh-adm-nav-group">{{ __('Overview') }}</div>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.dashboard') ? 'is-active' : '' }}" href="{{ route('admin.dashboard') }}">
-            <i class="bi bi-speedometer2"></i> {{ __('Dashboard') }}
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.dashboard') ? 'is-active' : '' }}" href="{{ route('admin.dashboard') }}" title="{{ __('Dashboard') }}">
+            <i class="bi bi-speedometer2"></i> <span>{{ __('Dashboard') }}</span>
         </a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('profile.edit') ? 'is-active' : '' }}" href="{{ route('profile.edit') }}">
-            <i class="bi bi-person"></i> {{ __('Profile') }}
+        <a class="fh-adm-nav-link {{ request()->routeIs('profile.edit') ? 'is-active' : '' }}" href="{{ route('profile.edit') }}" title="{{ __('Profile') }}">
+            <i class="bi bi-person"></i> <span>{{ __('Profile') }}</span>
         </a>
 
         <div class="fh-adm-nav-group">{{ __('Content') }}</div>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.contents.*') ? 'is-active' : '' }}" href="{{ route('admin.contents.index') }}"><i class="bi bi-file-earmark-text"></i> {{ __('Content') }}</a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.submissions.*') ? 'is-active' : '' }}" href="{{ route('admin.submissions.index') }}"><i class="bi bi-inbox"></i> {{ __('Submissions') }}</a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.characters.*') ? 'is-active' : '' }}" href="{{ route('admin.characters.index') }}"><i class="bi bi-person-badge"></i> {{ __('Characters') }}</a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.merchandise.*') ? 'is-active' : '' }}" href="{{ route('admin.merchandise.index') }}"><i class="bi bi-box-seam"></i> {{ __('Merchandise') }}</a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.events.*') ? 'is-active' : '' }}" href="{{ route('admin.events.index') }}"><i class="bi bi-calendar-event"></i> {{ __('Events') }}</a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.reviews.*') ? 'is-active' : '' }}" href="{{ route('admin.reviews.index') }}"><i class="bi bi-chat-left-text"></i> {{ __('Reviews') }}</a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.ratings.*') ? 'is-active' : '' }}" href="{{ route('admin.ratings.index') }}"><i class="bi bi-star"></i> {{ __('Ratings') }}</a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.feedback.*') ? 'is-active' : '' }}" href="{{ route('admin.feedback.index') }}"><i class="bi bi-megaphone"></i> {{ __('Feedback') }}</a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.analytics.*') ? 'is-active' : '' }}" href="{{ route('admin.analytics.index') }}"><i class="bi bi-graph-up"></i> {{ __('Analytics') }}</a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.categories.*') ? 'is-active' : '' }}" href="{{ route('admin.categories.index') }}"><i class="bi bi-tags"></i> {{ __('Categories') }}</a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.categories.trashed') ? 'is-active' : '' }}" href="{{ route('admin.categories.trashed') }}"><i class="bi bi-trash"></i> {{ __('Recycle Bin') }}</a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.tags.*') ? 'is-active' : '' }}" href="{{ route('admin.tags.index') }}"><i class="bi bi-bookmark"></i> {{ __('Tags') }}</a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.media.*') ? 'is-active' : '' }}" href="{{ route('admin.media.index') }}"><i class="bi bi-folder"></i> {{ __('Media') }}</a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.contents.*') ? 'is-active' : '' }}" href="{{ route('admin.contents.index') }}" title="{{ __('Content') }}"><i class="bi bi-file-earmark-text"></i> <span>{{ __('Content') }}</span></a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.submissions.*') ? 'is-active' : '' }}" href="{{ route('admin.submissions.index') }}" title="{{ __('Submissions') }}"><i class="bi bi-inbox"></i> <span>{{ __('Submissions') }}</span></a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.characters.*') ? 'is-active' : '' }}" href="{{ route('admin.characters.index') }}" title="{{ __('Characters') }}"><i class="bi bi-person-badge"></i> <span>{{ __('Characters') }}</span></a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.merchandise.*') ? 'is-active' : '' }}" href="{{ route('admin.merchandise.index') }}" title="{{ __('Merchandise') }}"><i class="bi bi-box-seam"></i> <span>{{ __('Merchandise') }}</span></a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.events.*') ? 'is-active' : '' }}" href="{{ route('admin.events.index') }}" title="{{ __('Events') }}"><i class="bi bi-calendar-event"></i> <span>{{ __('Events') }}</span></a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.reviews.*') ? 'is-active' : '' }}" href="{{ route('admin.reviews.index') }}" title="{{ __('Reviews') }}"><i class="bi bi-chat-left-text"></i> <span>{{ __('Reviews') }}</span></a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.ratings.*') ? 'is-active' : '' }}" href="{{ route('admin.ratings.index') }}" title="{{ __('Ratings') }}"><i class="bi bi-star"></i> <span>{{ __('Ratings') }}</span></a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.feedback.*') ? 'is-active' : '' }}" href="{{ route('admin.feedback.index') }}" title="{{ __('Feedback') }}"><i class="bi bi-megaphone"></i> <span>{{ __('Feedback') }}</span></a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.analytics.*') ? 'is-active' : '' }}" href="{{ route('admin.analytics.index') }}" title="{{ __('Analytics') }}"><i class="bi bi-graph-up"></i> <span>{{ __('Analytics') }}</span></a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.categories.*') ? 'is-active' : '' }}" href="{{ route('admin.categories.index') }}" title="{{ __('Categories') }}"><i class="bi bi-tags"></i> <span>{{ __('Categories') }}</span></a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.categories.trashed') ? 'is-active' : '' }}" href="{{ route('admin.categories.trashed') }}" title="{{ __('Recycle Bin') }}"><i class="bi bi-trash"></i> <span>{{ __('Recycle Bin') }}</span></a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.tags.*') ? 'is-active' : '' }}" href="{{ route('admin.tags.index') }}" title="{{ __('Tags') }}"><i class="bi bi-bookmark"></i> <span>{{ __('Tags') }}</span></a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.media.*') ? 'is-active' : '' }}" href="{{ route('admin.media.index') }}" title="{{ __('Media') }}"><i class="bi bi-folder"></i> <span>{{ __('Media') }}</span></a>
 
         <div class="fh-adm-nav-group">{{ __('Users') }}</div>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.users.*') ? 'is-active' : '' }}" href="{{ route('admin.users.index') }}"><i class="bi bi-people"></i> {{ __('Users') }}</a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.roles.*') ? 'is-active' : '' }}" href="{{ route('admin.roles.index') }}"><i class="bi bi-shield-check"></i> {{ __('Roles') }}</a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.users.*') ? 'is-active' : '' }}" href="{{ route('admin.users.index') }}" title="{{ __('Users') }}"><i class="bi bi-people"></i> <span>{{ __('Users') }}</span></a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.roles.*') ? 'is-active' : '' }}" href="{{ route('admin.roles.index') }}" title="{{ __('Roles') }}"><i class="bi bi-shield-check"></i> <span>{{ __('Roles') }}</span></a>
 
         <div class="fh-adm-nav-group">{{ __('System') }}</div>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.activity-logs.*') ? 'is-active' : '' }}" href="{{ route('admin.activity-logs.index') }}"><i class="bi bi-clock-history"></i> {{ __('Activity') }}</a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.sessions.*') ? 'is-active' : '' }}" href="{{ route('admin.sessions.index') }}"><i class="bi bi-person-badge"></i> {{ __('Sessions') }}</a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.maintenance.*') ? 'is-active' : '' }}" href="{{ route('admin.maintenance.index') }}"><i class="bi bi-shield-exclamation"></i> {{ __('Maintenance') }}</a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.logs.*') ? 'is-active' : '' }}" href="{{ route('admin.logs.index') }}"><i class="bi bi-journal-text"></i> {{ __('Logs') }}</a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.backup.*') ? 'is-active' : '' }}" href="{{ route('admin.backup.index') }}"><i class="bi bi-database"></i> {{ __('Backup') }}</a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.activity-logs.*') ? 'is-active' : '' }}" href="{{ route('admin.activity-logs.index') }}" title="{{ __('Activity') }}"><i class="bi bi-clock-history"></i> <span>{{ __('Activity') }}</span></a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.sessions.*') ? 'is-active' : '' }}" href="{{ route('admin.sessions.index') }}" title="{{ __('Sessions') }}"><i class="bi bi-person-badge"></i> <span>{{ __('Sessions') }}</span></a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.maintenance.*') ? 'is-active' : '' }}" href="{{ route('admin.maintenance.index') }}" title="{{ __('Maintenance') }}"><i class="bi bi-shield-exclamation"></i> <span>{{ __('Maintenance') }}</span></a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.logs.*') ? 'is-active' : '' }}" href="{{ route('admin.logs.index') }}" title="{{ __('Logs') }}"><i class="bi bi-journal-text"></i> <span>{{ __('Logs') }}</span></a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.backup.*') ? 'is-active' : '' }}" href="{{ route('admin.backup.index') }}" title="{{ __('Backup') }}"><i class="bi bi-database"></i> <span>{{ __('Backup') }}</span></a>
     </nav>
 
     <div class="fh-adm-sidebar-foot">

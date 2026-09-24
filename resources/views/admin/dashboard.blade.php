@@ -17,17 +17,15 @@
     <div class="row g-3 mb-4">
         @foreach ($stats as $stat)
             <div class="col-md-4 col-xl-3">
-                <a href="{{ route($stat['route'], $stat['params'] ?? []) }}" class="text-decoration-none">
-                    <div class="card border-start border-{{ $stat['color'] }} border-3 h-100">
-                        <div class="card-body py-3">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <div class="text-muted" style="font-size: 0.7rem;">{{ $stat['label'] }}</div>
-                                    <div class="fs-4 fw-bold">{{ $stat['count'] }}</div>
-                                </div>
-                                <div class="bg-{{ $stat['color'] }} bg-opacity-10 rounded-3 d-flex align-items-center justify-content-center" style="width:36px;height:36px;">
-                                    <i class="bi {{ $stat['icon'] }} text-{{ $stat['color'] }}"></i>
-                                </div>
+                <a href="{{ route($stat['route'], $stat['params'] ?? []) }}" class="fh-adm-kpi" data-accent="{{ $stat['color'] }}">
+                    <div class="card-body py-3">
+                        <div class="d-flex justify-content-between align-items-center gap-2">
+                            <div class="min-w-0">
+                                <span class="fh-adm-kpi-label">{{ $stat['label'] }}</span>
+                                <div class="fh-adm-kpi-value">{{ $stat['count'] }}</div>
+                            </div>
+                            <div class="fh-adm-kpi-icon flex-shrink-0">
+                                <i class="bi {{ $stat['icon'] }}"></i>
                             </div>
                         </div>
                     </div>
