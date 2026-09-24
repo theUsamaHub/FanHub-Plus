@@ -15,20 +15,6 @@ if (page) {
 
     const motion = gsap.matchMedia();
     motion.add('(prefers-reduced-motion: no-preference)', () => {
-        const hero = page.querySelector('[data-video-hero]');
-        if (hero) {
-            // Let tall mobile heroes scroll fully before the next section covers them.
-            ScrollTrigger.create({
-                trigger: hero,
-                start: () => hero.offsetHeight > window.innerHeight ? 'bottom bottom' : 'top top',
-                endTrigger: page,
-                end: 'bottom top',
-                pin: true,
-                pinSpacing: false,
-                anticipatePin: 1,
-                invalidateOnRefresh: true,
-            });
-        }
         // GSAP owns the single animation clock; no second RAF or autoplay carousel.
         const lenis = new Lenis({
             autoRaf: false,

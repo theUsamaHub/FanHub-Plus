@@ -15,8 +15,8 @@ class PublicNavigationTest extends TestCase
     public function test_guests_get_public_navigation_and_all_eight_fandoms(): void
     {
         $response = $this->get('/')->assertOk()->assertSee('EXPLORE FANDOMS')->assertSee('EVERY UNIVERSE. ONE HOME.');
-        foreach (config('fandoms') as $fandom) {
-            $response->assertSee('storage/images/'.$fandom['image']);
+        foreach (config('fandoms') as $slug => $fandom) {
+            $response->assertSee(route('public.explore', ['category' => $slug]));
         }
         $response->assertSee(route('login'))->assertSee(route('register'))->assertDontSee('id="account-menu"', false);
         $this->get('/sitemap')->assertOk();

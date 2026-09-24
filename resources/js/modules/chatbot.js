@@ -9,6 +9,7 @@ if (chat) {
     const messages = chat.querySelector('.fh-chat__messages');
     const suggestions = chat.querySelector('.fh-chat__suggestions');
     const status = chat.querySelector('.fh-chat__status');
+    const typing = chat.querySelector('.fh-chat__typing');
     const error = chat.querySelector('.fh-chat__error');
     let loaded = false;
     let pending = false;
@@ -32,8 +33,9 @@ if (chat) {
         if (pending || !text.trim()) return;
         pending = true;
         error.hidden = true;
-        status.textContent = 'Finding your answer…';
-        status.hidden = false;
+        typing.hidden = false;
+        typing.setAttribute('aria-hidden', 'false');
+        status.hidden = true;
         form.querySelector('button').disabled = true;
         suggestions.querySelectorAll('button').forEach(button => { button.disabled = true; });
         if (!retry) addMessage(text, 'user');
@@ -56,7 +58,8 @@ if (chat) {
             error.hidden = false;
         } finally {
             pending = false;
-            status.hidden = true;
+            typing.hidden = true;
+            typing.setAttribute('aria-hidden', 'true');
             form.querySelector('button').disabled = false;
             suggestions.querySelectorAll('button').forEach(button => { button.disabled = false; });
             scroll();

@@ -3,10 +3,21 @@
 return [
     'cache_seconds' => 60,
     'images' => [
-        'trending' => 'storage/images/Trending_default.jpg',
-        'story' => 'storage/images/Story_default.jpeg',
-        'upcoming' => 'storage/images/Upcoming_default.jpg',
-        'dark_background' => 'storage/images/dark_background.png',
-        'light_background' => 'storage/images/white_background.png',
+        'trending' => 'images/fandoms/anime.png',
+        'story' => 'images/fandoms/cinema.png',
+        'upcoming' => 'images/fandoms/gaming.png',
+        'dark_background' => 'images/fandoms/gaming.png',
+        'light_background' => 'images/fandoms/anime.png',
+    ],
+    'artwork' => [
+        'anime' => 'images/fandoms/anime.png',
+        'manga' => 'images/fandoms/anime.png',
+        'gaming' => 'images/fandoms/gaming.png',
+        'movies' => 'images/fandoms/cinema.png',
+        'tv-shows' => 'images/fandoms/cinema.png',
+        'comics' => 'images/fandoms/cinema.png',
+        'cosplay' => 'images/fandoms/cinema.png',
+        'k-pop' => 'images/fandoms/cinema.png',
+        'merchandise' => 'images/fandoms/gaming.png',
     ],
 ];
