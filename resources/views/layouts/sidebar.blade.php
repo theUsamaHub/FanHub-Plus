@@ -43,7 +43,8 @@
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.roles.*') ? 'is-active' : '' }}" href="{{ route('admin.roles.index') }}" title="{{ __('Roles') }}"><i class="bi bi-shield-check"></i> <span>{{ __('Roles') }}</span></a>
         <!-- <a class="fh-adm-nav-link {{ request()->routeIs('admin.contacts.*') ? 'is-active' : '' }}" href="{{ route('admin.contacts.index') }}" title="{{ __('Contacts') }}"><i class="bi bi-envelope"></i> <span>{{ __('Contacts') }}</span></a> -->
         <!-- <a class="fh-adm-nav-link {{ request()->routeIs('admin.subscribers.*') ? 'is-active' : '' }}" href="{{ route('admin.subscribers.index') }}" title="{{ __('Subscribers') }}"><i class="bi bi-envelope-paper"></i> <span>{{ __('Subscribers') }}</span></a> -->
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.chatbot.*') ? 'is-active' : '' }}" href="{{ route('admin.chatbot.index') }}" title="{{ __('Chatbot') }}"><i class="bi bi-chat-dots"></i> <span>{{ __('Chatbot') }}</span></a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.chatbot.index', 'admin.chatbot.export', 'admin.chatbot.destroy') ? 'is-active' : '' }}" href="{{ route('admin.chatbot.index') }}" title="{{ __('Chatbot Queries') }}"><i class="bi bi-chat-dots"></i> <span>{{ __('Chatbot Queries') }}</span></a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.chatbot.faqs.*') ? 'is-active' : '' }}" href="{{ route('admin.chatbot.faqs.index') }}" title="{{ __('Chatbot FAQs') }}"><i class="bi bi-question-circle"></i> <span>{{ __('Chatbot FAQs') }}</span></a>
 
         <div class="fh-adm-nav-group">{{ __('System') }}</div>
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.activity-logs.*') ? 'is-active' : '' }}" href="{{ route('admin.activity-logs.index') }}" title="{{ __('Activity') }}"><i class="bi bi-clock-history"></i> <span>{{ __('Activity') }}</span></a>

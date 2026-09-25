@@ -87,7 +87,6 @@ function commandPalette() {
         query: '',
         activeIndex: 0,
         pages: [
-            { name: 'Dashboard', url: '{{ route("dashboard") }}', icon: 'bi bi-grid-1x2', category: 'General' },
             { name: 'Profile', url: '{{ route("profile.edit") }}', icon: 'bi bi-person', category: 'General' },
             @if(auth()->user()->hasRole('admin'))
             { name: 'Admin Dashboard', url: '{{ route("admin.dashboard") }}', icon: 'bi bi-speedometer2', category: 'Admin' },
@@ -99,6 +98,7 @@ function commandPalette() {
             { name: 'Reviews', url: '{{ route("admin.reviews.index") }}', icon: 'bi bi-chat-left-text', category: 'Community' },
             { name: 'Ratings', url: '{{ route("admin.ratings.index") }}', icon: 'bi bi-star', category: 'Community' },
             { name: 'Feedback', url: '{{ route("admin.feedback.index") }}', icon: 'bi bi-megaphone', category: 'Community' },
+            { name: 'Chatbot FAQs', url: '{{ route("admin.chatbot.faqs.index") }}', icon: 'bi bi-question-circle', category: 'Content' },
             { name: 'Categories', url: '{{ route("admin.categories.index") }}', icon: 'bi bi-tags', category: 'Content' },
             { name: 'Recycle Bin', url: '{{ route("admin.categories.trashed") }}', icon: 'bi bi-trash', category: 'Content' },
             { name: 'Tags', url: '{{ route("admin.tags.index") }}', icon: 'bi bi-bookmark', category: 'Content' },
@@ -111,9 +111,6 @@ function commandPalette() {
             { name: 'Analytics', url: '{{ route("admin.analytics.index") }}', icon: 'bi bi-graph-up', category: 'Reports' },
             { name: 'Settings', url: '{{ route("admin.settings.index") }}', icon: 'bi bi-gear', category: 'System' },
             { name: 'Maintenance', url: '{{ route("admin.maintenance.index") }}', icon: 'bi bi-shield-exclamation', category: 'System' },
-            { name: 'Health Dashboard', url: '{{ route("admin.health.index") }}', icon: 'bi bi-heart-pulse', category: 'System' },
-            { name: 'IP Restrictions', url: '{{ route("admin.ip-restrictions.index") }}', icon: 'bi bi-shield-lock', category: 'System' },
-            { name: 'Notifications', url: '{{ route("admin.notifications.index") }}', icon: 'bi bi-bell', category: 'System' },
             { name: 'Sessions', url: '{{ route("admin.sessions.index") }}', icon: 'bi bi-person-badge', category: 'System' },
             { name: 'Activity Logs', url: '{{ route("admin.activity-logs.index") }}', icon: 'bi bi-clock-history', category: 'System' },
             { name: 'Log Viewer', url: '{{ route("admin.logs.index") }}', icon: 'bi bi-journal-text', category: 'System' },
