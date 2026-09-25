@@ -897,7 +897,7 @@ body.fh-admin textarea.form-control {
 
 body.fh-admin .form-control:focus,
 body.fh-admin .form-select:focus {
-    background: var(--fh-adm-surface);
+    background-color: var(--fh-adm-surface);
     color: var(--fh-adm-text);
     border-color: color-mix(in srgb, var(--fh-accent) 55%, transparent);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--fh-accent) 14%, transparent);
@@ -932,22 +932,18 @@ body.fh-admin select,
 body.fh-admin .form-select {
     appearance: none;
     -webkit-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23FF922E' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24'><path d='M7 10l5 5 5-5' fill='none' stroke='%23FF922E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
     background-repeat: no-repeat;
     background-position: right 0.85rem center;
-    background-size: 1rem 1rem;
+    background-size: 1.125rem 1.125rem;
     padding-right: 2.5rem;
     cursor: pointer;
-}
-
-body.fh-admin .form-select:focus,
-body.fh-admin select:focus {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23FF922E' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
 }
 
 body.fh-admin .form-select option {
     background: var(--fh-adm-panel, #241C30);
     color: var(--fh-adm-text, #F4F2FF);
+    padding: 0.55rem 0.75rem;
 }
 
 [data-theme='light'] body.fh-admin .form-select option {
