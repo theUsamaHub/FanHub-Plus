@@ -3135,3 +3135,241 @@ body.fh-admin .fh-adm-rating-fill {
 body.fh-admin canvas {
     max-width: 100%;
 }
+
+/* ── Analytics Improved Design ── */
+body.fh-admin .fh-adm-stat-card {
+    border: 1px solid var(--fh-adm-line);
+    border-radius: var(--fh-adm-radius);
+    background: linear-gradient(165deg, var(--fh-adm-panel), var(--fh-adm-surface));
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+    transition: transform 0.3s var(--fh-ease-out), box-shadow 0.3s ease, border-color 0.3s ease;
+    overflow: hidden;
+}
+
+body.fh-admin .fh-adm-stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--stat-accent, var(--fh-accent));
+}
+
+body.fh-admin .fh-adm-stat-card:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--stat-accent, var(--fh-accent)) 40%, var(--fh-adm-line));
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.32);
+}
+
+body.fh-admin .fh-adm-stat-card[data-accent='primary'] { --stat-accent: var(--fh-accent); }
+body.fh-admin .fh-adm-stat-card[data-accent='success'] { --stat-accent: var(--fh-water); }
+body.fh-admin .fh-adm-stat-card[data-accent='warning'] { --stat-accent: var(--fh-gold); }
+body.fh-admin .fh-adm-stat-card[data-accent='info'] { --stat-accent: var(--fh-cyan); }
+body.fh-admin .fh-adm-stat-card[data-accent='danger'] { --stat-accent: var(--fh-crimson); }
+
+body.fh-admin .fh-adm-stat-label {
+    display: block;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fh-adm-dim);
+    margin-bottom: 6px;
+}
+
+body.fh-admin .fh-adm-stat-value {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--fh-adm-text);
+}
+
+body.fh-admin .fh-adm-stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    font-size: 1.25rem;
+    background: color-mix(in srgb, var(--stat-accent, var(--fh-accent)) 14%, transparent);
+    color: var(--stat-accent, var(--fh-accent));
+    transition: transform 0.3s var(--fh-ease-spring), box-shadow 0.3s ease;
+}
+
+body.fh-admin .fh-adm-stat-card:hover .fh-adm-stat-icon {
+    transform: scale(1.08) rotate(-4deg);
+    box-shadow: 0 0 16px color-mix(in srgb, var(--stat-accent, var(--fh-accent)) 35%, transparent);
+}
+
+body.fh-admin .fh-adm-stat-trend {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--fh-adm-line-soft);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+body.fh-admin .fh-adm-stat-trend.trend-up {
+    color: var(--fh-water);
+}
+
+body.fh-admin .fh-adm-stat-trend.trend-down {
+    color: #ff8d8d;
+}
+
+body.fh-admin .fh-adm-stat-trend .text-muted {
+    font-family: 'Saira', sans-serif;
+    font-weight: 400;
+    font-size: 0.68rem;
+}
+
+body.fh-admin .fh-adm-chart-card {
+    border: 1px solid var(--fh-adm-line);
+    border-radius: var(--fh-adm-radius);
+    background: linear-gradient(165deg, var(--fh-adm-panel), var(--fh-adm-surface));
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+    transition: transform 0.3s var(--fh-ease-out), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+body.fh-admin .fh-adm-chart-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(156, 112, 237, 0.35);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.36);
+}
+
+body.fh-admin .fh-adm-chart-card .card-header {
+    background: transparent;
+    border-bottom: 1px solid var(--fh-adm-line-soft);
+    padding: 1rem 1.25rem 0.75rem;
+}
+
+body.fh-admin .fh-adm-chart-card .card-body {
+    padding: 1rem 1.25rem 1.25rem;
+}
+
+body.fh-admin .fh-adm-table-card {
+    border: 1px solid var(--fh-adm-line);
+    border-radius: var(--fh-adm-radius);
+    background: linear-gradient(165deg, var(--fh-adm-panel), var(--fh-adm-surface));
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+body.fh-admin .fh-adm-table-card .card-header {
+    background: transparent;
+    border-bottom: 1px solid var(--fh-adm-line-soft);
+    padding: 1rem 1.25rem 0.75rem;
+}
+
+body.fh-admin .fh-adm-table-card .card-body {
+    padding: 1rem 1.25rem 1.25rem;
+}
+
+body.fh-admin .fh-adm-detail-table th {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--fh-adm-dim);
+    border-bottom: 1px solid var(--fh-adm-line);
+    padding: 0.75rem 1rem;
+}
+
+body.fh-admin .fh-adm-detail-table td {
+    padding: 0.875rem 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--fh-adm-line-soft);
+    color: var(--fh-adm-muted);
+}
+
+body.fh-admin .fh-adm-detail-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+body.fh-admin .fh-adm-detail-table tbody tr:hover {
+    background: linear-gradient(90deg, color-mix(in srgb, var(--fh-accent) 6%, transparent), transparent 70%);
+}
+
+body.fh-admin .fh-adm-trend-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+
+body.fh-admin .fh-adm-trend-badge.trend-up {
+    background: color-mix(in srgb, var(--fh-water) 14%, transparent);
+    color: var(--fh-water);
+    border: 1px solid color-mix(in srgb, var(--fh-water) 30%, transparent);
+}
+
+body.fh-admin .fh-adm-trend-badge.trend-down {
+    background: color-mix(in srgb, var(--fh-crimson) 14%, transparent);
+    color: #ff8d8d;
+    border: 1px solid color-mix(in srgb, var(--fh-crimson) 30%, transparent);
+}
+
+body.fh-admin .fh-adm-rating-bar {
+    height: 8px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--fh-adm-line) 40%, transparent);
+    overflow: hidden;
+    flex-shrink: 0;
+    flex-grow: 1;
+}
+
+body.fh-admin .fh-adm-rating-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--fh-gold), var(--fh-accent));
+    transition: width 0.6s var(--fh-ease-out);
+}
+
+body.fh-admin .fh-adm-heatmap-table th {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--fh-adm-dim);
+    border-bottom: 1px solid var(--fh-adm-line);
+    padding: 0.5rem 0.25rem;
+}
+
+body.fh-admin .fh-adm-heatmap-table td {
+    padding: 0.5rem 0.25rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--fh-adm-line-soft);
+}
+
+body.fh-admin .fh-adm-heatmap-cell {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--fh-adm-text);
+    transition: transform 0.2s ease;
+}
+
+body.fh-admin .fh-adm-heatmap-table tbody tr:hover .fh-adm-heatmap-cell {
+    transform: scale(1.1);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--fh-accent) 40%, transparent);
+}
