@@ -60,10 +60,7 @@
                 @endforeach
             </div>
         </div>
-        <p class="explore-fandoms__hint" id="fandoms-hint">
-            <span class="fandom-hint-desktop">Hover to explore your universe</span>
-            <span class="fandom-hint-touch">Tap to explore fandoms</span>
-        </p>
+        <button class="fandom-playback" type="button" data-fandom-playback aria-pressed="false" hidden>Pause motion</button>
     @else
         <p class="home-empty">New universes are on their way. Fandoms will appear here soon.</p>
     @endif

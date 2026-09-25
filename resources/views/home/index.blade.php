@@ -10,7 +10,6 @@
 <div class="home-page" data-page="home" style="--home-dark-art: url('{{ asset(config('homepage.images.dark_background')) }}'); --home-light-art: url('{{ asset(config('homepage.images.light_background')) }}')">
 
     @include('home.sections.hero')
-    // img
   
     <div class="home-scroll-content">
     @include('home.sections.fandoms')

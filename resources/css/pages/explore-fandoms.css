@@ -62,6 +62,7 @@
 
 /* Fandom Cluster Container */
 .fandom-cluster-wrapper {
+    overflow: clip;
     position: relative;
     width: 100%;
     max-width: 1200px;
@@ -125,7 +126,7 @@
     background: var(--orbit-gradient);
     box-shadow: 0 0 20px var(--orbit-glow), 0 8px 24px rgba(0, 0, 0, 0.35);
     overflow: hidden;
-    transition: box-shadow 0.35s ease;
+    transition: box-shadow 0.35s ease, transform 0.3s ease;
     display: block;
 }
 
@@ -175,6 +176,7 @@
 /* Hover & Selected States */
 @media (hover: hover) and (pointer: fine) {
     .fandom-orbit:hover .fandom-orbit__circle {
+        transform: scale(1.08);
         box-shadow: 0 0 28px var(--orbit-glow), 0 12px 30px rgba(0, 0, 0, 0.45);
     }
     .fandom-orbit:hover .fandom-orbit__overlay {
@@ -188,6 +190,7 @@
 
 .fandom-orbit.is-selected .fandom-orbit__circle,
 .fandom-orbit:focus-visible .fandom-orbit__circle {
+    transform: scale(1.08);
     box-shadow: 0 0 30px var(--orbit-glow), 0 12px 30px rgba(0, 0, 0, 0.5);
 }
 .fandom-orbit.is-selected .fandom-orbit__overlay,
@@ -224,6 +227,8 @@
 }
 .fandom-hint-desktop { display: inline; }
 .fandom-hint-touch { display: none; }
+.fandom-playback { display: block; min-height: 44px; margin: 8px auto 0; padding: 8px 16px; border: 1px solid var(--fh-line); border-radius: 24px; background: transparent; color: var(--fh-muted); font-size: 12px; }
+.fandom-orbit:focus-visible { outline: 2px solid var(--fh-accent); outline-offset: 7px; }
 
 /* Responsive Mobile / Tablet Styling */
 @media (max-width: 900px) {
@@ -231,7 +236,7 @@
     .fandom-hint-touch { display: inline; }
     .fandom-cluster-wrapper {
         padding-inline: 4px;
-        overflow-x: auto;
+        overflow: clip;
         -webkit-overflow-scrolling: touch;
     }
     .fandom-orbit {
