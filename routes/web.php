@@ -45,3 +45,9 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// Live Chat
+Route::middleware(['auth'])->prefix('chat')->name('chat.')->group(function () {
+    Route::get('/', [\App\Http\Controllers\LiveChatController::class, 'index'])->name('index');
+    Route::post('/send', [\App\Http\Controllers\LiveChatController::class, 'send'])->name('send');
+});

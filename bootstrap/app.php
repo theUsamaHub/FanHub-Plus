@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 require base_path('routes/auth.php');
                 require base_path('routes/admin.php');
                 require base_path('routes/public.php');
+                require base_path('routes/chat.php');
             });
         },
     )

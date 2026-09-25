@@ -45,5 +45,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ChatbotFaqSeeder::class);
         $this->call(ChatbotQuerySeeder::class);
         $this->call(ActivityLogSeeder::class);
+
+        // 7. Live Chat
+        $this->call(ChatChannelSeeder::class);
     }
 }
