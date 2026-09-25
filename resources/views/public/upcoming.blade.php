@@ -23,7 +23,8 @@
         .up-card__poster img { width: 100%; height: 100%; object-fit: cover; object-position: center 32%; transition: transform .5s ease; }
         .up-card:hover .up-card__poster img { transform: scale(1.06); }
         .up-card__poster::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 45%, var(--fh-surface) 96%); pointer-events: none; }
-        .up-card__badge { position: absolute; top: 12px; left: 12px; z-index: 2; }
+        .up-card__badge { position: absolute; top: 12px; left: 12px; z-index: 2; max-width: calc(100% - 130px); }
+        .up-card__badge .home-badge { max-width: 100%; }
         .up-card__date-chip { position: absolute; top: 12px; right: 12px; z-index: 2; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; min-width: 58px; padding: 7px 10px; border: 1px solid #ffffff22; border-radius: 12px; background: #0a0614cc; backdrop-filter: blur(8px); color: #fff; line-height: 1.15; }
         .up-card__date-chip strong { font-size: 18px; font-weight: 700; letter-spacing: .5px; }
         .up-card__date-chip span { font-size: 10px; text-transform: uppercase; letter-spacing: 1.4px; opacity: .85; }
