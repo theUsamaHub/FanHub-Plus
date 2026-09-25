@@ -166,21 +166,13 @@
         </div>
     </div>
 
-    {{-- Guild Intel — rule-based insights (top of page) --}}
+    {{-- Live performance signals --}}
     @if (! empty($insightCards))
         <div class="fh-adm-bento mb-4">
             <div class="fh-adm-tile fh-adm-tile--span12">
                 <div class="fh-adm-tile-head">
-                    <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Guild intel') }}</h6>
-                </div>
-                <div class="px-3 pb-1">
-                    <div class="fh-adm-intel-source" data-source="{{ $insightSource ?? 'rules' }}">
-                        @if (($insightSource ?? 'rules') === 'gemini')
-                            <i class="bi bi-stars me-1"></i>{{ __('Insights powered by Gemini — rewritten from live dashboard metrics.') }}
-                        @else
-                            <i class="bi bi-cpu me-1"></i>{{ __('Rule-based insights computed from live dashboard data (Gemini fallback).') }}
-                        @endif
-                    </div>
+                    <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Platform pulse') }}</h6>
+                    <span class="fh-adm-tile-meta">{{ __('Live performance signals from your data') }}</span>
                 </div>
                 <div class="fh-adm-tile-pad pt-1">
                     <div class="row g-3">

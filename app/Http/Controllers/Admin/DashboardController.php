@@ -23,9 +23,7 @@ class DashboardController extends Controller
         $stats = $this->getStats();
         $chartData = $this->getChartData();
         $activityToday = $this->getActivityToday();
-        $insightData = $insights->forDashboard();
-        $insightCards = $insightData['cards'] ?? [];
-        $insightSource = $insightData['source'] ?? 'rules';
+        $insightCards = $insights->forDashboard();
 
         $recentSubmissions = Content::with(['submittedBy', 'category'])
             ->where('is_user_submitted', true)
@@ -131,7 +129,6 @@ class DashboardController extends Controller
             'contentByStatus',
             'chartPayload',
             'insightCards',
-            'insightSource',
         ));
     }
 
