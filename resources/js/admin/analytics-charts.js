@@ -380,6 +380,12 @@ function renderRatingsChart(data) {
     });
 }
 
+// Track current period for each chart
+let currentPeriods = {
+    views: 'daily',
+    users: 'daily',
+};
+
 function initCharts() {
     const data = window.analyticsData || {};
 
