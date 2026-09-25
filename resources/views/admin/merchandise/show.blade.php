@@ -21,7 +21,9 @@
                                 <td class="fw-semibold" style="width:180px;">{{ __('Image') }}</td>
                                 <td>
                                     @if ($item->imageMedia)
+                                        @if ($item->imageMedia?->url)
                                         <img src="{{ $item->imageMedia->url }}" alt="{{ $item->name }}" class="img-thumbnail" style="max-height: 140px;">
+                                        @endif
                                     @else
                                         -
                                     @endif

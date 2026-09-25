@@ -50,7 +50,9 @@
                             <tr>
                                 <td class="fw-medium">
                                     @if ($character->image_url ?? false)
-                                        <img src="{{ $character->imageMedia?->url }}" alt="" class="rounded me-1" style="width:28px;height:28px;object-fit:cover;">
+                                        @if ($character->imageMedia?->url)
+                                        <img src="{{ $character->imageMedia->url }}" alt="" class="rounded me-1" style="width:28px;height:28px;object-fit:cover;">
+                                        @endif
                                     @endif
                                     {{ $character->name }}
                                 </td>
