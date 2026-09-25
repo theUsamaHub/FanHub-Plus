@@ -9,6 +9,8 @@ Route::post('/chatbot/message', [\App\Http\Controllers\ChatbotController::class,
 Route::get('/explore', [PublicSiteController::class, 'explore'])->name('public.explore');
 Route::get('/stories/{content:slug}', [PublicSiteController::class, 'content'])->name('public.content');
 Route::get('/collection/{merchandise:slug}', [PublicSiteController::class, 'merchandise'])->name('public.merchandise');
+Route::post('/collection/{merchandise:slug}/bookmark', \App\Http\Controllers\MerchandiseBookmarkController::class)
+    ->middleware(['auth', 'throttle:60,1'])->name('public.merchandise.bookmark');
 Route::get('/discover/{section}', [PublicSiteController::class, 'section'])->name('public.section');
 Route::get('/account/{section}', [PublicSiteController::class, 'account'])->middleware('auth')->name('public.account');
 Route::view('/sitemap', 'public.sitemap')->name('public.sitemap');

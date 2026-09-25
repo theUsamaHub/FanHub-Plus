@@ -40,6 +40,21 @@ class MerchandiseItem extends Model
         return $this->belongsTo(Media::class, 'image_media_id');
     }
 
+    public function getArtworkUrlAttribute(): string
+    {
+        return $this->imageMedia?->url ?: asset(config('homepage.images.merchandise'));
+    }
+
+    public function getDisplayTagAttribute(): ?string
+    {
+        return match ($this->tag) {
+            'limited_edition' => 'Limited Edition',
+            'pre_order' => 'Pre-Order',
+            'collectible' => 'Collectible',
+            default => $this->is_upcoming ? 'Coming Soon' : null,
+        };
+    }
+
     public function scopeUpcoming(Builder $query): Builder
     {
         return $query->where('is_upcoming', true);

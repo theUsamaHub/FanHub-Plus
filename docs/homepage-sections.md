@@ -16,7 +16,7 @@ Two additive migrations add nullable `merchandise_items.release_date` and `conte
 
 ## Data and assets
 
-`HomeController` and `HomepageService` supply data to the existing section partials in the brief's order. Both guests and signed-in users see the same public sections.
+`HomeController` and `HomepageService` supply data to the existing section partials in the brief's order. Guests and signed-in users share public content; the Join invitation appears only for guests.
 
 - Trending: six published records ordered by popularity, views, and ID.
 - Featured: three published, featured articles; the first is the main story. Categories, tags, author, publication date, and calculated reading time come from the records.
@@ -30,7 +30,7 @@ Homepage queries cache for 60 seconds. Saving or deleting content, a category, o
 
 ## Interaction and animation
 
-The homepage alone loads `resources/js/pages/home.js` and `resources/css/pages/home.css`. GSAP/ScrollTrigger handles shared heading/card reveals, subtle desktop story parallax, and the timeline line. Lenis uses the GSAP ticker; no second RAF loop, autoplay videos, pinned horizontal page scrolling, or extra carousel library is loaded.
+The homepage alone loads `resources/js/pages/home.js` and `resources/css/pages/home.css`. GSAP/ScrollTrigger handles shared heading/card reveals, subtle desktop story parallax, and the timeline line. Lenis uses the GSAP ticker. Merchandise uses Swiper with touch/drag and arrows; it does not capture the mousewheel, autoplay, or pin the page.
 
 Release arrows and keyboard navigation scroll a native horizontal timeline. Mobile uses a vertical timeline. Filters progressively enhance normal links with abortable fetch requests, loading/error feedback, an accessible result announcement, and browser Back/Forward support. Without JavaScript the filters reload the server-rendered page. Reduced-motion preference disables Lenis, reveal animations, and parallax.
 
@@ -38,10 +38,18 @@ Card reveals use each card's viewport position, so cards further down a mobile l
 
 If MySQL reports `Unknown column 'release_date'` on `merchandise_items`, apply the pending migrations with `php artisan migrate`. Do not reset or reseed the database. The two new columns are nullable, so existing merchandise stays intact and displays an unknown release date until one is entered.
 
+## Merchandise and guest invitation
+
+Merchandise reads names, categories, tags, descriptions, status and artwork from the database. Each homepage filter queries up to 24 records; View All provides a paginated collection. Filters use abortable partial requests, animated swaps, live feedback and browser history, while ordinary links work without JavaScript. Uploaded artwork falls back to the supplied `public/images/merch-deafult.jpg` when absent or when an image request fails. Tags reflect real values; `standard` upcoming items display Coming Soon.
+
+Cards show the name, artwork, tag and heart at rest. Desktop hover/focus reveals category and the compact detail link; touch/mobile always shows both. Swiper displays 1.2 cards on mobile, 4.5 at desktop and 5 on wide screens. Reduced motion uses short fades with no scale/translation or smooth page scrolling.
+
+Authenticated bookmarks persist per user with idempotent save/remove requests; guests receive a login dialog. Detail pages show status, release information and related merchandise. No commerce actions are provided. The Join FanHub Plus section is rendered only for guests, with sequenced reveals, four benefits and a registration link. Both new sections inherit the existing homepage background in both themes.
+
 ## Validation
 
 ```sh
-php artisan test --filter="HomepageSectionsTest|PublicNavigationTest"
+php artisan test --filter="HomeMerchandiseTest|HomepageSectionsTest|PublicNavigationTest"
 ```
 
 Tests cover ordering/limits, database copy, publication visibility, cache invalidation, merged release dates, real release labels, TBA dates, filters beyond the initial six, pagination, empty states, and shared guest/user access. Browser checks cover desktop/mobile layouts, both themes, dropdown compatibility, timeline arrows and filters, and reduced-motion/no-JavaScript behavior.

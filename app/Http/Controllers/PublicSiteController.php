@@ -66,12 +66,32 @@ class PublicSiteController extends Controller
     {
         $merchandise->load(['category', 'imageMedia']);
 
-        return view('public.merchandise', compact('merchandise'));
+        $related = MerchandiseItem::with(['category', 'imageMedia'])->where('category_id', $merchandise->category_id)
+            ->whereKeyNot($merchandise->id)->orderByDesc('view_count')->limit(4)->get();
+        $savedMerchandise = $this->savedMerchandise();
+
+        return view('public.merchandise', compact('merchandise', 'related', 'savedMerchandise'));
+    }
+
+    private function savedMerchandise(): array
+    {
+        return auth()->user()?->bookmarks()->where('bookmarkable_type', (new MerchandiseItem)->getMorphClass())
+            ->pluck('bookmarkable_id')->all() ?? [];
     }
 
     public function section(string $section, Request $request, HomepageService $homepage): View
     {
         abort_unless(isset(self::SECTIONS[$section]), 404);
+
+        if ($section === 'merchandise') {
+            $filter = $request->query('category', 'all');
+            abort_unless(is_string($filter) && in_array($filter, ['all', ...array_keys(config('fandoms'))], true), 404);
+            $items = MerchandiseItem::with(['category', 'imageMedia'])
+                ->when($filter !== 'all', fn ($query) => $query->whereHas('category', fn ($query) => $query->where('slug', $filter)))
+                ->orderByDesc('view_count')->orderByDesc('id')->paginate(12)->withQueryString();
+
+            return view('public.merchandise-index', ['items' => $items, 'activeFilter' => $filter, 'savedMerchandise' => $this->savedMerchandise()]);
+        }
 
         if ($section === 'upcoming') {
             $filters = $homepage->releaseFilters();
