@@ -1436,20 +1436,41 @@ body.fh-admin .fh-adm-tile--lav {
     --tile-solid-b: var(--dark-primary, #7F5AF0);
 }
 
+/* soft solid (like pastel green card in reference) */
 body.fh-admin .fh-adm-tile--sun {
-    --tile-solid-a: var(--brand-orange);
-    --tile-solid-b: var(--brand-red-orange);
-}
-
-body.fh-admin .fh-adm-tile--gold {
     --tile-solid-a: var(--brand-yellow);
     --tile-solid-b: var(--brand-orange);
+}
+
+body.fh-admin .fh-adm-tile--sun.fh-adm-tile--solid {
+    color: var(--brand-ink, #181320);
+}
+
+body.fh-admin .fh-adm-tile--sun.fh-adm-tile--solid .fh-adm-tile-label,
+body.fh-admin .fh-adm-tile--sun.fh-adm-tile--solid .fh-adm-tile-meta {
+    color: color-mix(in srgb, var(--brand-ink) 72%, transparent) !important;
+}
+
+body.fh-admin .fh-adm-tile--sun.fh-adm-tile--solid .fh-adm-tile-icon {
+    background: color-mix(in srgb, var(--brand-ink) 12%, transparent);
+    color: var(--brand-ink);
+}
+
+/* deep solid (like dark green card in reference) */
+body.fh-admin .fh-adm-tile--gold {
+    --tile-solid-a: var(--brand-orange);
+    --tile-solid-b: var(--brand-red-orange);
 }
 
 body.fh-admin .fh-adm-tile--ink {
     --tile-solid-a: var(--brand-ink, #181320);
     --tile-solid-b: var(--dark-primary, #7F5AF0);
     color: var(--brand-cream, #FFF9F2);
+}
+
+body.fh-admin .fh-adm-tile--ink.fh-adm-tile--solid .fh-adm-tile-label,
+body.fh-admin .fh-adm-tile--ink.fh-adm-tile--solid .fh-adm-tile-meta {
+    color: color-mix(in srgb, var(--brand-cream) 72%, transparent) !important;
 }
 
 body.fh-admin .fh-adm-tile--span4 { grid-column: span 4; }
@@ -1605,7 +1626,7 @@ body.fh-admin .fh-adm-progress > i {
 body.fh-admin .fh-adm-tile-foot {
     margin-top: auto;
     padding: 14px 18px;
-    background: var(--brand-orange);
+    background: var(--brand-red-orange);
     color: var(--brand-cream);
     display: flex;
     align-items: center;

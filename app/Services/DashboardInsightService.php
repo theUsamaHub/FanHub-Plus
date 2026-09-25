@@ -28,7 +28,9 @@ class DashboardInsightService
         $insights[] = $this->nextEvent();
         $insights[] = $this->feedbackPulse();
 
-        return array_values(array_filter($insights));
+        $insights = array_values(array_filter($insights));
+
+        return app(GeminiInsightClient::class)->enrich($insights);
     }
 
     /**
