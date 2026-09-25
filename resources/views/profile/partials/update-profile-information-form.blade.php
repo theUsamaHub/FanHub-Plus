@@ -2,7 +2,7 @@
     <header>
         <h5 class="fw-semibold">{{ __('Profile Information') }}</h5>
         <p class="text-muted mb-0" style="font-size: 0.875rem;">
-            {{ __("Update your account's profile information and email address.") }}
+            {{ __("Update your account's profile information.") }}
         </p>
     </header>
 
@@ -22,7 +22,8 @@
 
         <div class="mb-4">
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="form-control" :value="old('email', $user->email)" required autocomplete="username" />
+            <x-text-input id="email" name="email" type="email" class="form-control" :value="old('email', $user->email)" autocomplete="username" disabled readonly />
+            <small class="text-muted">{{ __('Email is locked after account creation and cannot be changed.') }}</small>
             <x-input-error class="mt-1" :messages="$errors->get('email')" />
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
