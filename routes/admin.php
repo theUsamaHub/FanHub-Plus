@@ -32,6 +32,10 @@ Route::prefix('admin')
 
         Route::resource('events', \App\Http\Controllers\Admin\EventController::class);
 
+        Route::resource('upcoming-releases', \App\Http\Controllers\Admin\UpcomingReleaseController::class)
+            ->parameters(['upcoming-releases' => 'upcoming_release'])
+            ->except(['show']);
+
         Route::get('/reviews', [\App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('reviews.index');
         Route::get('/reviews/{review}', [\App\Http\Controllers\Admin\ReviewController::class, 'show'])->name('reviews.show');
         Route::patch('/reviews/{review}/approve', [\App\Http\Controllers\Admin\ReviewController::class, 'approve'])->name('reviews.approve');

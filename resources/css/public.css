@@ -4,6 +4,7 @@
 @import '@fontsource/rajdhani/latin-600.css';
 @import './components/navbar.css';
 @import './components/footer.css';
+@import './components/fandom-badge.css';
 
 :root { --fh-bg: #020207; --fh-surface: #090b15; --fh-text: #f4f2fa; --fh-muted: #c2bfd6; --fh-line: #26263f; --fh-accent: #dc63ff; --fh-cyan: #44d9ff; --fh-panel: rgba(7,9,18,.97); color-scheme: dark; }
 :root[data-theme='light'] { --fh-bg: #f5f3fc; --fh-surface: #fff; --fh-text: #211735; --fh-muted: #574a70; --fh-line: #d7cee8; --fh-accent: #8d20b8; --fh-cyan: #006f98; --fh-panel: rgba(255,255,255,.98); color-scheme: light; }

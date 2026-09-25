@@ -15,7 +15,7 @@ class CharacterSpotlightTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_spotlight_uses_six_database_records_and_refreshes_after_edits(): void
+    public function test_spotlight_uses_seven_database_records_and_refreshes_after_edits(): void
     {
         $category = Category::create(['name' => 'Anime', 'slug' => 'anime']);
         for ($i = 0; $i < 8; $i++) {
@@ -23,7 +23,7 @@ class CharacterSpotlightTest extends TestCase
         }
 
         $characters = app(HomepageService::class)->sections()['characters'];
-        $this->assertCount(6, $characters);
+        $this->assertCount(7, $characters);
         $this->get('/')->assertOk()->assertSee('Database icon 7')->assertDontSee('Database icon 0')
             ->assertSee('CHARACTER SPOTLIGHT')->assertSee('Stories change. Icons remain.')
             ->assertSee(asset(config('homepage.images.character')))

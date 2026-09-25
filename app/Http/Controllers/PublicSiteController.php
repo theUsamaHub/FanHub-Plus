@@ -26,8 +26,7 @@ class PublicSiteController extends Controller
             'featured' => ['nullable', 'boolean'],
             'type' => ['nullable', 'in:article,video,audio,image'],
         ]);
-        $query = Content::published()->with('category')
-            ->where(fn ($query) => $query->whereNull('published_at')->orWhere('published_at', '<=', now()));
+        $query = Content::visibleToPublic()->with(['category', 'media', 'tags']);
 
         if ($term = trim($filters['q'] ?? '')) {
             // Bind a literal search term (including SQL wildcard characters).
@@ -58,9 +57,12 @@ class PublicSiteController extends Controller
     public function content(Content $content): View
     {
         abort_unless(Content::visibleToPublic()->whereKey($content->id)->exists(), 404);
-        $content->load(['category', 'submittedBy', 'media']);
+        $content->load(['category', 'submittedBy', 'media', 'tags']);
+        $related = Content::visibleToPublic()->with(['category', 'media', 'tags'])
+            ->where('category_id', $content->category_id)->whereKeyNot($content->id)
+            ->orderByDesc('published_at')->orderByDesc('id')->limit(3)->get();
 
-        return view('public.content', compact('content'));
+        return view('public.content', compact('content', 'related'));
     }
 
     public function character(CharacterProfile $character): View
@@ -80,6 +82,14 @@ class PublicSiteController extends Controller
         $savedMerchandise = $this->savedMerchandise();
 
         return view('public.merchandise', compact('merchandise', 'related', 'savedMerchandise'));
+    }
+
+    public function upcomingRelease(\App\Models\UpcomingRelease $upcoming_release): View
+    {
+        abort_unless($upcoming_release->is_published, 404);
+        $upcoming_release->load(['category', 'imageMedia']);
+
+        return view('public.upcoming-show', compact('upcoming_release'));
     }
 
     private function savedMerchandise(): array

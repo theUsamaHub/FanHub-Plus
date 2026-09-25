@@ -7,12 +7,11 @@
 @section('content')
 <div class="events-page" data-events-page>
     @if(!$hasFilters && $events->currentPage() === 1)
-        <section class="events-intro" aria-labelledby="events-title" data-events-intro>
+        <section class="events-intro" style="--events-hero-image: url('{{ asset('images/hero/photo-1667419674923-9eef9f86c628.avif') }}')" aria-labelledby="events-title" data-events-intro>
             <div class="events-intro__top"><span>FANHUB PLUS / IN REAL LIFE</span><span>EVERY FANDOM. ONE PLACE.</span></div>
             <div class="events-intro__center">
                 <p class="events-kicker">YOUR NEXT GREAT MEMORY</p>
                 <h1 id="events-title" data-events-title>EVENTS<span aria-hidden="true">.</span></h1>
-                <p class="events-intro__description">Beyond the screen.<br>Into your universe.</p>
             </div>
             <div class="events-intro__bottom"><p>Conventions. Meetups. Moments that matter.</p><a href="#{{ $featured->isNotEmpty() ? 'featured-events' : 'explore-events' }}">Scroll to discover <span aria-hidden="true">↓</span></a></div>
         </section>

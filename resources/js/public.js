@@ -8,3 +8,5 @@ import './modules/chatbot';
 import '../css/components/site-polish.css';
 import '../css/components/merchandise.css';
 import './modules/merchandise-bookmarks';
+import '../css/pages/fandoms.css';
+import './modules/card-reveal';

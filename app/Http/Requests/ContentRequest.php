@@ -30,6 +30,7 @@ class ContentRequest extends FormRequest
             'excerpt' => ['nullable', 'string', 'max:500'],
             'body' => ['nullable', 'string'],
             'release_date' => ['nullable', 'date'],
+            'release_label' => ['nullable', 'string', 'max:60'],
             'status' => ['required', Rule::in(['draft', 'pending_review', 'published', 'rejected'])],
             'is_featured' => ['nullable', 'boolean'],
             'published_at' => ['nullable', 'date'],
