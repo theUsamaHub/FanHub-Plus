@@ -4,21 +4,30 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { initReleaseTimeline } from '../modules/release-timeline';
+import { initCharacterSpotlight } from '../modules/character-spotlight';
+import { initHomeSectionSlides } from '../modules/home-section-slides';
 import { revealCards, revealHeading } from '../modules/home-reveals';
 import '../modules/hero-video';
+import { initHomeMerchandise, initJoinReveal } from '../modules/home-merchandise';
 
 const page = document.querySelector('[data-page="home"]');
 
 if (page) {
     gsap.registerPlugin(ScrollTrigger);
+    initHomeMerchandise(page);
+    initJoinReveal(page);
     initReleaseTimeline(page);
+    initHomeSectionSlides(page);
+    initCharacterSpotlight(page);
 
     const motion = gsap.matchMedia();
     motion.add('(prefers-reduced-motion: no-preference)', () => {
-        // GSAP owns the single animation clock; no second RAF or autoplay carousel.
+        // GSAP owns the smooth-scroll clock; Swiper is scoped to the character section.
         const lenis = new Lenis({
             autoRaf: false,
             smoothWheel: true,
+            lerp: .075,
+            wheelMultiplier: .85,
             anchors: { offset: -90 },
             prevent: (node) => Boolean(node.closest('[data-lenis-prevent], [data-navigation], dialog')),
         });
@@ -27,15 +36,21 @@ if (page) {
         gsap.ticker.add(tick);
         gsap.ticker.lagSmoothing(0);
 
-        page.querySelectorAll('[data-reveal]').forEach(revealHeading);
-        page.querySelectorAll('[data-stagger]').forEach((group) => {
-            if (group.closest('[data-upcoming-section]')) return;
-            revealCards(group.querySelectorAll('[data-stagger-item]'));
-        });
+        if (!page.classList.contains('has-section-slides')) {
+            page.querySelectorAll('[data-reveal]').forEach(revealHeading);
+            page.querySelectorAll('[data-stagger]').forEach((group) => {
+                if (group.closest('[data-upcoming-section]')) return;
+                revealCards(group.querySelectorAll('[data-stagger-item]'));
+            });
+        }
 
         let timelineContext;
         const revealTimeline = () => {
             timelineContext?.revert();
+            if (page.classList.contains('has-section-slides')) {
+                ScrollTrigger.refresh();
+                return;
+            }
             timelineContext = gsap.context(() => {
                 const timeline = page.querySelector('[data-release-results]');
                 if (!timeline) return;

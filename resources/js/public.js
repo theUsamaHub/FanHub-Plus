@@ -1,7 +1,12 @@
 import '../css/public.css';
 import './modules/navigation';
+import './modules/image-fallback';
 import '../css/components/chatbot.scss';
 import '../css/sunset-theme.css';
 import '../css/components/navbar-reference.css';
 import './modules/chatbot';
 import '../css/components/site-polish.css';
+import '../css/components/merchandise.css';
+import './modules/merchandise-bookmarks';
+import '../css/pages/fandoms.css';
+import './modules/card-reveal';

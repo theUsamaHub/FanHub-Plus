@@ -28,6 +28,13 @@ class CharacterProfile extends Model
         return $this->belongsTo(Media::class, 'image_media_id');
     }
 
+    public function getArtworkUrlAttribute(): string
+    {
+        return $this->imageMedia?->isImage()
+            ? $this->imageMedia->url
+            : asset(config('homepage.images.character'));
+    }
+
     public function contents(): BelongsToMany
     {
         return $this->belongsToMany(Content::class, 'character_contents', 'character_id', 'content_id')->withTimestamps();

@@ -17,6 +17,19 @@
                         <textarea id="description" name="description" rows="4" class="form-control @error('description') is-invalid @enderror">{{ old('description', $event?->description) }}</textarea>
                         <x-input-error :messages="$errors->get('description')" class="mt-1" />
                     </div>
+                    <div class="mb-3">
+                        <x-input-label for="short_description" :value="__('Short description')" />
+                        <textarea id="short_description" name="short_description" maxlength="400" rows="2" class="form-control">{{ old('short_description', $event?->short_description) }}</textarea>
+                        <x-input-error :messages="$errors->get('short_description')" class="mt-1" />
+                    </div>
+                    <div class="mb-3">
+                        <x-input-label for="event_type" :value="__('Event type')" />
+                        <select name="event_type" id="event_type" class="form-select">
+                            <option value="">Not specified</option>
+                            @foreach(config('events.types') as $value => $label)<option value="{{ $value }}" @selected(old('event_type', $event?->event_type) === $value)>{{ $label }}</option>@endforeach
+                        </select>
+                        <x-input-error :messages="$errors->get('event_type')" class="mt-1" />
+                    </div>
                     <div class="mb-0">
                         <x-input-label for="category_id" :value="__('Category (optional)')" />
                         <select name="category_id" id="category_id" class="form-select @error('category_id') is-invalid @enderror">
@@ -66,6 +79,7 @@
             <div class="card mb-4 fh-adm-form-card">
                 <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Schedule') }}</h6></div>
                 <div class="card-body">
+                    <p class="text-muted small">Dates and times use {{ config('app.timezone') }}.</p>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <x-input-label for="start_at" :value="__('Start')" />
@@ -84,6 +98,17 @@
             <div class="card mb-4 fh-adm-form-card">
                 <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Publishing') }}</h6></div>
                 <div class="card-body">
+                    <div class="form-check mb-3">
+                        <input type="hidden" name="is_featured" value="0">
+                        <input type="checkbox" class="form-check-input" name="is_featured" id="is_featured" value="1" @checked(old('is_featured', $event?->is_featured))>
+                        <label class="form-check-label" for="is_featured">Featured event</label>
+                        <p class="text-muted small">Up to four published upcoming events appear in the Events spotlight, ordered by popularity then date.</p>
+                    </div>
+                    <div class="mb-3">
+                        <x-input-label for="popularity_score" :value="__('Popularity score')" />
+                        <input type="number" class="form-control" id="popularity_score" name="popularity_score" min="0" max="1000000" value="{{ old('popularity_score', $event?->popularity_score ?? 0) }}">
+                        <x-input-error :messages="$errors->get('popularity_score')" class="mt-1" />
+                    </div>
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <x-input-label for="status" :value="__('Status')" />
@@ -109,6 +134,16 @@
                             </select>
                             <x-input-error :messages="$errors->get('cover_media_id')" class="mt-1" />
                         </div>
+                    </div>
+                    <div class="mb-3">
+                        <input type="hidden" name="gallery_present" value="1">
+                        <x-input-label for="gallery_media_ids" :value="__('Gallery images (up to 12)')" />
+                        <select name="gallery_media_ids[]" id="gallery_media_ids" class="form-select" multiple size="5">
+                            @foreach($images as $image)<option value="{{ $image->id }}" @selected(in_array($image->id, old('gallery_media_ids', $event?->galleryMedia->modelKeys() ?? [])))>{{ $image->original_filename }}</option>@endforeach
+                        </select>
+                        <p class="text-muted small">Use Ctrl or Command to select multiple images.</p>
+                        <x-input-error :messages="$errors->get('gallery_media_ids')" class="mt-1" />
+                        <x-input-error :messages="$errors->first('gallery_media_ids.*')" class="mt-1" />
                     </div>
                 </div>
             </div>

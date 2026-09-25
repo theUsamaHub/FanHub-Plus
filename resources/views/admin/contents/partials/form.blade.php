@@ -33,6 +33,18 @@
                             <x-input-error :messages="$errors->get('category_id')" class="mt-1" />
                         </div>
                         <div class="col-md-3 mb-3">
+                            <x-input-label for="release_date" :value="__('Release date')" />
+                            <x-text-input id="release_date" name="release_date" type="date" class="form-control" :value="old('release_date', $content?->release_date?->format('Y-m-d'))" />
+                            <x-input-error :messages="$errors->get('release_date')" class="mt-1" />
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <x-input-label for="release_label" :value="__('Release label')" />
+                            <x-text-input id="release_label" name="release_label" type="text" class="form-control" :value="old('release_label', $content?->release_label)" placeholder="{{ __('e.g. Premiere') }}" />
+                            <x-input-error :messages="$errors->get('release_label')" class="mt-1" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
                             <x-input-label for="type" :value="__('Type')" />
                             <select name="type" id="type" class="form-select @error('type') is-invalid @enderror" required>
                                 @foreach (['article', 'video', 'audio', 'image'] as $type)
@@ -40,11 +52,6 @@
                                 @endforeach
                             </select>
                             <x-input-error :messages="$errors->get('type')" class="mt-1" />
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <x-input-label for="release_date" :value="__('Release date')" />
-                            <x-text-input id="release_date" name="release_date" type="date" class="form-control" :value="old('release_date', $content?->release_date?->format('Y-m-d'))" />
-                            <x-input-error :messages="$errors->get('release_date')" class="mt-1" />
                         </div>
                     </div>
                 </div>
@@ -175,6 +182,8 @@
             <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Notes') }}</h6></div>
             <div class="card-body">
                 <ul class="mb-0" style="font-size: 0.875rem;">
+                    <li class="mb-2">{{ __('Choose the fandom category and publish to show this story on its public fandom page. Drafts stay private; a future publishing date schedules the story.') }}</li>
+                    <li class="mb-2">{{ __('The cover, excerpt, body, gallery and media appear on the public story page. Featured content receives an Editor\'s Pick badge.') }}</li>
                     <li class="mb-2">{{ __('Slug is auto-generated from the title when left blank.') }}</li>
                     <li class="mb-2">{{ __('Media is selected from the Media Library. Upload files there first.') }}</li>
                     <li class="mb-2">{{ __('Setting status to published stamps published_at when empty.') }}</li>

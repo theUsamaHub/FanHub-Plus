@@ -1,8 +1,13 @@
 /* Compact navigation and original FanHub Plus identity. */
-:root[data-theme] .fh-site .fh-header { inset: 12px 24px auto; min-height: 68px; border: 1px solid #ffffff18; border-radius: 18px; background: #10141eeb; color: #f4f5f8; box-shadow: 0 8px 30px #0002; transition: background .2s, box-shadow .2s; }
-:root[data-theme='light'] .fh-site .fh-header { background: #fffffff2; color: #242b39; border-color: #e9e9ee; }
-:root[data-theme] .fh-site .fh-header.is-scrolled { min-height: 68px; background: #10141ef5; box-shadow: 0 6px 25px #0003; }
-:root[data-theme='light'] .fh-site .fh-header.is-scrolled { background: #fffffff7; }
+@property --nav-border-angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+:root[data-theme] .fh-site .fh-header { inset: 12px 24px auto; min-height: 68px; border: 1px solid #ffffff26; border-radius: 18px; background: #10141e38; color: #f4f5f8; box-shadow: 0 8px 30px #0002, inset 0 1px 0 #ffffff0d; backdrop-filter: blur(20px) saturate(145%); -webkit-backdrop-filter: blur(20px) saturate(145%); transition: background .3s, box-shadow .3s; }
+:root[data-theme='light'] .fh-site .fh-header { background: #ffffff45; color: #242b39; border-color: #67547e26; }
+:root[data-theme] .fh-site .fh-header.is-scrolled { min-height: 68px; background: #10141e80; box-shadow: 0 6px 25px #0003; }
+:root[data-theme='light'] .fh-site .fh-header.is-scrolled { background: #ffffff99; }
+/* Mask only the decorative border; dropdowns and pointer targets stay unobstructed. */
+.fh-header::before { content: ''; position: absolute; inset: -1px; padding: 1px; border-radius: inherit; pointer-events: none; background: conic-gradient(from var(--nav-border-angle), transparent 0deg 65deg, #ff9c38 95deg, #ffe1a4 110deg, transparent 145deg 245deg, #c89bf5 280deg, #ffad56 300deg, transparent 335deg); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); mask-composite: exclude; animation: nav-border-orbit 8s linear infinite; }
+@keyframes nav-border-orbit { to { --nav-border-angle: 360deg; } }
+@media (prefers-reduced-motion: reduce) { .fh-header::before { animation: none; } }
 .fh-header .fh-nav, .fh-header.is-scrolled .fh-nav { min-height: 66px; padding: 0 24px; gap: 28px; }
 .fh-site .fh-brand--premium { gap: 10px; color: var(--fh-text) !important; font: normal 800 25px/1 Arial,sans-serif; letter-spacing: -1px; }
 .fh-site .fh-brand--premium > .fh-brand-wordmark { transform: none; }

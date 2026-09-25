@@ -48,6 +48,11 @@ class Category extends Model
         return $this->hasMany(Event::class);
     }
 
+    public function upcomingReleases(): HasMany
+    {
+        return $this->hasMany(UpcomingRelease::class);
+    }
+
     public function chatbotFaqs(): HasMany
     {
         return $this->hasMany(ChatbotFaq::class);
