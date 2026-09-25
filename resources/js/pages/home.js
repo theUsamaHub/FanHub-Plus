@@ -9,11 +9,13 @@ import { initHomeSectionSlides } from '../modules/home-section-slides';
 import { revealCards, revealHeading } from '../modules/home-reveals';
 import '../modules/hero-video';
 import { initHomeMerchandise, initJoinReveal } from '../modules/home-merchandise';
+import { initExploreFandoms } from '../modules/explore-fandom';
 
 const page = document.querySelector('[data-page="home"]');
 
 if (page) {
     gsap.registerPlugin(ScrollTrigger);
+    initExploreFandoms(page);
     initHomeMerchandise(page);
     initJoinReveal(page);
     initReleaseTimeline(page);
