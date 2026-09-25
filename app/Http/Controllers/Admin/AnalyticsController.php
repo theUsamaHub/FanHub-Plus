@@ -45,10 +45,10 @@ class AnalyticsController extends Controller
             ->get()
             ->groupBy('type');
 
-        $ratingsDistribution = Rating::selectRaw('rating, count(*) as total')
-            ->groupBy('rating')
-            ->orderBy('rating')
-            ->pluck('total', 'rating');
+        $ratingsDistribution = Rating::selectRaw('stars, count(*) as total')
+            ->groupBy('stars')
+            ->orderBy('stars')
+            ->pluck('total', 'stars');
 
         $maxRatingCount = $ratingsDistribution->max() ?? 1;
 
