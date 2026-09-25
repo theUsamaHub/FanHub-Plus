@@ -2,13 +2,17 @@
 
 namespace App\Models;
 
+use App\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Str;
 
 class Tag extends Model
 {
-    protected $fillable = ['name', 'slug', 'color'];
+    use LogsActivity;
+
+    protected $fillable = ['name', 'slug'];
 
     public function categories(): MorphToMany
     {
@@ -25,7 +29,7 @@ class Tag extends Model
         parent::boot();
         static::creating(function (Tag $tag) {
             if (empty($tag->slug)) {
-                $tag->slug = \Illuminate\Support\Str::slug($tag->name);
+                $tag->slug = Str::slug($tag->name);
             }
         });
     }

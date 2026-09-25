@@ -12,6 +12,7 @@ export default defineConfig({
                 'resources/js/pages/home.js',
                 'resources/js/modules/events-page.js',
                 'resources/js/pages/admin-dashboard.js',
+                'resources/js/admin/analytics-charts.js',
             ],
             refresh: true,
         }),

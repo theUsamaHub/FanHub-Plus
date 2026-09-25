@@ -43,13 +43,12 @@
         <div class="card-body p-0">
             <div class="table-responsive fh-adm-table-scroll">
                 <table class="table table-hover mb-0">
-                    <thead><tr><th>{{ __('Name') }}</th><th>{{ __('Slug') }}</th><th>{{ __('Color') }}</th><th>{{ __('Categories') }}</th><th class="text-end">{{ __('Actions') }}</th></tr></thead>
+                    <thead><tr><th>{{ __('Name') }}</th><th>{{ __('Slug') }}</th><th>{{ __('Categories') }}</th><th class="text-end">{{ __('Actions') }}</th></tr></thead>
                     <tbody>
                         @forelse ($tags as $tag)
                             <tr>
-                                <td class="fw-medium"><span class="badge" style="background-color: {{ $tag->color }}; color: #fff;">{{ $tag->name }}</span></td>
+                                <td class="fw-medium">{{ $tag->name }}</td>
                                 <td><code>{{ $tag->slug }}</code></td>
-                                <td><span class="d-inline-block rounded" style="width:24px;height:24px;background:{{ $tag->color }};"></span> {{ $tag->color }}</td>
                                 <td>{{ $tag->categories_count }}</td>
                                 <td class="text-end">
                                     <div class="btn-group btn-group-sm">
@@ -62,7 +61,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr><td colspan="5" class="text-center py-4 text-muted">{{ __('No tags found.') }}</td></tr>
+                            <tr><td colspan="4" class="text-center py-4 text-muted">{{ __('No tags found.') }}</td></tr>
                         @endforelse
                     </tbody>
                 </table>

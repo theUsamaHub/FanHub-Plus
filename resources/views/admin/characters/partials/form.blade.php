@@ -39,13 +39,35 @@
                         <x-input-error :messages="$errors->get('bio')" class="mt-1" />
                     </div>
                     <div class="mb-0">
-                        <x-input-label for="image_media_id" :value="__('Image')" />
-                        <select name="image_media_id" id="image_media_id" class="form-select">
-                            <option value="">{{ __('None') }}</option>
-                            @foreach ($images as $image)
-                                <option value="{{ $image->id }}" @selected((int) old('image_media_id', $character?->image_media_id) === $image->id)>{{ $image->original_filename }}</option>
-                            @endforeach
-                        </select>
+                        <x-input-label :value="__('Image')" />
+                        <div class="fh-adm-pick-list fh-adm-pick-list--single">
+                            <label class="fh-adm-pick-item">
+                                <input type="radio" name="image_media_id" value="" @checked((int) old('image_media_id', $character?->image_media_id) === 0)>
+                                <div class="fh-adm-pick-item-body">
+                                    <div class="fh-adm-pick-icon"><i class="bi bi-x-lg"></i></div>
+                                    <div class="min-w-0">
+                                        <div class="fh-adm-pick-name">{{ __('None') }}</div>
+                                        <div class="fh-adm-pick-meta">{{ __('No character image') }}</div>
+                                    </div>
+                                    <span class="fh-adm-pick-state">{{ __('Select') }}</span>
+                                </div>
+                            </label>
+                            @forelse ($images as $image)
+                                <label class="fh-adm-pick-item">
+                                    <input type="radio" name="image_media_id" value="{{ $image->id }}" @checked((int) old('image_media_id', $character?->image_media_id) === $image->id)>
+                                    <div class="fh-adm-pick-item-body">
+                                        <div class="fh-adm-pick-icon"><i class="bi bi-image"></i></div>
+                                        <div class="min-w-0">
+                                            <div class="fh-adm-pick-name">{{ $image->original_filename }}</div>
+                                            <div class="fh-adm-pick-meta">{{ $image->mime_type ?? 'image' }}</div>
+                                        </div>
+                                        <span class="fh-adm-pick-state">{{ __('Select') }}</span>
+                                    </div>
+                                </label>
+                            @empty
+                                <div class="fh-adm-tile-meta">{{ __('No images in the media library yet.') }}</div>
+                            @endforelse
+                        </div>
                         <x-input-error :messages="$errors->get('image_media_id')" class="mt-1" />
                     </div>
                 </div>
@@ -54,11 +76,23 @@
             <div class="card mb-4 fh-adm-form-card">
                 <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Related content') }}</h6></div>
                 <div class="card-body">
-                    <select name="content_ids[]" class="form-select" multiple size="8">
-                        @foreach ($contents as $item)
-                            <option value="{{ $item->id }}" @selected(in_array($item->id, $selectedContentIds))>{{ $item->title }} ({{ $item->type }})</option>
-                        @endforeach
-                    </select>
+                    <div class="fh-adm-pick-list">
+                        @forelse ($contents as $item)
+                            <label class="fh-adm-pick-item">
+                                <input type="checkbox" name="content_ids[]" value="{{ $item->id }}" @checked(in_array($item->id, $selectedContentIds))>
+                                <div class="fh-adm-pick-item-body">
+                                    <div class="fh-adm-pick-icon"><i class="bi bi-link-45deg"></i></div>
+                                    <div class="min-w-0">
+                                        <div class="fh-adm-pick-name">{{ \Illuminate\Support\Str::limit($item->title, 60) }}</div>
+                                        <div class="fh-adm-pick-meta">{{ $item->type }} · {{ $item->status }}</div>
+                                    </div>
+                                    <span class="fh-adm-pick-state">{{ __('Link') }}</span>
+                                </div>
+                            </label>
+                        @empty
+                            <div class="fh-adm-tile-meta">{{ __('No content available to link.') }}</div>
+                        @endforelse
+                    </div>
                     <x-input-error :messages="$errors->get('content_ids')" class="mt-1" />
                 </div>
             </div>

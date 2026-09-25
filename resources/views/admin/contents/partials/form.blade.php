@@ -78,51 +78,135 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <x-input-label for="cover_media_id" :value="__('Cover')" />
-                            <select name="cover_media_id" id="cover_media_id" class="form-select">
-                                <option value="">{{ __('None') }}</option>
+                            <x-input-label :value="__('Cover image')" />
+                            <div class="fh-adm-pick-list fh-adm-pick-list--single">
+                                <label class="fh-adm-pick-item">
+                                    <input type="radio" name="cover_media_id" value="" @checked((int) old('cover_media_id', $selected['cover']) === 0)>
+                                    <div class="fh-adm-pick-item-body">
+                                        <div class="fh-adm-pick-icon"><i class="bi bi-x-lg"></i></div>
+                                        <div class="min-w-0">
+                                            <div class="fh-adm-pick-name">{{ __('None') }}</div>
+                                            <div class="fh-adm-pick-meta">{{ __('No cover image') }}</div>
+                                        </div>
+                                        <span class="fh-adm-pick-state">{{ __('Select') }}</span>
+                                    </div>
+                                </label>
                                 @foreach ($mediaOptions['images'] as $media)
-                                    <option value="{{ $media->id }}" @selected((int) old('cover_media_id', $selected['cover']) === $media->id)>{{ $media->original_filename }}</option>
+                                    <label class="fh-adm-pick-item">
+                                        <input type="radio" name="cover_media_id" value="{{ $media->id }}" @checked((int) old('cover_media_id', $selected['cover']) === $media->id)>
+                                        <div class="fh-adm-pick-item-body">
+                                            <div class="fh-adm-pick-icon"><i class="bi bi-image"></i></div>
+                                            <div class="min-w-0">
+                                                <div class="fh-adm-pick-name">{{ $media->original_filename }}</div>
+                                                <div class="fh-adm-pick-meta">{{ $media->mime_type }}</div>
+                                            </div>
+                                            <span class="fh-adm-pick-state">{{ __('Select') }}</span>
+                                        </div>
+                                    </label>
                                 @endforeach
-                            </select>
+                            </div>
                             <x-input-error :messages="$errors->get('cover_media_id')" class="mt-1" />
                         </div>
                         <div class="col-md-6 mb-3">
-                            <x-input-label for="trailer_media_id" :value="__('Trailer')" />
-                            <select name="trailer_media_id" id="trailer_media_id" class="form-select">
-                                <option value="">{{ __('None') }}</option>
+                            <x-input-label :value="__('Trailer video')" />
+                            <div class="fh-adm-pick-list fh-adm-pick-list--single">
+                                <label class="fh-adm-pick-item">
+                                    <input type="radio" name="trailer_media_id" value="" @checked((int) old('trailer_media_id', $selected['trailer']) === 0)>
+                                    <div class="fh-adm-pick-item-body">
+                                        <div class="fh-adm-pick-icon"><i class="bi bi-x-lg"></i></div>
+                                        <div class="min-w-0">
+                                            <div class="fh-adm-pick-name">{{ __('None') }}</div>
+                                            <div class="fh-adm-pick-meta">{{ __('No trailer') }}</div>
+                                        </div>
+                                        <span class="fh-adm-pick-state">{{ __('Select') }}</span>
+                                    </div>
+                                </label>
                                 @foreach ($mediaOptions['videos'] as $media)
-                                    <option value="{{ $media->id }}" @selected((int) old('trailer_media_id', $selected['trailer']) === $media->id)>{{ $media->original_filename }}</option>
+                                    <label class="fh-adm-pick-item">
+                                        <input type="radio" name="trailer_media_id" value="{{ $media->id }}" @checked((int) old('trailer_media_id', $selected['trailer']) === $media->id)>
+                                        <div class="fh-adm-pick-item-body">
+                                            <div class="fh-adm-pick-icon"><i class="bi bi-film"></i></div>
+                                            <div class="min-w-0">
+                                                <div class="fh-adm-pick-name">{{ $media->original_filename }}</div>
+                                                <div class="fh-adm-pick-meta">{{ $media->mime_type }}</div>
+                                            </div>
+                                            <span class="fh-adm-pick-state">{{ __('Select') }}</span>
+                                        </div>
+                                    </label>
                                 @endforeach
-                            </select>
+                            </div>
                             <x-input-error :messages="$errors->get('trailer_media_id')" class="mt-1" />
                         </div>
                         <div class="col-md-6 mb-3">
-                            <x-input-label for="audio_clip_media_id" :value="__('Audio clip')" />
-                            <select name="audio_clip_media_id" id="audio_clip_media_id" class="form-select">
-                                <option value="">{{ __('None') }}</option>
+                            <x-input-label :value="__('Audio clip')" />
+                            <div class="fh-adm-pick-list fh-adm-pick-list--single">
+                                <label class="fh-adm-pick-item">
+                                    <input type="radio" name="audio_clip_media_id" value="" @checked((int) old('audio_clip_media_id', $selected['audio_clip']) === 0)>
+                                    <div class="fh-adm-pick-item-body">
+                                        <div class="fh-adm-pick-icon"><i class="bi bi-x-lg"></i></div>
+                                        <div class="min-w-0">
+                                            <div class="fh-adm-pick-name">{{ __('None') }}</div>
+                                            <div class="fh-adm-pick-meta">{{ __('No audio') }}</div>
+                                        </div>
+                                        <span class="fh-adm-pick-state">{{ __('Select') }}</span>
+                                    </div>
+                                </label>
                                 @foreach ($mediaOptions['audio'] as $media)
-                                    <option value="{{ $media->id }}" @selected((int) old('audio_clip_media_id', $selected['audio_clip']) === $media->id)>{{ $media->original_filename }}</option>
+                                    <label class="fh-adm-pick-item">
+                                        <input type="radio" name="audio_clip_media_id" value="{{ $media->id }}" @checked((int) old('audio_clip_media_id', $selected['audio_clip']) === $media->id)>
+                                        <div class="fh-adm-pick-item-body">
+                                            <div class="fh-adm-pick-icon"><i class="bi bi-music-note-beamed"></i></div>
+                                            <div class="min-w-0">
+                                                <div class="fh-adm-pick-name">{{ $media->original_filename }}</div>
+                                                <div class="fh-adm-pick-meta">{{ $media->mime_type }}</div>
+                                            </div>
+                                            <span class="fh-adm-pick-state">{{ __('Select') }}</span>
+                                        </div>
+                                    </label>
                                 @endforeach
-                            </select>
+                            </div>
                             <x-input-error :messages="$errors->get('audio_clip_media_id')" class="mt-1" />
                         </div>
                         <div class="col-md-6 mb-3">
-                            <x-input-label for="gallery_media_ids" :value="__('Gallery (multi)')" />
-                            <select name="gallery_media_ids[]" id="gallery_media_ids" class="form-select" multiple size="5">
-                                @foreach ($mediaOptions['images'] as $media)
-                                    <option value="{{ $media->id }}" @selected(in_array($media->id, old('gallery_media_ids', $selected['gallery'])))>{{ $media->original_filename }}</option>
-                                @endforeach
-                            </select>
+                            <x-input-label :value="__('Gallery images (multi)')" />
+                            <div class="fh-adm-pick-list">
+                                @forelse ($mediaOptions['images'] as $media)
+                                    <label class="fh-adm-pick-item">
+                                        <input type="checkbox" name="gallery_media_ids[]" value="{{ $media->id }}" @checked(in_array($media->id, old('gallery_media_ids', $selected['gallery'])))>
+                                        <div class="fh-adm-pick-item-body">
+                                            <div class="fh-adm-pick-icon"><i class="bi bi-images"></i></div>
+                                            <div class="min-w-0">
+                                                <div class="fh-adm-pick-name">{{ $media->original_filename }}</div>
+                                                <div class="fh-adm-pick-meta">{{ $media->mime_type }}</div>
+                                            </div>
+                                            <span class="fh-adm-pick-state">{{ __('Add') }}</span>
+                                        </div>
+                                    </label>
+                                @empty
+                                    <div class="fh-adm-tile-meta">{{ __('No images in the media library yet.') }}</div>
+                                @endforelse
+                            </div>
                             <x-input-error :messages="$errors->get('gallery_media_ids')" class="mt-1" />
                         </div>
                         <div class="col-md-12 mb-0">
-                            <x-input-label for="attachment_media_ids" :value="__('Attachments (multi)')" />
-                            <select name="attachment_media_ids[]" id="attachment_media_ids" class="form-select" multiple size="5">
-                                @foreach ($mediaOptions['documents'] as $media)
-                                    <option value="{{ $media->id }}" @selected(in_array($media->id, old('attachment_media_ids', $selected['attachment'])))>{{ $media->original_filename }}</option>
-                                @endforeach
-                            </select>
+                            <x-input-label :value="__('Attachments (multi)')" />
+                            <div class="fh-adm-pick-list">
+                                @forelse ($mediaOptions['documents'] as $media)
+                                    <label class="fh-adm-pick-item">
+                                        <input type="checkbox" name="attachment_media_ids[]" value="{{ $media->id }}" @checked(in_array($media->id, old('attachment_media_ids', $selected['attachment'])))>
+                                        <div class="fh-adm-pick-item-body">
+                                            <div class="fh-adm-pick-icon"><i class="bi bi-file-earmark-text"></i></div>
+                                            <div class="min-w-0">
+                                                <div class="fh-adm-pick-name">{{ $media->original_filename }}</div>
+                                                <div class="fh-adm-pick-meta">{{ $media->mime_type }}</div>
+                                            </div>
+                                            <span class="fh-adm-pick-state">{{ __('Attach') }}</span>
+                                        </div>
+                                    </label>
+                                @empty
+                                    <div class="fh-adm-tile-meta">{{ __('No documents in the media library yet.') }}</div>
+                                @endforelse
+                            </div>
                             <x-input-error :messages="$errors->get('attachment_media_ids')" class="mt-1" />
                         </div>
                     </div>
@@ -132,13 +216,16 @@
             <div class="card mb-4 fh-adm-form-card">
                 <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Discovery') }}</h6></div>
                 <div class="card-body">
-                    <x-input-label for="tags" :value="__('Tags')" />
-                    <select name="tags[]" id="tags" class="form-select" multiple size="5">
+                    <x-input-label :value="__('Tags')" />
+                    <div class="fh-adm-tag-chips">
                         @foreach ($tags as $tag)
-                            <option value="{{ $tag->id }}" @selected(in_array($tag->id, $selectedTags))>{{ $tag->name }}</option>
+                            <label class="fh-adm-tag-chip">
+                                <input type="checkbox" name="tags[]" value="{{ $tag->id }}" @checked(in_array($tag->id, $selectedTags))>
+                                <span>{{ $tag->name }}</span>
+                            </label>
                         @endforeach
-                    </select>
-                    <x-input-error :messages="$errors->get('tags')" class="mt-1" />
+                    </div>
+                    <x-input-error :messages="$errors->get('tags')" class="mt-2" />
                 </div>
             </div>
 

@@ -73,6 +73,7 @@ Route::prefix('admin')
 
         Route::get('/activity-logs', [\App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('activity-logs.index');
         Route::get('/activity-logs/export', [\App\Http\Controllers\Admin\ActivityLogController::class, 'export'])->name('activity-logs.export');
+        Route::get('/activity-logs/{activity_log}', [\App\Http\Controllers\Admin\ActivityLogController::class, 'show'])->name('activity-logs.show');
         Route::delete('/activity-logs', [\App\Http\Controllers\Admin\ActivityLogController::class, 'destroy'])->name('activity-logs.destroy');
 
         Route::get('/ip-restrictions', [\App\Http\Controllers\Admin\IpRestrictionController::class, 'index'])->name('ip-restrictions.index');
@@ -86,6 +87,14 @@ Route::prefix('admin')
         Route::get('/subscribers', [\App\Http\Controllers\Admin\SubscriberController::class, 'index'])->name('subscribers.index');
         Route::get('/subscribers/export', [\App\Http\Controllers\Admin\SubscriberController::class, 'export'])->name('subscribers.export');
         Route::delete('/subscribers/{subscriber}', [\App\Http\Controllers\Admin\SubscriberController::class, 'destroy'])->name('subscribers.destroy');
+
+        Route::get('/chatbot/faqs', [\App\Http\Controllers\Admin\ChatbotFaqController::class, 'index'])->name('chatbot.faqs.index');
+        Route::get('/chatbot/faqs/create', [\App\Http\Controllers\Admin\ChatbotFaqController::class, 'create'])->name('chatbot.faqs.create');
+        Route::post('/chatbot/faqs', [\App\Http\Controllers\Admin\ChatbotFaqController::class, 'store'])->name('chatbot.faqs.store');
+        Route::get('/chatbot/faqs/{chatbotFaq}', [\App\Http\Controllers\Admin\ChatbotFaqController::class, 'show'])->name('chatbot.faqs.show');
+        Route::get('/chatbot/faqs/{chatbotFaq}/edit', [\App\Http\Controllers\Admin\ChatbotFaqController::class, 'edit'])->name('chatbot.faqs.edit');
+        Route::put('/chatbot/faqs/{chatbotFaq}', [\App\Http\Controllers\Admin\ChatbotFaqController::class, 'update'])->name('chatbot.faqs.update');
+        Route::delete('/chatbot/faqs/{chatbotFaq}', [\App\Http\Controllers\Admin\ChatbotFaqController::class, 'destroy'])->name('chatbot.faqs.destroy');
 
         Route::get('/chatbot', [\App\Http\Controllers\Admin\ChatbotController::class, 'index'])->name('chatbot.index');
         Route::get('/chatbot/export', [\App\Http\Controllers\Admin\ChatbotController::class, 'export'])->name('chatbot.export');

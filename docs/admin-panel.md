@@ -19,7 +19,7 @@ The dashboard shows:
 Manage content categories with:
 - Full CRUD with soft deletes (Recycle Bin available)
 - Image upload + multiple file attachments
-- Tagging support with color-coded tags
+- Tagging support with simple labels
 - Sort order for custom ordering
 - Scheduled publishing (set future publish/unpublish dates)
 - WYSIWYG editor (Quill) for description
@@ -45,7 +45,7 @@ Manage content categories with:
 - Stats: total, new, read, replied
 
 ### Tags
-- Color-coded tagging system
+- Simple tagging system
 - Polymorphic (usable by any model)
 - Auto-slug from name
 - Stats: total tags, categories tagged

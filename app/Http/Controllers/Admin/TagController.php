@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Tag;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class TagController extends Controller
@@ -42,10 +43,9 @@ class TagController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255', 'unique:tags,name'],
-            'color' => ['nullable', 'string', 'max:7'],
         ]);
 
-        $validated['slug'] = \Illuminate\Support\Str::slug($validated['name']);
+        $validated['slug'] = Str::slug($validated['name']);
         Tag::create($validated);
 
         return redirect()->route('admin.tags.index')
@@ -60,8 +60,7 @@ class TagController extends Controller
     public function update(Request $request, Tag $tag): RedirectResponse
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255', 'unique:tags,name,' . $tag->id],
-            'color' => ['nullable', 'string', 'max:7'],
+            'name' => ['required', 'string', 'max:255', 'unique:tags,name,'.$tag->id],
         ]);
 
         $tag->update($validated);
