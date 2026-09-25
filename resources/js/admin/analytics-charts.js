@@ -398,7 +398,7 @@ function initCharts() {
     renderRatingsChart(data.ratings);
 }
 
-// Period switcher
+// Period switcher for chart-specific buttons
 document.querySelectorAll('[data-chart]').forEach(btn => {
     btn.addEventListener('click', function() {
         const chartName = this.dataset.chart;
@@ -411,6 +411,39 @@ document.querySelectorAll('[data-chart]').forEach(btn => {
         
         document.querySelectorAll(`[data-chart="${chartName}"]`).forEach(b => b.classList.remove('active'));
         this.classList.add('active');
+        
+        // Re-render with selected period
+        initCharts();
+    });
+});
+
+// Top-level period filter (30 Days, 90 Days, 1 Year) - applies to all period-aware charts
+document.querySelectorAll('[data-range]').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const range = parseInt(this.dataset.range);
+        let period = 'daily';
+        
+        // Map range to period
+        if (range >= 365) period = 'monthly';
+        else if (range >= 90) period = 'weekly';
+        
+        // Update all period-aware charts
+        Object.keys(currentPeriods).forEach(key => {
+            currentPeriods[key] = period;
+        });
+        
+        // Update UI for top-level buttons
+        document.querySelectorAll('[data-range]').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        
+        // Also update chart-specific period buttons to match
+        document.querySelectorAll('[data-chart][data-period]').forEach(b => {
+            if (b.dataset.period === period) {
+                b.classList.add('active');
+            } else {
+                b.classList.remove('active');
+            }
+        });
         
         // Re-render with selected period
         initCharts();
