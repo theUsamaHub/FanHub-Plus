@@ -21,7 +21,7 @@
 
     {{-- Stats --}}
     <div class="row g-3 mb-4">
-        <div class="col-6 col-xl-3">
+        <div class="col-6 col-xl-4">
             <div class="card border-start border-secondary border-4 h-100">
                 <div class="card-body">
                     <div class="text-muted" style="font-size:.75rem;">{{ __('Total Entries') }}</div>
@@ -29,7 +29,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-6 col-xl-3">
+        <div class="col-6 col-xl-4">
             <div class="card border-start border-info border-4 h-100">
                 <div class="card-body">
                     <div class="text-muted" style="font-size:.75rem;">{{ __('Today') }}</div>
@@ -37,7 +37,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-6 col-xl-3">
+        <div class="col-6 col-xl-4">
             <div class="card border-start border-primary border-4 h-100">
                 <div class="card-body">
                     <div class="text-muted" style="font-size:.75rem;">{{ __('Last 7 Days') }}</div>
@@ -45,10 +45,11 @@
                 </div>
             </div>
         </div>
+    </div>
 
-    <div class="row g-3 mb-4">
+<div class="row g-3 mb-4">
         {{-- Event breakdown --}}
-        <div class="col-lg-7">
+        <div class="col-12">
             <div class="card h-100 fh-adm-form-card">
                 <div class="card-header">
                     <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Activity by Type') }}</h6>
@@ -59,8 +60,8 @@
                             <a href="{{ route('admin.activity-logs.index', array_merge(array_filter($filters), ['event' => $key])) }}"
                                class="fh-adm-chip {{ request('event') === $key ? '' : 'text-decoration-none' }}"
                                data-tone="{{ $tone }}" style="padding:6px 12px;">
-                                <i class="bi {{ $icon }}"></i>{{ $label }}
-                                <strong>{{ number_format($stats['events'][$key] ?? 0) }}</strong>
+                                 <i class="bi {{ $icon }}"></i>{{ $label }}
+                                 <strong>{{ number_format($stats['events'][$key] ?? 0) }}</strong>
                             </a>
                         @endforeach
                     </div>
@@ -72,7 +73,7 @@
                             @foreach ($stats['types'] as $type => $meta)
                                 <a href="{{ route('admin.activity-logs.index', array_merge(array_filter($filters), ['type' => $type])) }}"
                                    class="fh-adm-chip text-decoration-none {{ request('type') === $type ? '' : '' }}" data-tone="accent" style="padding:5px 11px;">
-                                    {{ $meta['label'] }} <strong>{{ number_format($meta['count']) }}</strong>
+                                     {{ $meta['label'] }} <strong>{{ number_format($meta['count']) }}</strong>
                                 </a>
                             @endforeach
                         </div>
@@ -80,6 +81,9 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    {{-- Filters --}}
     <div class="card mb-4 fh-adm-filter">
         <div class="card-body">
             <form method="GET" action="{{ route('admin.activity-logs.index') }}" class="row g-2">
