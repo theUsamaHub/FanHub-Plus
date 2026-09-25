@@ -17,6 +17,13 @@ class EventRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:200'],
             'description' => ['nullable', 'string'],
+            'short_description' => ['nullable', 'string', 'max:400'],
+            'event_type' => ['nullable', Rule::in(array_keys(config('events.types')))],
+            'is_featured' => ['sometimes', 'boolean'],
+            'popularity_score' => ['sometimes', 'integer', 'min:0', 'max:1000000'],
+            'gallery_present' => ['sometimes', 'boolean'],
+            'gallery_media_ids' => ['nullable', 'array', 'max:12'],
+            'gallery_media_ids.*' => ['integer', 'distinct', Rule::exists('media', 'id')->where('media_type', 'image')],
             'category_id' => ['nullable', 'integer', Rule::exists('categories', 'id')],
             'city' => ['required', 'string', 'max:100'],
             'venue' => ['nullable', 'string', 'max:255'],
@@ -25,7 +32,7 @@ class EventRequest extends FormRequest
             'longitude' => ['nullable', 'numeric', 'between:-180,180'],
             'start_at' => ['required', 'date'],
             'end_at' => ['nullable', 'date', 'after_or_equal:start_at'],
-            'ticket_url' => ['nullable', 'url', 'max:500'],
+            'ticket_url' => ['nullable', 'url:http,https', 'max:500'],
             'cover_media_id' => ['nullable', 'integer', Rule::exists('media', 'id')],
             'status' => ['required', Rule::in(['draft', 'published', 'cancelled'])],
         ];

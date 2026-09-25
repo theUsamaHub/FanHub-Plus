@@ -6,11 +6,14 @@ import Lenis from 'lenis';
 import { initReleaseTimeline } from '../modules/release-timeline';
 import { revealCards, revealHeading } from '../modules/home-reveals';
 import '../modules/hero-video';
+import { initHomeMerchandise, initJoinReveal } from '../modules/home-merchandise';
 
 const page = document.querySelector('[data-page="home"]');
 
 if (page) {
     gsap.registerPlugin(ScrollTrigger);
+    initHomeMerchandise(page);
+    initJoinReveal(page);
     initReleaseTimeline(page);
 
     const motion = gsap.matchMedia();

@@ -5,3 +5,5 @@ import '../css/sunset-theme.css';
 import '../css/components/navbar-reference.css';
 import './modules/chatbot';
 import '../css/components/site-polish.css';
+import '../css/components/merchandise.css';
+import './modules/merchandise-bookmarks';
