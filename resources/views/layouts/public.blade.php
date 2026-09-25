@@ -49,7 +49,7 @@
         function hide(){splash.style.opacity='0';setTimeout(function(){splash.style.display='none'},800)}
         skip.addEventListener('click',hide);
         video.addEventListener('ended',hide);
-        setTimeout(hide,6000);
+        setTimeout(hide,2000);
     })();
     </script>
     <!-- End Video Splash Screen -->
