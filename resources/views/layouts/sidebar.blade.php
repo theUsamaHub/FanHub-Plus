@@ -35,7 +35,7 @@
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.analytics.*') ? 'is-active' : '' }}" href="{{ route('admin.analytics.index') }}" title="{{ __('Analytics') }}"><i class="bi bi-graph-up"></i> <span>{{ __('Analytics') }}</span></a>
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.categories.*') ? 'is-active' : '' }}" href="{{ route('admin.categories.index') }}" title="{{ __('Categories') }}"><i class="bi bi-tags"></i> <span>{{ __('Categories') }}</span></a>
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.categories.trashed') ? 'is-active' : '' }}" href="{{ route('admin.categories.trashed') }}" title="{{ __('Recycle Bin') }}"><i class="bi bi-trash"></i> <span>{{ __('Recycle Bin') }}</span></a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.tags.*') ? 'is-active' : '' }}" href="{{ route('admin.tags.index') }}" title="{{ __('Tags') }}"><i class="bi bi-bookmark"></i> <span>{{ __('Tags') }}</span></a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.tags.*') ? 'is-active' : '' }}" href="{{ route('admin.tags.index') }}" title="{{ __('Content Tags') }}"><i class="bi bi-bookmark"></i> <span>{{ __('Content Tags') }}</span></a>
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.media.*') ? 'is-active' : '' }}" href="{{ route('admin.media.index') }}" title="{{ __('Media') }}"><i class="bi bi-folder"></i> <span>{{ __('Media') }}</span></a>
 
         <div class="fh-adm-nav-group">{{ __('Users') }}</div>

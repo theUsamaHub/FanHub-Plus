@@ -12,14 +12,10 @@
         <div class="card fh-adm-form-card"><div class="card-body p-4">
             <form action="{{ route('admin.tags.store') }}" method="POST">
                 @csrf
-                <div class="mb-3">
+                <div class="mb-4">
                     <x-input-label for="name" :value="__('Tag Name')" />
                     <x-text-input id="name" name="name" type="text" class="form-control" :value="old('name')" required />
                     <x-input-error :messages="$errors->get('name')" class="mt-1" />
-                </div>
-                <div class="mb-4 fh-adm-page-head">
-                    <x-input-label for="color" :value="__('Color')" />
-                    <input type="color" name="color" id="color" value="{{ old('color', '#4f46e5') }}" class="form-control form-control-color">
                 </div>
                 <div class="d-flex justify-content-end gap-2">
                     <a href="{{ route('admin.tags.index') }}" class="btn btn-outline-secondary">{{ __('Cancel') }}</a>

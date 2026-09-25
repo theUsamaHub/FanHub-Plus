@@ -81,7 +81,7 @@ All under `/admin`, prefix `admin.`, middleware: `auth, verified, role:admin, ip
 | `/media` | index/store/destroy | `MediaController` | File upload & management |
 | `/settings` | index/update/store/destroy | `SettingController` | DB-backed grouped settings |
 | `/roles` | resource (no show) | `RoleController` | Role management (name, slug, description) |
-| `/tags` | resource (no show) | `TagController` | Tag CRUD with color picker |
+| `/tags` | resource (no show) | `TagController` | Tag CRUD |
 | `/activity-logs` | index/export/destroy | `ActivityLogController` | Audit trail, CSV export |
 | `/ip-restrictions` | index/update | `IpRestrictionController` | IP whitelist management |
 | `/notifications` | index/read/read-all/destroy | `NotificationController` | In-app notification inbox |
@@ -161,7 +161,7 @@ Prefix `/api/v1`
 - **Methods**: `isActive()`
 
 ### `Tag`
-- **Fillable**: `name, slug, color`
+- **Fillable**: `name, slug`
 - **Relations**: `categories()` MorphToMany (taggable)
 - **Boot**: auto-slugs
 
@@ -275,7 +275,7 @@ Prefix `/api/v1`
 | `LogViewerController` | index/clear/download | Tail last 200 lines |
 | `BackupController` | index/create/download/destroy | PostgreSQL SQL dumps (TRUNCATE + INSERT) |
 | `RoleController` | CRUD (no show) | Role management (name, slug, description) |
-| `TagController` | CRUD (no show) | Color picker, polymorphic tagging |
+| `TagController` | CRUD (no show) | Simple tag CRUD, polymorphic tagging |
 | `SettingController` | index/update/store/destroy | Grouped by General/SEO/Social/Mail — SMTP config, multiple from-addresses |
 | `MediaController` | index/store/destroy | Search, MIME filter, thumbnails |
 
@@ -331,7 +331,7 @@ Pages with full filter+stats treatment:
 8. `contacts` — id, name, email, subject, message, ip_address, status (default 'new'), timestamps
 9. `media` — polymorphic (mediable_type, mediable_id nullable), name, original_name, mime_type, size, path, disk, created_by, timestamps
 10. `settings` — id, group, key (unique), value, type, timestamps
-11. `tags` — id, name, slug, color, timestamps
+11. `tags` — id, name, slug, timestamps
 12. `taggables` — tag_id, taggable_id, taggable_type (pivot)
 13. `activity_logs` — id, user_id (nullable), event, auditable_type, auditable_id, old_values (json), new_values (json), ip_address, user_agent, timestamps
 14. `notifications` — id (uuid), type, notifiable_type, notifiable_id, data (json), read_at (nullable), timestamps
