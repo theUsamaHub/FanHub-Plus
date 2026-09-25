@@ -23,11 +23,11 @@
                 @keyframes splashPulse { 0%,100%{opacity:.3;transform:scale(.95)} 50%{opacity:1;transform:scale(1)} }
                 @keyframes splashFadeUp { 0%{opacity:0;transform:translateY(12px)} 100%{opacity:1;transform:translateY(0)} }
                 @keyframes splashSpin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
-                .splash-mobile-only { animation: splashFadeUp .6s ease forwards; }
-                .splash-mobile-only h1 { font-family:'Rajdhani',sans-serif; font-size:32px; font-weight:700; color:#fff; margin:0 0 8px; animation: splashPulse 1.8s ease infinite; letter-spacing:-0.5px; }
-                .splash-mobile-only h1 span { color:#b64ff2; }
+                .splash-mobile-only { animation: splashFadeUp .5s ease forwards; }
+                .splash-mobile-only h1 { font-family:'Rajdhani',sans-serif; font-size:32px; font-weight:700; color:#fff; margin:0 0 8px; animation: splashPulse 1.4s ease infinite; letter-spacing:-0.5px; }
+                .splash-mobile-only h1 span { color:#FF922E; }
                 .splash-mobile-only p { font-family:'Saira',sans-serif; font-size:12px; color:rgba(255,255,255,.5); letter-spacing:4px; text-transform:uppercase; margin:0 0 24px; }
-                .splash-ring { width:36px; height:36px; border:2px solid rgba(255,255,255,.1); border-top-color:#b64ff2; border-radius:50%; animation: splashSpin .8s linear infinite; }
+                .splash-ring { width:36px; height:36px; border:2px solid rgba(255,255,255,.1); border-top-color:#FF922E; border-radius:50%; animation: splashSpin .7s linear infinite; }
             </style>
             <h1>FAN<span>HUB+</span></h1>
             <p>Every universe. One home.</p>
@@ -49,7 +49,7 @@
         function hide(){splash.style.opacity='0';setTimeout(function(){splash.style.display='none'},800)}
         skip.addEventListener('click',hide);
         video.addEventListener('ended',hide);
-        setTimeout(hide,15000);
+        setTimeout(hide,6000);
     })();
     </script>
     <!-- End Video Splash Screen -->
