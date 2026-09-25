@@ -71,7 +71,7 @@ class MerchandiseController extends Controller
 
     public function edit(MerchandiseItem $merchandise): View
     {
-        return array_merge($this->formData(), ['item' => $merchandise]);
+        return view('admin.merchandise.edit', array_merge($this->formData(), ['item' => $merchandise]));
     }
 
     public function update(MerchandiseRequest $request, MerchandiseItem $merchandise): RedirectResponse

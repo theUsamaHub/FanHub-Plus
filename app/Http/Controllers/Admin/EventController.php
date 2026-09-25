@@ -69,7 +69,7 @@ class EventController extends Controller
 
     public function edit(Event $event): View
     {
-        return array_merge($this->formData(), ['event' => $event]);
+        return view('admin.events.edit', array_merge($this->formData(), ['event' => $event]));
     }
 
     public function update(EventRequest $request, Event $event): RedirectResponse

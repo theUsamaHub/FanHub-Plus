@@ -69,10 +69,10 @@ class CharacterController extends Controller
     {
         $character->load('contents');
 
-        return array_merge($this->formData(), [
+        return view('admin.characters.edit', array_merge($this->formData(), [
             'character' => $character,
             'selectedContentIds' => $character->contents->pluck('id')->all(),
-        ]);
+        ]));
     }
 
     public function update(CharacterRequest $request, CharacterProfile $character): RedirectResponse
