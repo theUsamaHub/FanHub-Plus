@@ -27,7 +27,7 @@ class HomepageService
     {
         return $this->remember('sections', fn () => [
             'characters' => CharacterProfile::with(['category:id,name,slug', 'imageMedia'])
-                ->orderByDesc('updated_at')->orderByDesc('id')->limit(6)->get(),
+                ->orderByDesc('updated_at')->orderByDesc('id')->limit(7)->get(),
             'trending' => Content::visibleToPublic()->with(['category:id,name,slug', 'media'])
                 ->orderByDesc('popularity_score')->orderByDesc('view_count')->orderByDesc('id')->limit(6)->get(),
             'featuredStories' => Content::visibleToPublic()->ofType('article')->where('is_featured', true)

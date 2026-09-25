@@ -22,6 +22,13 @@
     --spot-card-width: clamp(210px, 29svh, 290px);
 }
 .home-page .character-spotlight.home-slide .character-spotlight__stage { width: 100%; }
+@media (min-width: 1001px) {
+    .home-page .character-spotlight,
+    .home-page .character-spotlight.home-slide { --spot-card-width: calc((100% - 24px) / 7); }
+    .home-page .character-spotlight__stage { width: 100%; max-width: none; }
+    .home-page .character-spotlight__arrow[data-character-prev] { left: 8px; }
+    .home-page .character-spotlight__arrow[data-character-next] { right: 8px; }
+}
 @media (min-width: 1101px) {
     .home-page.has-section-slides .home-section.home-slide { padding-top: 26px; padding-bottom: 28px; }
     .has-section-slides .trending-grid { height: clamp(330px, calc(100svh - 290px), 530px); grid-template-rows: repeat(2,minmax(0,1fr)); }

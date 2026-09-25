@@ -66,6 +66,8 @@ export function initCharacterSpotlight(page) {
                 modules: [A11y, Autoplay, Navigation, Pagination],
                 slidesPerView: 'auto',
                 centeredSlides: true,
+                centeredSlidesBounds: !loop,
+                centerInsufficientSlides: !loop,
                 initialSlide: center,
                 spaceBetween: spacing,
                 loop,
