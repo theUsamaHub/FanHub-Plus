@@ -11,6 +11,7 @@ export default defineConfig({
                 'resources/js/public.js',
                 'resources/js/pages/home.js',
                 'resources/js/modules/events-page.js',
+                'resources/js/pages/admin-dashboard.js',
             ],
             refresh: true,
         }),
