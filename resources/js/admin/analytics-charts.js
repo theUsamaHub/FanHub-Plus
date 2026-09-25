@@ -101,13 +101,16 @@ function renderViewsChart(data, period = 'daily') {
 
     if (viewsChart) viewsChart.destroy();
 
+    // data can be an object with period keys or a single period data
+    const periodData = data[period] || data;
+
     viewsChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: data.labels || [],
+            labels: periodData.labels || [],
             datasets: [{
                 label: 'Views',
-                data: data.data || [],
+                data: periodData.data || [],
                 borderColor: COLORS.primary,
                 backgroundColor: GRADIENTS.primary,
                 borderWidth: 2.5,
@@ -132,13 +135,16 @@ function renderUsersChart(data, period = 'daily') {
 
     if (usersChart) usersChart.destroy();
 
+    // data can be an object with period keys or a single period data
+    const periodData = data[period] || data;
+
     usersChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: data.labels || [],
+            labels: periodData.labels || [],
             datasets: [{
                 label: 'New Users',
-                data: data.data || [],
+                data: periodData.data || [],
                 backgroundColor: GRADIENTS.success,
                 borderColor: COLORS.success,
                 borderWidth: 1.5,
@@ -377,8 +383,8 @@ function renderRatingsChart(data) {
 function initCharts() {
     const data = window.analyticsData || {};
 
-    renderViewsChart(data.views);
-    renderUsersChart(data.users);
+    renderViewsChart(data.views, currentPeriods.views);
+    renderUsersChart(data.users, currentPeriods.users);
     renderCategoriesChart(data.categories);
     renderStatusChart(data.status);
     renderReviewsChart(data.reviews);
@@ -389,9 +395,18 @@ function initCharts() {
 // Period switcher
 document.querySelectorAll('[data-chart]').forEach(btn => {
     btn.addEventListener('click', function() {
-        document.querySelectorAll(`[data-chart="${this.dataset.chart}"]`).forEach(b => b.classList.remove('active'));
+        const chartName = this.dataset.chart;
+        const period = this.dataset.period;
+        
+        // Only handle period switching for charts that support it
+        if (period && currentPeriods[chartName] !== undefined) {
+            currentPeriods[chartName] = period;
+        }
+        
+        document.querySelectorAll(`[data-chart="${chartName}"]`).forEach(b => b.classList.remove('active'));
         this.classList.add('active');
-        // Re-render with different period if needed
+        
+        // Re-render with selected period
         initCharts();
     });
 });
