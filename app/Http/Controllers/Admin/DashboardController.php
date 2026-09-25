@@ -12,16 +12,18 @@ use App\Models\Feedback;
 use App\Models\Media;
 use App\Models\Review;
 use App\Models\User;
+use App\Services\DashboardInsightService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function index(): View
+    public function index(DashboardInsightService $insights): View
     {
         $stats = $this->getStats();
         $chartData = $this->getChartData();
         $activityToday = $this->getActivityToday();
+        $insightCards = $insights->forDashboard();
 
         $recentSubmissions = Content::with(['submittedBy', 'category'])
             ->where('is_user_submitted', true)
@@ -126,6 +128,7 @@ class DashboardController extends Controller
             'popularContent',
             'contentByStatus',
             'chartPayload',
+            'insightCards',
         ));
     }
 

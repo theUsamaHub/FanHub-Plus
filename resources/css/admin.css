@@ -1633,6 +1633,20 @@ body.fh-admin .fh-adm-spark-line {
     stroke-linejoin: round;
 }
 
+body.fh-admin .fh-adm-insight {
+    border: 1px solid color-mix(in srgb, var(--insight, var(--brand-orange)) 28%, transparent);
+    border-radius: 14px;
+    padding: 12px 14px;
+    background: color-mix(in srgb, var(--insight, var(--brand-orange)) 8%, transparent);
+    min-height: 100%;
+}
+
+body.fh-admin .fh-adm-insight[data-tone='success'] { --insight: var(--fh-water); }
+body.fh-admin .fh-adm-insight[data-tone='info'] { --insight: var(--brand-lavender-ink, #64458C); }
+body.fh-admin .fh-adm-insight[data-tone='warning'] { --insight: var(--brand-yellow); }
+body.fh-admin .fh-adm-insight[data-tone='danger'] { --insight: var(--brand-red-orange); }
+body.fh-admin .fh-adm-insight[data-tone='muted'] { --insight: var(--fh-steel); }
+
 body.fh-admin .fh-adm-chart-box {
     position: relative;
     width: 100%;

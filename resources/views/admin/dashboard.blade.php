@@ -217,6 +217,30 @@
         </div>
     </div>
 
+    {{-- Guild Intel — rule-based insights --}}
+    @if (! empty($insightCards))
+        <div class="fh-adm-bento mb-4">
+            <div class="fh-adm-tile fh-adm-tile--span12">
+                <div class="fh-adm-tile-head">
+                    <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Guild intel') }}</h6>
+                    <span class="fh-adm-tile-meta">{{ __('Auto insights from live data') }}</span>
+                </div>
+                <div class="fh-adm-tile-pad pt-1">
+                    <div class="row g-3">
+                        @foreach ($insightCards as $card)
+                            <div class="col-md-6 col-xl-4">
+                                <div class="fh-adm-insight" data-tone="{{ $card['tone'] }}">
+                                    <div class="fw-semibold mb-1">{{ $card['title'] }}</div>
+                                    <div class="fh-adm-tile-meta">{{ $card['body'] }}</div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
     {{-- Chart.js data payload --}}
     <script type="application/json" id="fh-dashboard-data">@json($chartPayload ?? [])</script>
 
