@@ -53,6 +53,18 @@
 
         .up-stats { display: flex; justify-content: center; gap: 28px; margin: 22px 0 0; color: var(--fh-muted); font-size: 13px; }
         .up-stats strong { color: var(--fh-text); font-size: 18px; font-weight: 700; margin-right: 6px; }
+        .up-card:focus-within { outline: 2px solid var(--fh-accent); outline-offset: 4px; }
+        @media (hover: hover) and (pointer: fine) {
+            .up-card__poster::before { content: ''; position: absolute; z-index: 1; inset: 0; background: linear-gradient(110deg, transparent 25%, #ffffff1f 48%, transparent 70%); transform: translateX(-110%); transition: transform .75s ease; pointer-events: none; }
+            .up-card:hover .up-card__poster::before { transform: translateX(110%); }
+            .up-card__date-chip { transition: transform .35s ease; }
+            .up-card:hover .up-card__date-chip { transform: translateY(3px); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .up-card, .up-card__poster img, .up-card__poster::before, .up-card__date-chip, .up-card__cta .fh-icon, .up-filters a { transition: none; }
+            .up-card:hover, .up-card:hover .up-card__poster img, .up-card:hover .up-card__date-chip, .up-card:hover .up-card__cta .fh-icon, .up-filters a:hover { transform: none; }
+            .up-card__poster::before { display: none; }
+        }
 
         @media (max-width: 1000px) { .up-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
         @media (max-width: 700px) {
@@ -93,7 +105,7 @@
 
     <div class="up-grid">
         @forelse($releases as $release)
-            <article class="up-card">
+            <article class="up-card" data-card-reveal>
                 <a href="{{ $release['url'] }}" class="up-card__poster" tabindex="-1" aria-hidden="true">
                     <img src="{{ $release['image'] }}" alt="" loading="lazy" decoding="async" width="640" height="400">
                 </a>

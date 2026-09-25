@@ -26,8 +26,7 @@ class PublicSiteController extends Controller
             'featured' => ['nullable', 'boolean'],
             'type' => ['nullable', 'in:article,video,audio,image'],
         ]);
-        $query = Content::published()->with('category')
-            ->where(fn ($query) => $query->whereNull('published_at')->orWhere('published_at', '<=', now()));
+        $query = Content::visibleToPublic()->with(['category', 'media', 'tags']);
 
         if ($term = trim($filters['q'] ?? '')) {
             // Bind a literal search term (including SQL wildcard characters).
@@ -58,9 +57,12 @@ class PublicSiteController extends Controller
     public function content(Content $content): View
     {
         abort_unless(Content::visibleToPublic()->whereKey($content->id)->exists(), 404);
-        $content->load(['category', 'submittedBy', 'media']);
+        $content->load(['category', 'submittedBy', 'media', 'tags']);
+        $related = Content::visibleToPublic()->with(['category', 'media', 'tags'])
+            ->where('category_id', $content->category_id)->whereKeyNot($content->id)
+            ->orderByDesc('published_at')->orderByDesc('id')->limit(3)->get();
 
-        return view('public.content', compact('content'));
+        return view('public.content', compact('content', 'related'));
     }
 
     public function character(CharacterProfile $character): View

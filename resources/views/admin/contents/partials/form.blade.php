@@ -182,6 +182,8 @@
             <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Notes') }}</h6></div>
             <div class="card-body">
                 <ul class="mb-0" style="font-size: 0.875rem;">
+                    <li class="mb-2">{{ __('Choose the fandom category and publish to show this story on its public fandom page. Drafts stay private; a future publishing date schedules the story.') }}</li>
+                    <li class="mb-2">{{ __('The cover, excerpt, body, gallery and media appear on the public story page. Featured content receives an Editor\'s Pick badge.') }}</li>
                     <li class="mb-2">{{ __('Slug is auto-generated from the title when left blank.') }}</li>
                     <li class="mb-2">{{ __('Media is selected from the Media Library. Upload files there first.') }}</li>
                     <li class="mb-2">{{ __('Setting status to published stamps published_at when empty.') }}</li>
