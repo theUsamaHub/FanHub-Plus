@@ -10,6 +10,7 @@ use App\Models\Media;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
@@ -54,7 +55,10 @@ class EventController extends Controller
 
     public function store(EventRequest $request): RedirectResponse
     {
-        Event::create($request->validated());
+        DB::transaction(function () use ($request) {
+            $event = Event::create($request->safe()->except(['gallery_media_ids', 'gallery_present']));
+            $event->galleryMedia()->sync($request->validated('gallery_media_ids', []));
+        });
 
         return redirect()->route('admin.events.index')
             ->with('success', 'Event created successfully.');
@@ -69,12 +73,16 @@ class EventController extends Controller
 
     public function edit(Event $event): View
     {
-        return array_merge($this->formData(), ['event' => $event]);
+        $event->load('galleryMedia');
+        return view('admin.events.edit', array_merge($this->formData(), ['event' => $event]));
     }
 
     public function update(EventRequest $request, Event $event): RedirectResponse
     {
-        $event->update($request->validated());
+        DB::transaction(function () use ($request, $event) {
+            $event->update($request->safe()->except(['gallery_media_ids', 'gallery_present']));
+            if ($request->boolean('gallery_present')) $event->galleryMedia()->sync($request->validated('gallery_media_ids', []));
+        });
 
         return redirect()->route('admin.events.index')
             ->with('success', 'Event updated successfully.');
