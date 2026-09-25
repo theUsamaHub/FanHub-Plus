@@ -84,13 +84,26 @@
                     <form action="{{ route('admin.characters.contents.attach', $character) }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <select name="content_ids[]" class="form-select" multiple size="8" required>
-                                @foreach ($availableContents as $item)
-                                    @unless ($character->contents->pluck('id')->contains($item->id))
-                                        <option value="{{ $item->id }}">{{ $item->title }} ({{ $item->type }})</option>
-                                    @endunless
-                                @endforeach
-                            </select>
+                            <div class="fh-adm-pick-list">
+                                @php
+                                    $attachable = collect($availableContents)->filter(fn ($item) => ! $character->contents->pluck('id')->contains($item->id));
+                                @endphp
+                                @forelse ($attachable as $item)
+                                    <label class="fh-adm-pick-item">
+                                        <input type="checkbox" name="content_ids[]" value="{{ $item->id }}" required>
+                                        <div class="fh-adm-pick-item-body">
+                                            <div class="fh-adm-pick-icon"><i class="bi bi-link-45deg"></i></div>
+                                            <div class="min-w-0">
+                                                <div class="fh-adm-pick-name">{{ \Illuminate\Support\Str::limit($item->title, 50) }}</div>
+                                                <div class="fh-adm-pick-meta">{{ $item->type }}</div>
+                                            </div>
+                                            <span class="fh-adm-pick-state">{{ __('Link') }}</span>
+                                        </div>
+                                    </label>
+                                @empty
+                                    <div class="fh-adm-tile-meta">{{ __('Everything is already linked.') }}</div>
+                                @endforelse
+                            </div>
                             <x-input-error :messages="$errors->get('content_ids')" class="mt-1" />
                         </div>
                         <button type="submit" class="btn btn-primary btn-sm w-100">{{ __('Attach selected') }}</button>

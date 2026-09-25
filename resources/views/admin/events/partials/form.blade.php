@@ -125,23 +125,58 @@
                             <x-input-error :messages="$errors->get('ticket_url')" class="mt-1" />
                         </div>
                         <div class="col-md-4 mb-3">
-                            <x-input-label for="cover_media_id" :value="__('Cover media')" />
-                            <select name="cover_media_id" id="cover_media_id" class="form-select">
-                                <option value="">{{ __('None') }}</option>
-                                @foreach ($images as $image)
-                                    <option value="{{ $image->id }}" @selected((int) old('cover_media_id', $event?->cover_media_id) === $image->id)>{{ $image->original_filename }}</option>
-                                @endforeach
-                            </select>
+                            <x-input-label :value="__('Cover media')" />
+                            <div class="fh-adm-pick-list fh-adm-pick-list--single">
+                                <label class="fh-adm-pick-item">
+                                    <input type="radio" name="cover_media_id" value="" @checked((int) old('cover_media_id', $event?->cover_media_id) === 0)>
+                                    <div class="fh-adm-pick-item-body">
+                                        <div class="fh-adm-pick-icon"><i class="bi bi-x-lg"></i></div>
+                                        <div class="min-w-0">
+                                            <div class="fh-adm-pick-name">{{ __('None') }}</div>
+                                            <div class="fh-adm-pick-meta">{{ __('No cover') }}</div>
+                                        </div>
+                                        <span class="fh-adm-pick-state">{{ __('Select') }}</span>
+                                    </div>
+                                </label>
+                                @forelse ($images as $image)
+                                    <label class="fh-adm-pick-item">
+                                        <input type="radio" name="cover_media_id" value="{{ $image->id }}" @checked((int) old('cover_media_id', $event?->cover_media_id) === $image->id)>
+                                        <div class="fh-adm-pick-item-body">
+                                            <div class="fh-adm-pick-icon"><i class="bi bi-image"></i></div>
+                                            <div class="min-w-0">
+                                                <div class="fh-adm-pick-name">{{ $image->original_filename }}</div>
+                                                <div class="fh-adm-pick-meta">{{ $image->mime_type ?? 'image' }}</div>
+                                            </div>
+                                            <span class="fh-adm-pick-state">{{ __('Select') }}</span>
+                                        </div>
+                                    </label>
+                                @empty
+                                    <div class="fh-adm-tile-meta">{{ __('No images in the media library yet.') }}</div>
+                                @endforelse
+                            </div>
                             <x-input-error :messages="$errors->get('cover_media_id')" class="mt-1" />
                         </div>
                     </div>
                     <div class="mb-3">
                         <input type="hidden" name="gallery_present" value="1">
-                        <x-input-label for="gallery_media_ids" :value="__('Gallery images (up to 12)')" />
-                        <select name="gallery_media_ids[]" id="gallery_media_ids" class="form-select" multiple size="5">
-                            @foreach($images as $image)<option value="{{ $image->id }}" @selected(in_array($image->id, old('gallery_media_ids', $event?->galleryMedia->modelKeys() ?? [])))>{{ $image->original_filename }}</option>@endforeach
-                        </select>
-                        <p class="text-muted small">Use Ctrl or Command to select multiple images.</p>
+                        <x-input-label :value="__('Gallery images (up to 12)')" />
+                        <div class="fh-adm-pick-list">
+                            @forelse ($images as $image)
+                                <label class="fh-adm-pick-item">
+                                    <input type="checkbox" name="gallery_media_ids[]" value="{{ $image->id }}" @checked(in_array($image->id, old('gallery_media_ids', $event?->galleryMedia->modelKeys() ?? [])))>
+                                    <div class="fh-adm-pick-item-body">
+                                        <div class="fh-adm-pick-icon"><i class="bi bi-images"></i></div>
+                                        <div class="min-w-0">
+                                            <div class="fh-adm-pick-name">{{ $image->original_filename }}</div>
+                                            <div class="fh-adm-pick-meta">{{ $image->mime_type ?? 'image' }}</div>
+                                        </div>
+                                        <span class="fh-adm-pick-state">{{ __('Add') }}</span>
+                                    </div>
+                                </label>
+                            @empty
+                                <div class="fh-adm-tile-meta">{{ __('No images in the media library yet.') }}</div>
+                            @endforelse
+                        </div>
                         <x-input-error :messages="$errors->get('gallery_media_ids')" class="mt-1" />
                         <x-input-error :messages="$errors->first('gallery_media_ids.*')" class="mt-1" />
                     </div>
