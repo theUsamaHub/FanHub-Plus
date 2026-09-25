@@ -1654,6 +1654,30 @@ body.fh-admin .fh-adm-spark-line {
     stroke-linejoin: round;
 }
 
+body.fh-admin .fh-adm-intel-source {
+    display: flex;
+    align-items: center;
+    font-family: 'Saira', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+    padding: 6px 12px;
+    border-radius: 999px;
+    width: fit-content;
+    max-width: 100%;
+}
+
+body.fh-admin .fh-adm-intel-source[data-source='gemini'] {
+    color: var(--brand-orange);
+    background: color-mix(in srgb, var(--brand-orange) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--brand-orange) 30%, transparent);
+}
+
+body.fh-admin .fh-adm-intel-source[data-source='rules'] {
+    color: var(--fh-adm-muted);
+    background: color-mix(in srgb, var(--fh-adm-line) 35%, transparent);
+    border: 1px solid color-mix(in srgb, var(--fh-adm-line) 70%, transparent);
+}
+
 body.fh-admin .fh-adm-insight {
     border: 1px solid color-mix(in srgb, var(--insight, var(--brand-orange)) 28%, transparent);
     border-radius: 14px;
