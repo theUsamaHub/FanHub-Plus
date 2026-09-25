@@ -21,6 +21,9 @@
                 <a class="fh-nav-link {{ request()->is('discover/'.$slug) ? 'is-active' : '' }}" href="{{ route('public.section', $slug) }}">{{ $label }}</a>
             @endforeach
             <a class="fh-nav-link {{ request()->routeIs('events.*') ? 'is-active' : '' }}" href="{{ route('events.index') }}" @if(request()->routeIs('events.*')) aria-current="page" @endif>Events</a>
+            @auth
+                <a class="fh-nav-link {{ request()->routeIs('chat.*') ? 'is-active' : '' }}" href="{{ route('chat.index') }}" @if(request()->routeIs('chat.*')) aria-current="page" @endif>Chat</a>
+            @endauth
         </div>
         <div class="fh-nav-actions">
             <button class="fh-icon-button fh-search-toggle" type="button" aria-label="Search Fan Hub Plus" data-search-open><x-site-icon name="search" /><span>Find your fandom...</span></button>
