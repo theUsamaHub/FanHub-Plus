@@ -166,19 +166,6 @@ body.fh-admin {
     background: rgba(244, 242, 252, 0.8);
 }
 
-[data-theme='light'] body.fh-admin .form-control,
-[data-theme='light'] body.fh-admin .form-select {
-    background: #ffffff;
-    color: var(--fh-adm-text);
-}
-
-[data-theme='light'] body.fh-admin .form-control:focus,
-[data-theme='light'] body.fh-admin .form-select:focus {
-    background: #ffffff;
-    border-color: color-mix(in srgb, var(--fh-cyan) 55%, transparent);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--fh-cyan) 15%, transparent);
-}
-
 [data-theme='light'] body.fh-admin .dropdown-menu {
     background: #ffffff;
     border-color: var(--fh-adm-line);
@@ -880,79 +867,274 @@ body.fh-admin .btn-success {
     color: #041412;
 }
 
-/* ── Forms ── */
+/* ── Forms (match bento dashboard) ── */
+body.fh-admin .form-label {
+    color: var(--fh-adm-label);
+    font-family: 'Rajdhani', 'Saira', sans-serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+}
+
 body.fh-admin .form-control,
 body.fh-admin .form-select {
-    background: rgba(8, 8, 18, 0.65);
-    border: 1px solid var(--fh-adm-line);
-    border-radius: 10px;
+    background: color-mix(in srgb, var(--fh-adm-surface) 92%, transparent);
+    border: 1px solid color-mix(in srgb, var(--fh-adm-line) 80%, transparent);
+    border-radius: 12px;
     color: var(--fh-adm-text);
-    transition: border-color 0.25s ease, box-shadow 0.3s ease, transform 0.25s var(--fh-ease-out);
+    font-family: 'Saira', sans-serif;
+    font-size: 0.92rem;
+    padding: 0.62rem 0.95rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+body.fh-admin textarea.form-control {
+    min-height: 96px;
+    resize: vertical;
 }
 
 body.fh-admin .form-control:focus,
 body.fh-admin .form-select:focus {
-    background: rgba(8, 8, 18, 0.85);
+    background: var(--fh-adm-surface);
     color: var(--fh-adm-text);
-    border-color: color-mix(in srgb, var(--fh-cyan) 55%, transparent);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--fh-cyan) 14%, transparent), 0 0 18px color-mix(in srgb, var(--fh-cyan) 12%, transparent);
+    border-color: color-mix(in srgb, var(--fh-accent) 55%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--fh-accent) 14%, transparent);
 }
 
 body.fh-admin .form-control::placeholder {
     color: var(--fh-adm-dim);
 }
 
-body.fh-admin .form-label {
-    color: var(--fh-adm-muted);
-    font-weight: 500;
+body.fh-admin .form-control:disabled,
+body.fh-admin .form-control[readonly],
+body.fh-admin .form-select:disabled {
+    background: color-mix(in srgb, var(--fh-adm-line) 25%, var(--fh-adm-surface));
+    color: var(--fh-adm-dim);
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+body.fh-admin .form-control.is-invalid,
+body.fh-admin .form-select.is-invalid {
+    border-color: color-mix(in srgb, var(--fh-crimson) 55%, transparent);
+    background: color-mix(in srgb, var(--fh-crimson) 6%, var(--fh-adm-surface));
+}
+
+body.fh-admin .form-control.is-invalid:focus,
+body.fh-admin .form-select.is-invalid:focus {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--fh-crimson) 16%, transparent);
+}
+
+/* custom select arrow */
+body.fh-admin .form-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image:
+        linear-gradient(45deg, transparent 50%, var(--fh-accent) 50%),
+        linear-gradient(135deg, var(--fh-accent) 50%, transparent 50%);
+    background-position:
+        calc(100% - 18px) calc(50% - 2px),
+        calc(100% - 12px) calc(50% - 2px);
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+    padding-right: 2.4rem;
+}
+
+body.fh-admin .form-select option {
+    background: var(--fh-adm-panel, #241C30);
+    color: var(--fh-adm-text, #F4F2FF);
+}
+
+[data-theme='light'] body.fh-admin .form-select option {
+    background: var(--fh-adm-surface);
+    color: var(--fh-adm-text);
+}
+
+/* checks & switches */
+body.fh-admin .form-check-input {
+    background-color: color-mix(in srgb, var(--fh-adm-line) 35%, transparent);
+    border-color: var(--fh-adm-line);
+    border-radius: 6px;
+    transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+body.fh-admin .form-check-input:focus {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--fh-accent) 16%, transparent);
 }
 
 body.fh-admin .form-check-input:checked {
     background-color: var(--fh-accent);
     border-color: var(--fh-accent);
-    box-shadow: 0 0 10px color-mix(in srgb, var(--fh-accent) 45%, transparent);
 }
 
-body.fh-admin .input-group-text,
-body.fh-admin .form-control[type='file'] {
-    background: rgba(8, 8, 18, 0.65);
-    border-color: var(--fh-adm-line);
+body.fh-admin .form-check-input[type='checkbox']:indeterminate {
+    background-color: var(--fh-accent);
+    border-color: var(--fh-accent);
+}
+
+body.fh-admin .form-check-label {
     color: var(--fh-adm-muted);
+    font-size: 0.88rem;
+}
+
+body.fh-admin .form-check-input[type='radio'] {
+    border-radius: 50%;
+}
+
+body.fh-admin .form-switch .form-check-input {
+    background-image: none;
+    width: 2.4em;
+    height: 1.25em;
+    border-radius: 999px;
+    background-color: color-mix(in srgb, var(--fh-adm-line) 55%, transparent);
+}
+
+body.fh-admin .form-switch .form-check-input:checked {
+    background-color: var(--fh-accent);
+}
+
+body.fh-admin .form-switch .form-check-input:focus {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--fh-accent) 16%, transparent);
+}
+
+/* input groups */
+body.fh-admin .input-group-text {
+    background: color-mix(in srgb, var(--fh-adm-line) 30%, var(--fh-adm-surface));
+    border: 1px solid color-mix(in srgb, var(--fh-adm-line) 80%, transparent);
+    color: var(--fh-adm-muted);
+    border-radius: 12px;
+    font-family: 'Saira', sans-serif;
+    font-size: 0.85rem;
+}
+
+body.fh-admin .input-group > .form-control:not(:first-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+body.fh-admin .input-group > .form-control:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+body.fh-admin .input-group > .input-group-text:not(:first-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+body.fh-admin .input-group > .input-group-text:not(:last-child) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+/* file input */
+body.fh-admin .form-control[type='file'] {
+    background: color-mix(in srgb, var(--fh-adm-surface) 92%, transparent);
+    border-color: color-mix(in srgb, var(--fh-adm-line) 80%, transparent);
+    color: var(--fh-adm-muted);
+    padding: 0.45rem;
 }
 
 body.fh-admin .form-control[type='file']::file-selector-button {
-    margin: -1px;
-    padding: 0.45rem 0.9rem;
+    margin: -0.45rem 0.75rem -0.45rem -0.45rem;
+    padding: 0.55rem 1rem;
     border: 0;
-    border-right: 1px solid var(--fh-adm-line);
-    border-radius: 10px 0 0 10px;
-    background: color-mix(in srgb, var(--fh-accent) 18%, var(--fh-adm-panel));
+    border-right: 1px solid color-mix(in srgb, var(--fh-adm-line) 80%, transparent);
+    border-radius: 12px 0 0 12px;
+    background: color-mix(in srgb, var(--fh-accent) 16%, var(--fh-adm-panel));
     color: var(--fh-adm-text);
     font-family: 'Rajdhani', 'Saira', sans-serif;
     font-weight: 600;
     letter-spacing: 0.02em;
     cursor: pointer;
+    transition: background 0.15s ease;
 }
 
 body.fh-admin .form-control[type='file']::file-selector-button:hover {
     background: color-mix(in srgb, var(--fh-accent) 28%, var(--fh-adm-panel));
 }
 
-[data-theme='light'] body.fh-admin .input-group-text,
-[data-theme='light'] body.fh-admin .form-control[type='file'] {
+body.fh-admin .input-error,
+body.fh-admin .form-control + .input-error,
+.x-input-error {
+    color: color-mix(in srgb, var(--fh-crimson) 80%, var(--fh-adm-text));
+    font-size: 0.78rem;
+}
+
+body.fh-admin .form-text {
+    color: var(--fh-adm-dim);
+    font-size: 0.78rem;
+}
+
+/* form card sections follow tile chrome */
+body.fh-admin .fh-adm-form-card,
+body.fh-admin .fh-adm-detail-card {
+    border-radius: 18px;
+}
+
+body.fh-admin .fh-adm-form-card .card-header,
+body.fh-admin .fh-adm-detail-card .card-header {
+    background: transparent;
+    border-bottom: 1px solid color-mix(in srgb, var(--fh-adm-line) 55%, transparent);
+    padding: 1rem 1.25rem 0.75rem;
+}
+
+body.fh-admin .fh-adm-form-card .card-body {
+    padding: 1.15rem 1.25rem 1.25rem;
+}
+
+/* light theme */
+[data-theme='light'] body.fh-admin .form-control,
+[data-theme='light'] body.fh-admin .form-select {
     background: var(--fh-adm-surface);
+    color: var(--fh-adm-text);
+    border-color: var(--fh-adm-line);
+}
+
+[data-theme='light'] body.fh-admin .form-control:focus,
+[data-theme='light'] body.fh-admin .form-select:focus {
+    background: var(--fh-adm-surface);
+    border-color: color-mix(in srgb, var(--fh-accent) 55%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--fh-accent) 14%, transparent);
+}
+
+[data-theme='light'] body.fh-admin .form-control:disabled,
+[data-theme='light'] body.fh-admin .form-control[readonly] {
+    background: color-mix(in srgb, var(--fh-adm-line) 18%, var(--fh-adm-surface));
+    color: var(--fh-adm-dim);
+}
+
+[data-theme='light'] body.fh-admin .input-group-text {
+    background: color-mix(in srgb, var(--fh-adm-line) 18%, var(--fh-adm-surface));
     border-color: var(--fh-adm-line);
     color: var(--fh-adm-muted);
 }
 
+[data-theme='light'] body.fh-admin .form-check-input {
+    background-color: var(--fh-adm-surface);
+    border-color: var(--fh-adm-line);
+}
+
+[data-theme='light'] body.fh-admin .form-check-input:checked {
+    background-color: var(--fh-accent);
+    border-color: var(--fh-accent);
+}
+
+[data-theme='light'] body.fh-admin .form-control[type='file'] {
+    background: var(--fh-adm-surface);
+    color: var(--fh-adm-muted);
+}
+
 [data-theme='light'] body.fh-admin .form-control[type='file']::file-selector-button {
-    border-right-color: var(--fh-adm-line);
     background: color-mix(in srgb, var(--fh-accent) 12%, var(--fh-adm-surface));
+    border-right-color: var(--fh-adm-line);
     color: var(--fh-adm-text);
 }
 
 [data-theme='light'] body.fh-admin .form-control[type='file']::file-selector-button:hover {
-    background: color-mix(in srgb, var(--fh-accent) 20%, var(--fh-adm-surface));
+    background: color-mix(in srgb, var(--fh-accent) 22%, var(--fh-adm-surface));
 }
 
 /* ── Tables ── */
