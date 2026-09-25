@@ -219,9 +219,6 @@
 
     {{-- Chart.js data payload --}}
     <script type="application/json" id="fh-dashboard-data">@json($chartPayload ?? [])</script>
-    @push('scripts')
-        @vite('resources/js/pages/admin-dashboard.js')
-    @endpush
 
     {{-- Charts bento --}}
     <div class="fh-adm-bento mb-4">
@@ -460,3 +457,7 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    @vite('resources/js/pages/admin-dashboard.js')
+@endpush
