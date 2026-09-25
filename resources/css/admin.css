@@ -1137,6 +1137,183 @@ body.fh-admin .fh-adm-form-card .card-body {
     background: color-mix(in srgb, var(--fh-accent) 22%, var(--fh-adm-surface));
 }
 
+/* ── Pick controls (tags, gallery, attachments) ── */
+body.fh-admin .fh-adm-tag-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+body.fh-admin .fh-adm-tag-chip {
+    position: relative;
+    display: inline-flex;
+}
+
+body.fh-admin .fh-adm-tag-chip input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+body.fh-admin .fh-adm-tag-chip span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--fh-adm-line) 85%, transparent);
+    background: color-mix(in srgb, var(--fh-adm-surface) 80%, transparent);
+    color: var(--fh-adm-muted);
+    font-family: 'Rajdhani', 'Saira', sans-serif;
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+body.fh-admin .fh-adm-tag-chip input:focus-visible + span {
+    outline: 2px solid var(--fh-accent);
+    outline-offset: 2px;
+}
+
+body.fh-admin .fh-adm-tag-chip input:checked + span {
+    background: color-mix(in srgb, var(--fh-accent) 16%, var(--fh-adm-surface));
+    border-color: color-mix(in srgb, var(--fh-accent) 55%, transparent);
+    color: var(--fh-adm-text);
+}
+
+body.fh-admin .fh-adm-tag-chip input:checked + span::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--fh-accent);
+    flex-shrink: 0;
+}
+
+body.fh-admin .fh-adm-pick-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 260px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid color-mix(in srgb, var(--fh-adm-line) 80%, transparent);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--fh-adm-surface) 88%, transparent);
+}
+
+body.fh-admin .fh-adm-pick-item {
+    position: relative;
+    display: block;
+}
+
+body.fh-admin .fh-adm-pick-item input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+body.fh-admin .fh-adm-pick-item-body {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    background: color-mix(in srgb, var(--fh-adm-panel) 45%, transparent);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+body.fh-admin .fh-adm-pick-item input:focus-visible + .fh-adm-pick-item-body {
+    outline: 2px solid var(--fh-accent);
+    outline-offset: 2px;
+}
+
+body.fh-admin .fh-adm-pick-item input:checked + .fh-adm-pick-item-body {
+    border-color: color-mix(in srgb, var(--fh-accent) 55%, transparent);
+    background: color-mix(in srgb, var(--fh-accent) 12%, var(--fh-adm-panel));
+}
+
+body.fh-admin .fh-adm-pick-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    background: color-mix(in srgb, var(--fh-accent) 12%, transparent);
+    color: var(--fh-accent);
+    font-size: 0.95rem;
+}
+
+body.fh-admin .fh-adm-pick-name {
+    font-family: 'Saira', sans-serif;
+    font-size: 0.86rem;
+    color: var(--fh-adm-text);
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+body.fh-admin .fh-adm-pick-meta {
+    font-size: 0.72rem;
+    color: var(--fh-adm-dim);
+}
+
+body.fh-admin .fh-adm-pick-state {
+    margin-left: auto;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--fh-adm-dim);
+    flex-shrink: 0;
+}
+
+body.fh-admin .fh-adm-pick-item input:checked + .fh-adm-pick-item-body .fh-adm-pick-state {
+    color: var(--fh-accent);
+}
+
+body.fh-admin .fh-adm-pick-item input:checked + .fh-adm-pick-item-body .fh-adm-pick-state::before {
+    content: '✓ ';
+}
+
+/* single-select radio cards (cover / trailer / audio) */
+body.fh-admin .fh-adm-pick-list--single .fh-adm-pick-item input:checked + .fh-adm-pick-item-body {
+    border-color: color-mix(in srgb, var(--fh-accent) 65%, transparent);
+    background: color-mix(in srgb, var(--fh-accent) 14%, var(--fh-adm-panel));
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-pick-list {
+    background: var(--fh-adm-surface);
+    border-color: var(--fh-adm-line);
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-pick-item-body {
+    background: color-mix(in srgb, var(--fh-adm-line) 10%, var(--fh-adm-surface));
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-pick-item input:checked + .fh-adm-pick-item-body {
+    background: color-mix(in srgb, var(--fh-accent) 10%, var(--fh-adm-surface));
+    border-color: color-mix(in srgb, var(--fh-accent) 55%, transparent);
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-tag-chip span {
+    background: var(--fh-adm-surface);
+    border-color: var(--fh-adm-line);
+    color: var(--fh-adm-muted);
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-tag-chip input:checked + span {
+    background: color-mix(in srgb, var(--fh-accent) 12%, var(--fh-adm-surface));
+    color: var(--fh-adm-text);
+}
+
 /* ── Tables ── */
 body.fh-admin .table {
     --bs-table-bg: transparent;
