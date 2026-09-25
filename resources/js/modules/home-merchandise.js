@@ -20,7 +20,7 @@ export function initHomeMerchandise(page) {
         if (!element) return;
         swiper = new Swiper(element, {
             modules: [Navigation, A11y], slidesPerView: 1.2, spaceBetween: 18,
-            speed: reduce.matches ? 0 : 280, grabCursor: true, watchOverflow: true,
+            speed: reduce.matches ? 0 : 350, grabCursor: true, watchOverflow: true,
             breakpoints: { 701: { slidesPerView: 2.5, spaceBetween: 20 }, 1024: { slidesPerView: 4.5, spaceBetween: 20 }, 1440: { slidesPerView: 5, spaceBetween: 22 } },
             navigation: { prevEl: section.querySelector('.merch-arrow--prev'), nextEl: section.querySelector('.merch-arrow--next') },
             a11y: { containerMessage: 'Merchandise. Swipe or use the arrow buttons to browse.', prevSlideMessage: 'Previous merchandise', nextSlideMessage: 'Next merchandise' },
@@ -107,7 +107,7 @@ export function initHomeMerchandise(page) {
     });
     reduce.addEventListener('change', () => {
         cardReveal?.revert();
-        if (swiper) swiper.params.speed = reduce.matches ? 0 : 280;
+        if (swiper) swiper.params.speed = reduce.matches ? 0 : 350;
     });
 }
 
