@@ -920,6 +920,41 @@ body.fh-admin .form-control[type='file'] {
     color: var(--fh-adm-muted);
 }
 
+body.fh-admin .form-control[type='file']::file-selector-button {
+    margin: -1px;
+    padding: 0.45rem 0.9rem;
+    border: 0;
+    border-right: 1px solid var(--fh-adm-line);
+    border-radius: 10px 0 0 10px;
+    background: color-mix(in srgb, var(--fh-accent) 18%, var(--fh-adm-panel));
+    color: var(--fh-adm-text);
+    font-family: 'Rajdhani', 'Saira', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+}
+
+body.fh-admin .form-control[type='file']::file-selector-button:hover {
+    background: color-mix(in srgb, var(--fh-accent) 28%, var(--fh-adm-panel));
+}
+
+[data-theme='light'] body.fh-admin .input-group-text,
+[data-theme='light'] body.fh-admin .form-control[type='file'] {
+    background: var(--fh-adm-surface);
+    border-color: var(--fh-adm-line);
+    color: var(--fh-adm-muted);
+}
+
+[data-theme='light'] body.fh-admin .form-control[type='file']::file-selector-button {
+    border-right-color: var(--fh-adm-line);
+    background: color-mix(in srgb, var(--fh-accent) 12%, var(--fh-adm-surface));
+    color: var(--fh-adm-text);
+}
+
+[data-theme='light'] body.fh-admin .form-control[type='file']::file-selector-button:hover {
+    background: color-mix(in srgb, var(--fh-accent) 20%, var(--fh-adm-surface));
+}
+
 /* ── Tables ── */
 body.fh-admin .table {
     --bs-table-bg: transparent;
