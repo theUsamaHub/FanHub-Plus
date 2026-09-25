@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Media;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use RuntimeException;
 
 class FileUploadService
 {
@@ -61,6 +62,13 @@ class FileUploadService
     ): Media {
         $disk = $disk ?? config('filesystems.media_disk', 'public');
         $path = $file->store($directory, $disk);
+
+        // Disk is configured with throw=false, so a failed write returns false
+        // and would otherwise be saved as path "0".
+        if (! is_string($path) || $path === '' || $path === '0') {
+            throw new RuntimeException("Failed to store uploaded file [{$file->getClientOriginalName()}] on disk [{$disk}].");
+        }
+
         $mimeType = $file->getMimeType();
 
         $data = [

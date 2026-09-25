@@ -21,7 +21,7 @@
         <div class="dropdown">
             <button class="fh-adm-user-chip" data-bs-toggle="dropdown" aria-expanded="false" type="button">
                 <span class="fh-adm-avatar" style="width:32px;height:32px;font-size:0.8rem;">
-                    @if (Auth::user()->profile?->avatarMedia)
+                    @if (Auth::user()->profile?->avatarMedia?->url)
                         <img src="{{ Auth::user()->profile->avatarMedia->url }}" alt="">
                     @else
                         {{ substr(Auth::user()->name, 0, 1) }}

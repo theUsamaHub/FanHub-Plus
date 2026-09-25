@@ -100,7 +100,9 @@
                     <div class="card h-100 border">
                         <div class="card-body p-2 text-center">
                             @if ($item->isImage())
+                                @if ($item->url)
                                 <img src="{{ $item->url }}" alt="{{ $item->alt_text ?: $item->original_filename }}" class="img-fluid rounded mb-2" style="max-height: 80px; object-fit: cover;">
+                                @endif
                             @elseif ($item->isVideo())
                                 <i class="bi bi-film text-primary fs-1"></i>
                             @elseif ($item->isAudio())
@@ -117,7 +119,9 @@
                             @endif
                         </div>
                         <div class="card-footer bg-transparent p-1 text-center">
+                            @if ($item->url)
                             <a href="{{ $item->url }}" class="btn btn-outline-info btn-sm" style="font-size: 0.7rem;" target="_blank" rel="noopener"><i class="bi bi-eye"></i></a>
+                            @endif
                             <a href="{{ route('admin.media.edit', $item) }}" class="btn btn-outline-primary btn-sm" style="font-size: 0.7rem;" title="{{ __('Edit') }}"><i class="bi bi-pencil"></i></a>
                             <form action="{{ route('admin.media.destroy', $item) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Delete this file?') }}')">
                                 @csrf

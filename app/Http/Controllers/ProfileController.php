@@ -46,14 +46,22 @@ class ProfileController extends Controller
         }
 
         if ($request->hasFile('avatar')) {
-            $media = $this->fileService->upload(
-                $request->file('avatar'),
-                'uploads/avatars',
-                null,
-                $user->id,
-                'Avatar for '.$user->name
-            );
-            $avatarMediaId = $media->id;
+            try {
+                $media = $this->fileService->upload(
+                    $request->file('avatar'),
+                    'uploads/avatars',
+                    null,
+                    $user->id,
+                    'Avatar for '.$user->name
+                );
+                $avatarMediaId = $media->id;
+            } catch (\RuntimeException $e) {
+                report($e);
+
+                return back()
+                    ->withInput()
+                    ->withErrors(['avatar' => __('Avatar upload failed. Please try again.')]);
+            }
         }
 
         if ($user->hasRole('admin')) {

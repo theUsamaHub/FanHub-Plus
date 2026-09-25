@@ -44,8 +44,16 @@ class CategoryController extends Controller
         $category = $this->categoryService->create($data);
 
         if ($request->hasFile('icon')) {
-            $media = $this->fileService->upload($request->file('icon'), 'uploads/categories');
-            $category->update(['icon_media_id' => $media->id]);
+            try {
+                $media = $this->fileService->upload($request->file('icon'), 'uploads/categories');
+                $category->update(['icon_media_id' => $media->id]);
+            } catch (\RuntimeException $e) {
+                report($e);
+
+                return back()
+                    ->withInput()
+                    ->withErrors(['icon' => __('Icon upload failed. Please try again.')]);
+            }
         }
 
         return redirect()->route('admin.categories.index')
@@ -82,8 +90,16 @@ class CategoryController extends Controller
         $this->categoryService->update($category, $data);
 
         if ($request->hasFile('icon')) {
-            $media = $this->fileService->upload($request->file('icon'), 'uploads/categories');
-            $category->update(['icon_media_id' => $media->id]);
+            try {
+                $media = $this->fileService->upload($request->file('icon'), 'uploads/categories');
+                $category->update(['icon_media_id' => $media->id]);
+            } catch (\RuntimeException $e) {
+                report($e);
+
+                return back()
+                    ->withInput()
+                    ->withErrors(['icon' => __('Icon upload failed. Please try again.')]);
+            }
 
             if ($oldMediaId && $oldMediaId !== $media->id) {
                 $oldMedia = Media::find($oldMediaId);

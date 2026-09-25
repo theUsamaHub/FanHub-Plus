@@ -46,7 +46,16 @@ class Media extends Model
 
     public function getUrlAttribute(): string
     {
+        if (! $this->hasValidPath()) {
+            return '';
+        }
+
         return Storage::disk($this->disk)->url($this->path);
+    }
+
+    public function hasValidPath(): bool
+    {
+        return is_string($this->path) && $this->path !== '' && $this->path !== '0';
     }
 
     public function getSizeFormattedAttribute(): string

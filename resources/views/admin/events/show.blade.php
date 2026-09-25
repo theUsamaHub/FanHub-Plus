@@ -21,7 +21,9 @@
                                 <td class="fw-semibold" style="width:180px;">{{ __('Cover') }}</td>
                                 <td>
                                     @if ($event->coverMedia)
+                                        @if ($event->coverMedia?->url)
                                         <img src="{{ $event->coverMedia->url }}" alt="{{ $event->title }}" class="img-thumbnail" style="max-height: 140px;">
+                                        @endif
                                     @else
                                         -
                                     @endif

@@ -15,11 +15,11 @@
             <div class="card fh-adm-form-card">
                 <div class="card-body p-4">
                     <div class="mb-4 text-center">
-                        @if ($media->isImage())
+                        @if ($media->isImage() && $media->url)
                             <img src="{{ $media->url }}" alt="{{ $media->alt_text ?: $media->original_filename }}" class="img-thumbnail" style="max-height: 240px;">
-                        @elseif ($media->isVideo())
+                        @elseif ($media->isVideo() && $media->url)
                             <video src="{{ $media->url }}" controls class="img-thumbnail" style="max-height: 240px;"></video>
-                        @elseif ($media->isAudio())
+                        @elseif ($media->isAudio() && $media->url)
                             <audio src="{{ $media->url }}" controls class="w-100"></audio>
                         @else
                             <i class="bi bi-file-earmark fs-1 text-secondary"></i>

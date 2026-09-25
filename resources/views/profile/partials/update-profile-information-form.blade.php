@@ -47,7 +47,7 @@
             <div class="mb-4">
                 <x-input-label for="avatar" :value="__('Avatar image')" />
                 <div class="d-flex align-items-center gap-3 mb-2">
-                    @if ($user->profile?->avatarMedia)
+                    @if ($user->profile?->avatarMedia?->url)
                         <img src="{{ $user->profile->avatarMedia->url }}" alt="" class="fh-adm-avatar" style="width:56px;height:56px;object-fit:cover;">
                     @else
                         <div class="fh-adm-avatar" style="width:56px;height:56px;font-size:1.2rem;">{{ substr($user->name, 0, 1) }}</div>
