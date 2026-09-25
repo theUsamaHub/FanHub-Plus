@@ -127,7 +127,7 @@
 
         <div class="lc-messages" id="lc-messages" x-ref="msgContainer">
             @if($messages->isEmpty())
-                <div class="lc-empty">
+                <div class="lc-empty" x-show="realtimeMessages.length === 0">
                     <div class="lc-empty__hash">#</div>
                     <h3>Welcome to #{{ $activeChannel?->name ?? 'general' }}</h3>
                     <p>This is the start of the conversation. Say something!</p>
@@ -147,11 +147,11 @@
             @endforeach
             <template x-for="m in realtimeMessages" :key="m.id">
                 <div class="lc-msg">
-                    <div class="lc-msg__avatar" style="background:#b64ff2" x-text="m.user.name.substring(0,2).toUpperCase()"></div>
+                    <div class="lc-msg__avatar" :style="'background:' + getUserColor(m.user.name)" x-text="getInitials(m.user.name)"></div>
                     <div class="lc-msg__body">
                         <div class="lc-msg__header">
                             <span class="lc-msg__name" x-text="m.user.name"></span>
-                            <span class="lc-msg__time" x-text="new Date(m.created_at).toLocaleTimeString([], {hour:'numeric', minute:'2-digit'})"></span>
+                            <span class="lc-msg__time" x-text="formatTime(m.created_at)"></span>
                         </div>
                         <div class="lc-msg__text" x-text="m.body"></div>
                     </div>
@@ -192,7 +192,7 @@ function chatApp() {
         realtimeMessages: [],
         typingUsers: [],
         mobileSidebar: false,
-        typingTimer: null,
+        messageCounter: 0,
 
         get typingText() {
             if (this.typingUsers.length === 1) return this.typingUsers[0] + ' is typing...';
@@ -203,51 +203,67 @@ function chatApp() {
         init() {
             this.scrollDown();
             this.$refs.chatInput?.focus();
+            this.setupBroadcast();
+        },
 
-            // Reverb / Pusher connection
-            if (typeof Pusher !== 'undefined') {
-                this.pusher = new Pusher('{{ env("REVERB_APP_KEY", "fanhubplus-key") }}', {
-                    wsHost: '127.0.0.1',
-                    wsPort: 8080,
+        setupBroadcast() {
+            if (typeof Pusher === 'undefined') return;
+            try {
+                this.pusher = new Pusher('{{ env("REVERB_APP_KEY", "fanhubpluskey") }}', {
+                    wsHost: '{{ env("REVERB_HOST", "127.0.0.1") }}',
+                    wsPort: {{ env("REVERB_PORT", 8080) }},
                     forceTLS: false,
                     enabledTransports: ['ws', 'wss'],
                     authEndpoint: '/broadcasting/auth',
-                    auth: {
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content
-                        }
-                    }
+                    auth: { headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content } }
                 });
-
                 const channel = this.pusher.subscribe('private-chat.{{ $activeChannel?->id }}');
                 channel.bind('App\\Events\\ChatMessageBroadcast', (data) => {
-                    this.realtimeMessages.push(data);
-                    this.scrollDown();
+                    // Avoid duplicate: skip if we already added this message locally
+                    if (!this.realtimeMessages.find(m => m.id === data.id)) {
+                        this.realtimeMessages.push(data);
+                        this.scrollDown();
+                    }
                 });
-            }
+            } catch(e) { console.log('Broadcast connection skipped:', e.message); }
         },
 
         sendMessage() {
             const body = this.messageInput.trim();
             if (!body) return;
 
+            const channelId = {{ $activeChannel?->id ?? 1 }};
+            const userId = {{ auth()->id() }};
+            const userName = @json(auth()->user()->name);
+
+            // Optimistic: add message instantly
+            this.messageCounter++;
+            const tempId = 'temp-' + this.messageCounter;
+            this.realtimeMessages.push({
+                id: tempId, body: body,
+                user: { id: userId, name: userName },
+                created_at: new Date().toISOString()
+            });
+            this.messageInput = '';
+            this.scrollDown();
+
+            // Send to server
             fetch('{{ route("chat.send") }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
                 },
-                body: JSON.stringify({
-                    channel_id: {{ $activeChannel?->id ?? 1 }},
-                    body: body
-                })
+                body: JSON.stringify({ channel_id: channelId, body: body })
             }).then(r => r.json()).then(data => {
-                this.realtimeMessages.push(data);
-                this.scrollDown();
+                // Replace temp message with real one from server
+                const idx = this.realtimeMessages.findIndex(m => m.id === tempId);
+                if (idx !== -1) this.realtimeMessages[idx] = data;
+            }).catch(err => {
+                console.error('Send failed:', err);
             });
-
-            this.messageInput = '';
         },
 
         scrollDown() {
@@ -257,9 +273,12 @@ function chatApp() {
             });
         },
 
-        onTyping() {
-            // Placeholder for future typing broadcast
-        }
+        getInitials(name) { return name ? name.substring(0, 2).toUpperCase() : '??'; },
+        getUserColor(name) { return '#' + this.hashCode(name || '').toString(16).slice(0, 6); },
+        hashCode(str) { let h = 0; for (let i = 0; i < str.length; i++) h = ((h << 5) - h + str.charCodeAt(i)) | 0; return Math.abs(h); },
+        formatTime(iso) { return new Date(iso).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }); },
+
+        onTyping() { /* future: broadcast typing event */ }
     };
 }
 </script>

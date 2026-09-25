@@ -25,6 +25,7 @@ class LiveChatController extends Controller
             : collect();
 
         $onlineUsers = User::where('id', '!=', $request->user()->id)->inRandomOrder()->limit(12)->get(['id', 'name']);
+        $onlineUsers->prepend($request->user()->only(['id', 'name']));
 
         return view('live-chat.index', compact('channels', 'activeChannel', 'messages', 'onlineUsers'));
     }
@@ -44,7 +45,11 @@ class LiveChatController extends Controller
 
         $message->load('user:id,name');
 
-        broadcast(new ChatMessageBroadcast($message))->toOthers();
+        try {
+            broadcast(new ChatMessageBroadcast($message))->toOthers();
+        } catch (\Throwable $e) {
+            // Broadcast may fail if Reverb is not running — message is still saved
+        }
 
         return response()->json([
             'id' => $message->id,
