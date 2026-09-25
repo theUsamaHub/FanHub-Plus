@@ -49,12 +49,12 @@
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.roles.*') ? 'is-active' : '' }}" href="{{ route('admin.roles.index') }}" title="{{ __('Roles') }}">
             <i class="bi bi-shield-lock"></i> <span>{{ __('Roles') }}</span>
         </a>
-        {{-- <a class="fh-adm-nav-link {{ request()->routeIs('admin.contacts.*') ? 'is-active' : '' }}" href="{{ route('admin.contacts.index') }}" title="{{ __('Contacts') }}">
+         <a class="fh-adm-nav-link {{ request()->routeIs('admin.contacts.*') ? 'is-active' : '' }}" href="{{ route('admin.contacts.index') }}" title="{{ __('Contacts') }}">
             <i class="bi bi-envelope-open"></i> <span>{{ __('Contacts') }}</span>
         </a>
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.subscribers.*') ? 'is-active' : '' }}" href="{{ route('admin.subscribers.index') }}" title="{{ __('Subscribers') }}">
             <i class="bi bi-person-lines-fill"></i> <span>{{ __('Subscribers') }}</span>
-        </a> --}}
+        </a> 
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.reviews.*') ? 'is-active' : '' }}" href="{{ route('admin.reviews.index') }}" title="{{ __('Reviews') }}">
             <i class="bi bi-chat-square-text"></i> <span>{{ __('Reviews') }}</span>
         </a>
@@ -88,22 +88,22 @@
             <i class="bi bi-bar-chart-fill"></i> <span>{{ __('Analytics') }}</span>
         </a>
 
-        <div class="fh-adm-nav-group">{{ __('System') }}</div>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.settings.*') ? 'is-active' : '' }}" href="{{ route('admin.settings.index') }}" title="{{ __('Settings') }}">
+       <div class="fh-adm-nav-group">{{ __('System') }}</div>
+        {{-- <a class="fh-adm-nav-link {{ request()->routeIs('admin.settings.*') ? 'is-active' : '' }}" href="{{ route('admin.settings.index') }}" title="{{ __('Settings') }}">
             <i class="bi bi-gear"></i> <span>{{ __('Settings') }}</span>
-        </a>
+        </a> --}}
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.activity-logs.*') ? 'is-active' : '' }}" href="{{ route('admin.activity-logs.index') }}" title="{{ __('Activity Logs') }}">
             <i class="bi bi-clock-history"></i> <span>{{ __('Activity Logs') }}</span>
         </a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.notifications.*') ? 'is-active' : '' }}" href="{{ route('admin.notifications.index') }}" title="{{ __('Notifications') }}">
+        {{-- <a class="fh-adm-nav-link {{ request()->routeIs('admin.notifications.*') ? 'is-active' : '' }}" href="{{ route('admin.notifications.index') }}" title="{{ __('Notifications') }}">
             <i class="bi bi-bell"></i> <span>{{ __('Notifications') }}</span>
-        </a>
+        </a> --}}
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.sessions.*') ? 'is-active' : '' }}" href="{{ route('admin.sessions.index') }}" title="{{ __('Sessions') }}">
             <i class="bi bi-box-arrow-in-right"></i> <span>{{ __('Sessions') }}</span>
         </a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.ip-restrictions.*') ? 'is-active' : '' }}" href="{{ route('admin.ip-restrictions.index') }}" title="{{ __('IP Restrictions') }}">
+        {{-- <a class="fh-adm-nav-link {{ request()->routeIs('admin.ip-restrictions.*') ? 'is-active' : '' }}" href="{{ route('admin.ip-restrictions.index') }}" title="{{ __('IP Restrictions') }}">
             <i class="bi bi-shield-slash"></i> <span>{{ __('IP Restrictions') }}</span>
-        </a>
+        </a>--}}
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.maintenance.*') ? 'is-active' : '' }}" href="{{ route('admin.maintenance.index') }}" title="{{ __('Maintenance') }}">
             <i class="bi bi-tools"></i> <span>{{ __('Maintenance') }}</span>
         </a>
