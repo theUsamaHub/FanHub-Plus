@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -9,6 +10,8 @@ use Illuminate\Support\Str;
 
 class Tag extends Model
 {
+    use LogsActivity;
+
     protected $fillable = ['name', 'slug'];
 
     public function categories(): MorphToMany

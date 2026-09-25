@@ -2947,3 +2947,123 @@ body.fh-admin .fh-adm-hamburger:hover {
         scroll-behavior: auto !important;
     }
 }
+
+/* ---------------------------------------------------------
+   Activity log — human readable diffs
+   --------------------------------------------------------- */
+
+body.fh-admin .fh-adm-diff {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+body.fh-admin .fh-adm-diff__row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    font-size: 0.72rem;
+    line-height: 1.5;
+}
+
+body.fh-admin .fh-adm-diff__field {
+    color: var(--fh-steel);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    font-size: 0.66rem;
+}
+
+body.fh-admin .fh-adm-diff__old,
+body.fh-admin .fh-adm-diff__new {
+    padding: 1px 7px;
+    border-radius: 6px;
+    max-width: 22ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--bs-font-monospace, ui-monospace, monospace);
+    font-size: 0.7rem;
+}
+
+body.fh-admin .fh-adm-diff__old {
+    background: color-mix(in srgb, var(--fh-crimson) 12%, transparent);
+    color: color-mix(in srgb, var(--fh-crimson) 75%, var(--fh-adm-text));
+    text-decoration: line-through;
+    text-decoration-color: color-mix(in srgb, var(--fh-crimson) 55%, transparent);
+}
+
+body.fh-admin .fh-adm-diff__new {
+    background: color-mix(in srgb, var(--fh-water) 14%, transparent);
+    color: var(--fh-water);
+}
+
+body.fh-admin .fh-adm-diff__row[data-type='added'] .fh-adm-diff__new {
+    background: color-mix(in srgb, var(--fh-cyan) 14%, transparent);
+    color: var(--fh-cyan);
+}
+
+body.fh-admin .fh-adm-diff__arrow {
+    color: var(--fh-steel);
+    font-size: 0.7rem;
+    opacity: 0.7;
+}
+
+body.fh-admin .fh-adm-diff__more {
+    color: var(--fh-steel);
+    font-size: 0.68rem;
+    font-style: italic;
+    padding-left: 2px;
+}
+
+body.fh-admin .fh-adm-actor-row {
+    border-radius: 8px;
+    padding: 6px 8px;
+    margin: 0 -8px;
+    font-size: 0.85rem;
+    transition: background-color 0.2s ease;
+}
+
+body.fh-admin .fh-adm-actor-row:hover {
+    background: color-mix(in srgb, var(--fh-accent) 8%, transparent);
+}
+
+body.fh-admin .fh-adm-value {
+    font-size: 0.8rem;
+    word-break: break-word;
+    white-space: pre-wrap;
+    max-width: 340px;
+}
+
+body.fh-admin .fh-adm-value[data-side='old'] {
+    background: color-mix(in srgb, var(--fh-crimson) 7%, transparent);
+}
+
+body.fh-admin .fh-adm-value[data-side='new'] {
+    background: color-mix(in srgb, var(--fh-water) 8%, transparent);
+}
+
+body.fh-admin .fh-adm-raw-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--fh-steel);
+    margin-bottom: 4px;
+}
+
+body.fh-admin .fh-adm-raw {
+    margin: 0;
+    padding: 10px 12px;
+    max-height: 240px;
+    overflow: auto;
+    border: 1px solid var(--fh-line);
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--fh-adm-panel, #12101c) 70%, transparent);
+    color: var(--fh-adm-muted, #9a93ad);
+    font-size: 0.7rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
