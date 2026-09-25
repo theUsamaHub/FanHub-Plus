@@ -11,6 +11,7 @@ import '../modules/hero-video';
 import { initHomeMerchandise, initJoinReveal } from '../modules/home-merchandise';
 import { initExploreFandoms } from '../modules/explore-fandom';
 import { initMultimedia } from '../modules/home-multimedia';
+import { initHomeEvents } from '../modules/home-events';
 
 const page = document.querySelector('[data-page="home"]');
 
@@ -18,6 +19,7 @@ if (page) {
     gsap.registerPlugin(ScrollTrigger);
     initExploreFandoms(page);
     initMultimedia(page);
+    initHomeEvents(page);
     initHomeMerchandise(page);
     initJoinReveal(page);
     initReleaseTimeline(page);
@@ -26,7 +28,7 @@ if (page) {
 
     const motion = gsap.matchMedia();
     motion.add('(prefers-reduced-motion: no-preference)', () => {
-        // GSAP owns the smooth-scroll clock; Swiper is scoped to the character section.
+        // GSAP owns the smooth-scroll clock; each carousel has its own Swiper instance.
         const lenis = new Lenis({
             autoRaf: false,
             smoothWheel: true,
