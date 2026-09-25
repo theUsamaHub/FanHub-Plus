@@ -45,8 +45,8 @@ export function initHomeSectionSlides(page) {
             if (sizes === previousSizes) return;
             previousSizes = sizes;
             const readingDistance = mobile
-                ? gsap.utils.clamp(140, 240, innerHeight * .24)
-                : gsap.utils.clamp(480, 850, innerHeight * .75);
+                ? gsap.utils.clamp(100, 170, innerHeight * .16)
+                : gsap.utils.clamp(280, 520, innerHeight * .48);
             sections.forEach((section, index) => {
                 // Long mobile sections finish scrolling before the next panel covers them.
                 const top = Math.min(nav, innerHeight - section.offsetHeight);
@@ -71,7 +71,7 @@ export function initHomeSectionSlides(page) {
                 scrollTrigger: {
                     trigger: anchors[index + 1],
                     start: 'top bottom', end: () => `top ${navHeight()}px`,
-                    scrub: 1.1, invalidateOnRefresh: true,
+                    scrub: .35, invalidateOnRefresh: true,
                 },
             });
         });
@@ -91,7 +91,7 @@ export function initHomeSectionSlides(page) {
                     y: 0, opacity: 1, ease: 'power1.out',
                     scrollTrigger: {
                         trigger: anchor, start: 'top 85%', end: () => `top ${navHeight() + 50}px`,
-                        scrub: .85, invalidateOnRefresh: true,
+                        scrub: .3, invalidateOnRefresh: true,
                     },
                 });
                 const line = upcoming.querySelector('[data-timeline-progress]');
@@ -102,7 +102,7 @@ export function initHomeSectionSlides(page) {
                     scaleX: 1, scaleY: 1, ease: 'none',
                     scrollTrigger: {
                         trigger: anchor, start: 'top 65%', end: () => `top ${navHeight()}px`,
-                        scrub: .8,
+                        scrub: .3,
                     },
                 });
             }, upcoming);

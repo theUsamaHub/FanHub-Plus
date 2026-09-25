@@ -26,8 +26,8 @@ if (page) {
         const lenis = new Lenis({
             autoRaf: false,
             smoothWheel: true,
-            lerp: .075,
-            wheelMultiplier: .85,
+            lerp: .14,
+            wheelMultiplier: 1.05,
             anchors: { offset: -90 },
             prevent: (node) => Boolean(node.closest('[data-lenis-prevent], [data-navigation], dialog')),
         });

@@ -82,6 +82,14 @@ class PublicSiteController extends Controller
         return view('public.merchandise', compact('merchandise', 'related', 'savedMerchandise'));
     }
 
+    public function upcomingRelease(\App\Models\UpcomingRelease $upcoming_release): View
+    {
+        abort_unless($upcoming_release->is_published, 404);
+        $upcoming_release->load(['category', 'imageMedia']);
+
+        return view('public.upcoming-show', compact('upcoming_release'));
+    }
+
     private function savedMerchandise(): array
     {
         return auth()->user()?->bookmarks()->where('bookmarkable_type', (new MerchandiseItem)->getMorphClass())

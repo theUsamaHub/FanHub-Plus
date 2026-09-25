@@ -127,6 +127,6 @@ class HomepageSectionsTest extends TestCase
     {
         $this->get('/')->assertOk()->assertSee('Trending stories will appear here')
             ->assertSee('Featured stories will appear here soon')->assertSee('No upcoming releases announced');
-        $this->get('/discover/upcoming')->assertOk()->assertSee('No upcoming releases announced yet.');
+        $this->get('/discover/upcoming')->assertOk()->assertSee('No upcoming releases yet');
     }
 }

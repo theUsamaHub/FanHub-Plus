@@ -70,7 +70,7 @@ export function initCharacterSpotlight(page) {
                 spaceBetween: spacing,
                 loop,
                 rewind: !loop,
-                speed: reduced ? 0 : 900,
+                speed: reduced ? 0 : 520,
                 grabCursor: slides.length > 1,
                 watchOverflow: true,
                 touchEventsTarget: 'container',
