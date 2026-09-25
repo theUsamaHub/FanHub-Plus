@@ -1,6 +1,7 @@
 @import '@fontsource/saira/latin-700.css';
 @import '@fontsource/rajdhani/latin-700.css';
 @import './home-base.css';
+@import './explore-fandoms.css';
 @import './home-trending.css';
 @import './home-story.css';
 @import './home-upcoming.css';
