@@ -225,7 +225,7 @@
 
     {{-- Charts bento --}}
     <div class="fh-adm-bento mb-4">
-        <div class="fh-adm-tile fh-adm-tile--span6">
+        <div class="fh-adm-tile fh-adm-tile--span6 fh-adm-tile--chart">
             <div class="fh-adm-tile-head">
                 <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('User growth · 30 days') }}</h6>
             </div>
@@ -234,7 +234,7 @@
             </div>
         </div>
 
-        <div class="fh-adm-tile fh-adm-tile--span6">
+        <div class="fh-adm-tile fh-adm-tile--span6 fh-adm-tile--chart">
             <div class="fh-adm-tile-head">
                 <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Users by role') }}</h6>
             </div>
@@ -243,7 +243,7 @@
             </div>
         </div>
 
-        <div class="fh-adm-tile fh-adm-tile--span6">
+        <div class="fh-adm-tile fh-adm-tile--span6 fh-adm-tile--chart">
             <div class="fh-adm-tile-head">
                 <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Content by type') }}</h6>
             </div>
@@ -252,7 +252,7 @@
             </div>
         </div>
 
-        <div class="fh-adm-tile fh-adm-tile--span6">
+        <div class="fh-adm-tile fh-adm-tile--span6 fh-adm-tile--chart">
             <div class="fh-adm-tile-head">
                 <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Top chatbot questions') }}</h6>
             </div>
@@ -261,7 +261,7 @@
             </div>
         </div>
 
-        <div class="fh-adm-tile fh-adm-tile--span6">
+        <div class="fh-adm-tile fh-adm-tile--span6 fh-adm-tile--chart">
             <div class="fh-adm-tile-head">
                 <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Content by status') }}</h6>
             </div>
@@ -270,7 +270,7 @@
             </div>
         </div>
 
-        <div class="fh-adm-tile fh-adm-tile--span6">
+        <div class="fh-adm-tile fh-adm-tile--span6 fh-adm-tile--chart">
             <div class="fh-adm-tile-head">
                 <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Reviews by status') }}</h6>
             </div>

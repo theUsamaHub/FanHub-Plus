@@ -1644,6 +1644,22 @@ body.fh-admin .fh-adm-chart-box--sm {
     height: 220px;
 }
 
+body.fh-admin .fh-adm-chart-box > canvas {
+    max-width: 100%;
+}
+
+/* chart tiles fill their bento cell */
+body.fh-admin .fh-adm-tile--chart {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+body.fh-admin .fh-adm-tile--chart .fh-adm-chart-box {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
 body.fh-admin .fh-adm-tile-head {
     display: flex;
     align-items: center;
@@ -1666,6 +1682,16 @@ body.fh-admin .fh-adm-tile .table {
 
 body.fh-admin .fh-adm-tile .table > :not(caption) > * > * {
     background: transparent;
+}
+
+/* keep tables inside tiles on narrow screens */
+body.fh-admin .fh-adm-tile-body {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+body.fh-admin .fh-adm-tile-body > .table {
+    min-width: 420px;
 }
 
 /* damped height for hero tiles so the two rows line up */
@@ -1700,21 +1726,58 @@ body.fh-admin .b-mini-row > .b-mini-b {
     body.fh-admin .fh-adm-tile--span7 {
         grid-column: span 6;
     }
+    body.fh-admin .fh-adm-tile--span6,
     body.fh-admin .fh-adm-tile--span8 {
         grid-column: span 12;
     }
 }
 
 @media (max-width: 767.98px) {
+    body.fh-admin .fh-adm-bento {
+        gap: 12px;
+    }
+
     body.fh-admin .b-mini-row {
         flex-direction: column;
     }
+
+    body.fh-admin .fh-adm-tile-pad {
+        padding: 16px;
+    }
+
     body.fh-admin .fh-adm-tile--span4,
     body.fh-admin .fh-adm-tile--span5,
     body.fh-admin .fh-adm-tile--span6,
     body.fh-admin .fh-adm-tile--span7,
-    body.fh-admin .fh-adm-tile--span8 {
+    body.fh-admin .fh-adm-tile--span8,
+    body.fh-admin .fh-adm-tile--span12 {
         grid-column: span 12;
+    }
+
+    body.fh-admin .fh-adm-chart-box,
+    body.fh-admin .fh-adm-chart-box--sm {
+        height: 220px;
+        padding: 4px 10px 12px;
+    }
+
+    body.fh-admin .fh-adm-tile-value {
+        font-size: 1.75rem;
+    }
+
+    body.fh-admin .fh-adm-mini-bars {
+        height: 64px;
+    }
+
+    body.fh-admin .fh-adm-tile-head {
+        padding: 14px 16px 10px;
+    }
+
+    body.fh-admin .fh-adm-tile-row {
+        padding: 12px 16px;
+    }
+
+    body.fh-admin .fh-adm-tile-body > .table {
+        min-width: 360px;
     }
 }
 
