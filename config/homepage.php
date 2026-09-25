@@ -9,6 +9,8 @@ return [
         'trending' => 'images/fandoms/anime.png',
         'story' => 'images/fandoms/cinema.png',
         'upcoming' => 'images/fandoms/gaming.png',
+        'events' => 'images/fandoms/gaming.png',
+        'multimedia' => 'images/fandoms/anime.png',
         'merchandise' => 'images/merch-deafult.jpg',
         'dark_background' => 'images/fandoms/gaming.png',
         'light_background' => 'images/fandoms/anime.png',

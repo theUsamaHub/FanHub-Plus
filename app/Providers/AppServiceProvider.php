@@ -6,6 +6,7 @@ use App\Models\ActivityLog;
 use App\Models\Category;
 use App\Models\CharacterProfile;
 use App\Models\Content;
+use App\Models\Event;
 use App\Models\Media;
 use App\Models\MerchandiseItem;
 use App\Observers\HomepageCacheObserver;
@@ -28,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        foreach ([Content::class, MerchandiseItem::class, Category::class, CharacterProfile::class, Media::class] as $model) {
+        foreach ([Content::class, Event::class, MerchandiseItem::class, Category::class, CharacterProfile::class, Media::class] as $model) {
             $model::observe(HomepageCacheObserver::class);
         }
 

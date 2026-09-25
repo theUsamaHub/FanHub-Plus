@@ -25,7 +25,7 @@
 
     @include('home.sections.upcoming')
 
-    @includeIf('home.sections.events')
+    @include('home.sections.events')
 
     @include('home.sections.merchandise')
 

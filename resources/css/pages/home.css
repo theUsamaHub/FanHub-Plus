@@ -1,5 +1,6 @@
 @import '@fontsource/saira/latin-700.css';
 @import '@fontsource/rajdhani/latin-700.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
 @import './home-base.css';
 @import './explore-fandoms.css';
 @import './home-trending.css';
@@ -9,3 +10,5 @@
 @import './home-characters.css';
 @import './home-compact.css';
 @import './home-section-slides.css';
+@import './home-multimedia.css';
+@import './home-events.css';

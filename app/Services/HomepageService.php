@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Category;
 use App\Models\CharacterProfile;
 use App\Models\Content;
+use App\Models\Event;
 use App\Models\MerchandiseItem;
 use App\Models\UpcomingRelease;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -19,7 +20,7 @@ class HomepageService
     {
         $version = Cache::get('homepage:version', 'initial');
 
-        return Cache::remember('homepage:v3:'.$version.':'.today()->toDateString().':'.$key,
+        return Cache::remember('homepage:v4:'.$version.':'.today()->toDateString().':'.$key,
             config('homepage.cache_seconds'), $callback);
     }
 
@@ -33,6 +34,12 @@ class HomepageService
             'featuredStories' => Content::visibleToPublic()->ofType('article')->where('is_featured', true)
                 ->with(['category:id,name,slug', 'submittedBy:id,name', 'tags:id,name,slug', 'media'])
                 ->orderByDesc('popularity_score')->orderByDesc('published_at')->orderByDesc('id')->limit(3)->get(),
+            'homeEvents' => Event::published()->with(['category:id,name,slug', 'coverMedia'])
+                ->where(fn ($query) => $query->where('start_at', '>=', now())->orWhere('end_at', '>=', now()))
+                ->orderByDesc('is_featured')->orderBy('start_at')->orderBy('id')->limit(5)->get(),
+            'multimediaItems' => Content::visibleToPublic()->whereIn('type', ['image', 'video', 'audio'])
+                ->with(['category:id,name,slug', 'media'])
+                ->orderByDesc('published_at')->orderByDesc('id')->limit(30)->get(),
         ]);
     }
 
