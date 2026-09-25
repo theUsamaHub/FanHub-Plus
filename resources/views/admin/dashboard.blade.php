@@ -223,7 +223,9 @@
             <div class="fh-adm-tile fh-adm-tile--span12">
                 <div class="fh-adm-tile-head">
                     <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Guild intel') }}</h6>
-                    <span class="fh-adm-tile-meta">{{ __('Auto insights from live data') }}</span>
+                    <span class="fh-adm-chip" data-tone="{{ ($insightSource ?? 'rules') === 'gemini' ? 'accent' : 'muted' }}">
+                        {{ ($insightSource ?? 'rules') === 'gemini' ? __('Gemini') : __('Rules') }}
+                    </span>
                 </div>
                 <div class="fh-adm-tile-pad pt-1">
                     <div class="row g-3">

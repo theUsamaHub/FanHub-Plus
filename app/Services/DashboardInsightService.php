@@ -16,7 +16,7 @@ use Illuminate\Support\Carbon;
 class DashboardInsightService
 {
     /**
-     * @return array<int, array{tone: string, title: string, body: string}>
+     * @return array{source: string, cards: array<int, array{tone: string, title: string, body: string}>}
      */
     public function forDashboard(): array
     {

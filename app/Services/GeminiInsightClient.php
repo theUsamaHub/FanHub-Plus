@@ -19,15 +19,15 @@ class GeminiInsightClient
 
     /**
      * @param  array<int, array{tone: string, title: string, body: string}>  $metrics
-     * @return array<int, array{tone: string, title: string, body: string}>
+     * @return array{source: string, cards: array<int, array{tone: string, title: string, body: string}>}
      */
     public function enrich(array $metrics): array
     {
         if (! $this->enabled() || $metrics === []) {
-            return $metrics;
+            return ['source' => 'rules', 'cards' => $metrics];
         }
 
-        $model = config('services.gemini.model', 'gemini-3.5-flash');
+        $model = config('services.gemini.model', 'gemini-3.8-flash');
         $key = config('services.gemini.key');
 
         $prompt = 'You are a concise product analyst for a fandom admin dashboard. '
@@ -51,16 +51,19 @@ class GeminiInsightClient
                 ]);
 
             if (! $response->successful()) {
-                Log::warning('Gemini insight call failed', ['status' => $response->status()]);
+                Log::warning('Gemini insight call failed', [
+                    'status' => $response->status(),
+                    'model' => $model,
+                ]);
 
-                return $metrics;
+                return ['source' => 'rules', 'cards' => $metrics];
             }
 
             $text = $response->json('candidates.0.content.parts.0.text') ?? '';
             $decoded = json_decode($text, true);
 
             if (! is_array($decoded) || $decoded === []) {
-                return $metrics;
+                return ['source' => 'rules', 'cards' => $metrics];
             }
 
             $clean = [];
@@ -77,11 +80,13 @@ class GeminiInsightClient
                 ];
             }
 
-            return $clean !== [] ? $clean : $metrics;
+            return $clean !== []
+                ? ['source' => 'gemini', 'cards' => $clean]
+                : ['source' => 'rules', 'cards' => $metrics];
         } catch (\Throwable $e) {
             Log::warning('Gemini insight exception: '.$e->getMessage());
 
-            return $metrics;
+            return ['source' => 'rules', 'cards' => $metrics];
         }
     }
 }
