@@ -25,7 +25,10 @@ class LiveChatController extends Controller
             : collect();
 
         $onlineUsers = User::where('id', '!=', $request->user()->id)->inRandomOrder()->limit(12)->get(['id', 'name']);
-        $onlineUsers->prepend($request->user()->only(['id', 'name']));
+        // Prepend current user at top (as a collection item, not array)
+        if (!$onlineUsers->contains('id', $request->user()->id)) {
+            $onlineUsers->prepend(User::where('id', $request->user()->id)->first(['id', 'name']));
+        }
 
         return view('live-chat.index', compact('channels', 'activeChannel', 'messages', 'onlineUsers'));
     }
