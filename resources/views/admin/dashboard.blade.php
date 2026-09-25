@@ -217,6 +217,69 @@
         </div>
     </div>
 
+    {{-- Chart.js data payload --}}
+    <script type="application/json" id="fh-dashboard-data">@json($chartPayload ?? [])</script>
+    @push('scripts')
+        @vite('resources/js/pages/admin-dashboard.js')
+    @endpush
+
+    {{-- Charts bento --}}
+    <div class="fh-adm-bento mb-4">
+        <div class="fh-adm-tile fh-adm-tile--span6">
+            <div class="fh-adm-tile-head">
+                <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('User growth · 30 days') }}</h6>
+            </div>
+            <div class="fh-adm-chart-box">
+                <canvas id="chart-user-growth"></canvas>
+            </div>
+        </div>
+
+        <div class="fh-adm-tile fh-adm-tile--span6">
+            <div class="fh-adm-tile-head">
+                <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Users by role') }}</h6>
+            </div>
+            <div class="fh-adm-chart-box">
+                <canvas id="chart-users-role"></canvas>
+            </div>
+        </div>
+
+        <div class="fh-adm-tile fh-adm-tile--span6">
+            <div class="fh-adm-tile-head">
+                <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Content by type') }}</h6>
+            </div>
+            <div class="fh-adm-chart-box fh-adm-chart-box--sm">
+                <canvas id="chart-content-type"></canvas>
+            </div>
+        </div>
+
+        <div class="fh-adm-tile fh-adm-tile--span6">
+            <div class="fh-adm-tile-head">
+                <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Top chatbot questions') }}</h6>
+            </div>
+            <div class="fh-adm-chart-box">
+                <canvas id="chart-chatbot-questions"></canvas>
+            </div>
+        </div>
+
+        <div class="fh-adm-tile fh-adm-tile--span6">
+            <div class="fh-adm-tile-head">
+                <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Content by status') }}</h6>
+            </div>
+            <div class="fh-adm-chart-box fh-adm-chart-box--sm">
+                <canvas id="chart-content-status"></canvas>
+            </div>
+        </div>
+
+        <div class="fh-adm-tile fh-adm-tile--span6">
+            <div class="fh-adm-tile-head">
+                <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Reviews by status') }}</h6>
+            </div>
+            <div class="fh-adm-chart-box fh-adm-chart-box--sm">
+                <canvas id="chart-reviews-status"></canvas>
+            </div>
+        </div>
+    </div>
+
     {{-- Lists --}}
     <div class="fh-adm-bento">
         <div class="fh-adm-tile fh-adm-tile--span6">

@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
 use App\Models\Category;
+use App\Models\ChatbotQuery;
 use App\Models\Content;
 use App\Models\Event;
 use App\Models\Feedback;
 use App\Models\Media;
 use App\Models\Review;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -53,6 +55,59 @@ class DashboardController extends Controller
             ->groupBy('status')
             ->pluck('total', 'status');
 
+        $usersByRole = DB::table('users')
+            ->leftJoin('role_user', 'users.id', '=', 'role_user.user_id')
+            ->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
+            ->groupBy('roles.name')
+            ->selectRaw("COALESCE(roles.name, 'No role') as role, COUNT(*) as total")
+            ->orderByDesc('total')
+            ->pluck('total', 'role');
+
+        $contentByType = Content::selectRaw('type, count(*) as total')
+            ->groupBy('type')
+            ->orderByDesc('total')
+            ->pluck('total', 'type');
+
+        $chatbotTopQuestions = ChatbotQuery::select('message')
+            ->selectRaw('COUNT(*) as count')
+            ->groupBy('message')
+            ->orderByDesc('count')
+            ->limit(8)
+            ->get()
+            ->map(fn ($row) => [
+                'label' => \Illuminate\Support\Str::limit($row->message, 42),
+                'count' => (int) $row->count,
+            ])
+            ->values();
+
+        $reviewsByStatus = Review::selectRaw('status, count(*) as total')
+            ->groupBy('status')
+            ->pluck('total', 'status');
+
+        $chartPayload = [
+            'growth' => collect($chartData)->map(fn ($d) => [
+                'label' => $d['label'],
+                'users' => (int) $d['users'],
+            ])->values(),
+            'usersByRole' => $usersByRole->map(fn ($v, $k) => [
+                'label' => (string) $k,
+                'count' => (int) $v,
+            ])->values(),
+            'contentByType' => $contentByType->map(fn ($v, $k) => [
+                'label' => (string) $k,
+                'count' => (int) $v,
+            ])->values(),
+            'contentByStatus' => collect($contentByStatus)->map(fn ($v, $k) => [
+                'label' => ucwords(str_replace('_', ' ', (string) $k)),
+                'count' => (int) $v,
+            ])->values(),
+            'chatbotTopQuestions' => $chatbotTopQuestions,
+            'reviewsByStatus' => collect($reviewsByStatus)->map(fn ($v, $k) => [
+                'label' => (string) $k,
+                'count' => (int) $v,
+            ])->values(),
+        ];
+
         return view('admin.dashboard', compact(
             'stats',
             'chartData',
@@ -63,6 +118,7 @@ class DashboardController extends Controller
             'upcomingEvents',
             'popularContent',
             'contentByStatus',
+            'chartPayload',
         ));
     }
 
