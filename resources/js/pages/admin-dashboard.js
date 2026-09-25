@@ -32,6 +32,15 @@ function baseOptions(extra = {}) {
     return {
         responsive: true,
         maintainAspectRatio: false,
+        animation: {
+            duration: 1100,
+            easing: 'easeOutQuart',
+        },
+        animations: {
+            colors: { duration: 900, easing: 'easeOutQuart' },
+            x: { duration: 900, easing: 'easeOutQuart' },
+            y: { duration: 900, easing: 'easeOutQuart' },
+        },
         plugins: {
             legend: {
                 labels: {
@@ -67,11 +76,17 @@ function doughnut(el, rows) {
                 backgroundColor: PALETTE,
                 borderColor: 'transparent',
                 borderWidth: 0,
-                hoverOffset: 8,
+                hoverOffset: 10,
             }],
         },
         options: baseOptions({
             cutout: '62%',
+            animation: {
+                animateRotate: true,
+                animateScale: true,
+                duration: 1200,
+                easing: 'easeOutQuart',
+            },
             plugins: {
                 ...baseOptions().plugins,
                 legend: { ...baseOptions().plugins.legend, position: 'right' },
@@ -180,6 +195,11 @@ function bars(el, rows, color = PALETTE[4]) {
             }],
         },
         options: baseOptions({
+            animation: {
+                duration: 1100,
+                easing: 'easeOutQuart',
+                delay: (ctx) => (ctx.type === 'data' ? ctx.dataIndex * 70 : 0),
+            },
             plugins: {
                 ...baseOptions().plugins,
                 legend: { display: false },
@@ -224,7 +244,6 @@ function boot() {
 
     mount('chart-users-role', doughnut, data.usersByRole);
     mount('chart-content-type', bars, data.contentByType);
-    mount('chart-chatbot-questions', hbar, data.chatbotTopQuestions);
     mount('chart-user-growth', area, data.growth);
     mount('chart-content-status', doughnut, data.contentByStatus);
     mount('chart-reviews-status', bars, data.reviewsByStatus);

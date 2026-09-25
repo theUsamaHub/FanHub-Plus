@@ -58,8 +58,15 @@ class DashboardController extends Controller
         $usersByRole = DB::table('users')
             ->leftJoin('role_user', 'users.id', '=', 'role_user.user_id')
             ->leftJoin('roles', 'roles.id', '=', 'role_user.role_id')
-            ->groupBy('roles.name')
-            ->selectRaw("COALESCE(roles.name, 'No role') as role, COUNT(*) as total")
+            ->selectRaw("
+                CASE
+                    WHEN roles.slug = 'admin' THEN 'Admin'
+                    WHEN roles.slug = 'registered-user' THEN 'Registered User'
+                    ELSE 'Other'
+                END as role,
+                COUNT(*) as total
+            ")
+            ->groupBy('role')
             ->orderByDesc('total')
             ->pluck('total', 'role');
 

@@ -253,8 +253,27 @@
             <div class="fh-adm-tile-head">
                 <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Top chatbot questions') }}</h6>
             </div>
-            <div class="fh-adm-chart-box">
-                <canvas id="chart-chatbot-questions"></canvas>
+            <div class="fh-adm-tile-pad pt-1">
+                @php
+                    $topQ = collect($chartPayload['chatbotTopQuestions'] ?? []);
+                    $topQMax = max(1, (int) $topQ->max('count'));
+                @endphp
+                @forelse ($topQ as $i => $q)
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <span class="fh-adm-tile-meta fw-semibold" style="width: 22px;">{{ $i + 1 }}</span>
+                        <div class="flex-grow-1 min-w-0">
+                            <div class="d-flex justify-content-between gap-2">
+                                <span class="small text-truncate">{{ $q['label'] }}</span>
+                                <span class="small fw-semibold">{{ $q['count'] }}</span>
+                            </div>
+                            <div class="fh-adm-progress mt-1" style="height: 6px;">
+                                <i style="width: {{ max(6, (int) round(($q['count'] / $topQMax) * 100)) }}%"></i>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-muted py-4 text-center">{{ __('No chatbot queries yet.') }}</div>
+                @endforelse
             </div>
         </div>
 
