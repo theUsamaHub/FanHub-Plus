@@ -41,35 +41,75 @@
 
     {{-- Hero bento (fixed placement — reference layout) --}}
     <div class="fh-adm-bento fh-adm-bento--hero mb-4">
-        {{-- Statistics + mini bars --}}
-        <div class="fh-adm-tile b-stats fh-adm-tile-pad">
-            <div class="d-flex flex-wrap justify-content-between align-items-start gap-3 h-100">
-                <div>
-                    <h5 class="fw-semibold mb-4">{{ __('Statistics') }}</h5>
-                    <div class="d-flex gap-4">
-                        <div>
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--brand-orange);"></span>
-                                <span class="fh-adm-tile-meta">{{ __('Published') }}</span>
+        {{-- Left column: statistics + two mini cards --}}
+        <div class="b-col-left">
+            <div class="fh-adm-tile b-stats fh-adm-tile-pad">
+                <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+                    <div>
+                        <h5 class="fw-semibold mb-4">{{ __('Statistics') }}</h5>
+                        <div class="d-flex gap-4">
+                            <div>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--brand-orange);"></span>
+                                    <span class="fh-adm-tile-meta">{{ __('Published') }}</span>
+                                </div>
+                                <div class="fw-semibold fs-5">{{ $published['count'] ?? 0 }}</div>
                             </div>
-                            <div class="fw-semibold fs-5">{{ $published['count'] ?? 0 }}</div>
-                        </div>
-                        <div>
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="dot" style="width:8px;height:8px;border-radius:50%;background:color-mix(in srgb, var(--brand-orange) 28%, transparent);"></span>
-                                <span class="fh-adm-tile-meta">{{ __('Total content') }}</span>
+                            <div>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="dot" style="width:8px;height:8px;border-radius:50%;background:color-mix(in srgb, var(--brand-orange) 28%, transparent);"></span>
+                                    <span class="fh-adm-tile-meta">{{ __('Total content') }}</span>
+                                </div>
+                                <div class="fw-semibold fs-5">{{ $content['count'] ?? 0 }}</div>
                             </div>
-                            <div class="fw-semibold fs-5">{{ $content['count'] ?? 0 }}</div>
                         </div>
                     </div>
+                    <div class="fh-adm-mini-bars" style="width: 42%;">
+                        @foreach ($bars as $day)
+                            <div class="fh-adm-mini-bars-col" title="{{ $day['label'] }}: {{ $day['users'] }}">
+                                <i class="a" style="height: {{ max(6, (int) (($day['users'] / $barMax) * 100)) }}%"></i>
+                                <i class="b" style="height: {{ max(4, (int) (($day['users'] / $barMax) * 52)) }}%"></i>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
-                <div class="fh-adm-mini-bars" style="width: 42%;">
-                    @foreach ($bars as $day)
-                        <div class="fh-adm-mini-bars-col" title="{{ $day['label'] }}: {{ $day['users'] }}">
-                            <i class="a" style="height: {{ max(6, (int) (($day['users'] / $barMax) * 100)) }}%"></i>
-                            <i class="b" style="height: {{ max(4, (int) (($day['users'] / $barMax) * 52)) }}%"></i>
+            </div>
+
+            <div class="b-mini-row">
+                {{-- Mini A: media balance-style --}}
+                <a href="{{ route('admin.media.index') }}" class="fh-adm-tile b-mini-a">
+                    <div class="fh-adm-tile-pad flex-grow-1">
+                        <div class="d-flex align-items-center gap-2 mb-3">
+                            <span class="fh-adm-tile-row-icon" style="width:30px;height:30px;border-radius:10px;"><i class="bi bi-folder"></i></span>
+                            <span class="fh-adm-tile-meta fw-semibold">{{ __('Media') }}</span>
                         </div>
-                    @endforeach
+                        <div class="fh-adm-tile-value fh-adm-tile-value--sm">{{ $media['count'] ?? 0 }}</div>
+                        <div class="fh-adm-tile-meta">{{ __('files stored') }}</div>
+                    </div>
+                    <div class="fh-adm-tile-foot">
+                        <span class="fw-semibold">{{ __('Open library') }}</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </div>
+                </a>
+
+                {{-- Mini B: published progress (dream-laptop style) --}}
+                <div class="fh-adm-tile b-mini-b fh-adm-tile--solid fh-adm-tile--ink fh-adm-tile-pad">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="fw-semibold">{{ $published['count'] ?? 0 }}</div>
+                            <div class="fh-adm-tile-meta">{{ __('Published') }}</div>
+                        </div>
+                        <div class="fh-adm-tile-meta text-decoration-line-through" style="opacity:.75;">{{ $content['count'] ?? 0 }}</div>
+                    </div>
+                    <div class="mt-auto pt-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="small fw-semibold">{{ __('Library completion') }}</span>
+                            <span class="small fw-semibold">{{ $publishedPct }}%</span>
+                        </div>
+                        <div class="fh-adm-progress">
+                            <i style="width: {{ max(4, $publishedPct) }}%"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -122,46 +162,6 @@
                     </div>
                     <strong class="fs-5">{{ $feedback['count'] ?? 0 }}</strong>
                 </a>
-            </div>
-        </div>
-
-        {{-- Mini A: media balance-style --}}
-        <a href="{{ route('admin.media.index') }}" class="fh-adm-tile b-mini-a">
-            <div class="fh-adm-tile-pad flex-grow-1">
-                <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                        <div class="d-flex align-items-center gap-2 mb-3">
-                            <span class="fh-adm-tile-row-icon" style="width:30px;height:30px;border-radius:10px;"><i class="bi bi-folder"></i></span>
-                            <span class="fh-adm-tile-meta fw-semibold">{{ __('Media library') }}</span>
-                        </div>
-                        <div class="fh-adm-tile-value fh-adm-tile-value--sm">{{ $media['count'] ?? 0 }}</div>
-                        <div class="fh-adm-tile-meta">{{ __('files stored') }}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="fh-adm-tile-foot">
-                <span class="fw-semibold">{{ __('Open media') }}</span>
-                <i class="bi bi-arrow-right"></i>
-            </div>
-        </a>
-
-        {{-- Mini B: published progress (dream-laptop style) --}}
-        <div class="fh-adm-tile b-mini-b fh-adm-tile--solid fh-adm-tile--ink fh-adm-tile-pad">
-            <div class="d-flex justify-content-between align-items-start">
-                <div>
-                    <div class="fw-semibold">{{ $published['count'] ?? 0 }}</div>
-                    <div class="fh-adm-tile-meta">{{ __('Published') }}</div>
-                </div>
-                <div class="fh-adm-tile-meta text-decoration-line-through" style="opacity:.75;">{{ $content['count'] ?? 0 }}</div>
-            </div>
-            <div class="mt-auto pt-4">
-                <div class="d-flex justify-content-between mb-2">
-                    <span class="small fw-semibold">{{ __('Library completion') }}</span>
-                    <span class="small fw-semibold">{{ $publishedPct }}%</span>
-                </div>
-                <div class="fh-adm-progress">
-                    <i style="width: {{ max(4, $publishedPct) }}%"></i>
-                </div>
             </div>
         </div>
     </div>
