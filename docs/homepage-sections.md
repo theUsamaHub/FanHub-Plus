@@ -16,7 +16,7 @@ Two additive migrations add nullable `merchandise_items.release_date` and `conte
 
 ## Data and assets
 
-`HomeController` and `HomepageService` supply data to the existing section partials in the brief's order. Both guests and signed-in users see the same public sections.
+`HomeController` and `HomepageService` supply data to the existing section partials in the brief's order. Guests and signed-in users share public content; the Join invitation appears only for guests.
 
 - Trending: six published records ordered by popularity, views, and ID.
 - Featured: three published, featured articles; the first is the main story. Categories, tags, author, publication date, and calculated reading time come from the records.
@@ -31,23 +31,7 @@ Homepage queries cache for 60 seconds. Saving or deleting content, a category, m
 
 ## Interaction and animation
 
-The homepage now presents sections as overlapping, screen-height panels using `home-section-slides.js` and `home-section-slides.css`. Each following panel slides over the previous one with normal vertical scrolling. Desktop content is sized to fit below navigation; longer mobile sections scroll fully before being covered. Individual heading/card entrance staggers are disabled so each section appears together. The character reveal uses a normal-flow anchor and reserved scroll distance inside this shared layout instead of a competing GSAP pin. Reduced motion uses ordinary non-overlapping sections.
-
-Each panel has a normal-flow reading spacer (480–850px on desktop, 140–240px on mobile), with additional distance for the character reveal. A trailing spacer also lets Upcoming settle before the footer arrives. Incoming panels gently scale and dim the previous panel through a scrubbed transition. Upcoming's heading, filters, and carousel rise together while its timeline draws in; filter replacements recreate that animation safely. Lenis softens wheel movement without blocking normal page scrolling or imposing a timed lock.
-
-The homepage alone loads `resources/js/pages/home.js` and `resources/css/pages/home.css`. GSAP/ScrollTrigger handles shared heading/card reveals, subtle desktop story parallax, the timeline line, and character spreading. Lenis uses the GSAP ticker. Swiper is scoped to the character carousel; the homepage remains a normal vertically scrolling page.
-
-## Character spotlight
-
-`resources/js/modules/character-spotlight.js` owns the stack → row → Swiper lifecycle. Cards start tightly overlapping at the center. A scrubbed reveal spreads those same elements into their eventual carousel positions. Desktop pins only if the section fits below navigation, for 460px of scrolling (320px on tablet). Mobile uses a short 180px hold so even direct section links show the initial stack. Short desktop screens use an unpinned reveal. Scrolling back reverses the spread and restores the center stack. Resizing across breakpoints cleans up and rebuilds the carousel/animation for the current scroll position.
-
-Cards use taller portrait proportions with close spacing. Each entire card links to its character page; the name and category appear only on hover, keyboard focus, or touch press. There is no separate Explore button. The centered carousel advances every 2.6 seconds with a 900ms transition. It loops only with enough spare slides; short lists rewind. Arrows, pagination, dragging, touch, and keyboard-accessible links work without capturing vertical wheel scrolling. Autoplay stops offscreen, in hidden tabs, on hover/focus, or via its pause button. Reduced motion skips the reveal, smooth scrolling, and autoplay. Without JavaScript, the cards remain a native horizontal scrolling list.
-
-Theme artwork uses the supplied `public/images/characters/cdark_back.png` and `c_light_back.png`. Database image media takes priority; absent/non-image media uses `character1.jpg`. The homepage also swaps broken image URLs to that fallback. Paths are configurable under `homepage.images`. One supplied fallback means multiple records without their own artwork show the same picture; upload distinct portraits in the character admin to differentiate them.
-
-`home-characters.css` contains the spotlight styling. `home-compact.css` reduces the existing hero/section headings and oversized trending/story cards while preserving readable body copy and usable controls.
-
-Implementation references: [Swiper API](https://swiperjs.com/swiper-api) and [ScrollTrigger documentation](https://gsap.com/docs/v3/Plugins/ScrollTrigger/).
+The homepage alone loads `resources/js/pages/home.js` and `resources/css/pages/home.css`. GSAP/ScrollTrigger handles shared heading/card reveals, subtle desktop story parallax, and the timeline line. Lenis uses the GSAP ticker. Merchandise uses Swiper with touch/drag and arrows; it does not capture the mousewheel, autoplay, or pin the page.
 
 Release arrows and keyboard navigation scroll a native horizontal timeline. Mobile uses a vertical timeline. Filters progressively enhance normal links with abortable fetch requests, loading/error feedback, an accessible result announcement, and browser Back/Forward support. Without JavaScript the filters reload the server-rendered page. Reduced-motion preference disables Lenis, reveal animations, and parallax.
 
@@ -55,10 +39,18 @@ Outside the shared panel layout, card reveals use each card's viewport position 
 
 If MySQL reports `Unknown column 'release_date'` on `merchandise_items`, apply the pending migrations with `php artisan migrate`. Do not reset or reseed the database. The two new columns are nullable, so existing merchandise stays intact and displays an unknown release date until one is entered.
 
+## Merchandise and guest invitation
+
+Merchandise reads names, categories, tags, descriptions, status and artwork from the database. Each homepage filter queries up to 24 records; View All provides a paginated collection. Filters use abortable partial requests, animated swaps, live feedback and browser history, while ordinary links work without JavaScript. Uploaded artwork falls back to the supplied `public/images/merch-deafult.jpg` when absent or when an image request fails. Tags reflect real values; `standard` upcoming items display Coming Soon.
+
+Cards show the name, artwork, tag and heart at rest. Desktop hover/focus reveals category and the compact detail link; touch/mobile always shows both. Swiper displays 1.2 cards on mobile, 4.5 at desktop and 5 on wide screens. Reduced motion uses short fades with no scale/translation or smooth page scrolling.
+
+Authenticated bookmarks persist per user with idempotent save/remove requests; guests receive a login dialog. Detail pages show status, release information and related merchandise. No commerce actions are provided. The Join FanHub Plus section is rendered only for guests, with sequenced reveals, four benefits and a registration link. Both new sections inherit the existing homepage background in both themes.
+
 ## Validation
 
 ```sh
-php artisan test --filter="CharacterSpotlightTest|HomepageSectionsTest|PublicNavigationTest"
+php artisan test --filter="HomeMerchandiseTest|HomepageSectionsTest|PublicNavigationTest"
 ```
 
 Tests cover ordering/limits, database copy, publication visibility, cache invalidation, merged release dates, real release labels, TBA dates, filters beyond the initial six, pagination, empty states, and shared guest/user access. Browser checks cover desktop/mobile layouts, both themes, dropdown compatibility, timeline arrows and filters, and reduced-motion/no-JavaScript behavior.

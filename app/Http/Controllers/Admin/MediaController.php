@@ -67,14 +67,22 @@ class MediaController extends Controller
         $duration = $this->durationFromParts($request);
 
         foreach ($request->file('files') as $file) {
-            $this->fileService->upload(
-                $file,
-                'uploads/'.FileUploadService::categoryFromMime($file->getMimeType() ?? ''),
-                null,
-                null,
-                $request->input('alt_text'),
-                $duration
-            );
+            try {
+                $this->fileService->upload(
+                    $file,
+                    'uploads/'.FileUploadService::categoryFromMime($file->getMimeType() ?? ''),
+                    null,
+                    null,
+                    $request->input('alt_text'),
+                    $duration
+                );
+            } catch (\RuntimeException $e) {
+                report($e);
+
+                return back()
+                    ->withInput()
+                    ->withErrors(['files' => __('Failed to upload ":name". Please try again.', ['name' => $file->getClientOriginalName()])]);
+            }
         }
 
         return back()->with('success', 'Files uploaded successfully.');

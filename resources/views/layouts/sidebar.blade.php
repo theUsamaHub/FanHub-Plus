@@ -56,7 +56,7 @@
 
     <div class="fh-adm-sidebar-foot">
         <div class="fh-adm-avatar">
-            @if (Auth::user()->profile?->avatarMedia)
+            @if (Auth::user()->profile?->avatarMedia?->url)
                 <img src="{{ Auth::user()->profile->avatarMedia->url }}" alt="">
             @else
                 {{ substr(Auth::user()->name, 0, 1) }}

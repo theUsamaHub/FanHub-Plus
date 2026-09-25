@@ -1,6 +1,6 @@
 @php
     $groups = [
-        'Explore' => ['Fandoms' => route('public.explore'), 'Characters' => route('public.section', 'characters'), 'Upcoming' => route('public.section', 'upcoming'), 'Merchandise' => route('public.section', 'merchandise')],
+        'Explore' => ['Fandoms' => route('public.explore'), 'Characters' => route('public.section', 'characters'), 'Upcoming' => route('public.section', 'upcoming'), 'Merchandise' => route('public.section', 'merchandise'), 'Events' => route('events.index')],
         'Your space' => auth()->check() ? ['Dashboard' => route('public.account', 'dashboard'), 'Bookmarks' => route('public.account', 'bookmarks'), 'Profile' => route('profile.edit')] : ['Login' => route('login'), 'Create account' => route('register'), 'Bookmarks' => route('public.account', 'bookmarks')],
         'FanHub Plus' => ['Feedback' => route('public.section', 'feedback'), 'Privacy' => route('public.section', 'privacy'), 'Terms' => route('public.section', 'terms'), 'Sitemap' => route('public.sitemap')],
     ];

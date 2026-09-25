@@ -96,7 +96,10 @@ export function initReleaseTimeline(page) {
         const link = event.target.closest('a[data-release-filter]');
         if (!link || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button !== 0) return;
         event.preventDefault();
-        loadFilter(link.href);
+        const url = new URL(location.href);
+        url.searchParams.set('release_category', link.dataset.releaseFilter);
+        url.hash = new URL(link.href).hash;
+        loadFilter(url);
     });
     window.addEventListener('popstate', () => loadFilter(location.href, false));
 }

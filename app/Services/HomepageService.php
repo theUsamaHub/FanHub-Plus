@@ -43,6 +43,13 @@ class HomepageService
             ->orderBy('name')->get(['id', 'name', 'slug']));
     }
 
+    public function merchandise(string $category = 'all'): Collection
+    {
+        return $this->remember('merchandise:'.$category, fn () => MerchandiseItem::with(['category', 'imageMedia'])
+            ->when($category !== 'all', fn ($query) => $query->whereHas('category', fn ($query) => $query->where('slug', $category)))
+            ->orderByDesc('view_count')->orderByDesc('id')->limit(24)->get());
+    }
+
     public function releases(string $filter = 'all', int $limit = 6): Collection
     {
         return $this->remember('releases:'.$filter.':'.$limit, function () use ($filter, $limit) {

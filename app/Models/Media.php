@@ -46,7 +46,16 @@ class Media extends Model
 
     public function getUrlAttribute(): string
     {
+        if (! $this->hasValidPath()) {
+            return '';
+        }
+
         return Storage::disk($this->disk)->url($this->path);
+    }
+
+    public function hasValidPath(): bool
+    {
+        return is_string($this->path) && $this->path !== '' && $this->path !== '0';
     }
 
     public function getSizeFormattedAttribute(): string
@@ -120,6 +129,7 @@ class Media extends Model
             + CharacterProfile::where('image_media_id', $this->id)->count()
             + MerchandiseItem::where('image_media_id', $this->id)->count()
             + Event::where('cover_media_id', $this->id)->count()
+            + \Illuminate\Support\Facades\DB::table('event_media')->where('media_id', $this->id)->count()
             + UserProfile::where('avatar_media_id', $this->id)->count()
             + ContentMedia::where('media_id', $this->id)->count();
     }
