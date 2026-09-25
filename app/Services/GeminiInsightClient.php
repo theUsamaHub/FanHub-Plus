@@ -39,7 +39,8 @@ class GeminiInsightClient
         try {
             $response = Http::withHeaders(['x-goog-api-key' => $key])
                 ->acceptJson()
-                ->timeout(8)
+                ->timeout(3)
+                ->retry(1, 200)
                 ->post("https://generativelanguage.googleapis.com/v1beta/models/{$model}:generateContent", [
                     'contents' => [[
                         'parts' => [['text' => $prompt]],

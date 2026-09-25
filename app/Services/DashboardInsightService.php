@@ -30,7 +30,12 @@ class DashboardInsightService
 
         $insights = array_values(array_filter($insights));
 
-        return app(GeminiInsightClient::class)->enrich($insights);
+        // Cache so a slow/429 Gemini call never blocks the dashboard load.
+        return \Illuminate\Support\Facades\Cache::remember(
+            'dashboard.insights',
+            300,
+            fn () => app(GeminiInsightClient::class)->enrich($insights)
+        );
     }
 
     /**
