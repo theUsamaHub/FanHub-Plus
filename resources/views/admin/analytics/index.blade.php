@@ -388,5 +388,5 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('js/admin/analytics-charts.js') }}"></script>
+    @vite('resources/js/admin/analytics-charts.js')
 @endpush
