@@ -111,10 +111,18 @@ class Event extends Model
     protected static function booted(): void
     {
         static::creating(function (Event $event) {
-            if ($event->slug) return;
+            if (! empty($event->slug)) return;
             $base = Str::slug($event->title) ?: 'event';
             $slug = $base;
             for ($suffix = 2; static::where('slug', $slug)->exists(); $suffix++) $slug = $base.'-'.$suffix;
+            $event->slug = $slug;
+        });
+
+        static::updating(function (Event $event) {
+            if (! empty($event->slug)) return;
+            $base = Str::slug($event->title) ?: 'event';
+            $slug = $base;
+            for ($suffix = 2; static::where('slug', $slug)->where('id', '!=', $event->id)->exists(); $suffix++) $slug = $base.'-'.$suffix;
             $event->slug = $slug;
         });
     }

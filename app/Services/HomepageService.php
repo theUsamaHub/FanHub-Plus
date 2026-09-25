@@ -33,6 +33,8 @@ class HomepageService
             'featuredStories' => Content::visibleToPublic()->ofType('article')->where('is_featured', true)
                 ->with(['category:id,name,slug', 'submittedBy:id,name', 'tags:id,name,slug', 'media'])
                 ->orderByDesc('popularity_score')->orderByDesc('published_at')->orderByDesc('id')->limit(3)->get(),
+            'multimediaItems' => \App\Models\Media::where('media_type', 'image')
+                ->orderByDesc('id')->limit(30)->get(['id', 'disk', 'path', 'alt_text', 'media_type']),
         ]);
     }
 

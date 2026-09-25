@@ -10,12 +10,14 @@ import { revealCards, revealHeading } from '../modules/home-reveals';
 import '../modules/hero-video';
 import { initHomeMerchandise, initJoinReveal } from '../modules/home-merchandise';
 import { initExploreFandoms } from '../modules/explore-fandom';
+import { initMultimedia } from '../modules/home-multimedia';
 
 const page = document.querySelector('[data-page="home"]');
 
 if (page) {
     gsap.registerPlugin(ScrollTrigger);
     initExploreFandoms(page);
+    initMultimedia(page);
     initHomeMerchandise(page);
     initJoinReveal(page);
     initReleaseTimeline(page);
