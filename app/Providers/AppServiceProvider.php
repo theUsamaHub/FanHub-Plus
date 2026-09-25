@@ -11,7 +11,7 @@ use App\Models\Media;
 use App\Models\MerchandiseItem;
 use App\Observers\HomepageCacheObserver;
 use Illuminate\Auth\Events\Login;
-use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Event as EventFacade;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         // Record successful sign-ins so the admin activity log is a real audit trail.
-        Event::listen(Login::class, function (Login $event) {
+        EventFacade::listen(Login::class, function (Login $event) {
             ActivityLog::log('login', $event->user, null, [
                 'email' => $event->user->email,
                 'guard' => $event->guard,
