@@ -10,3 +10,6 @@ import '../css/components/merchandise.css';
 import './modules/merchandise-bookmarks';
 import '../css/pages/fandoms.css';
 import './modules/card-reveal';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import '../css/member.css';
+import './modules/member';

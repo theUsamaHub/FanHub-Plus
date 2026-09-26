@@ -14,12 +14,13 @@
         <div class="fandom-reading__prose">
             @if($content->excerpt)<p class="fandom-reading__lead">{{ $content->excerpt }}</p>@endif
             @if($content->release_date)<p class="fandom-reading__release">Release date: <time datetime="{{ $content->release_date->format('Y-m-d') }}">{{ $content->release_date->format('F j, Y') }}</time></p>@endif
-            <div class="fandom-reading__body">{{ trim(strip_tags(preg_replace('/<\/(p|div|h[1-6])>|<br\s*\/?\s*>/i', "\n\n", $content->body ?? ''))) }}</div>
+            <div class="fandom-reading__body fandom-reading__body--rich">{!! \App\Support\SafeArticleHtml::render($content->body) !!}</div>
             @if($content->mediaByRole('gallery')->isNotEmpty())<div class="fandom-reading__gallery">@foreach($content->mediaByRole('gallery') as $media)<img src="{{ $media->url }}" alt="{{ $media->alt_text ?? '' }}" loading="lazy">@endforeach</div>@endif
             @foreach($content->mediaByRole('trailer') as $media)<video class="fandom-reading__media" controls preload="metadata" aria-label="{{ $content->title }} trailer" src="{{ $media->url }}"></video>@endforeach
             @foreach($content->mediaByRole('audio_clip') as $media)<audio class="fandom-reading__media" controls preload="metadata" aria-label="{{ $content->title }} audio" src="{{ $media->url }}"></audio>@endforeach
         </div>
     </div>
     @if($related->isNotEmpty())<section class="fandom-reading__related" aria-labelledby="related-title"><div class="fandom-section-title"><div><p class="fandom-eyebrow">KEEP EXPLORING</p><h2 id="related-title">One more <em>chapter.</em></h2></div></div><div class="fandom-story-grid">@foreach($related as $story)<x-fandom-story-card :story="$story" />@endforeach</div></section>@endif
+    <x-member-interactions :item="$content" type="content" />
 </article>
 @endsection

@@ -1,0 +1,278 @@
+/* ==========================================
+   EXPLORE FANDOMS SECTION STYLING
+   ========================================== */
+
+.home-page .home-section.explore-fandoms {
+    position: relative;
+    padding-block: clamp(40px, 5vw, 70px) clamp(30px, 4vw, 50px);
+    padding-inline: 0 !important;
+    overflow: hidden;
+    user-select: none;
+}
+
+.explore-fandoms__heading {
+    padding-inline: 18px;
+    text-align: center;
+    position: relative;
+    z-index: 5;
+    margin-bottom: clamp(24px, 3.5vw, 40px);
+}
+
+.explore-fandoms__eyebrow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #ff813e;
+    text-transform: uppercase;
+}
+
+.explore-fandoms__eyebrow span {
+    width: 42px;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, #ff813e);
+}
+
+.explore-fandoms__eyebrow span:last-child {
+    transform: rotate(180deg);
+}
+
+.explore-fandoms__heading h2 {
+    margin: 0;
+    font: italic 800 clamp(32px, 3.6vw, 50px)/1.15 'Rajdhani', sans-serif;
+    letter-spacing: -0.5px;
+    color: var(--fh-text, #ffffff);
+}
+
+.explore-fandoms__heading h2 span {
+    background: linear-gradient(110deg, #ff943b 0%, #ff584e 50%, #e17bcc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.explore-fandoms__heading > p:last-child {
+    margin: 10px auto 0;
+    max-width: 520px;
+    font-size: clamp(13px, 1.1vw, 15px);
+    color: var(--fh-muted, #9a95a8);
+}
+
+/* Fandom Cluster Container */
+.fandom-cluster-wrapper {
+    overflow: clip;
+    position: relative;
+    width: 100%;
+    max-width: none;
+    margin: 0 auto;
+    padding: 20px 0 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: clamp(200px, 24vw, 260px);
+}
+
+.fandom-cluster {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: clamp(180px, 22vw, 240px);
+}
+
+/* Circular Fandom Item */
+.fandom-orbit {
+    --orbit-gradient: linear-gradient(135deg, #ff813e, #ff584e);
+    --orbit-glow: rgba(255, 129, 62, 0.45);
+    position: absolute;
+    width: clamp(130px, 15vw, 180px);
+    height: clamp(130px, 15vw, 180px);
+    border-radius: 50%;
+    text-decoration: none !important;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    will-change: transform, opacity;
+}
+
+/* Accent Palette: Orange, Red-Orange, Light-Purple */
+.fandom-orbit:nth-child(3n+1) {
+    --orbit-gradient: linear-gradient(135deg, #ff943b, #ff584e);
+    --orbit-glow: rgba(255, 129, 62, 0.5);
+}
+.fandom-orbit:nth-child(3n+2) {
+    --orbit-gradient: linear-gradient(135deg, #b38afa, #e17bcc);
+    --orbit-glow: rgba(179, 138, 250, 0.5);
+}
+.fandom-orbit:nth-child(3n+3) {
+    --orbit-gradient: linear-gradient(135deg, #ff584e, #e17bcc);
+    --orbit-glow: rgba(255, 88, 78, 0.5);
+}
+
+.fandom-orbit.is-primary {
+    --orbit-gradient: linear-gradient(135deg, #ff943b, #ff584e);
+    --orbit-glow: rgba(255, 148, 59, 0.65);
+}
+
+/* Ring Outer Circle */
+.fandom-orbit__circle {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    padding: 3.5px;
+    background: var(--orbit-gradient);
+    box-shadow: 0 0 20px var(--orbit-glow), 0 8px 24px rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+    transition: box-shadow 0.35s ease, transform 0.3s ease;
+    display: block;
+}
+
+.fandom-orbit__circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+    transition: filter 0.35s ease, transform 0.4s ease;
+    background: #140d21;
+}
+
+/* Overlay & Text */
+.fandom-orbit__overlay {
+    position: absolute;
+    inset: 3.5px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(20, 13, 33, 0.85) 0%, rgba(15, 9, 24, 0.94) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    padding: 12px;
+    text-align: center;
+    pointer-events: none;
+}
+
+.fandom-orbit__overlay .fh-icon {
+    width: clamp(22px, 2.2vw, 30px);
+    height: clamp(22px, 2.2vw, 30px);
+    color: #ff943b;
+    stroke-width: 2;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+}
+
+.fandom-orbit__name {
+    font: 700 clamp(13px, 1.4vw, 17px)/1.2 'Saira', sans-serif;
+    color: #ffffff;
+    letter-spacing: 0.3px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Hover & Selected States */
+@media (hover: hover) and (pointer: fine) {
+    .fandom-orbit:hover .fandom-orbit__circle {
+        transform: scale(1.08);
+        box-shadow: 0 0 28px var(--orbit-glow), 0 12px 30px rgba(0, 0, 0, 0.45);
+    }
+    .fandom-orbit:hover .fandom-orbit__overlay {
+        opacity: 1;
+    }
+    .fandom-orbit:hover img {
+        filter: blur(2px) brightness(0.6);
+        transform: scale(1.08);
+    }
+}
+
+.fandom-orbit.is-selected .fandom-orbit__circle,
+.fandom-orbit:focus-visible .fandom-orbit__circle {
+    transform: scale(1.08);
+    box-shadow: 0 0 30px var(--orbit-glow), 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+.fandom-orbit.is-selected .fandom-orbit__overlay,
+.fandom-orbit:focus-visible .fandom-orbit__overlay {
+    opacity: 1;
+}
+.fandom-orbit.is-selected img,
+.fandom-orbit:focus-visible img {
+    filter: blur(2px) brightness(0.6);
+    transform: scale(1.08);
+}
+
+/* Light Theme Adaptations */
+:root[data-theme='light'] .explore-fandoms__eyebrow {
+    color: #e65c00;
+}
+:root[data-theme='light'] .explore-fandoms__heading h2 {
+    color: #1a162b;
+}
+:root[data-theme='light'] .fandom-orbit__circle {
+    box-shadow: 0 0 18px var(--orbit-glow), 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+:root[data-theme='light'] .fandom-orbit__overlay {
+    background: radial-gradient(circle at center, rgba(20, 13, 33, 0.82) 0%, rgba(15, 9, 24, 0.92) 100%);
+}
+
+/* Hint */
+.explore-fandoms__hint {
+    text-align: center;
+    color: var(--fh-muted, #9a95a8);
+    font-size: 12px;
+    letter-spacing: 0.4px;
+    margin-top: 12px;
+}
+.fandom-hint-desktop { display: inline; }
+.fandom-hint-touch { display: none; }
+.fandom-playback { display: block; min-height: 44px; margin: 8px auto 0; padding: 8px 16px; border: 1px solid var(--fh-line); border-radius: 24px; background: transparent; color: var(--fh-muted); font-size: 12px; }
+.fandom-orbit:focus-visible { outline: 2px solid var(--fh-accent); outline-offset: 7px; }
+
+/* Responsive Mobile / Tablet Styling */
+@media (max-width: 900px) {
+    .fandom-hint-desktop { display: none; }
+    .fandom-hint-touch { display: inline; }
+    .fandom-cluster-wrapper {
+        padding-inline: 0;
+        overflow: clip;
+        -webkit-overflow-scrolling: touch;
+    }
+    .fandom-orbit {
+        width: clamp(100px, 24vw, 130px);
+        height: clamp(100px, 24vw, 130px);
+    }
+}
+
+/* Static Reduced Motion Layout */
+.is-static .fandom-cluster {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    height: auto;
+}
+.is-static .fandom-orbit {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fandom-orbit, .fandom-orbit__circle, .fandom-orbit img, .fandom-orbit__overlay {
+        transition: none !important;
+        animation: none !important;
+    }
+    .fandom-orbit__overlay {
+        opacity: 1;
+        background: rgba(15, 9, 24, 0.7);
+    }
+    .fandom-orbit img {
+        filter: brightness(0.7);
+    }
+}

@@ -8,6 +8,7 @@ Route::post('/chatbot/message', [\App\Http\Controllers\ChatbotController::class,
 
 Route::get('/explore', [PublicSiteController::class, 'explore'])->name('public.explore');
 Route::get('/events', [\App\Http\Controllers\EventController::class, 'index'])->name('events.index');
+Route::get('/events/nearby', \App\Http\Controllers\NearbyEventsController::class)->name('events.nearby');
 Route::get('/events/{event:slug}/calendar', [\App\Http\Controllers\EventController::class, 'calendar'])->name('events.calendar');
 Route::get('/events/{event:slug}', [\App\Http\Controllers\EventController::class, 'show'])->name('events.show');
 Route::redirect('/discover/events', '/events', 301);

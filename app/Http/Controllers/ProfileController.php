@@ -24,16 +24,19 @@ class ProfileController extends Controller
     {
         $user = $request->user()->load(['profile.avatarMedia']);
 
-        return view('profile.edit', [
+        return view($user->hasRole('admin') ? 'profile.edit' : 'user.profile', [
             'user' => $user,
-            'images' => Media::where('media_type', 'image')->orderBy('original_filename')->get(['id', 'original_filename']),
+            'images' => Media::where('uploaded_by', $user->id)->where('media_type', 'image')->orderBy('original_filename')->get(['id', 'original_filename']),
+            'categories' => \App\Models\Category::orderBy('name')->get(),
+            'selected' => $user->favoriteCategories()->pluck('categories.id')->all(),
         ]);
     }
 
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
-        $user->fill($request->safe()->only(['name']));
+        $user->fill($request->safe()->only(['name', 'email']));
+        if ($user->isDirty('email')) $user->email_verified_at = null;
         $user->save();
 
         $avatarMediaId = $user->profile?->avatar_media_id;
@@ -67,6 +70,7 @@ class ProfileController extends Controller
                 ['avatar_media_id' => $avatarMediaId]
             );
         } else {
+            if ($request->has('favorites_present')) $user->favoriteCategories()->sync($request->validated('favorites', []));
             UserProfile::updateOrCreate(
                 ['user_id' => $user->id],
                 array_merge(
@@ -85,7 +89,7 @@ class ProfileController extends Controller
             );
         }
 
-        return Redirect::route('profile.edit');
+        return Redirect::route('profile.edit')->with('success', 'Your profile and preferences have been saved.');
     }
 
     public function updateNewsletterPreferences(Request $request): RedirectResponse
@@ -132,7 +136,7 @@ class ProfileController extends Controller
 
     public function destroy(Request $request): RedirectResponse
     {
-        $request->validate([
+        $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current_password'],
         ]);
 

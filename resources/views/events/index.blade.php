@@ -35,6 +35,7 @@
     @endif
 
     <section class="events-explore events-container" id="explore-events" aria-labelledby="explore-title">
+        <a class="events-text-link" href="{{ route('events.nearby') }}">Find events near me <x-site-icon name="compass" /></a>
         <div class="events-section-heading" data-event-reveal><div><p class="events-kicker">MAKE ROOM IN YOUR CALENDAR</p><h2 id="explore-title">Explore all <em>events.</em></h2></div><p>Find your people.<br>Make it a date.</p></div>
         @include('events.partials.filters')
         <div class="events-results-bar"><p><strong>{{ number_format($events->total()) }}</strong> {{ $hasFilters ? 'matching' : 'more' }} {{ \Illuminate\Support\Str::plural('event', $events->total()) }}@if($events->total()) <span> / {{ $events->firstItem() }}–{{ $events->lastItem() }}</span>@endif</p><span>Times shown in {{ config('app.timezone') }}</span></div>
