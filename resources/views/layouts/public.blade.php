@@ -17,7 +17,7 @@
         })();
     </script>
     @endauth
-    @vite('resources/js/public.js')
+    @vite(['resources/css/public.css', 'resources/js/public.js'])
     @stack('styles')
 </head>
 <body class="fh-site">
