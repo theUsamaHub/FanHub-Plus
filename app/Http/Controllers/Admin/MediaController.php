@@ -7,6 +7,7 @@ use App\Models\Media;
 use App\Services\FileUploadService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class MediaController extends Controller
 {
