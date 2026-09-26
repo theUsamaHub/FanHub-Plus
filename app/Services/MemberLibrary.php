@@ -30,7 +30,8 @@ class MemberLibrary
             'event' => 'events.show',
         };
         $url = $item->slug ? route($route, $item->slug) : route('events.index');
-        return ['id' => $item->id, 'type' => $type, 'title' => $item->title ?? $item->name,
+        $contentType = $item instanceof Content ? $item->type : $type;
+        return ['id' => $item->id, 'type' => $contentType, 'title' => $item->title ?? $item->name,
             'image' => $item->artwork_url ?: asset('images/fandoms/anime.png'),
             'category' => $item->category?->name ?? ucfirst($type), 'url' => $url];
     }

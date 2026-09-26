@@ -137,6 +137,10 @@ class ContentController extends Controller
         );
 
         $data['is_featured'] = $request->boolean('is_featured');
+        if (! empty($data['published_at'])) {
+            $data['published_at'] = \Carbon\Carbon::parse($data['published_at'], config('publishing.timezone'))
+                ->setTimezone(config('app.timezone'));
+        }
 
         return $data;
     }

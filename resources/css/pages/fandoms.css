@@ -84,3 +84,35 @@
 @media(max-width:1000px) { .fandom-story-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } .fandom-search { grid-template-columns: 1fr 1fr; } .fandom-reading__layout { grid-template-columns: 170px minmax(0,1fr); gap: 30px; } }
 @media(max-width:700px) { .fandom-page,.fandom-reading { padding: 14px 18px 50px; } .fandom-hero { min-height: 485px; border-radius: 16px; } .fandom-hero__content { padding: 32px 24px; } .fandom-hero::before { background: linear-gradient(90deg,#120f1be8,#120f1b88),linear-gradient(0deg,#120f1bf2,transparent); } .fandom-hero h1 { letter-spacing: -1.8px; font-size: clamp(48px,11vw,75px); } .fandom-hero__footer { padding: 18px 24px; font-size: 8px; letter-spacing: 1px; } .fandom-eyebrow { font-size: 9px; letter-spacing: 1.6px; } .fandom-library { padding-top: 36px; } .fandom-section-title { align-items: start; flex-direction: column; gap: 8px; } .fandom-section-title > p { margin-top: 0; } .fandom-search { padding: 18px; gap: 16px 12px; } .fandom-search label:first-child,.fandom-search button { grid-column: 1 / -1; } .fandom-search input,.fandom-search select { font-size: 16px; } .fandom-story-grid { grid-template-columns: minmax(0,1fr); gap: 22px; } .fandom-results > span:last-child:not(:first-child) { display: none; } .fandom-story h3 { font-size: 30px; } .fandom-reading__layout { grid-template-columns: 1fr; gap: 28px; padding-top: 30px; } .fandom-reading__aside { order: 2; } .fandom-reading__header { padding-top: 12px; } .fandom-back { margin-bottom: 28px; } .fandom-reading__meta { gap: 12px; font-size: 10px; } .fandom-reading__related { margin-top: 40px; } .fandom-pagination { font-size: 10px; gap: 8px; } }
 @media(prefers-reduced-motion:reduce) { .fandom-story,.fandom-story img,.fandom-story__arrow,.fandom-action { transition: none; } .fandom-story:hover,.fandom-story:hover img,.fandom-action:hover { transform: none; } }
+
+/* ===== Fandom Content Card (type-aware) ===== */
+.fandom-content-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 26px; }
+.fandom-content { min-width: 0; border-radius: 16px; overflow: hidden; border: 1px solid var(--fh-line); background: var(--fh-surface); transition: transform .35s, box-shadow .35s, border-color .35s; }
+.fandom-content__link { display: flex; flex-direction: column; height: 100%; color: var(--fh-text) !important; }
+.fandom-content__art { position: relative; aspect-ratio: 1.5; overflow: hidden; background: var(--fh-bg); }
+.fandom-content__art::after { content: ''; position: absolute; inset: 40% 0 0; background: linear-gradient(transparent,#130f2166); pointer-events: none; }
+.fandom-content__art img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s; }
+.fandom-content__badge { position: absolute; top: 16px; left: 16px; max-width: calc(100% - 32px); padding: 6px 11px; border: 1px solid #ffffff30; border-radius: 6px; background: #181320d9; color: #fff9f2; font-size: 10px; backdrop-filter: blur(12px); }
+.fandom-content__type { position: absolute; top: 16px; right: 16px; z-index: 1; display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 6px; background: rgba(18,15,27,0.85); color: #fff9f2; font-size: 9px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; backdrop-filter: blur(12px); }
+.fandom-content__type .fh-icon { width: 12px; height: 12px; }
+.fandom-content__type--article { border: 1px solid #4a90d9; color: #4a90d9; background: rgba(74,144,217,0.15); }
+.fandom-content__type--video { border: 1px solid #e88665; color: #e88665; background: rgba(232,134,101,0.15); }
+.fandom-content__type--audio { border: 1px solid #60d3ab; color: #60d3ab; background: rgba(96,211,171,0.15); }
+.fandom-content__type--image { border: 1px solid #c3b2ef; color: #c3b2ef; background: rgba(195,178,239,0.15); }
+.fandom-content__featured { position: absolute; bottom: 18px; left: 18px; z-index: 1; color: #fff9f2; font-size: 9px; letter-spacing: 2px; }
+.fandom-content__arrow { display: grid; place-items: center; position: absolute; bottom: 16px; right: 16px; z-index: 1; width: 38px; height: 38px; border-radius: 50%; background: #fff9f2; color: #231b30; transform: rotate(-35deg); transition: transform .35s; }
+.fandom-content__arrow .fh-icon { width: 20px; height: 20px; }
+.fandom-content__body { padding: 24px; display: flex; flex-direction: column; flex: 1; }
+.fandom-content__meta { display: flex; justify-content: space-between; gap: 12px; font-size: 10px; color: var(--fh-muted); margin: 0 0 14px; }
+.fandom-content__meta > span:first-child { color: var(--fh-accent); text-transform: uppercase; letter-spacing: 1px; }
+.fandom-content h3 { font: 600 clamp(25px,2.2vw,32px)/1.12 'Rajdhani',sans-serif; margin: 0 0 14px; overflow-wrap: anywhere; }
+.fandom-content__excerpt { margin: 0 0 25px; font-size: 12px; line-height: 1.8; color: var(--fh-muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.fandom-content__foot { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--fh-line); display: flex; justify-content: space-between; gap: 12px; font-size: 10px; color: var(--fh-muted); }
+.fandom-content__foot > span:last-child { color: var(--fh-text); }
+.fandom-content:focus-within { outline: 2px solid var(--fh-accent); outline-offset: 4px; }
+
+@media(hover:hover) and (pointer:fine) { .fandom-content:hover { transform: translateY(-7px); border-color: var(--fandom-color); box-shadow: 0 16px 40px #0002; } .fandom-content:hover img { transform: scale(1.055); } .fandom-content:hover .fandom-content__arrow { transform: rotate(0); } }
+
+@media(max-width:1000px) { .fandom-content-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media(max-width:700px) { .fandom-content-grid { grid-template-columns: minmax(0,1fr); gap: 22px; } }
+@media(prefers-reduced-motion:reduce) { .fandom-content,.fandom-content img,.fandom-content__arrow,.fandom-action { transition: none; } .fandom-content:hover,.fandom-content:hover img,.fandom-action:hover { transform: none; } }
