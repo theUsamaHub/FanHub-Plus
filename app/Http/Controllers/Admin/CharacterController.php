@@ -17,7 +17,14 @@ class CharacterController extends Controller
 {
     public function index(Request $request): View
     {
-        $query = CharacterProfile::with(['category', 'imageMedia'])->withCount('contents');
+        // Eager-load a limited slice of related content so the listing can
+        // surface the first few titles without an N+1 query. Full counts
+        // still come through withCount('contents').
+        $query = CharacterProfile::with([
+            'category',
+            'imageMedia',
+            'contents' => fn ($q) => $q->orderBy('title'),
+        ])->withCount('contents');
 
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {

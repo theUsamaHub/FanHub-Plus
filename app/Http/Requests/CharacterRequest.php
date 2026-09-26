@@ -40,21 +40,41 @@ class CharacterRequest extends FormRequest
      *   - every selected Content must exist
      *   - every selected Content must belong to the chosen Category
      * A Character MUST belong to at least one specific Content record.
+     *
+     * Strict comparison (===) is unreliable because form-submitted
+     * checkbox values come in as strings while DB ids are integers.
+     * We normalise both sides to integers and rebuild a position map
+     * so the error key lines up with the field that actually failed.
      */
     public function withValidator(Validator $validator): void
     {
         $validator->after(function (Validator $validator) {
-            $categoryId = $this->input('category_id');
-            $contentIds = $this->input('content_ids', []);
-            if (! $categoryId || empty($contentIds)) {
+            $categoryId = (int) $this->input('category_id');
+            $rawContentIds = $this->input('content_ids', []);
+
+            if (! $categoryId || empty($rawContentIds)) {
                 return;
             }
+
+            $contentIds = array_map('intval', (array) $rawContentIds);
+            $positionMap = [];
+            foreach ($contentIds as $position => $id) {
+                $positionMap[$id] = $position;
+            }
+
             $invalid = Content::whereIn('id', $contentIds)
                 ->where('category_id', '!=', $categoryId)
-                ->pluck('id')->all();
+                ->pluck('id')
+                ->map(fn ($id) => (int) $id)
+                ->all();
+
             foreach ($invalid as $id) {
+                $key = $positionMap[$id] ?? null;
+                if ($key === null) {
+                    continue;
+                }
                 $validator->errors()->add(
-                    'content_ids.'.array_search($id, $contentIds, true),
+                    'content_ids.'.$key,
                     'Selected content does not belong to the chosen category.'
                 );
             }

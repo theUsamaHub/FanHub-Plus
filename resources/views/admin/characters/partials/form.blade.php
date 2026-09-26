@@ -124,7 +124,6 @@
 </div>
 
 @push('scripts')
-@push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     var categorySelect = document.getElementById('category_id');

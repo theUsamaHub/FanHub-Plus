@@ -58,7 +58,20 @@
                                 </td>
                                 <td>{{ $character->category?->name ?? '-' }}</td>
                                 <td><code>{{ $character->slug }}</code></td>
-                                <td>{{ $character->contents_count }}</td>
+                                <td>
+                                    @if ($character->contents_count === 0)
+                                        <span class="text-muted">{{ __('No content') }}</span>
+                                    @else
+                                        @php
+                                            $titles = $character->contents->pluck('title')->all();
+                                            $remaining = max(0, $character->contents_count - count($titles));
+                                        @endphp
+                                        {{ \Illuminate\Support\Str::limit(implode(', ', $titles), 80) }}
+                                        @if ($remaining > 0)
+                                            <span class="text-muted">+{{ $remaining }} {{ __('more') }}</span>
+                                        @endif
+                                    @endif
+                                </td>
                                 <td class="text-end">
                                     <div class="btn-group btn-group-sm">
                                         <a href="{{ route('admin.characters.show', $character) }}" class="btn btn-outline-info" title="{{ __('View') }}"><i class="bi bi-eye"></i></a>

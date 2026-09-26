@@ -64,12 +64,14 @@ class PublicSiteController extends Controller
     public function content(Content $content): View
     {
         abort_unless(Content::visibleToPublic()->whereKey($content->id)->exists(), 404);
-        $content->load(['category', 'submittedBy', 'media', 'tags', 'characters.imageMedia', 'characters.category']);
+        $content->load(['category', 'submittedBy', 'media', 'tags']);
         app(\App\Services\MemberLibrary::class)->viewed($content);
         $related = Content::visibleToPublic()->with(['category', 'media', 'tags'])
             ->where('category_id', $content->category_id)->whereKeyNot($content->id)
             ->orderByDesc('published_at')->orderByDesc('id')->limit(3)->get();
-        // Characters linked through the character_contents junction
+        // Characters linked ONLY through the character_contents junction —
+        // this enforces the many-to-many relation so unrelated Characters
+        // never appear on a Content detail page.
         $characters = $content->characters()->with(['category', 'imageMedia'])->orderBy('name')->get();
         // Merchandise scoped to this specific Content record
         $merchandise = $content->merchandiseItems()->with(['category', 'imageMedia', 'character'])
