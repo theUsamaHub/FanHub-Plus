@@ -88,6 +88,13 @@ document.addEventListener('DOMContentLoaded', function() {
             event.preventDefault();
             return false;
         });
+        
+        // Auto-show the modal on page load
+        const modal = new bootstrap.Modal(modalEl, {
+            backdrop: 'static',
+            keyboard: false
+        });
+        modal.show();
     }
     
     // Disable ESC key to close modal

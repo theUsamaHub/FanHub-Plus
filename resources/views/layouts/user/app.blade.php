@@ -50,6 +50,10 @@
         </div>
     </div>
 
+    @if (auth()->check() && !auth()->user()->hasRole('admin') && auth()->user()->profile && !auth()->user()->profile->onboarding_completed_at)
+        @include('auth.onboarding')
+    @endif
+    
     @stack('scripts')
 </body>
 </html>

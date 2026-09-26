@@ -52,6 +52,12 @@
         </div>
 
         @include('partials.command-palette')
+        
+        {{-- Onboarding Modal --}}
+        @if (auth()->check() && !auth()->user()->hasRole('admin') && auth()->user()->profile && !auth()->user()->profile->onboarding_completed_at)
+            @include('auth.onboarding')
+        @endif
+        
         <script>
             (function () {
                 const root = document.documentElement;
