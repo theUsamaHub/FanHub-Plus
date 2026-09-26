@@ -10,8 +10,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('activity_logs', function (Blueprint $table) {
-            $table->string('subject', 200)->nullable()->after('event');
-            $table->string('description', 500)->nullable()->after('subject');
+            $table->string('subject', 200)->nullable();
+            $table->string('description', 500)->nullable();
         });
 
         Schema::table('activity_logs', function (Blueprint $table) {

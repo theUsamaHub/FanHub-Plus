@@ -18,8 +18,8 @@
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.dashboard') ? 'is-active' : '' }}" href="{{ route('admin.dashboard') }}" title="{{ __('Dashboard') }}">
             <i class="bi bi-speedometer2"></i> <span>{{ __('Dashboard') }}</span>
         </a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.health.index') ? 'is-active' : '' }}" href="{{ route('admin.health.index') }}" title="{{ __('Health') }}">
-            <i class="bi bi-heart-pulse"></i> <span>{{ __('Health') }}</span>
+        <a class="fh-adm-nav-link {{ request()->routeIs('profile.edit') ? 'is-active' : '' }}" href="{{ route('profile.edit') }}" title="{{ __('Profile') }}">
+            <i class="bi bi-person"></i> <span>{{ __('Profile') }}</span>
         </a>
 
         <div class="fh-adm-nav-group">{{ __('Content') }}</div>

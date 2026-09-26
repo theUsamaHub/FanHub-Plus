@@ -10,7 +10,7 @@ return new class extends Migration
     {
         if (! Schema::hasColumn('events', 'status')) {
             Schema::table('events', function (Blueprint $table) {
-                $table->enum('status', ['draft', 'published', 'cancelled'])->default('draft')->after('ticket_url');
+                $table->enum('status', ['draft', 'published', 'cancelled'])->default('draft');
             });
         }
     }

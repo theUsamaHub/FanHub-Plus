@@ -25,8 +25,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('categories', function (Blueprint $table) {
-            $table->timestamp('published_at')->nullable()->after('body');
-            $table->timestamp('unpublish_at')->nullable()->after('published_at');
+            $table->timestamp('published_at')->nullable();
+            $table->timestamp('unpublish_at')->nullable();
             $table->index(['is_active', 'published_at']);
             $table->index(['is_active', 'unpublish_at']);
             $table->index('published_at');
