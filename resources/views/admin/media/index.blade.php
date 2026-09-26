@@ -406,7 +406,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         if (isChunkedUpload && uploadMediaId) {
             this.dataset.cancelled = 'true';
-            fetch('{{ route('media.chunk.cancel') }}', {
+            fetch('{{ route('admin.media.chunk.cancel') }}', {
                 method: 'POST',
                 body: new URLSearchParams({ media_id: uploadMediaId, _token: document.querySelector('meta[name="csrf-token"]').content }),
             });
