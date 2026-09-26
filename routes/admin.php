@@ -58,6 +58,12 @@ Route::prefix('admin')
         Route::put('/media/{media}', [\App\Http\Controllers\Admin\MediaController::class, 'update'])->name('media.update');
         Route::delete('/media/{media}', [\App\Http\Controllers\Admin\MediaController::class, 'destroy'])->name('media.destroy');
 
+        // Chunked upload for large files (movies)
+        Route::post('/media/chunk/init', [\App\Http\Controllers\Admin\MediaController::class, 'initChunkedUpload'])->name('media.chunk.init');
+        Route::post('/media/chunk/upload', [\App\Http\Controllers\Admin\MediaController::class, 'uploadChunk'])->name('media.chunk.upload');
+        Route::post('/media/chunk/complete', [\App\Http\Controllers\Admin\MediaController::class, 'completeChunkedUpload'])->name('media.chunk.complete');
+        Route::post('/media/chunk/cancel', [\App\Http\Controllers\Admin\MediaController::class, 'cancelChunkedUpload'])->name('media.chunk.cancel');
+
         Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
         Route::put('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
         Route::post('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'store'])->name('settings.store');

@@ -21,6 +21,10 @@ class Media extends Model
         'height',
         'duration',
         'alt_text',
+        'chunk_size',
+        'total_chunks',
+        'uploaded_chunks',
+        'status',
     ];
 
     protected function casts(): array
@@ -30,6 +34,9 @@ class Media extends Model
             'width' => 'integer',
             'height' => 'integer',
             'duration' => 'decimal:2',
+            'chunk_size' => 'integer',
+            'total_chunks' => 'integer',
+            'uploaded_chunks' => 'integer',
         ];
     }
 

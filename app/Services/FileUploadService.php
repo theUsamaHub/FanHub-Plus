@@ -38,9 +38,32 @@ class FileUploadService
             'max_size' => 10240, // 10MB
         ],
         'videos' => [
-            'mime_types' => ['video/mp4', 'video/webm', 'video/ogg', 'video/quicktime'],
-            'extensions' => ['mp4', 'webm', 'ogv', 'mov'],
+            'mime_types' => [
+                'video/mp4',
+                'video/webm',
+                'video/ogg',
+                'video/quicktime',
+                'video/x-msvideo',
+                'video/x-matroska',
+                'video/x-ms-wmv',
+                'video/3gpp',
+            ],
+            'extensions' => ['mp4', 'webm', 'ogv', 'mov', 'avi', 'mkv', 'wmv', '3gp'],
             'max_size' => 51200, // 50MB
+        ],
+        'movies' => [
+            'mime_types' => [
+                'video/mp4',
+                'video/webm',
+                'video/ogg',
+                'video/quicktime',
+                'video/x-msvideo',
+                'video/x-matroska',
+                'video/x-ms-wmv',
+                'video/3gpp',
+            ],
+            'extensions' => ['mp4', 'webm', 'ogv', 'mov', 'avi', 'mkv', 'wmv', '3gp'],
+            'max_size' => 524288, // 512MB
         ],
         'audio' => [
             'mime_types' => ['audio/mpeg', 'audio/wav', 'audio/ogg', 'audio/mp4', 'audio/aac'],
