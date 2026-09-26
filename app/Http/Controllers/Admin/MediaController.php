@@ -7,7 +7,6 @@ use App\Models\Media;
 use App\Services\FileUploadService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\View\View;
 
 class MediaController extends Controller
 {
@@ -86,29 +85,6 @@ class MediaController extends Controller
         }
 
         return back()->with('success', 'Files uploaded successfully.');
-    }
-
-    public function edit(Media $media): View
-    {
-        return view('admin.media.edit', compact('media'));
-    }
-
-    public function update(Request $request, Media $media): RedirectResponse
-    {
-        $request->validate([
-            'alt_text' => ['nullable', 'string', 'max:255'],
-            'duration_hours' => ['nullable', 'integer', 'min:0', 'max:23'],
-            'duration_minutes' => ['nullable', 'integer', 'min:0', 'max:59'],
-            'duration_seconds' => ['nullable', 'numeric', 'min:0', 'max:59.99'],
-        ]);
-
-        $this->fileService->updateMetadata($media, [
-            'alt_text' => $request->input('alt_text'),
-            'duration' => $this->durationFromParts($request),
-        ]);
-
-        return redirect()->route('admin.media.index')
-            ->with('success', 'Media updated successfully.');
     }
 
     /**
