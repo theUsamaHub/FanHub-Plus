@@ -248,3 +248,335 @@
     background: linear-gradient(135deg, color-mix(in srgb, var(--fh-warning) 12%, transparent), color-mix(in srgb, var(--fh-accent) 8%, transparent));
     border: 1px solid color-mix(in srgb, var(--fh-warning) 30%, transparent);
 }
+
+/* ── Onboarding Page ── */
+.fh-onboarding {
+    padding: 2rem 1rem;
+}
+
+.fh-onboarding-card {
+    background: var(--fh-panel);
+    border: 1px solid var(--fh-line);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.fh-onboarding-header {
+    text-align: center;
+}
+
+.fh-onboarding-header .fs-2 {
+    color: var(--fh-accent);
+}
+
+.fh-onboarding-header h1 {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    color: var(--fh-text);
+}
+
+.fh-onboarding-header p {
+    color: var(--fh-muted);
+}
+
+.fh-onboarding-card form {
+    margin-top: 1rem;
+}
+
+.fh-site .category-card {
+    border: 2px solid var(--fh-line);
+    border-radius: 14px;
+    padding: 1rem 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    background: var(--fh-panel);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.fh-site .category-card:hover {
+    border-color: var(--fh-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--fh-accent) 20%, transparent);
+}
+
+.fh-site .category-card.selected {
+    border-color: var(--fh-accent);
+    background: color-mix(in srgb, var(--fh-accent) 8%, var(--fh-adm-panel));
+    box-shadow: 0 0 0 2px var(--fh-accent), 0 4px 16px color-mix(in srgb, var(--fh-accent) 15%, transparent);
+}
+
+.fh-site .category-card.selected .check-indicator i {
+    display: inline-flex !important;
+}
+
+.fh-site .category-card .check-indicator {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--fh-accent);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.2s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.fh-site .category-card.selected .check-indicator {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.fh-site .category-icon {
+    transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fh-site .category-card:hover .category-icon {
+    transform: scale(1.1);
+}
+
+.fh-site .category-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--fh-text);
+}
+
+.fh-site .category-description {
+    font-size: 0.7rem;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fh-site .category-card:hover .category-description {
+    opacity: 1;
+    max-height: 40px;
+}
+
+.fh-site .category-card.selected .category-description {
+    opacity: 1;
+    max-height: 40px;
+}
+
+.fh-site .category-check {
+    margin-top: auto;
+    padding-top: 0.5rem;
+}
+
+.fh-site .check-indicator i {
+    font-size: 1.25rem;
+}
+
+.fh-onboarding-card {
+    background: var(--fh-panel);
+    border: 1px solid var(--fh-line);
+    border-radius: 16px;
+    padding: 2.5rem 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    max-width: 720px;
+    width: 100%;
+}
+
+.fh-onboarding-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.fh-onboarding-header .bi-heart-fill {
+    color: var(--fh-accent);
+}
+
+.fh-onboarding-header h1 {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    color: var(--fh-text);
+    font-size: 2rem;
+}
+
+.fh-onboarding-header p {
+    color: var(--fh-muted);
+    font-size: 1rem;
+}
+
+.fh-onboarding-card .form-label {
+    font-weight: 600;
+    color: var(--fh-text);
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+}
+
+.fh-onboarding-card .selection-counter {
+    background: var(--fh-accent);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.fh-onboarding-card .form-text {
+    color: var(--fh-muted);
+    font-size: 0.8rem;
+}
+
+.fh-site .category-card {
+    border: 2px solid var(--fh-line);
+    border-radius: 14px;
+    padding: 1rem 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    background: var(--fh-panel);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.fh-site .category-card:hover {
+    border-color: var(--fh-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--fh-accent) 20%, transparent);
+}
+
+.fh-site .category-card.selected {
+    border-color: var(--fh-accent);
+    background: color-mix(in srgb, var(--fh-accent) 8%, var(--fh-panel));
+    box-shadow: 0 0 0 2px var(--fh-accent), 0 4px 16px color-mix(in srgb, var(--fh-accent) 15%, transparent);
+}
+
+.fh-site .category-card.selected .check-indicator i {
+    display: inline-flex !important;
+}
+
+.fh-site .category-card .check-indicator {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--fh-accent);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.2s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.fh-site .category-card.selected .check-indicator {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.fh-site .category-icon {
+    transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fh-site .category-card:hover .category-icon {
+    transform: scale(1.1);
+}
+
+.fh-site .category-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--fh-text);
+}
+
+.fh-site .category-description {
+    font-size: 0.7rem;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.fh-site .category-card:hover .category-description {
+    opacity: 1;
+    max-height: 40px;
+}
+
+.fh-site .category-card.selected .category-description {
+    opacity: 1;
+    max-height: 40px;
+}
+
+.fh-site .category-check {
+    margin-top: auto;
+    padding-top: 0.5rem;
+}
+
+.fh-site .check-indicator i {
+    font-size: 1.25rem;
+}
+
+.fh-onboarding-card .btn-primary {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 12px;
+}
+
+.fh-onboarding-card .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.fh-onboarding-card .form-label {
+    font-weight: 600;
+    color: var(--fh-text);
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+}
+
+.fh-onboarding-card .selection-counter {
+    background: var(--fh-accent);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.fh-onboarding-card .form-text {
+    color: var(--fh-muted);
+    font-size: 0.8rem;
+}
+
+#selectedCount {
+    transition: all 0.2s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+#selectedCount.text-success,
+#selectedCount.text-warning,
+#selectedCount.text-danger {
+    animation: count-pulse 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+@keyframes count-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* Pulse animation for submit button */
+.fh-onboarding-card .btn-primary:not(:disabled):hover {
+    animation: button-pulse 2s ease-in-out infinite;
+}
+
+@keyframes button-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--fh-accent) 40%, transparent); }
+    50% { box-shadow: 0 0 0 8px color-mix(in srgb, var(--fh-accent) 0%, transparent); }
+}
