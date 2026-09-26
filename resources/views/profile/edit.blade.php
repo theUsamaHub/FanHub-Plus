@@ -28,6 +28,12 @@
                 </div>
             </div>
 
+            <div class="card mb-4 fh-adm-profile-card">
+                <div class="card-body p-4">
+                    @include('profile.partials.newsletter-preferences-form')
+                </div>
+            </div>
+
             <div class="card border-danger fh-adm-profile-card">
                 <div class="card-body p-4">
                     @include('profile.partials.delete-user-form')
