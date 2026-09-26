@@ -149,10 +149,10 @@
                                         <a href="{{ route('admin.newsletters.preview', $newsletter) }}" class="btn btn-outline-info" title="{{ __('Preview') }}">
                                             <i class="bi bi-eye-fill"></i>
                                         </a>
-                                        @if ($newsletter->status === 'draft')
-                                            <form action="{{ route('admin.newsletters.send', $newsletter) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Send this newsletter to all recipients?') }}')">
+@if ($newsletter->status === 'draft')
+                                            <form action="{{ route('admin.newsletters.send', $newsletter) }}" method="POST" class="d-inline" onsubmit="return confirm(\"{{ __('Send this newsletter to all recipients?') }}\")">
                                                 @csrf
-                                                <button class="btn btn-success" title="{{ __('Send') ?>">
+                                                <button class="btn btn-success" title="{{ __('Send') }}">
                                                     <i class="bi bi-send"></i>
                                                 </button>
                                             </form>
