@@ -1,5 +1,5 @@
 <article class="event-feature" data-featured-event data-position="{{ $position }}">
-    <a class="event-feature__link" href="{{ route('events.show', $event->slug) }}">
+    <a class="event-feature__link" href="{{ $event->slug ? route('events.show', $event->slug) : route('events.index') }}">
         <div class="event-feature__art">
             <img src="{{ $event->artwork_url }}" data-event-image data-fallback="{{ $event->fallback_artwork }}" alt="{{ $event->coverMedia?->alt_text ?: $event->title }}" width="1000" height="900" loading="lazy">
             <span class="event-feature__number" aria-hidden="true">{{ str_pad($position, 2, '0', STR_PAD_LEFT) }}</span>

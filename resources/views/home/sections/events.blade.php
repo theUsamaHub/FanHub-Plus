@@ -24,7 +24,11 @@
                             @if($event->venue)<span><i class="bi bi-geo" aria-hidden="true"></i>{{ $event->venue }}</span>@endif
                             <span><i class="bi bi-clock" aria-hidden="true"></i>{{ $event->display_status }}</span>
                         </div>
-                        <a class="home-events__cta" href="{{ route('events.show', $event->slug) }}">Learn more <x-site-icon name="arrow" /></a>
+                        @if($event->slug)
+                            <a class="home-events__cta" href="{{ route('events.show', $event->slug) }}">Learn more <x-site-icon name="arrow" /></a>
+                        @else
+                            <a class="home-events__cta" href="{{ route('events.index') }}">Learn more <x-site-icon name="arrow" /></a>
+                        @endif
                     </article>
                 @endforeach
             </div>
