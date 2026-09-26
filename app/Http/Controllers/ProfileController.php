@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Category;
 use App\Models\Media;
+use App\Models\Subscriber;
 use App\Models\UserProfile;
 use App\Services\FileUploadService;
 use Illuminate\Http\RedirectResponse;
@@ -22,12 +24,25 @@ class ProfileController extends Controller
     {
         $user = $request->user()->load(['profile.avatarMedia']);
 
-        return view($user->hasRole('admin') ? 'profile.edit' : 'user.profile', [
+        $view = $user->hasRole('admin') ? 'profile.edit' : 'user.profile';
+        $data = [
             'user' => $user,
-            'images' => Media::where('uploaded_by', $user->id)->where('media_type', 'image')->orderBy('original_filename')->get(['id', 'original_filename']),
-            'categories' => \App\Models\Category::orderBy('name')->get(),
+            'images' => Media::where('uploaded_by', $user->id)
+                ->where('media_type', 'image')
+                ->orderBy('original_filename')
+                ->get(['id', 'original_filename']),
+            'categories' => Category::orderBy('name')->get(),
             'selected' => $user->favoriteCategories()->pluck('categories.id')->all(),
-        ]);
+        ];
+
+        // Add subscriber info for newsletter preferences
+        $subscriber = Subscriber::where('email', $user->email)->first();
+        $preferences = $subscriber?->getPreferences() ?? [];
+        $data['subscriber'] = $subscriber;
+        $data['preferences'] = $preferences;
+        $data['selectedCategories'] = $preferences['categories'] ?? [];
+
+        return view($view, $data);
     }
 
     public function update(ProfileUpdateRequest $request): RedirectResponse
@@ -88,6 +103,48 @@ class ProfileController extends Controller
         }
 
         return Redirect::route('profile.edit')->with('success', 'Your profile and preferences have been saved.');
+    }
+
+    public function updateNewsletterPreferences(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'subscribe' => ['boolean'],
+            'categories' => ['nullable', 'array'],
+            'categories.*' => ['integer', 'exists:categories,id'],
+            'frequency' => ['nullable', 'in:instant,daily,weekly'],
+        ]);
+
+        $user = $request->user();
+        $subscribe = $request->boolean('subscribe');
+
+        $subscriber = Subscriber::firstOrNew(['email' => $user->email]);
+        
+        if ($subscribe) {
+            $preferences = [
+                'categories' => $request->input('categories', []),
+                'frequency' => $request->input('frequency', 'instant'),
+            ];
+
+            $subscriber->fill([
+                'name' => $user->name,
+                'subscribed_at' => $subscriber->subscribed_at ?? now(),
+                'unsubscribed_at' => null,
+                'status' => 'active',
+                'ip_address' => $request->ip(),
+                'preferences' => $preferences,
+            ]);
+            $subscriber->save();
+
+            return back()->with('success', 'Newsletter preferences saved. You are now subscribed!');
+        } else {
+            // Unsubscribe
+            $subscriber->update([
+                'status' => 'unsubscribed',
+                'unsubscribed_at' => now(),
+            ]);
+
+            return back()->with('success', 'You have been unsubscribed from the newsletter.');
+        }
     }
 
     public function destroy(Request $request): RedirectResponse

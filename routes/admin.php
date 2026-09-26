@@ -82,6 +82,11 @@ Route::prefix('admin')
 
         Route::get('/subscribers', [\App\Http\Controllers\Admin\SubscriberController::class, 'index'])->name('subscribers.index');
         Route::get('/subscribers/export', [\App\Http\Controllers\Admin\SubscriberController::class, 'export'])->name('subscribers.export');
+        Route::get('/subscribers/{subscriber}', [\App\Http\Controllers\Admin\SubscriberController::class, 'show'])->name('subscribers.show');
+        Route::get('/subscribers/{subscriber}/edit', [\App\Http\Controllers\Admin\SubscriberController::class, 'edit'])->name('subscribers.edit');
+        Route::put('/subscribers/{subscriber}', [\App\Http\Controllers\Admin\SubscriberController::class, 'update'])->name('subscribers.update');
+        Route::patch('/subscribers/{subscriber}/status', [\App\Http\Controllers\Admin\SubscriberController::class, 'updateStatus'])->name('subscribers.update-status');
+        Route::post('/subscribers/bulk', [\App\Http\Controllers\Admin\SubscriberController::class, 'bulkAction'])->name('subscribers.bulk');
         Route::delete('/subscribers/{subscriber}', [\App\Http\Controllers\Admin\SubscriberController::class, 'destroy'])->name('subscribers.destroy');
 
         Route::get('/chatbot/faqs', [\App\Http\Controllers\Admin\ChatbotFaqController::class, 'index'])->name('chatbot.faqs.index');
@@ -114,4 +119,9 @@ Route::prefix('admin')
         Route::post('/backup', [\App\Http\Controllers\Admin\BackupController::class, 'create'])->name('backup.create');
         Route::get('/backup/{filename}', [\App\Http\Controllers\Admin\BackupController::class, 'download'])->name('backup.download');
         Route::delete('/backup/{filename}', [\App\Http\Controllers\Admin\BackupController::class, 'destroy'])->name('backup.destroy');
+
+        // Newsletters
+        Route::resource('newsletters', \App\Http\Controllers\Admin\NewsletterController::class);
+        Route::post('/newsletters/{newsletter}/send', [\App\Http\Controllers\Admin\NewsletterController::class, 'send'])->name('newsletters.send');
+        Route::get('/newsletters/{newsletter}/preview', [\App\Http\Controllers\Admin\NewsletterController::class, 'preview'])->name('newsletters.preview');
     });

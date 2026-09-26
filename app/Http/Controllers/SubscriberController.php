@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Subscriber;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class SubscriberController extends Controller
 {
@@ -36,5 +37,22 @@ class SubscriberController extends Controller
         ]);
 
         return back()->with('success', 'Thank you for subscribing!');
+    }
+
+    public function unsubscribe(string $token): View
+    {
+        $subscriber = Subscriber::where('unsubscribe_token', $token)->first();
+
+        if (! $subscriber) {
+            return view('subscriber.invalid-token');
+        }
+
+        $subscriber->update([
+            'status' => 'unsubscribed',
+            'unsubscribed_at' => now(),
+            'unsubscribe_token' => null,
+        ]);
+
+        return view('subscriber.unsubscribed');
     }
 }
