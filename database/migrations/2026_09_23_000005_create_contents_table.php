@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug', 280)->unique();
             $table->enum('type', ['article', 'video', 'audio', 'image'])->default('article');
-            $table->string('kind', 40)->nullable()->after('type');
+            $table->string('kind', 40)->nullable();
             $table->string('excerpt', 500)->nullable();
             $table->longText('body')->nullable();
             $table->date('release_date')->nullable();

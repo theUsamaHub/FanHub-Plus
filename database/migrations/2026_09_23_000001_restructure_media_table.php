@@ -10,14 +10,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('media', function (Blueprint $table) {
-            $table->foreignId('uploaded_by')->nullable()->after('id')->constrained('users')->nullOnDelete();
-            $table->string('original_filename')->nullable()->after('path');
-            $table->enum('media_type', ['image', 'video', 'audio', 'document'])->default('image')->after('mime_type');
-            $table->unsignedBigInteger('size_bytes')->nullable()->after('media_type');
-            $table->unsignedInteger('width')->nullable()->after('size_bytes');
-            $table->unsignedInteger('height')->nullable()->after('width');
-            $table->decimal('duration', 10, 2)->nullable()->after('height')->comment('Duration in seconds; UI takes hours+minutes input and converts automatically');
-            $table->string('alt_text')->nullable()->after('duration');
+            $table->foreignId('uploaded_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->string('original_filename')->nullable();
+            $table->enum('media_type', ['image', 'video', 'audio', 'document'])->default('image');
+            $table->unsignedBigInteger('size_bytes')->nullable();
+            $table->unsignedInteger('width')->nullable();
+            $table->unsignedInteger('height')->nullable();
+            $table->decimal('duration', 10, 2)->nullable()->comment('Duration in seconds; UI takes hours+minutes input and converts automatically');
+            $table->string('alt_text')->nullable();
             $table->string('path', 500)->change();
             $table->string('mime_type', 100)->nullable()->change();
             $table->string('disk', 50)->default('public')->change();
@@ -54,12 +54,12 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('media', function (Blueprint $table) {
-            $table->string('mediable_type')->nullable()->after('id');
-            $table->unsignedBigInteger('mediable_id')->nullable()->after('mediable_type');
-            $table->string('name')->after('mediable_id');
-            $table->string('original_name')->nullable()->after('name');
-            $table->unsignedBigInteger('size')->nullable()->after('original_name');
-            $table->foreignId('created_by')->nullable()->after('disk')->constrained('users')->nullOnDelete();
+            $table->string('mediable_type')->nullable();
+            $table->unsignedBigInteger('mediable_id')->nullable();
+            $table->string('name');
+            $table->string('original_name')->nullable();
+            $table->unsignedBigInteger('size')->nullable();
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->index(['mediable_type', 'mediable_id']);
         });
 

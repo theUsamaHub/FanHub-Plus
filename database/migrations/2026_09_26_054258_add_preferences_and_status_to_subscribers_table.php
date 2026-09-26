@@ -9,11 +9,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('subscribers', function (Blueprint $table) {
-            $table->json('preferences')->nullable()->after('ip_address');
-            $table->enum('status', ['active', 'unsubscribed', 'bounced', 'complained'])->default('active')->after('unsubscribed_at');
-            $table->string('unsubscribe_token', 64)->unique()->nullable()->after('status');
-            $table->timestamp('last_email_sent_at')->nullable()->after('unsubscribe_token');
-            $table->integer('email_count')->default(0)->after('last_email_sent_at');
+            $table->json('preferences')->nullable();
+            $table->enum('status', ['active', 'unsubscribed', 'bounced', 'complained'])->default('active');
+            $table->string('unsubscribe_token', 64)->unique()->nullable();
+            $table->timestamp('last_email_sent_at')->nullable();
+            $table->integer('email_count')->default(0);
         });
     }
 

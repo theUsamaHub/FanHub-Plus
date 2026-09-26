@@ -10,7 +10,7 @@ return new class extends Migration
     {
         if (! Schema::hasColumn('categories', 'icon_media_id')) {
             Schema::table('categories', function (Blueprint $table) {
-                $table->foreignId('icon_media_id')->nullable()->after('description')->constrained('media')->nullOnDelete();
+                $table->foreignId('icon_media_id')->nullable()->constrained('media')->nullOnDelete();
             });
         }
 
@@ -66,8 +66,8 @@ return new class extends Migration
             $table->text('description')->nullable()->change();
             $table->boolean('is_active')->default(true);
             $table->integer('sort_order')->default(0);
-            $table->string('image')->nullable()->after('description');
-            $table->text('body')->nullable()->after('image');
+            $table->string('image')->nullable();
+            $table->text('body')->nullable();
             $table->softDeletes();
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
