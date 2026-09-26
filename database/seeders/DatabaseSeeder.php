@@ -31,9 +31,8 @@ class DatabaseSeeder extends Seeder
         $this->call(ContentMediaSeeder::class);
         $this->call(MerchandiseItemSeeder::class);
         $this->call(EventSeeder::class);
-        $this->call(UpcomingReleaseSeeder::class);
 
-        // 5. User Interaction Models (Bookmarks, Ratings, Reviews, Feedback)
+        // 5. User Interaction Models
         $this->call(BookmarkSeeder::class);
         $this->call(RatingSeeder::class);
         $this->call(ReviewSeeder::class);

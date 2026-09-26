@@ -72,9 +72,6 @@
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.events.*') ? 'is-active' : '' }}" href="{{ route('admin.events.index') }}" title="{{ __('Events') }}">
             <i class="bi bi-calendar3"></i> <span>{{ __('Events') }}</span>
         </a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.upcoming-releases.*') ? 'is-active' : '' }}" href="{{ route('admin.upcoming-releases.index') }}" title="{{ __('Upcoming Releases') }}">
-            <i class="bi bi-rocket-takeoff"></i> <span>{{ __('Upcoming Releases') }}</span>
-        </a>
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.merchandise.*') ? 'is-active' : '' }}" href="{{ route('admin.merchandise.index') }}" title="{{ __('Merchandise') }}">
             <i class="bi bi-bag"></i> <span>{{ __('Merchandise') }}</span>
         </a>

@@ -2,19 +2,19 @@
 
 namespace App\Services;
 
-use App\Models\{ActivityLog, CharacterProfile, Content, Event, MerchandiseItem, UpcomingRelease};
+use App\Models\{ActivityLog, CharacterProfile, Content, Event, MerchandiseItem};
 use Illuminate\Database\Eloquent\Model;
 
 class MemberLibrary
 {
-    public const TYPES = ['content' => Content::class, 'character' => CharacterProfile::class, 'merchandise' => MerchandiseItem::class, 'event' => Event::class, 'release' => UpcomingRelease::class];
+    public const TYPES = ['content' => Content::class, 'character' => CharacterProfile::class, 'merchandise' => MerchandiseItem::class, 'event' => Event::class];
 
     public function resolve(string $type, int $id): Model
     {
         abort_unless(isset(self::TYPES[$type]), 404);
         $query = self::TYPES[$type]::query();
         if ($type === 'content') $query->visibleToPublic();
-        if ($type === 'event' || $type === 'release') $query->published();
+        if ($type === 'event') $query->published();
         return $query->findOrFail($id);
     }
 
@@ -23,12 +23,11 @@ class MemberLibrary
         if (! $item) return null;
         if ($item instanceof Content && ($item->status !== 'published' || $item->published_at?->isFuture())) return null;
         if ($item instanceof Event && $item->status !== 'published') return null;
-        if ($item instanceof UpcomingRelease && ! $item->is_published) return null;
         $type = array_search(get_class($item), self::TYPES, true);
         if (! $type) return null;
         $route = match ($type) {
             'content' => 'public.content', 'character' => 'public.character', 'merchandise' => 'public.merchandise',
-            'event' => 'events.show', 'release' => 'public.upcoming-release',
+            'event' => 'events.show',
         };
         return ['id' => $item->id, 'type' => $type, 'title' => $item->title ?? $item->name,
             'image' => $item->artwork_url ?: asset('images/fandoms/anime.png'),

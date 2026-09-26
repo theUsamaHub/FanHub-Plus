@@ -35,7 +35,6 @@ $routes = [
     'public.character' => null,
     'public.merchandise' => null,
     'events.show' => null,
-    'public.upcoming-release' => null,
 ];
 
 // Find first content
@@ -47,8 +46,6 @@ $merch = App\Models\MerchandiseItem::first();
 if ($merch) $routes['public.merchandise'] = $merch->slug;
 $event = App\Models\Event::published()->first();
 if ($event) $routes['events.show'] = $event->slug;
-$release = App\Models\UpcomingRelease::published()->first();
-if ($release) $routes['public.upcoming-release'] = $release->slug;
 
 foreach ($routes as $name => $param) {
     try {

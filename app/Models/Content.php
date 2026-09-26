@@ -19,6 +19,7 @@ class Content extends Model
         'title',
         'slug',
         'type',
+        'kind',
         'excerpt',
         'body',
         'release_date',
@@ -128,6 +129,24 @@ class Content extends Model
     public function scopeForCategory(Builder $query, int $categoryId): Builder
     {
         return $query->where('category_id', $categoryId);
+    }
+
+    public function scopeUpcoming(Builder $query): Builder
+    {
+        return $query->where(fn ($q) => $q->whereNull('release_date')->orWhereDate('release_date', '>=', today()));
+    }
+
+    public function getKindLabelAttribute(): string
+    {
+        return match ($this->kind) {
+            'anime' => 'Anime',
+            'event' => 'Event',
+            'movie' => 'Movie',
+            'series' => 'Series',
+            'game' => 'Game',
+            'merchandise' => 'Merchandise',
+            default => $this->kind ? ucfirst($this->kind) : ucfirst($this->type),
+        };
     }
 
     public static function boot(): void
