@@ -29,7 +29,7 @@
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.submissions.*') ? 'is-active' : '' }}" href="{{ route('admin.submissions.index') }}" title="{{ __('Submissions') }}">
             <i class="bi bi-inbox-fill"></i> <span>{{ __('Submissions') }}</span>
         </a>
-        <a class="fh-adm-nav-link {{ request()->routeIs('admin.categories.*') ? 'is-active' : '' }}" href="{{ route('admin.categories.index') }}" title="{{ __('Categories') }}">
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.categories.index') ? 'is-active' : '' }}" href="{{ route('admin.categories.index') }}" title="{{ __('Categories') }}">
             <i class="bi bi-tag"></i> <span>{{ __('Categories') }}</span>
         </a>
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.categories.trashed') ? 'is-active' : '' }}" href="{{ route('admin.categories.trashed') }}" title="{{ __('Recycle Bin') }}">
