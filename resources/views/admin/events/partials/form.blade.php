@@ -31,14 +31,27 @@
                         <x-input-error :messages="$errors->get('event_type')" class="mt-1" />
                     </div>
                     <div class="mb-0">
-                        <x-input-label for="category_id" :value="__('Category (optional)')" />
-                        <select name="category_id" id="category_id" class="form-select @error('category_id') is-invalid @enderror">
-                            <option value="">{{ __('None') }}</option>
+                        <x-input-label for="category_id" :value="__('Category (required)')" />
+                        <select name="category_id" id="category_id" class="form-select @error('category_id') is-invalid @enderror" required>
+                            <option value="">{{ __('Select category') }}</option>
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}" @selected((int) old('category_id', $event?->category_id) === $category->id)>{{ $category->name }}</option>
                             @endforeach
                         </select>
                         <x-input-error :messages="$errors->get('category_id')" class="mt-1" />
+                    </div>
+                    <div class="mb-0 mt-3">
+                        <x-input-label for="content_id" :value="__('Related content (optional)')" />
+                        <select name="content_id" id="content_id" class="form-select @error('content_id') is-invalid @enderror"
+                            data-event-content-select
+                            data-lookup-url-template="{{ route('admin.lookups.contents-by-category', ['category' => '__CAT__']) }}">
+                            <option value="">{{ __('General category event / No specific content') }}</option>
+                            @foreach (($contents ?? collect()) as $contentItem)
+                                <option value="{{ $contentItem->id }}" @selected((int) old('content_id', $event?->content_id) === $contentItem->id)>{{ \Illuminate\Support\Str::limit($contentItem->title, 80) }}</option>
+                            @endforeach
+                        </select>
+                        <p class="text-muted small mt-1">{{ __('Pick a specific content for screenings/launches, or leave as a general category-level event.') }}</p>
+                        <x-input-error :messages="$errors->get('content_id')" class="mt-1" />
                     </div>
                 </div>
             </div>
@@ -198,9 +211,53 @@
                     <li class="mb-2">{{ __('Start date and time is required.') }}</li>
                     <li class="mb-2">{{ __('End cannot be before start.') }}</li>
                     <li class="mb-2">{{ __('Latitude and longitude must be valid coordinates.') }}</li>
+                    <li class="mb-2">{{ __('Category is required; Related content is optional and must belong to the chosen category.') }}</li>
                     <li class="mb-0">{{ __('Cancelled events stay visible to admins.') }}</li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var categorySelect = document.getElementById('category_id');
+    var contentSelect = document.getElementById('content_id');
+    if (!categorySelect || !contentSelect) return;
+
+    var lookupTemplate = contentSelect.getAttribute('data-lookup-url-template') || '';
+    var generalOptionHtml = '<option value="">{{ __('General category event / No specific content') }}</option>';
+
+    function escapeAttr(value) {
+        return String(value == null ? '' : value).replace(/"/g, '&quot;');
+    }
+
+    function setContentOptions(contents) {
+        var html = generalOptionHtml;
+        contents.forEach(function (c) {
+            html += '<option value="' + c.id + '">' + escapeAttr((c.title || '').slice(0, 80)) + '</option>';
+        });
+        contentSelect.innerHTML = html;
+    }
+
+    function reload() {
+        var cat = categorySelect.value;
+        if (!cat || !lookupTemplate) return;
+        var url = lookupTemplate.replace('__CAT__', encodeURIComponent(cat));
+        fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' } })
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (json) {
+                if (!json || !Array.isArray(json.contents)) { setContentOptions([]); return; }
+                setContentOptions(json.contents);
+            })
+            .catch(function () { setContentOptions([]); });
+    }
+
+    categorySelect.addEventListener('change', function () {
+        contentSelect.value = '';
+        reload();
+    });
+});
+</script>
+@endpush

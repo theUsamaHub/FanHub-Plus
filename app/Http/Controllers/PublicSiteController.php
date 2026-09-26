@@ -69,8 +69,19 @@ class PublicSiteController extends Controller
         $related = Content::visibleToPublic()->with(['category', 'media', 'tags'])
             ->where('category_id', $content->category_id)->whereKeyNot($content->id)
             ->orderByDesc('published_at')->orderByDesc('id')->limit(3)->get();
+        // Characters linked ONLY through the character_contents junction —
+        // this enforces the many-to-many relation so unrelated Characters
+        // never appear on a Content detail page.
+        $characters = $content->characters()->with(['category', 'imageMedia'])->orderBy('name')->get();
+        // Merchandise scoped to this specific Content record
+        $merchandise = $content->merchandiseItems()->with(['category', 'imageMedia', 'character'])
+            ->orderByDesc('view_count')->limit(12)->get();
+        // Events tied to this Content record
+        $events = $content->events()->with(['category', 'coverMedia'])
+            ->whereRaw('COALESCE(end_at, start_at) >= ?', [now()])
+            ->orderBy('start_at')->limit(6)->get();
 
-        return view('public.content', compact('content', 'related'));
+        return view('public.content', compact('content', 'related', 'characters', 'merchandise', 'events'));
     }
 
     public function character(CharacterProfile $character): View
@@ -78,17 +89,27 @@ class PublicSiteController extends Controller
         $character->load(['category', 'imageMedia']);
         app(\App\Services\MemberLibrary::class)->viewed($character);
         $stories = $character->contents()->visibleToPublic()->latest('published_at')->paginate(6);
+        $merchandise = $character->merchandiseItems()->with(['category', 'imageMedia', 'content'])
+            ->orderByDesc('view_count')->limit(12)->get();
 
-        return view('public.character', compact('character', 'stories'));
+        return view('public.character', compact('character', 'stories', 'merchandise'));
     }
 
     public function merchandise(MerchandiseItem $merchandise): View
     {
-        $merchandise->load(['category', 'imageMedia']);
+        $merchandise->load(['category', 'imageMedia', 'content', 'character']);
         app(\App\Services\MemberLibrary::class)->viewed($merchandise);
 
-        $related = MerchandiseItem::with(['category', 'imageMedia'])->where('category_id', $merchandise->category_id)
-            ->whereKeyNot($merchandise->id)->orderByDesc('view_count')->limit(4)->get();
+        // Prefer related merchandise within the same Content, then fall back to category-level.
+        $related = MerchandiseItem::with(['category', 'imageMedia', 'content', 'character'])
+            ->where(function ($q) use ($merchandise) {
+                if ($merchandise->content_id) {
+                    $q->where('content_id', $merchandise->content_id);
+                }
+                $q->orWhere('category_id', $merchandise->category_id);
+            })
+            ->whereKeyNot($merchandise->id)
+            ->orderByDesc('view_count')->limit(4)->get();
         $savedMerchandise = $this->savedMerchandise();
 
         return view('public.merchandise', compact('merchandise', 'related', 'savedMerchandise'));

@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Content;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -24,7 +26,8 @@ class EventRequest extends FormRequest
             'gallery_present' => ['sometimes', 'boolean'],
             'gallery_media_ids' => ['nullable', 'array', 'max:12'],
             'gallery_media_ids.*' => ['integer', 'distinct', Rule::exists('media', 'id')->where('media_type', 'image')],
-            'category_id' => ['nullable', 'integer', Rule::exists('categories', 'id')],
+            'category_id' => ['required', 'integer', Rule::exists('categories', 'id')],
+            'content_id' => ['nullable', 'integer', Rule::exists('contents', 'id')],
             'city' => ['required', 'string', 'max:100'],
             'venue' => ['nullable', 'string', 'max:255'],
             'address' => ['nullable', 'string', 'max:255'],
@@ -38,10 +41,37 @@ class EventRequest extends FormRequest
         ];
     }
 
+    /**
+     * Server-side cross-relation validation:
+     *   - if content_id is provided, that Content must belong to the
+     *     selected Category.
+     *   - When content_id is null/empty the Event is a general
+     *     Category-level event and is allowed.
+     */
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function (Validator $validator) {
+            $categoryId = $this->input('category_id');
+            $contentId = $this->input('content_id');
+            if (! $categoryId || ! $contentId) {
+                return;
+            }
+            $content = Content::find($contentId);
+            if (! $content) {
+                $validator->errors()->add('content_id', 'The selected content does not exist.');
+                return;
+            }
+            if ((int) $content->category_id !== (int) $categoryId) {
+                $validator->errors()->add('content_id', 'Selected content does not belong to the chosen category.');
+            }
+        });
+    }
+
     public function messages(): array
     {
         return [
             'title.required' => 'Please enter an event title.',
+            'category_id.required' => 'Please select a category.',
             'city.required' => 'Please enter a city.',
             'start_at.required' => 'Please enter a start date and time.',
             'end_at.after_or_equal' => 'End date and time cannot be before the start.',

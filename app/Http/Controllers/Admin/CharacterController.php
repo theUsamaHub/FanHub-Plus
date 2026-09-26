@@ -10,13 +10,21 @@ use App\Models\Content;
 use App\Models\Media;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class CharacterController extends Controller
 {
     public function index(Request $request): View
     {
-        $query = CharacterProfile::with(['category', 'imageMedia'])->withCount('contents');
+        // Eager-load a limited slice of related content so the listing can
+        // surface the first few titles without an N+1 query. Full counts
+        // still come through withCount('contents').
+        $query = CharacterProfile::with([
+            'category',
+            'imageMedia',
+            'contents' => fn ($q) => $q->orderBy('title'),
+        ])->withCount('contents');
 
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
@@ -37,19 +45,24 @@ class CharacterController extends Controller
 
     public function create(): View
     {
-        return view('admin.characters.create', $this->formData());
+        return view('admin.characters.create', $this->formData([]));
     }
 
     public function store(CharacterRequest $request): RedirectResponse
     {
-        $data = $request->safe()->except(['content_ids']);
+        $payload = $request->validated();
+        $contentIds = $payload['content_ids'] ?? [];
+        $data = collect($payload)->except(['content_ids'])->all();
 
         if (empty($data['slug'])) {
             $data['slug'] = \Illuminate\Support\Str::slug($data['name']);
         }
 
-        $character = CharacterProfile::create($data);
-        $character->contents()->sync($request->input('content_ids', []));
+        $character = DB::transaction(function () use ($data, $contentIds) {
+            $character = CharacterProfile::create($data);
+            $character->contents()->sync($contentIds);
+            return $character;
+        });
 
         return redirect()->route('admin.characters.index')
             ->with('success', 'Character created successfully.');
@@ -68,23 +81,31 @@ class CharacterController extends Controller
     public function edit(CharacterProfile $character): View
     {
         $character->load('contents');
+        $selectedContentIds = $character->contents->pluck('id')->all();
 
-        return view('admin.characters.edit', array_merge($this->formData(), [
-            'character' => $character,
-            'selectedContentIds' => $character->contents->pluck('id')->all(),
-        ]));
+        return view('admin.characters.edit', array_merge(
+            $this->formData($selectedContentIds),
+            [
+                'character' => $character,
+                'selectedContentIds' => $selectedContentIds,
+            ]
+        ));
     }
 
     public function update(CharacterRequest $request, CharacterProfile $character): RedirectResponse
     {
-        $data = $request->safe()->except(['content_ids']);
+        $payload = $request->validated();
+        $contentIds = $payload['content_ids'] ?? [];
+        $data = collect($payload)->except(['content_ids'])->all();
 
         if (empty($data['slug'])) {
             $data['slug'] = \Illuminate\Support\Str::slug($data['name']);
         }
 
-        $character->update($data);
-        $character->contents()->sync($request->input('content_ids', []));
+        DB::transaction(function () use ($character, $data, $contentIds) {
+            $character->update($data);
+            $character->contents()->sync($contentIds);
+        });
 
         return redirect()->route('admin.characters.index')
             ->with('success', 'Character updated successfully.');
@@ -117,12 +138,28 @@ class CharacterController extends Controller
             ->with('success', 'Character deleted successfully.');
     }
 
-    private function formData(): array
+    private function formData(array $selectedContentIds = []): array
     {
+        $categoryId = old('category_id');
+        // Build the initial Content list scoped to the current Category
+        // (preserved across validation failures). The "selected" IDs are
+        // always included even if their Category changed so the form can
+        // show stale selections on Edit until the admin picks a new
+        // Category — the JS layer then reloads from the lookup endpoint.
+        $contentsQuery = Content::orderBy('title')->get(['id', 'title', 'type', 'status', 'category_id']);
+        $contents = $categoryId
+            ? $contentsQuery->where('category_id', $categoryId)
+            : $contentsQuery;
+        if (! empty($selectedContentIds)) {
+            $contents = $contents->merge(
+                $contentsQuery->whereIn('id', $selectedContentIds)
+            )->unique('id')->values();
+        }
+
         return [
             'categories' => Category::orderBy('name')->get(['id', 'name']),
             'images' => Media::where('media_type', 'image')->orderBy('original_filename')->get(),
-            'contents' => Content::orderBy('title')->get(['id', 'title', 'type', 'status']),
+            'contents' => $contents,
         ];
     }
 }

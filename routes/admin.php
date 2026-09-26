@@ -32,6 +32,11 @@ Route::prefix('admin')
 
         Route::resource('events', \App\Http\Controllers\Admin\EventController::class);
 
+        // Dependent-dropdown JSON endpoints (admin auth-protected via the parent group).
+        Route::get('/categories/{category}/contents', [\App\Http\Controllers\Admin\RelationLookupController::class, 'contentsByCategory'])->name('lookups.contents-by-category');
+        Route::get('/contents/{content}/characters', [\App\Http\Controllers\Admin\RelationLookupController::class, 'charactersByContent'])->name('lookups.characters-by-content');
+        Route::get('/categories/{category}/characters', [\App\Http\Controllers\Admin\RelationLookupController::class, 'charactersByCategory'])->name('lookups.characters-by-category');
+
         Route::get('/reviews', [\App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('reviews.index');
         Route::get('/reviews/{review}', [\App\Http\Controllers\Admin\ReviewController::class, 'show'])->name('reviews.show');
         Route::patch('/reviews/{review}/approve', [\App\Http\Controllers\Admin\ReviewController::class, 'approve'])->name('reviews.approve');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EventRequest;
 use App\Models\Category;
+use App\Models\Content;
 use App\Models\Event;
 use App\Models\Media;
 use Illuminate\Http\RedirectResponse;
@@ -50,13 +51,15 @@ class EventController extends Controller
 
     public function create(): View
     {
-        return view('admin.events.create', $this->formData());
+        return view('admin.events.create', array_merge($this->formData(), $this->relationPayload()));
     }
 
     public function store(EventRequest $request): RedirectResponse
     {
         DB::transaction(function () use ($request) {
-            $event = Event::create($request->safe()->except(['gallery_media_ids', 'gallery_present']));
+            $payload = collect($request->validated())->except(['gallery_media_ids', 'gallery_present'])->all();
+            $payload['content_id'] = $payload['content_id'] ?? null;
+            $event = Event::create($payload);
             $event->galleryMedia()->sync($request->validated('gallery_media_ids', []));
         });
 
@@ -73,14 +76,16 @@ class EventController extends Controller
 
     public function edit(Event $event): View
     {
-        $event->load('galleryMedia');
-        return view('admin.events.edit', array_merge($this->formData(), ['event' => $event]));
+        $event->load(['galleryMedia', 'content']);
+        return view('admin.events.edit', array_merge($this->formData(), ['event' => $event], $this->relationPayload($event)));
     }
 
     public function update(EventRequest $request, Event $event): RedirectResponse
     {
         DB::transaction(function () use ($request, $event) {
-            $event->update($request->safe()->except(['gallery_media_ids', 'gallery_present']));
+            $payload = collect($request->validated())->except(['gallery_media_ids', 'gallery_present'])->all();
+            $payload['content_id'] = $payload['content_id'] ?? null;
+            $event->update($payload);
             if ($request->boolean('gallery_present')) $event->galleryMedia()->sync($request->validated('gallery_media_ids', []));
         });
 
@@ -101,6 +106,23 @@ class EventController extends Controller
         return [
             'categories' => Category::orderBy('name')->get(['id', 'name']),
             'images' => Media::where('media_type', 'image')->orderBy('original_filename')->get(),
+        ];
+    }
+
+    /**
+     * Lookup payload for the dependent Content dropdown.
+     * Events may be general category-level (content_id = NULL), so the
+     * dropdown is optional and includes a "No specific content" option.
+     */
+    private function relationPayload(?Event $event = null): array
+    {
+        $categoryId = old('category_id', $event?->category_id);
+        $contents = $categoryId
+            ? Content::where('category_id', $categoryId)->orderBy('title')->get(['id', 'title', 'type', 'status'])
+            : collect();
+
+        return [
+            'contents' => $contents,
         ];
     }
 }
