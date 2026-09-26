@@ -56,12 +56,19 @@
                 </div>
 
                 <!-- Progress Bar (hidden by default) -->
-                <div id="uploadProgress" class="d-none mb-3">
+                <div id="uploadProgress" class="d-none mb-3 upload-progress-container">
+                    <div class="alert alert-warning border-0 bg-warning bg-opacity-10 text-warning d-flex align-items-center gap-2 mb-2 upload-progress-warning" role="alert">
+                        <i class="bi bi-exclamation-triangle fs-4"></i>
+                        <div>
+                            <strong>{{ __('Do not refresh or leave this page') }}</strong>
+                            <div class="small">{{ __('Your upload is in progress. Refreshing will cancel the upload.') }}</div>
+                        </div>
+                    </div>
                     <div class="d-flex justify-content-between mb-1">
                         <span class="fw-medium">{{ __('Uploading...') }}</span>
                         <button type="button" id="cancelUpload" class="btn btn-sm btn-outline-danger" style="font-size: 0.75rem;">{{ __('Cancel') }}</button>
                     </div>
-                    <div class="progress" style="height: 8px;">
+                    <div class="progress" style="height: 10px;">
                         <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                     <div id="progressText" class="text-muted small mt-1 text-end"></div>
@@ -406,18 +413,36 @@ document.addEventListener('DOMContentLoaded', function() {
         hideProgress();
     });
 
+    let isUploading = false;
+
     function showProgress() {
+        isUploading = true;
         progressContainer?.classList.remove('d-none');
         uploadBtn?.setAttribute('disabled', 'disabled');
         fileInput?.setAttribute('disabled', 'disabled');
         updateProgress(0, 'Starting...');
+        
+        // Add beforeunload warning
+        window.addEventListener('beforeunload', beforeUnloadHandler);
     }
 
     function hideProgress() {
+        isUploading = false;
         progressContainer?.classList.add('d-none');
         uploadBtn?.removeAttribute('disabled');
         fileInput?.removeAttribute('disabled');
         cancelBtn?.dataset.cancelled = 'false';
+        
+        // Remove beforeunload warning
+        window.removeEventListener('beforeunload', beforeUnloadHandler);
+    }
+
+    function beforeUnloadHandler(e) {
+        if (isUploading) {
+            e.preventDefault();
+            e.returnValue = '';
+            return 'Upload in progress. Are you sure you want to leave?';
+        }
     }
 
     function updateProgress(percent, text = '') {

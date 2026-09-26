@@ -3373,3 +3373,29 @@ body.fh-admin .fh-adm-heatmap-table tbody tr:hover .fh-adm-heatmap-cell {
     transform: scale(1.1);
     box-shadow: 0 0 12px color-mix(in srgb, var(--fh-accent) 40%, transparent);
 }
+
+/* ── Upload Progress Warning ── */
+body.fh-admin .upload-progress-warning {
+    animation: pulse-warning 2s ease-in-out infinite;
+}
+
+@keyframes pulse-warning {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+body.fh-admin .progress-bar-animated {
+    animation: progress-bar-stripes 1s linear infinite, pulse-bar 2s ease-in-out infinite;
+}
+
+@keyframes pulse-bar {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+body.fh-admin .upload-progress-container {
+    border-radius: var(--fh-adm-radius);
+    padding: 1rem;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--fh-warning) 12%, transparent), color-mix(in srgb, var(--fh-accent) 8%, transparent));
+    border: 1px solid color-mix(in srgb, var(--fh-warning) 30%, transparent);
+}
