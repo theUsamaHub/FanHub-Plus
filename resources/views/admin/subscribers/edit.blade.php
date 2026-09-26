@@ -17,7 +17,7 @@
         <div class="col-lg-6">
             <div class="card fh-adm-form-card">
                 <div class="card-header">
-                    <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Basic Information') }}</h6>
+                    <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Status') }}</h6>
                 </div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('admin.subscribers.update', $subscriber) }}">
@@ -26,12 +26,6 @@
                         <div class="mb-3">
                             <label class="form-label">{{ __('Email') }}</label>
                             <input type="email" class="form-control" value="{{ $subscriber->email }}" readonly>
-                            <div class="form-text">{{ __('Email cannot be changed.') }}</div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">{{ __('Name') }}</label>
-                            <input type="text" class="form-control" name="name" value="{{ $subscriber->name }}" placeholder="{{ __('Optional') }}">
                         </div>
 
                         <div class="mb-3">
@@ -46,7 +40,7 @@
 
                         <div class="d-flex gap-2">
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-save me-1"></i>{{ __('Save Changes') }}
+                                <i class="bi bi-save me-1"></i>{{ __('Save Status') }}
                             </button>
                             <a href="{{ route('admin.subscribers.show', $subscriber) }}" class="btn btn-outline-secondary">
                                 {{ __('Cancel') }}
@@ -98,41 +92,6 @@
         <div class="col-lg-6">
             <div class="card fh-adm-form-card">
                 <div class="card-header">
-                    <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Category Preferences') }}</h6>
-                </div>
-                <div class="card-body">
-                    <form method="POST" action="{{ route('admin.subscribers.update', $subscriber) }}">
-                        @csrf @method('PUT')
-
-                        <input type="hidden" name="name" value="{{ $subscriber->name }}">
-                        <input type="hidden" name="status" value="{{ $subscriber->status }}">
-
-                        <div class="mb-3">
-                            <label class="form-label">{{ __('Categories / Fandoms') }}</label>
-                            <select class="form-select" name="preferences[categories][]" multiple id="categorySelect">
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}" {{ in_array($category->id, $selectedCategories) ? 'selected' : '' }}>
-                                        {{ $category->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <div class="form-text">{{ __('Hold Ctrl/Cmd to select multiple. Empty = all categories.') }}</div>
-                        </div>
-
-                        <div class="d-flex gap-2">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-save me-1"></i>{{ __('Save Preferences') }}
-                            </button>
-                            <a href="{{ route('admin.subscribers.show', $subscriber) }}" class="btn btn-outline-secondary">
-                                {{ __('Cancel') }}
-                            </a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <div class="card fh-adm-form-card mt-4">
-                <div class="card-header">
                     <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Subscriber Stats') }}</h6>
                 </div>
                 <div class="card-body">
@@ -154,14 +113,3 @@
         </div>
     </div>
 @endsection
-
-@push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const select = document.getElementById('categorySelect');
-        if (select) {
-            // Initialize Select2 if available, otherwise native multi-select works fine
-        }
-    });
-</script>
-@endpush

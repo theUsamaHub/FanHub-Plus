@@ -54,7 +54,10 @@
         </a>
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.subscribers.*') ? 'is-active' : '' }}" href="{{ route('admin.subscribers.index') }}" title="{{ __('Subscribers') }}">
             <i class="bi bi-person-lines-fill"></i> <span>{{ __('Subscribers') }}</span>
-        </a> 
+        </a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.newsletters.*') ? 'is-active' : '' }}" href="{{ route('admin.newsletters.index') }}" title="{{ __('Newsletters') }}">
+            <i class="bi bi-envelope-heart"></i> <span>{{ __('Newsletters') }}</span>
+        </a>
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.reviews.*') ? 'is-active' : '' }}" href="{{ route('admin.reviews.index') }}" title="{{ __('Reviews') }}">
             <i class="bi bi-chat-square-text"></i> <span>{{ __('Reviews') }}</span>
         </a>
