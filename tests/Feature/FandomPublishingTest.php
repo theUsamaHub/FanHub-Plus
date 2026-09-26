@@ -14,6 +14,37 @@ class FandomPublishingTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_admin_local_publishing_time_is_visible_in_every_fandom_and_future_content_stays_scheduled(): void
+    {
+        config(['publishing.timezone' => 'Asia/Karachi', 'app.timezone' => 'UTC']);
+        $this->travelTo(\Carbon\Carbon::parse('2026-09-26 08:06:00', 'UTC'));
+        $admin = User::factory()->create();
+        $role = Role::create(['name' => 'Admin', 'slug' => 'admin']);
+        $admin->roles()->attach($role);
+        foreach (array_keys(config('fandoms')) as $slug) {
+            $category = Category::create(['name' => ucfirst($slug), 'slug' => $slug]);
+            foreach (['article', 'image', 'video', 'audio'] as $type) {
+                $title = "Published {$slug} {$type}";
+                $this->actingAs($admin)->post(route('admin.contents.store'), [
+                    'title' => $title, 'category_id' => $category->id, 'type' => $type,
+                    'status' => 'published', 'published_at' => '2026-09-26T13:05',
+                ])->assertSessionHasNoErrors()->assertRedirect();
+                $content = Content::where('title', $title)->firstOrFail();
+                $this->assertSame('08:05', $content->published_at->format('H:i'));
+                auth()->logout();
+                $this->get(route('public.explore', ['category' => $slug]))->assertOk()->assertSee($title);
+                $this->get(route('public.content', $content->slug))->assertOk();
+            }
+        }
+        $this->actingAs($admin)->post(route('admin.contents.store'), [
+            'title' => 'Scheduled tomorrow', 'category_id' => $category->id, 'type' => 'article',
+            'status' => 'published', 'published_at' => '2026-09-27T13:05',
+        ])->assertSessionHasNoErrors();
+        auth()->logout();
+        $this->get(route('public.explore'))->assertDontSee('Scheduled tomorrow');
+        $this->travelBack();
+    }
+
     public function test_every_fandom_renders_with_its_own_identity_and_empty_state(): void
     {
         foreach (config('fandoms') as $slug => $fandom) {

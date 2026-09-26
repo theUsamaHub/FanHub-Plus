@@ -237,14 +237,15 @@
                             <x-input-label for="status" :value="__('Status')" />
                             <select name="status" id="status" class="form-select @error('status') is-invalid @enderror" required>
                                 @foreach (['draft', 'pending_review', 'published', 'rejected'] as $status)
-                                    <option value="{{ $status }}" @selected(old('status', $content?->status ?? 'draft') === $status)>{{ ucwords(str_replace('_', ' ', $status)) }}</option>
+                                    <option value="{{ $status }}" @selected(old('status', $content?->status ?? 'published') === $status)>{{ ucwords(str_replace('_', ' ', $status)) }}</option>
                                 @endforeach
                             </select>
                             <x-input-error :messages="$errors->get('status')" class="mt-1" />
                         </div>
                         <div class="col-md-6 mb-3">
-                            <x-input-label for="published_at" :value="__('Published at')" />
-                            <x-text-input id="published_at" name="published_at" type="datetime-local" class="form-control" :value="old('published_at', $content?->published_at?->format('Y-m-d\TH:i'))" />
+                            <x-input-label for="published_at" :value="__('Published at').' ('.config('publishing.timezone').')'" />
+                            <x-text-input id="published_at" name="published_at" type="datetime-local" class="form-control" :value="old('published_at', $content?->published_at?->copy()->setTimezone(config('publishing.timezone'))->format('Y-m-d\TH:i'))" />
+                            <p class="form-text">Leave blank to publish immediately. A future time schedules visibility on the fandom page.</p>
                             <x-input-error :messages="$errors->get('published_at')" class="mt-1" />
                         </div>
                         <div class="col-12">
@@ -269,7 +270,7 @@
             <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Notes') }}</h6></div>
             <div class="card-body">
                 <ul class="mb-0" style="font-size: 0.875rem;">
-                    <li class="mb-2">{{ __('Choose the fandom category and publish to show this story on its public fandom page. Drafts stay private; a future publishing date schedules the story.') }}</li>
+                    <li class="mb-2">{{ __('Choose the fandom category and publish to show this story on its public fandom page. Admin content defaults to published; a future publishing date schedules the story.') }}</li>
                     <li class="mb-2">{{ __('The cover, excerpt, body, gallery and media appear on the public story page. Featured content receives an Editor\'s Pick badge.') }}</li>
                     <li class="mb-2">{{ __('Slug is auto-generated from the title when left blank.') }}</li>
                     <li class="mb-2">{{ __('Media is selected from the Media Library. Upload files there first.') }}</li>

@@ -1,0 +1,68 @@
+/* Explore: editorial discovery layout, scoped away from story pages. */
+.explore-premium { --fandom-color:#ffb477; padding-top:18px; }
+.explore-premium.fandom-page--gaming,.explore-premium.fandom-page--esports { --fandom-color:#8de3c1; --fandom-glow:#60d3ab26; }
+.explore-premium.fandom-page--music { --fandom-color:#c3b2ef; --fandom-glow:#c3b2ef26; }
+.explore-breadcrumb { display:flex; align-items:center; gap:12px; color:var(--fh-muted); font-size:11px; margin:0 0 22px; }
+.explore-breadcrumb a { color:var(--fh-text); }
+.explore-breadcrumb__note { margin-left:auto; font-size:9px; letter-spacing:1.8px; }
+.explore-premium .fandom-hero { min-height:440px; border-radius:22px; box-shadow:0 20px 65px #0002; }
+.explore-premium .fandom-hero__art { object-position:70% center; }
+.explore-premium .fandom-hero::before { background:linear-gradient(90deg,#0f101bf5 0%,#0f101be8 30%,#0f101b65 65%,#0f101b18),linear-gradient(0deg,#0f101bee,transparent 65%); }
+.explore-premium .fandom-hero__content { max-width:850px; padding:42px 48px 34px; }
+.explore-premium .fandom-hero .fandom-eyebrow { font-size:10px; letter-spacing:2px; }
+.explore-premium .fandom-hero h1 { font-weight:700; font-size:clamp(52px,6.5vw,88px); margin:22px 0 18px; letter-spacing:-2px; }
+.explore-premium .fandom-hero__intro { font-size:14px; max-width:390px; line-height:1.8; margin-bottom:25px; }
+.explore-hero-actions { display:flex; align-items:center; gap:20px; }
+.explore-hero-actions > span { color:#ccc6d6; font-size:10px; }
+.explore-premium .fandom-action { border-radius:9px; font-size:12px; font-weight:650; min-height:46px; }
+.explore-premium .fandom-hero__footer { padding:16px 48px; font-size:9px; }
+.explore-premium .fandom-switcher { padding:22px 0; gap:7px; }
+.explore-premium .fandom-switcher a { border-radius:100px; padding:10px 16px; border:1px solid var(--fh-line); font-size:11px; }
+.explore-premium .fandom-switcher a[aria-current] { color:#18131f; background:var(--fandom-color); border-color:var(--fandom-color); font-weight:600; }
+.explore-premium .fandom-library { padding-top:38px; }
+.explore-premium .fandom-section-title { margin-bottom:24px; }
+.explore-premium .fandom-section-title .fandom-eyebrow { margin-bottom:10px; font-size:9px; }
+.explore-premium .fandom-section-title h2 { font-size:clamp(30px,3.4vw,44px); }
+.explore-premium .fandom-search { grid-template-columns:minmax(180px,2fr) minmax(130px,1fr) minmax(130px,1fr) auto; gap:16px; padding:20px; border-radius:16px; }
+.explore-premium .fandom-search label { font-size:11px; }
+.explore-premium .fandom-search input,.explore-premium .fandom-search select { border-radius:8px; }
+.explore-filters { grid-column:1/-1; border-top:1px solid var(--fh-line); padding-top:14px; }
+.explore-filters summary { cursor:pointer; color:var(--fh-text); font-size:12px; width:fit-content; padding:4px 0; }
+.explore-filters summary span { color:var(--fh-muted); font-size:10px; margin-left:14px; }
+.explore-filters__fields { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)) auto; align-items:end; gap:16px; margin-top:16px; }
+.explore-premium .fandom-results { font-size:11px; letter-spacing:.2px; align-items:center; }
+.explore-premium .fandom-results strong { color:var(--fh-text); font-size:14px; }
+.explore-premium .fandom-results > span:last-child:not(:first-child) { letter-spacing:1.8px; font-size:9px; }
+.explore-premium .fandom-content-grid { gap:22px; }
+.explore-premium .fandom-content { border-radius:16px; }
+.explore-premium .fandom-content__art { aspect-ratio:1.65; }
+.explore-premium .fandom-content__body { padding:22px; }
+.explore-premium .fandom-content h3 { font-size:26px; line-height:1.2; }
+.explore-premium .fandom-content__type { top:auto; bottom:14px; left:14px; right:auto; background:#15121fee; color:#fff; border:1px solid #ffffff40; }
+.explore-premium .fandom-content__featured { top:18px; right:14px; left:auto; bottom:auto; font-size:8px; background:#171322e8; padding:6px 8px; border-radius:5px; }
+.explore-premium .fandom-content__badge { font-size:10px; top:14px; left:14px; }
+.explore-premium .fandom-content__excerpt { -webkit-line-clamp:2; }
+.explore-premium .fandom-content__foot .fh-icon { width:13px; height:13px; vertical-align:middle; }
+.explore-premium :is(a,button,input,select,summary):focus-visible { outline:2px solid var(--fandom-color); outline-offset:4px; }
+@media(max-width:1000px) {
+ .explore-premium .fandom-search { grid-template-columns:repeat(2,minmax(0,1fr)); }
+ .explore-filters__fields { grid-template-columns:repeat(2,minmax(0,1fr)); }
+ .explore-premium .fandom-search label:first-child,.explore-premium .fandom-search button { grid-column:auto; }
+ .explore-hero-actions > span { display:none; }
+}
+@media(max-width:700px) {
+ .explore-premium { padding:14px 16px 48px; }
+ .explore-breadcrumb__note { display:none; }
+ .explore-breadcrumb { margin-bottom:16px; }
+ .explore-premium .fandom-hero { min-height:410px; }
+ .explore-premium .fandom-hero__content { padding:30px 24px; }
+ .explore-premium .fandom-hero h1 { font-size:56px; }
+ .explore-premium .fandom-hero__footer { padding:16px 24px; font-size:8px; letter-spacing:.6px; }
+ .explore-premium .fandom-search { padding:16px; gap:14px; }
+ .explore-premium .fandom-search > label:first-child,.explore-premium .fandom-search > button { grid-column:1/-1; }
+ .explore-filters__fields { grid-template-columns:minmax(0,1fr); }
+ .explore-filters summary span { font-size:9px; margin-left:6px; }
+ .explore-premium .fandom-section-title { gap:12px; }
+ .explore-premium .fandom-library { padding-top:28px; }
+ .explore-premium .fandom-content h3 { font-size:28px; }
+}
