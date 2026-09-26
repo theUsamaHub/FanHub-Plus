@@ -21,8 +21,18 @@
     @stack('styles')
 </head>
 <body class="fh-site">
-    <!-- Video Splash Screen -->
-    <div id="splash-screen" style="position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;transition:opacity 0.8s ease;">
+    <!-- Video Splash Screen (only shown once per browser session) -->
+    <script>
+        // Decide BEFORE paint whether the splash should be rendered this load.
+        (function () {
+            try {
+                if (sessionStorage.getItem('fanhub-splash-shown') === '1') {
+                    document.documentElement.dataset.splashSeen = '1';
+                }
+            } catch (e) { /* sessionStorage unavailable: fall back to showing splash */ }
+        })();
+    </script>
+    <div id="splash-screen" data-splash style="position:fixed;inset:0;z-index:9999;background:#000;display:none;align-items:center;justify-content:center;transition:opacity 0.8s ease;">
         <!-- Desktop: Video -->
         <video id="splash-video" class="splash-desktop-only" autoplay muted playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;">
             <source src="{{ asset('videos/splash screen video.mp4') }}" type="video/mp4">
@@ -55,11 +65,27 @@
     (function(){
         var splash=document.getElementById('splash-screen'),
             video=document.getElementById('splash-video'),
-            skip=document.getElementById('splash-skip');
-        function hide(){splash.style.opacity='0';setTimeout(function(){splash.style.display='none'},800)}
-        skip.addEventListener('click',hide);
-        video.addEventListener('ended',hide);
-        setTimeout(hide,2000);
+            skip=document.getElementById('splash-skip'),
+            STORAGE_KEY='fanhub-splash-shown';
+        // If the user already saw the splash this session, leave it hidden (display:none from inline style).
+        try {
+            if (sessionStorage.getItem(STORAGE_KEY) === '1') {
+                if (splash) splash.parentNode && splash.parentNode.removeChild(splash);
+                return;
+            }
+        } catch (e) { /* sessionStorage blocked: fall through and show splash */ }
+
+        // First visit of this session: reveal the splash, then mark it as seen after it hides.
+        if (splash) splash.style.display='flex';
+
+        function markSeenAndHide(){
+            try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (e) { /* ignore quota errors */ }
+            splash.style.opacity='0';
+            setTimeout(function(){ splash.style.display='none'; }, 800);
+        }
+        if (skip) skip.addEventListener('click', markSeenAndHide);
+        if (video) video.addEventListener('ended', markSeenAndHide);
+        setTimeout(markSeenAndHide, 2000);
     })();
     </script>
     <!-- End Video Splash Screen -->
