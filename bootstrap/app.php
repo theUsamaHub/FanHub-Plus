@@ -25,7 +25,7 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\MaintenanceModeMiddleware::class,
         ]);
 
-        $middleware->web(prepend: [
+        $middleware->web(append: [
             \App\Http\Middleware\EnsureOnboardingCompleted::class,
         ]);
 

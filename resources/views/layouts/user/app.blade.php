@@ -50,7 +50,7 @@
         </div>
     </div>
 
-    @if (auth()->check() && !auth()->user()->hasRole('admin') && auth()->user()->profile && !auth()->user()->profile->onboarding_completed_at)
+    @if (auth()->check() && !auth()->user()->hasRole('admin') && auth()->user()->profile && !auth()->user()->profile->onboarding_completed_at && !request()->routeIs('onboarding'))
         @include('auth.onboarding')
     @endif
     
