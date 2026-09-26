@@ -27,21 +27,18 @@ $routes = [
     ['events.index', null],
     ['events.nearby', null],
     ['public.sitemap', null],
-    ['public.content', $user ? null : null],
 ];
 
-// Find a content, character, merchandise, event, release for member interactions
+// Find a content, character, merchandise, event for member interactions
 $content = App\Models\Content::visibleToPublic()->first();
 $char = App\Models\CharacterProfile::first();
 $merch = App\Models\MerchandiseItem::first();
 $event = App\Models\Event::published()->first();
-$release = App\Models\UpcomingRelease::published()->first();
 
 if ($content) $routes[] = ['public.content', $content->slug];
 if ($char) $routes[] = ['public.character', $char->slug];
 if ($merch) $routes[] = ['public.merchandise', $merch->slug];
 if ($event) $routes[] = ['events.show', $event->slug];
-if ($release) $routes[] = ['public.upcoming-release', $release->slug];
 
 foreach ($routes as [$name, $param]) {
     try {

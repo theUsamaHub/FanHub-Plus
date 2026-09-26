@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\{ActivityLog, Content, UpcomingRelease};
+use App\Models\{ActivityLog, Content};
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -19,12 +19,12 @@ class DashboardController extends Controller
         $recommendations = Content::visibleToPublic()->with(['category', 'media'])
             ->when($favorites->isNotEmpty(), fn ($q) => $q->whereIn('category_id', $favorites->modelKeys()))
             ->whereNotIn('id', $continue->modelKeys())->orderByDesc('popularity_score')->latest('published_at')->limit(4)->get();
-        $releases = UpcomingRelease::published()->upcoming()->with(['category', 'imageMedia'])->orderByRaw('release_date IS NULL')->orderBy('release_date')->limit(3)->get();
+        $releases = Content::visibleToPublic()->upcoming()->with(['category', 'media'])->orderByRaw('release_date IS NULL')->orderBy('release_date')->limit(3)->get();
         $activity = ActivityLog::where('user_id', $user->id)->where('event', 'like', 'member.%')->latest('id')->limit(4)->get();
         $bookmarks = $user->bookmarks()->with('bookmarkable')->latest()->limit(4)->get();
         $stats = ['bookmarks' => $user->bookmarks()->count(), 'favorites' => $favorites->count(),
             'watched' => ActivityLog::where('user_id', $user->id)->where('event', 'member.watched')->where('created_at', '>=', now()->startOfWeek())->count(),
-            'releases' => UpcomingRelease::published()->upcoming()->count()];
+            'releases' => Content::visibleToPublic()->upcoming()->count()];
         return view('user.dashboard', compact('user', 'favorites', 'continue', 'recommendations', 'releases', 'activity', 'bookmarks', 'stats'));
     }
 }

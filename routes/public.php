@@ -15,7 +15,6 @@ Route::redirect('/discover/events', '/events', 301);
 Route::get('/stories/{content:slug}', [PublicSiteController::class, 'content'])->name('public.content');
 Route::get('/characters/{character:slug}', [PublicSiteController::class, 'character'])->name('public.character');
 Route::get('/collection/{merchandise:slug}', [PublicSiteController::class, 'merchandise'])->name('public.merchandise');
-Route::get('/releases/{upcoming_release:slug}', [PublicSiteController::class, 'upcomingRelease'])->name('public.upcoming-release');
 Route::post('/collection/{merchandise:slug}/bookmark', \App\Http\Controllers\MerchandiseBookmarkController::class)
     ->middleware(['auth', 'throttle:60,1'])->name('public.merchandise.bookmark');
 Route::get('/discover/{section}', [PublicSiteController::class, 'section'])->name('public.section');
