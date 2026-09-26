@@ -55,6 +55,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        \App\Models\Role::firstOrCreate(['slug' => 'registered-user'], ['name' => 'Registered User']);
         $user->assignRole('registered-user');
 
         event(new Registered($user));

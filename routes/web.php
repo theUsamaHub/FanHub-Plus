@@ -28,7 +28,7 @@ Route::get('/dashboard', function () {
     }
 
     if ($user->hasRole('registered-user')) {
-        return redirect()->route('home');
+        return redirect()->route('user.dashboard');
     }
 
     return redirect()->route('profile.edit')->with('error', __('Your account has no role assigned. Please contact an administrator.'));
@@ -45,3 +45,5 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+require __DIR__.'/member.php';

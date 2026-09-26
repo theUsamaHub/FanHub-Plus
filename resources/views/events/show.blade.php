@@ -33,5 +33,6 @@
         </aside>
     </div>
     @if($related->isNotEmpty())<section class="event-detail__related"><div class="events-section-heading" data-event-reveal><div><p class="events-kicker">KEEP EXPLORING</p><h2>More in your <em>universe.</em></h2></div></div><div class="events-grid" data-event-grid>@foreach($related as $relatedEvent)@include('events.partials.event-card', ['event' => $relatedEvent])@endforeach</div></section>@endif
+    <x-member-interactions :item="$event" type="event" />
 </article>
 @endsection
