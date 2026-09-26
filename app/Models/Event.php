@@ -15,6 +15,7 @@ class Event extends Model
 
     protected $fillable = [
         'category_id',
+        'content_id',
         'title',
         'description',
         'city',
@@ -46,6 +47,11 @@ class Event extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function content(): BelongsTo
+    {
+        return $this->belongsTo(Content::class);
     }
 
     public function coverMedia(): BelongsTo

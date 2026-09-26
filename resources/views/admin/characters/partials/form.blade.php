@@ -76,9 +76,12 @@
             <div class="card mb-4 fh-adm-form-card">
                 <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Related content') }}</h6></div>
                 <div class="card-body">
-                    <div class="fh-adm-pick-list">
+                    <p class="text-muted small mb-2">{{ __('Select one or more content entries. The list is filtered by the chosen category.') }}</p>
+                    <div class="fh-adm-pick-list" data-related-content-list
+                        data-lookup-url-template="{{ route('admin.lookups.contents-by-category', ['category' => '__CAT__']) }}"
+                        data-selected='@json($selectedContentIds ?? [])'>
                         @forelse ($contents as $item)
-                            <label class="fh-adm-pick-item">
+                            <label class="fh-adm-pick-item" data-content-id="{{ $item->id }}" data-category-id="{{ $item->category_id }}">
                                 <input type="checkbox" name="content_ids[]" value="{{ $item->id }}" @checked(in_array($item->id, $selectedContentIds))>
                                 <div class="fh-adm-pick-item-body">
                                     <div class="fh-adm-pick-icon"><i class="bi bi-link-45deg"></i></div>
@@ -90,10 +93,11 @@
                                 </div>
                             </label>
                         @empty
-                            <div class="fh-adm-tile-meta">{{ __('No content available to link.') }}</div>
+                            <div class="fh-adm-tile-meta" data-empty-state>{{ __('No content available to link.') }}</div>
                         @endforelse
                     </div>
                     <x-input-error :messages="$errors->get('content_ids')" class="mt-1" />
+                    <x-input-error :messages="$errors->get('content_ids.*')" class="mt-1" />
                 </div>
             </div>
 
@@ -111,9 +115,80 @@
                 <ul class="mb-0" style="font-size: 0.875rem;">
                     <li class="mb-2">{{ __('Category is required and must already exist.') }}</li>
                     <li class="mb-2">{{ __('Image is selected from the Media Library.') }}</li>
-                    <li class="mb-0">{{ __('Related content can also be managed from the character detail page.') }}</li>
+                    <li class="mb-2">{{ __('Related content list reloads when you change the category.') }}</li>
+                    <li class="mb-0">{{ __('A character must be linked to at least one content.') }}</li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
+
+@push('scripts')
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var categorySelect = document.getElementById('category_id');
+    if (!categorySelect) return;
+    var form = categorySelect.closest('form');
+    if (!form) return;
+    var list = form.querySelector('[data-related-content-list]');
+    if (!list) return;
+
+    var lookupTemplate = list.getAttribute('data-lookup-url-template') || '';
+    var selectedIds = [];
+    try { selectedIds = JSON.parse(list.getAttribute('data-selected') || '[]'); } catch (e) { selectedIds = []; }
+
+    function escapeHtml(value) {
+        return String(value == null ? '' : value)
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    }
+
+    function renderEmpty(message) {
+        list.innerHTML = '<div class="fh-adm-tile-meta" data-empty-state>' + escapeHtml(message) + '</div>';
+    }
+
+    function renderOptions(contents) {
+        if (!contents.length) { renderEmpty('No content available to link.'); return; }
+        var html = '';
+        contents.forEach(function (c) {
+            var checked = selectedIds.indexOf(String(c.id)) !== -1 || selectedIds.indexOf(Number(c.id)) !== -1;
+            var title = (c.title || '').length > 60 ? c.title.slice(0, 60) + '…' : c.title;
+            html += '<label class="fh-adm-pick-item" data-content-id="' + c.id + '" data-category-id="' + (c.category_id || '') + '">'
+                + '<input type="checkbox" name="content_ids[]" value="' + c.id + '"' + (checked ? ' checked' : '') + '>'
+                + '<div class="fh-adm-pick-item-body">'
+                + '<div class="fh-adm-pick-icon"><i class="bi bi-link-45deg"></i></div>'
+                + '<div class="min-w-0">'
+                + '<div class="fh-adm-pick-name">' + escapeHtml(title) + '</div>'
+                + '<div class="fh-adm-pick-meta">' + escapeHtml(c.type || '') + ' · ' + escapeHtml(c.status || '') + '</div>'
+                + '</div>'
+                + '<span class="fh-adm-pick-state">Link</span>'
+                + '</div></label>';
+        });
+        list.innerHTML = html;
+    }
+
+    function reload() {
+        var cat = categorySelect.value;
+        if (!cat || !lookupTemplate) {
+            // No category yet — keep server-rendered list intact.
+            return;
+        }
+        var url = lookupTemplate.replace('__CAT__', encodeURIComponent(cat));
+        fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' } })
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (json) {
+                if (!json || !Array.isArray(json.contents)) { renderEmpty('No content available to link.'); return; }
+                renderOptions(json.contents);
+            })
+            .catch(function () { renderEmpty('No content available to link.'); });
+    }
+
+    categorySelect.addEventListener('change', function () {
+        // Clear stale selections that don't belong to the new category.
+        selectedIds = [];
+        reload();
+    });
+});
+</script>
+@endpush

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
 class CharacterProfile extends Model
@@ -41,6 +42,11 @@ class CharacterProfile extends Model
     public function contents(): BelongsToMany
     {
         return $this->belongsToMany(Content::class, 'character_contents', 'character_id', 'content_id')->withTimestamps();
+    }
+
+    public function merchandiseItems(): HasMany
+    {
+        return $this->hasMany(MerchandiseItem::class, 'character_id');
     }
 
     public function scopeForCategory(Builder $query, int $categoryId): Builder

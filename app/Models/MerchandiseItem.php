@@ -14,6 +14,8 @@ class MerchandiseItem extends Model
 
     protected $fillable = [
         'category_id',
+        'content_id',
+        'character_id',
         'name',
         'slug',
         'description',
@@ -36,6 +38,16 @@ class MerchandiseItem extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function content(): BelongsTo
+    {
+        return $this->belongsTo(Content::class);
+    }
+
+    public function character(): BelongsTo
+    {
+        return $this->belongsTo(CharacterProfile::class, 'character_id');
     }
 
     public function imageMedia(): BelongsTo

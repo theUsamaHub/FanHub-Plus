@@ -41,6 +41,35 @@
                             <x-input-error :messages="$errors->get('tag')" class="mt-1" />
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <x-input-label for="content_id" :value="__('Content (required)')" />
+                            <select name="content_id" id="content_id" class="form-select @error('content_id') is-invalid @enderror"
+                                data-merch-content-select
+                                data-lookup-url-template="{{ route('admin.lookups.contents-by-category', ['category' => '__CAT__']) }}">
+                                <option value="">{{ __('Select content') }}</option>
+                                @foreach (($contents ?? collect()) as $contentItem)
+                                    <option value="{{ $contentItem->id }}" @selected((int) old('content_id', $item?->content_id) === $contentItem->id)>{{ \Illuminate\Support\Str::limit($contentItem->title, 80) }}</option>
+                                @endforeach
+                            </select>
+                            <x-input-error :messages="$errors->get('content_id')" class="mt-1" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <x-input-label for="character_id" :value="__('Character (optional)')" />
+                            <select name="character_id" id="character_id" class="form-select @error('character_id') is-invalid @enderror"
+                                data-merch-character-select
+                                data-lookup-url-template="{{ route('admin.lookups.characters-by-content', ['content' => '__CONTENT__']) }}"
+                                @disabled(!old('content_id', $item?->content_id))>
+                                <option value="">{{ __('No specific character') }}</option>
+                                @foreach (($characters ?? collect()) as $characterItem)
+                                    <option value="{{ $characterItem->id }}" @selected((int) old('character_id', $item?->character_id) === $characterItem->id)>{{ $characterItem->name }}</option>
+                                @endforeach
+                            </select>
+                            <x-input-error :messages="$errors->get('character_id')" class="mt-1" />
+                        </div>
+                    </div>
+
                     <div class="mb-3">
                         <x-input-label for="description" :value="__('Description')" />
                         <textarea id="description" name="description" rows="5" class="form-control @error('description') is-invalid @enderror">{{ old('description', $item?->description) }}</textarea>
@@ -96,6 +125,9 @@
         <div class="card fh-adm-detail-card">
             <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Scope') }}</h6></div>
             <div class="card-body">
+                <p class="mb-2 text-muted" style="font-size: 0.875rem;">
+                    {{ __('Every merchandise item must belong to a Content. A Character is optional — leave it blank for content-level merchandise.') }}
+                </p>
                 <p class="mb-0 text-muted" style="font-size: 0.875rem;">
                     {{ __('Merchandise is display-only. Do not add stock, pricing, checkout, or order management.') }}
                 </p>
@@ -103,3 +135,86 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var categorySelect = document.getElementById('category_id');
+    var contentSelect = document.getElementById('content_id');
+    var characterSelect = document.getElementById('character_id');
+    if (!categorySelect || !contentSelect || !characterSelect) return;
+
+    var contentTemplate = contentSelect.getAttribute('data-lookup-url-template') || '';
+    var characterTemplate = characterSelect.getAttribute('data-lookup-url-template') || '';
+    var characterBaseOptions = '<option value="">{{ __('No specific character') }}</option>';
+
+    function escapeAttr(value) {
+        return String(value == null ? '' : value).replace(/"/g, '&quot;');
+    }
+
+    function resetCharacter(message) {
+        characterSelect.innerHTML = characterBaseOptions + (message ? '<option value="" disabled>' + message + '</option>' : '');
+        characterSelect.disabled = true;
+    }
+
+    function setContentOptions(contents) {
+        var html = '<option value="">{{ __('Select content') }}</option>';
+        contents.forEach(function (c) {
+            html += '<option value="' + c.id + '">' + escapeAttr((c.title || '').slice(0, 80)) + '</option>';
+        });
+        contentSelect.innerHTML = html;
+    }
+
+    function setCharacterOptions(characters) {
+        var html = characterBaseOptions;
+        characters.forEach(function (c) {
+            html += '<option value="' + c.id + '">' + escapeAttr(c.name) + '</option>';
+        });
+        characterSelect.innerHTML = html;
+        characterSelect.disabled = characters.length === 0;
+    }
+
+    function reloadContent() {
+        var cat = categorySelect.value;
+        if (!cat || !contentTemplate) return;
+        var url = contentTemplate.replace('__CAT__', encodeURIComponent(cat));
+        fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' } })
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (json) {
+                if (!json || !Array.isArray(json.contents)) { setContentOptions([]); return; }
+                setContentOptions(json.contents);
+            })
+            .catch(function () { setContentOptions([]); });
+    }
+
+    function reloadCharacters() {
+        var contentId = contentSelect.value;
+        if (!contentId || !characterTemplate) {
+            resetCharacter(contentId ? 'No characters linked to this content.' : 'Pick a content first.');
+            return;
+        }
+        var url = characterTemplate.replace('__CONTENT__', encodeURIComponent(contentId));
+        fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' } })
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (json) {
+                if (!json || !Array.isArray(json.characters)) { setCharacterOptions([]); return; }
+                setCharacterOptions(json.characters);
+            })
+            .catch(function () { setCharacterOptions([]); });
+    }
+
+    categorySelect.addEventListener('change', function () {
+        // Clear Content + Character when Category changes.
+        contentSelect.value = '';
+        characterSelect.value = '';
+        resetCharacter('Pick a content first.');
+        reloadContent();
+    });
+
+    contentSelect.addEventListener('change', function () {
+        characterSelect.value = '';
+        reloadCharacters();
+    });
+});
+</script>
+@endpush

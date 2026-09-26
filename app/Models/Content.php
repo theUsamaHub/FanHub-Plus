@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Str;
 
@@ -71,6 +72,16 @@ class Content extends Model
     public function characters(): BelongsToMany
     {
         return $this->belongsToMany(CharacterProfile::class, 'character_contents', 'content_id', 'character_id')->withTimestamps();
+    }
+
+    public function merchandiseItems(): HasMany
+    {
+        return $this->hasMany(MerchandiseItem::class);
+    }
+
+    public function events(): HasMany
+    {
+        return $this->hasMany(Event::class);
     }
 
     public function reviews(): MorphMany

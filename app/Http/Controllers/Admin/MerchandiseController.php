@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MerchandiseRequest;
 use App\Models\Category;
+use App\Models\CharacterProfile;
+use App\Models\Content;
 use App\Models\Media;
 use App\Models\MerchandiseItem;
 use Illuminate\Http\RedirectResponse;
@@ -44,13 +46,14 @@ class MerchandiseController extends Controller
 
     public function create(): View
     {
-        return view('admin.merchandise.create', $this->formData());
+        return view('admin.merchandise.create', array_merge($this->formData(), $this->relationPayload()));
     }
 
     public function store(MerchandiseRequest $request): RedirectResponse
     {
-        $data = $request->safe()->except(['is_upcoming']);
+        $data = $request->validated();
         $data['is_upcoming'] = $request->boolean('is_upcoming');
+        $data['character_id'] = $data['character_id'] ?? null;
 
         if (empty($data['slug'])) {
             $data['slug'] = \Illuminate\Support\Str::slug($data['name']);
@@ -71,13 +74,19 @@ class MerchandiseController extends Controller
 
     public function edit(MerchandiseItem $merchandise): View
     {
-        return view('admin.merchandise.edit', array_merge($this->formData(), ['item' => $merchandise]));
+        $merchandise->load(['content', 'character']);
+        return view('admin.merchandise.edit', array_merge(
+            $this->formData(),
+            ['item' => $merchandise],
+            $this->relationPayload($merchandise)
+        ));
     }
 
     public function update(MerchandiseRequest $request, MerchandiseItem $merchandise): RedirectResponse
     {
-        $data = $request->safe()->except(['is_upcoming']);
+        $data = $request->validated();
         $data['is_upcoming'] = $request->boolean('is_upcoming');
+        $data['character_id'] = $data['character_id'] ?? null;
 
         if (empty($data['slug'])) {
             $data['slug'] = \Illuminate\Support\Str::slug($data['name']);
@@ -102,6 +111,28 @@ class MerchandiseController extends Controller
         return [
             'categories' => Category::orderBy('name')->get(['id', 'name']),
             'images' => Media::where('media_type', 'image')->orderBy('original_filename')->get(),
+        ];
+    }
+
+    /**
+     * Lookup payload for dependent dropdowns. Used by both create/edit to
+     * populate the Content dropdown from the selected Category and the
+     * Character dropdown from the selected Content.
+     */
+    private function relationPayload(?MerchandiseItem $item = null): array
+    {
+        $categoryId = old('category_id', $item?->category_id);
+        $contentId = old('content_id', $item?->content_id);
+        $contents = $categoryId
+            ? Content::where('category_id', $categoryId)->orderBy('title')->get(['id', 'title', 'type', 'status'])
+            : collect();
+        $characters = $contentId
+            ? CharacterProfile::whereHas('contents', fn ($q) => $q->whereKey($contentId))->orderBy('name')->get(['id', 'name', 'category_id'])
+            : collect();
+
+        return [
+            'contents' => $contents,
+            'characters' => $characters,
         ];
     }
 }
