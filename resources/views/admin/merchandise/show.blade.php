@@ -22,7 +22,9 @@
                                 <td>
                                     @if ($item->imageMedia)
                                         @if ($item->imageMedia?->url)
-                                        <img src="{{ $item->imageMedia->url }}" alt="{{ $item->name }}" class="img-thumbnail" style="max-height: 140px;">
+                                        <a href="{{ $item->imageMedia->url }}" target="_blank" rel="noopener">
+                                            <img src="{{ $item->imageMedia->url }}" alt="{{ $item->name }}" class="img-thumbnail" style="max-height: 140px;">
+                                        </a>
                                         @endif
                                     @else
                                         -
