@@ -1,209 +1,178 @@
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 export function initExploreFandoms(page) {
     const section = page.querySelector('[data-explore-fandoms]');
-    if (!section) return;
-
-    const cluster = section.querySelector('[data-fandom-cluster]');
+    const cluster = section?.querySelector('[data-fandom-cluster]');
     if (!cluster) return;
+    const originals = [...cluster.querySelectorAll('[data-fandom-item]')];
+    if (!originals.length) return;
+    const playback = section.querySelector('[data-fandom-playback]');
+    const center = Math.floor((originals.length - 1) / 2);
+    originals[center].classList.add('is-primary');
 
-    const items = [...cluster.querySelectorAll('[data-fandom-item]')];
-    if (!items.length) return;
+    const media = gsap.matchMedia();
+    media.add({ reduced: '(prefers-reduced-motion: reduce)', motion: '(prefers-reduced-motion: no-preference)' }, (context) => {
+        if (context.conditions.reduced) {
+            section.classList.add('is-static');
+            return () => section.classList.remove('is-static');
+        }
 
-    gsap.registerPlugin(ScrollTrigger);
-
-    const centerIndex = Math.floor((items.length - 1) / 2);
-    items[centerIndex]?.classList.add('is-primary');
-
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    // Handle Reduced Motion
-    if (prefersReducedMotion) {
-        section.classList.add('is-static');
-        items.forEach((item) => {
-            gsap.set(item, {
-                position: 'relative',
-                left: 'auto',
-                top: 'auto',
-                x: 0,
-                y: 0,
-                scale: 1,
-                opacity: 1,
-            });
-        });
-        return;
-    }
-
-    let isExpanded = false;
-    let selectedItem = null;
-
-    // Compute relative layout coordinates for stacked vs expanded state
-    const computePositions = (expanded = false) => {
-        const isMobile = window.innerWidth <= 700;
-        const isTablet = window.innerWidth > 700 && window.innerWidth <= 1024;
-        
-        const itemWidth = items[0].offsetWidth || 150;
-        const total = items.length;
-        const middle = (total - 1) / 2;
-
-        // In stacked mode, circles overlap significantly. Center circle is on top.
-        const stackedStep = isMobile ? itemWidth * 0.35 : isTablet ? itemWidth * 0.28 : itemWidth * 0.26;
-        
-        // In expanded/hover mode, circles spread out horizontally with crisp gaps
-        const expandedStep = isMobile ? itemWidth * 0.88 : isTablet ? itemWidth * 1.02 : itemWidth * 1.08;
-
-        const currentStep = expanded ? expandedStep : stackedStep;
-
-        return items.map((item, index) => {
-            const distance = Math.abs(index - centerIndex);
-            const x = (index - middle) * currentStep;
-            
-            let scale = 1;
+        let expanded = false;
+        let ready = false;
+        let inView = false;
+        let paused = false;
+        let keyboardFocused = false;
+        let selected = null;
+        let items = [...originals];
+        let setters = [];
+        let step = 0;
+        let span = 0;
+        let offset = 0;
+        let layoutTween;
+        const finePointer = () => matchMedia('(hover: hover) and (pointer: fine)').matches;
+        const clearCopies = () => {
+            cluster.querySelectorAll('[data-fandom-clone]').forEach((copy) => copy.remove());
+            items = [...originals];
+        };
+        const paint = () => {
+            const wrap = gsap.utils.wrap(-span / 2, span / 2);
+            setters.forEach((set, index) => set(wrap((index - (items.length - 1) / 2) * step - offset)));
+        };
+        const layout = (animate = false) => {
+            ready = false;
+            layoutTween?.kill();
+            clearCopies();
+            const width = originals[0].offsetWidth;
             if (!expanded) {
-                scale = index === centerIndex ? 1.15 : Math.max(0.82, 0.98 - distance * 0.045);
-            } else {
-                scale = index === centerIndex ? 1.06 : 1.0;
+                const stackStep = width * (innerWidth <= 700 ? .35 : .26);
+                layoutTween = gsap.to(originals, {
+                    x: (index) => (index - (originals.length - 1) / 2) * stackStep,
+                    scale: (index) => index === center ? 1.15 : Math.max(.82, .98 - Math.abs(index - center) * .045),
+                    zIndex: (index) => originals.length - Math.abs(index - center),
+                    duration: animate ? .55 : 0, ease: 'power3.out',
+                });
+                return;
             }
-
-            // zIndex decreases as distance from center increases
-            const zIndex = total - distance;
-
-            return { x, y: 0, scale, zIndex };
-        });
-    };
-
-    // Apply computed positions via GSAP
-    const applyLayout = (expanded = false, animate = true) => {
-        isExpanded = expanded;
-        section.classList.toggle('is-expanded', expanded);
-        const positions = computePositions(expanded);
-
-        items.forEach((item, index) => {
-            const pos = positions[index];
-            const isHovered = selectedItem === item;
-            const targetScale = (isHovered && expanded) ? pos.scale * 1.08 : pos.scale;
-
-            const vars = {
-                x: pos.x,
-                y: pos.y,
-                scale: targetScale,
-                zIndex: isHovered ? 50 : pos.zIndex,
-                duration: animate ? 0.55 : 0,
-                ease: 'power3.out',
-                overwrite: 'auto',
-            };
-
-            gsap.to(item, vars);
-        });
-    };
-
-    // Viewport Entrance Timeline with ScrollTrigger
-    const entranceTl = gsap.timeline({
-        scrollTrigger: {
-            trigger: section,
-            start: 'top 85%',
-            once: true,
-        },
-    });
-
-    // 1. Heading fades up
-    const heading = section.querySelector('.explore-fandoms__heading');
-    if (heading) {
-        entranceTl.from(heading, {
-            opacity: 0,
-            y: 24,
-            duration: 0.6,
-            ease: 'power2.out',
-        });
-    }
-
-    // Initial stacked layout without animation
-    applyLayout(false, false);
-
-    // 2. Stagger reveal: Center circle appears first, remaining circles reveal from behind
-    const revealOrder = [...items].sort((a, b) => {
-        const distA = Math.abs(items.indexOf(a) - centerIndex);
-        const distB = Math.abs(items.indexOf(b) - centerIndex);
-        return distA - distB;
-    });
-
-    entranceTl.from(
-        revealOrder,
-        {
-            opacity: 0,
-            scale: 0.6,
-            duration: 0.5,
-            stagger: 0.07,
-            ease: 'back.out(1.4)',
-            clearProps: 'opacity',
-        },
-        '-=0.3'
-    );
-
-    // Desktop Hover Interactions
-    const onMouseEnter = () => {
-        if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-            applyLayout(true, true);
-        }
-    };
-
-    const onMouseLeave = () => {
-        if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-            selectedItem = null;
-            items.forEach((el) => el.classList.remove('is-selected'));
-            applyLayout(false, true);
-        }
-    };
-
-    cluster.addEventListener('pointerenter', onMouseEnter);
-    cluster.addEventListener('pointerleave', onMouseLeave);
-
-    // Individual Circle Hover handling inside cluster
-    items.forEach((item) => {
-        item.addEventListener('pointerenter', () => {
-            if (isExpanded && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-                selectedItem = item;
-                const pos = computePositions(true)[items.indexOf(item)];
-                gsap.to(item, { scale: pos.scale * 1.08, zIndex: 50, duration: 0.3, ease: 'power2.out', overwrite: 'auto' });
+            step = width + (innerWidth <= 700 ? 18 : 24);
+            // Copies fill the visual belt while the database links remain the
+            // single keyboard and screen-reader sequence.
+            const sets = Math.max(1, Math.ceil((cluster.clientWidth + step * 2) / (originals.length * step)));
+            for (let set = 1; set < sets; set++) originals.forEach((item) => {
+                const copy = item.cloneNode(true);
+                copy.dataset.fandomClone = '';
+                copy.classList.remove('is-primary', 'is-selected');
+                copy.setAttribute('aria-hidden', 'true');
+                copy.tabIndex = -1;
+                cluster.append(copy);
+                items.push(copy);
+            });
+            span = items.length * step;
+            offset = 0;
+            setters = items.map((item) => gsap.quickSetter(item, 'x', 'px'));
+            layoutTween = gsap.to(items, {
+                x: (index) => (index - (items.length - 1) / 2) * step,
+                scale: 1, zIndex: 1, duration: animate ? .55 : 0, ease: 'power3.out',
+                onComplete: () => { ready = true; },
+            });
+        };
+        const expand = () => {
+            if (expanded) return;
+            expanded = true;
+            section.classList.add('is-expanded');
+            playback.hidden = originals.length < 2;
+            layout(true);
+        };
+        const tick = (_time, delta) => {
+            if (!ready || !inView || document.hidden || paused || keyboardFocused || selected || originals.length < 2) return;
+            offset = (offset + Math.min(delta, 50) * .028) % span;
+            paint();
+        };
+        const enter = () => { if (finePointer()) expand(); };
+        const select = (item) => {
+            items.forEach((entry) => entry.classList.toggle('is-selected', entry === item));
+            selected = item;
+        };
+        const collapse = () => {
+            if (!expanded) return;
+            expanded = false;
+            paused = false;
+            select(null);
+            section.classList.remove('is-expanded');
+            playback.hidden = true;
+            playback.setAttribute('aria-pressed', 'false');
+            playback.textContent = 'Pause motion';
+            layout(true);
+        };
+        const leave = () => { if (finePointer() && !keyboardFocused) collapse(); };
+        const click = (event) => {
+            const item = event.target.closest('[data-fandom-item]');
+            if (!item || finePointer()) return;
+            if (!expanded || selected !== item) {
+                event.preventDefault();
+                expand();
+                select(item);
             }
+        };
+        const focusIn = (event) => {
+            if (!event.target.matches('[data-fandom-item]:focus-visible')) return;
+            expand();
+            layoutTween?.progress(1);
+            keyboardFocused = true;
+            offset = (items.indexOf(event.target) - (items.length - 1) / 2) * step;
+            paint();
+        };
+        const focusOut = (event) => {
+            keyboardFocused = cluster.contains(event.relatedTarget);
+            if (!keyboardFocused && !section.matches(':hover')) collapse();
+        };
+        const toggle = () => {
+            paused = !paused;
+            select(null);
+            playback.setAttribute('aria-pressed', String(paused));
+            playback.textContent = paused ? 'Resume motion' : 'Pause motion';
+        };
+        const outside = (event) => { if (!section.contains(event.target)) collapse(); };
+        let previousWidth = 0;
+        const resize = new ResizeObserver(() => {
+            const width = cluster.clientWidth;
+            if (width === previousWidth) return;
+            previousWidth = width;
+            select(null);
+            layout();
         });
+        const visibility = new IntersectionObserver(([entry]) => { inView = entry.isIntersecting; });
+        resize.observe(cluster);
+        visibility.observe(section);
+        layout();
+        gsap.ticker.add(tick);
+        section.addEventListener('pointerenter', enter);
+        section.addEventListener('pointerleave', leave);
+        cluster.addEventListener('click', click);
+        cluster.addEventListener('focusin', focusIn);
+        cluster.addEventListener('focusout', focusOut);
+        playback.addEventListener('click', toggle);
+        document.addEventListener('pointerdown', outside);
 
-        item.addEventListener('pointerleave', () => {
-            if (isExpanded && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-                if (selectedItem === item) selectedItem = null;
-                const pos = computePositions(true)[items.indexOf(item)];
-                gsap.to(item, { scale: pos.scale, zIndex: pos.zIndex, duration: 0.3, ease: 'power2.out', overwrite: 'auto' });
-            }
-        });
-
-        // Mobile / Touch Tap Handling
-        item.addEventListener('click', (e) => {
-            const isTouch = !window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-            if (isTouch) {
-                if (!isExpanded) {
-                    e.preventDefault();
-                    applyLayout(true, true);
-                    item.classList.add('is-selected');
-                    selectedItem = item;
-                } else if (selectedItem !== item) {
-                    e.preventDefault();
-                    items.forEach((el) => el.classList.remove('is-selected'));
-                    item.classList.add('is-selected');
-                    selectedItem = item;
-                    applyLayout(true, true);
-                }
-                // Second tap on the same selected circle proceeds with category navigation link
-            }
-        });
+        return () => {
+            layoutTween?.kill();
+            gsap.ticker.remove(tick);
+            resize.disconnect();
+            visibility.disconnect();
+            section.removeEventListener('pointerenter', enter);
+            section.removeEventListener('pointerleave', leave);
+            cluster.removeEventListener('click', click);
+            cluster.removeEventListener('focusin', focusIn);
+            cluster.removeEventListener('focusout', focusOut);
+            playback.removeEventListener('click', toggle);
+            document.removeEventListener('pointerdown', outside);
+            clearCopies();
+            originals.forEach((item) => item.classList.remove('is-selected'));
+            gsap.set(originals, { clearProps: 'transform,zIndex' });
+            section.classList.remove('is-expanded');
+            playback.hidden = true;
+            playback.setAttribute('aria-pressed', 'false');
+            playback.textContent = 'Pause motion';
+        };
     });
-
-    // Window Resize Handler
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-            applyLayout(isExpanded, false);
-        }, 100);
-    });
+    return () => media.revert();
 }

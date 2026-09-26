@@ -1,7 +1,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Swiper from 'swiper';
-import { A11y, Autoplay, Navigation, Pagination } from 'swiper/modules';
+import { A11y, Autoplay, Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
@@ -15,6 +15,7 @@ export function initCharacterSpotlight(page) {
     const slides = [...wrapper.children];
     const controls = section.querySelector('[data-character-controls]');
     const playback = section.querySelector('[data-character-playback]');
+    const pagination = section.querySelector('[data-character-pagination]');
     const center = Math.floor((slides.length - 1) / 2);
     let userPaused = false;
 
@@ -37,6 +38,26 @@ export function initCharacterSpotlight(page) {
         const setTransforms = slides.map((slide) => gsap.quickSetter(slide, 'css'));
         let cardWidth;
         let gap;
+        const copies = [];
+        const removeCopies = () => copies.splice(0).forEach((copy) => copy.remove());
+        const dots = slides.map((slide, index) => {
+            const dot = document.createElement('button');
+            dot.type = 'button';
+            dot.className = 'swiper-pagination-bullet';
+            dot.setAttribute('aria-label', `Show character ${index + 1}`);
+            dot.addEventListener('click', () => {
+                if (!swiper) return;
+                if (swiper.params.loop) swiper.slideToLoop(index);
+                else swiper.slideTo(index);
+            });
+            pagination.append(dot);
+            return dot;
+        });
+        const syncPagination = (instance) => dots.forEach((dot, index) => {
+            const active = index === instance.realIndex % slides.length;
+            dot.classList.toggle('swiper-pagination-bullet-active', active);
+            dot.setAttribute('aria-current', String(active));
+        });
 
         section.classList.add('is-enhanced');
         controls.hidden = slides.length < 2;
@@ -58,12 +79,22 @@ export function initCharacterSpotlight(page) {
             });
             gsap.set(slides, { clearProps: 'transform,zIndex' });
             gsap.set(wrapper, { clearProps: 'transform' });
-            // Centered looping needs spare slides on both edges. Short lists rewind instead.
+            // Repeat complete sets when all database cards fit on screen so
+            // Swiper always has spare slides to loop beyond either edge.
             const spacing = parseFloat(getComputedStyle(section).getPropertyValue('--spot-gap'));
             const visible = Math.ceil(viewport.clientWidth / (slides[0].offsetWidth + spacing));
-            const loop = slides.length >= visible + 3;
+            const loop = slides.length > 1;
+            const sets = loop ? Math.ceil((visible + 3) / slides.length) : 1;
+            for (let set = 1; set < sets; set++) slides.forEach((slide) => {
+                const copy = slide.cloneNode(true);
+                copy.dataset.characterClone = '';
+                copy.setAttribute('aria-hidden', 'true');
+                copy.querySelectorAll('a').forEach((link) => { link.tabIndex = -1; });
+                copies.push(copy);
+                wrapper.append(copy);
+            });
             swiper = new Swiper(viewport, {
-                modules: [A11y, Autoplay, Navigation, Pagination],
+                modules: [A11y, Autoplay, Navigation],
                 slidesPerView: 'auto',
                 centeredSlides: true,
                 centeredSlidesBounds: !loop,
@@ -74,7 +105,7 @@ export function initCharacterSpotlight(page) {
                 rewind: !loop,
                 speed: reduced ? 0 : 900,
                 grabCursor: slides.length > 1,
-                watchOverflow: true,
+                watchOverflow: !loop,
                 touchEventsTarget: 'container',
                 touchStartPreventDefault: false,
                 // Vertical wheel/touch movement stays with the page and Lenis.
@@ -85,11 +116,7 @@ export function initCharacterSpotlight(page) {
                     prevEl: section.querySelector('[data-character-prev]'),
                     nextEl: section.querySelector('[data-character-next]'),
                 },
-                pagination: {
-                    el: section.querySelector('[data-character-pagination]'),
-                    clickable: true,
-                    renderBullet: (index, className) => `<button type="button" class="${className}" aria-label="Show character ${index + 1}"></button>`,
-                },
+                on: { init: syncPagination, realIndexChange: syncPagination },
                 a11y: {
                     slideLabelMessage: 'Character {{index}} of {{slidesLength}}',
                     prevSlideMessage: 'Previous character', nextSlideMessage: 'Next character',
@@ -107,6 +134,7 @@ export function initCharacterSpotlight(page) {
                 // Restoring the original order also removes Swiper's loop reordering.
                 swiper?.destroy(true, true);
                 swiper = null;
+                removeCopies();
                 completed = false;
                 section.classList.add('is-revealing');
                 slides.forEach((slide, index) => {
@@ -175,12 +203,15 @@ export function initCharacterSpotlight(page) {
             syncAutoplay();
         };
         const focusIn = (event) => {
-            focused = true;
+            focused = event.target.matches(':focus-visible');
             // Keyboard users can reach every card without having to scroll the reveal.
             if (!completed && event.target.matches(':focus-visible')) timeline?.progress(1);
             syncAutoplay();
         };
-        const focusOut = (event) => { focused = section.contains(event.relatedTarget); syncAutoplay(); };
+        const focusOut = (event) => {
+            focused = section.contains(event.relatedTarget) && event.relatedTarget.matches(':focus-visible');
+            syncAutoplay();
+        };
         const enter = (event) => { hovered = event.pointerType === 'mouse'; syncAutoplay(); };
         const leave = () => { hovered = false; syncAutoplay(); };
         const resize = () => { measure(); };
@@ -197,6 +228,8 @@ export function initCharacterSpotlight(page) {
             timeline?.kill();
             observer?.disconnect();
             swiper?.destroy(true, true);
+            removeCopies();
+            dots.forEach((dot) => dot.remove());
             playback.removeEventListener('click', togglePlayback);
             section.removeEventListener('focusin', focusIn);
             section.removeEventListener('focusout', focusOut);

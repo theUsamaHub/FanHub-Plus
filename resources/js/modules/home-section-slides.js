@@ -2,9 +2,29 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 export function initHomeSectionSlides(page) {
-    const sections = [...page.querySelectorAll('.home-scroll-content > section')];
+    const allSections = [...page.querySelectorAll('.home-scroll-content > section')];
+    const slideSelector = '#trending, #featured-story, #characters, #home-events';
+    const sections = allSections.filter((section) => section.matches(slideSelector));
     if (!sections.length) return;
     gsap.registerPlugin(ScrollTrigger);
+
+    // Bound sticky panels to consecutive slide sections. A normal-flow section
+    // ends the group, so no pinned panel can cover Multimedia, Upcoming, etc.
+    const groups = [];
+    let group;
+    allSections.forEach((section) => {
+        if (!section.matches(slideSelector)) {
+            group = null;
+            return;
+        }
+        if (!group) {
+            group = document.createElement('div');
+            group.className = 'home-slide-group';
+            section.before(group);
+            groups.push(group);
+        }
+        group.append(section);
+    });
 
     page.classList.add('has-section-slides');
     // These markers stay in normal flow while the panels themselves are sticky.
@@ -63,6 +83,7 @@ export function initHomeSectionSlides(page) {
         measure();
 
         sections.slice(0, -1).forEach((section, index) => {
+            if (section.parentElement !== sections[index + 1].parentElement) return;
             gsap.fromTo(section, { scale: 1, filter: 'brightness(1)' }, {
                 scale: () => innerWidth <= 700 ? .985 : .96,
                 filter: 'brightness(.76)',
@@ -76,49 +97,8 @@ export function initHomeSectionSlides(page) {
             });
         });
 
-        const upcoming = sections.find((section) => section.matches('[data-upcoming-section]'));
-        let upcomingMotion;
-        const clearUpcoming = () => upcomingMotion?.revert();
-        const animateUpcoming = () => {
-            clearUpcoming();
-            if (!upcoming) return;
-            const anchor = anchors[sections.indexOf(upcoming)];
-            upcomingMotion = gsap.context(() => {
-                // The whole section arrives together; no slow cascade of hidden cards.
-                gsap.fromTo(upcoming.querySelectorAll('.home-section-heading, .release-toolbar, .release-carousel'), {
-                    y: 30, opacity: .72,
-                }, {
-                    y: 0, opacity: 1, ease: 'power1.out',
-                    scrollTrigger: {
-                        trigger: anchor, start: 'top 85%', end: () => `top ${navHeight() + 50}px`,
-                        scrub: .85, invalidateOnRefresh: true,
-                    },
-                });
-                const line = upcoming.querySelector('[data-timeline-progress]');
-                if (line) gsap.fromTo(line, {
-                    scaleX: innerWidth <= 700 ? 1 : .08,
-                    scaleY: innerWidth <= 700 ? .08 : 1,
-                }, {
-                    scaleX: 1, scaleY: 1, ease: 'none',
-                    scrollTrigger: {
-                        trigger: anchor, start: 'top 65%', end: () => `top ${navHeight()}px`,
-                        scrub: .8,
-                    },
-                });
-            }, upcoming);
-            refresh();
-        };
-        animateUpcoming();
-        page.addEventListener('releases:before-update', clearUpcoming);
-        page.addEventListener('releases:updated', animateUpcoming);
-        const mobileQuery = matchMedia('(max-width: 700px)');
-        mobileQuery.addEventListener('change', animateUpcoming);
         return () => {
             clearTimeout(refreshTimer);
-            clearUpcoming();
-            page.removeEventListener('releases:before-update', clearUpcoming);
-            page.removeEventListener('releases:updated', animateUpcoming);
-            mobileQuery.removeEventListener('change', animateUpcoming);
             observer.disconnect();
             window.removeEventListener('resize', measure);
             page.classList.remove('has-section-overlap');
@@ -128,7 +108,12 @@ export function initHomeSectionSlides(page) {
         media.revert();
         anchors.forEach((anchor) => anchor.remove());
         holds.forEach((hold) => hold.remove());
-        sections.forEach((section) => section.classList.remove('home-slide'));
+        sections.forEach((section) => {
+            section.classList.remove('home-slide');
+            section.style.removeProperty('--slide-order');
+            section.style.removeProperty('--slide-top');
+        });
+        groups.forEach((group) => group.replaceWith(...group.childNodes));
         page.classList.remove('has-section-slides');
     };
 }
