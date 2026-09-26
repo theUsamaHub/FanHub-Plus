@@ -86,6 +86,11 @@ Route::prefix('admin')
 
         Route::get('/subscribers', [\App\Http\Controllers\Admin\SubscriberController::class, 'index'])->name('subscribers.index');
         Route::get('/subscribers/export', [\App\Http\Controllers\Admin\SubscriberController::class, 'export'])->name('subscribers.export');
+        Route::get('/subscribers/{subscriber}', [\App\Http\Controllers\Admin\SubscriberController::class, 'show'])->name('subscribers.show');
+        Route::get('/subscribers/{subscriber}/edit', [\App\Http\Controllers\Admin\SubscriberController::class, 'edit'])->name('subscribers.edit');
+        Route::put('/subscribers/{subscriber}', [\App\Http\Controllers\Admin\SubscriberController::class, 'update'])->name('subscribers.update');
+        Route::patch('/subscribers/{subscriber}/status', [\App\Http\Controllers\Admin\SubscriberController::class, 'updateStatus'])->name('subscribers.update-status');
+        Route::post('/subscribers/bulk', [\App\Http\Controllers\Admin\SubscriberController::class, 'bulkAction'])->name('subscribers.bulk');
         Route::delete('/subscribers/{subscriber}', [\App\Http\Controllers\Admin\SubscriberController::class, 'destroy'])->name('subscribers.destroy');
 
         Route::get('/chatbot/faqs', [\App\Http\Controllers\Admin\ChatbotFaqController::class, 'index'])->name('chatbot.faqs.index');
