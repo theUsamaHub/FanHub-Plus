@@ -8,7 +8,7 @@
 .events-intro__top, .events-intro__bottom { display: flex; justify-content: space-between; gap: 20px; align-items: center; color: var(--fh-muted); font-size: 10px; letter-spacing: 1.7px; }
 .events-intro__top span:last-child { color: var(--event-soft); }
 .events-intro__center { text-align: center; padding-block: 85px 70px; }
-.events-intro h1 { margin: 0; font: 700 clamp(100px,16.2vw,250px)/.8 'Rajdhani',sans-serif; letter-spacing: -.06em; transform-origin: center; }
+.events-intro h1 { margin: 0; font: 700 clamp(85px,13.8vw,212px)/.8 'Rajdhani',sans-serif; letter-spacing: -.06em; transform-origin: center; }
 .events-intro h1 > span { color: var(--event-accent); }
 .events-intro__center > .events-kicker { margin-bottom: 27px; }
 .events-intro__description { font-size: clamp(18px,2vw,28px); line-height: 1.5; letter-spacing: -.5px; margin: 70px 0 0; color: var(--fh-muted); }
@@ -130,6 +130,12 @@
 .events-location-link small { font-size: 11px; color: var(--fh-muted); }
 .event-detail__related { margin-top: 45px; }
 :root[data-theme='light'] .events-page { --event-accent: #a74d21; --event-soft: #705092; }
+/* Keep the light-mode title crisp while preserving its scroll transform. */
+:root[data-theme='light'] .events-intro h1 {
+    filter: none !important;
+    opacity: 1 !important;
+    text-shadow: none;
+}
 @media(hover:hover) and (pointer:fine) { .event-card:hover { transform: translateY(-4px); border-color: var(--event-accent); } .event-card:hover img { transform: scale(1.035); } }
 .event-card:focus-within, .event-feature:focus-within { outline: 2px solid var(--event-accent); outline-offset: 4px; }
 @media(min-width:1600px) { .events-container { width: min(1440px,calc(100% - 140px)); } .events-grid { grid-template-columns: repeat(4,minmax(0,1fr)); } .event-detail__related .events-grid { grid-template-columns: repeat(3,minmax(0,1fr)); } }
@@ -140,7 +146,7 @@
     .events-intro { min-height: calc(85svh - 80px); padding: 20px 20px 28px; }
     .events-intro__top { font-size: 8px; } .events-intro__top span:last-child { display: none; }
     .events-intro__center { padding-block: 70px; }
-    .events-intro h1 { font-size: 24vw; }
+    .events-intro h1 { font-size: 20.5vw; }
     .events-intro__description { margin-top: 45px; }
     .events-intro__bottom { align-items: end; font-size: 9px; gap: 26px; }
     .events-intro__bottom p { max-width: 155px; line-height: 1.8; }
