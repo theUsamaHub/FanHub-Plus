@@ -45,10 +45,11 @@ export function initExploreFandoms(page) {
             const width = originals[0].offsetWidth;
             if (!expanded) {
                 const stackStep = width * (innerWidth <= 700 ? .35 : .26);
-                gsap.set(originals, {
+                layoutTween = gsap.to(originals, {
                     x: (index) => (index - (originals.length - 1) / 2) * stackStep,
                     scale: (index) => index === center ? 1.15 : Math.max(.82, .98 - Math.abs(index - center) * .045),
                     zIndex: (index) => originals.length - Math.abs(index - center),
+                    duration: animate ? .55 : 0, ease: 'power3.out',
                 });
                 return;
             }
@@ -91,6 +92,18 @@ export function initExploreFandoms(page) {
             items.forEach((entry) => entry.classList.toggle('is-selected', entry === item));
             selected = item;
         };
+        const collapse = () => {
+            if (!expanded) return;
+            expanded = false;
+            paused = false;
+            select(null);
+            section.classList.remove('is-expanded');
+            playback.hidden = true;
+            playback.setAttribute('aria-pressed', 'false');
+            playback.textContent = 'Pause motion';
+            layout(true);
+        };
+        const leave = () => { if (finePointer() && !keyboardFocused) collapse(); };
         const click = (event) => {
             const item = event.target.closest('[data-fandom-item]');
             if (!item || finePointer()) return;
@@ -108,14 +121,17 @@ export function initExploreFandoms(page) {
             offset = (items.indexOf(event.target) - (items.length - 1) / 2) * step;
             paint();
         };
-        const focusOut = (event) => { keyboardFocused = cluster.contains(event.relatedTarget); };
+        const focusOut = (event) => {
+            keyboardFocused = cluster.contains(event.relatedTarget);
+            if (!keyboardFocused && !section.matches(':hover')) collapse();
+        };
         const toggle = () => {
             paused = !paused;
             select(null);
             playback.setAttribute('aria-pressed', String(paused));
             playback.textContent = paused ? 'Resume motion' : 'Pause motion';
         };
-        const outside = (event) => { if (!cluster.contains(event.target)) select(null); };
+        const outside = (event) => { if (!section.contains(event.target)) collapse(); };
         let previousWidth = 0;
         const resize = new ResizeObserver(() => {
             const width = cluster.clientWidth;
@@ -129,7 +145,8 @@ export function initExploreFandoms(page) {
         visibility.observe(section);
         layout();
         gsap.ticker.add(tick);
-        cluster.addEventListener('pointerenter', enter);
+        section.addEventListener('pointerenter', enter);
+        section.addEventListener('pointerleave', leave);
         cluster.addEventListener('click', click);
         cluster.addEventListener('focusin', focusIn);
         cluster.addEventListener('focusout', focusOut);
@@ -141,7 +158,8 @@ export function initExploreFandoms(page) {
             gsap.ticker.remove(tick);
             resize.disconnect();
             visibility.disconnect();
-            cluster.removeEventListener('pointerenter', enter);
+            section.removeEventListener('pointerenter', enter);
+            section.removeEventListener('pointerleave', leave);
             cluster.removeEventListener('click', click);
             cluster.removeEventListener('focusin', focusIn);
             cluster.removeEventListener('focusout', focusOut);

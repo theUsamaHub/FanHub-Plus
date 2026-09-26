@@ -2,14 +2,16 @@
    EXPLORE FANDOMS SECTION STYLING
    ========================================== */
 
-.home-page .explore-fandoms {
+.home-page .home-section.explore-fandoms {
     position: relative;
     padding-block: clamp(40px, 5vw, 70px) clamp(30px, 4vw, 50px);
+    padding-inline: 0 !important;
     overflow: hidden;
     user-select: none;
 }
 
 .explore-fandoms__heading {
+    padding-inline: 18px;
     text-align: center;
     position: relative;
     z-index: 5;
@@ -65,9 +67,9 @@
     overflow: clip;
     position: relative;
     width: 100%;
-    max-width: 1200px;
+    max-width: none;
     margin: 0 auto;
-    padding: 20px 10px 30px;
+    padding: 20px 0 30px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -235,7 +237,7 @@
     .fandom-hint-desktop { display: none; }
     .fandom-hint-touch { display: inline; }
     .fandom-cluster-wrapper {
-        padding-inline: 4px;
+        padding-inline: 0;
         overflow: clip;
         -webkit-overflow-scrolling: touch;
     }
