@@ -26,7 +26,7 @@ class FileUploadService
                 'text/plain',
             ],
             'extensions' => ['pdf', 'doc', 'docx', 'txt'],
-            'max_size' => 10240, // 10MB
+            'max_size' => 25600, // 25MB
         ],
         'spreadsheets' => [
             'mime_types' => [
@@ -35,12 +35,35 @@ class FileUploadService
                 'text/csv',
             ],
             'extensions' => ['xls', 'xlsx', 'csv'],
-            'max_size' => 10240, // 10MB
+            'max_size' => 25600, // 25MB
         ],
         'videos' => [
-            'mime_types' => ['video/mp4', 'video/webm', 'video/ogg', 'video/quicktime'],
-            'extensions' => ['mp4', 'webm', 'ogv', 'mov'],
-            'max_size' => 51200, // 50MB
+            'mime_types' => [
+                'video/mp4',
+                'video/webm',
+                'video/ogg',
+                'video/quicktime',
+                'video/x-msvideo',
+                'video/x-matroska',
+                'video/x-ms-wmv',
+                'video/3gpp',
+            ],
+            'extensions' => ['mp4', 'webm', 'ogv', 'mov', 'avi', 'mkv', 'wmv', '3gp'],
+            'max_size' => 102400, // 100MB
+        ],
+        'movies' => [
+            'mime_types' => [
+                'video/mp4',
+                'video/webm',
+                'video/ogg',
+                'video/quicktime',
+                'video/x-msvideo',
+                'video/x-matroska',
+                'video/x-ms-wmv',
+                'video/3gpp',
+            ],
+            'extensions' => ['mp4', 'webm', 'ogv', 'mov', 'avi', 'mkv', 'wmv', '3gp'],
+            'max_size' => 524288, // 512MB
         ],
         'audio' => [
             'mime_types' => ['audio/mpeg', 'audio/wav', 'audio/ogg', 'audio/mp4', 'audio/aac'],

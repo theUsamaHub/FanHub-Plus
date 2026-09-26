@@ -22,7 +22,9 @@
                                 <td>
                                     @if ($event->coverMedia)
                                         @if ($event->coverMedia?->url)
-                                        <img src="{{ $event->coverMedia->url }}" alt="{{ $event->title }}" class="img-thumbnail" style="max-height: 140px;">
+                                        <a href="{{ $event->coverMedia->url }}" target="_blank" rel="noopener">
+                                            <img src="{{ $event->coverMedia->url }}" alt="{{ $event->title }}" class="img-thumbnail" style="max-height: 140px;">
+                                        </a>
                                         @endif
                                     @else
                                         -

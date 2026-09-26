@@ -47,9 +47,26 @@
                                 <td class="fw-semibold">{{ __('Media') }}</td>
                                 <td>
                                     @forelse ($content->media as $media)
-                                        <div class="mb-1">
-                                            <span class="fh-adm-chip" data-tone="muted">{{ $media->pivot->role }}</span>
-                                            {{ $media->original_filename }}
+                                        <div class="mb-2">
+                                            <div class="d-flex align-items-center gap-2 mb-1">
+                                                <span class="fh-adm-chip" data-tone="muted">{{ $media->pivot->role }}</span>
+                                                <span class="text-muted small">{{ $media->media_type }} · {{ $media->size_formatted }}</span>
+                                            </div>
+                                            @if ($media->isImage() && $media->url)
+                                                <a href="{{ $media->url }}" target="_blank" rel="noopener">
+                                                    <img src="{{ $media->url }}" alt="{{ $media->alt_text ?: $media->original_filename }}" class="img-thumbnail" style="max-height: 200px; max-width: 100%;">
+                                                </a>
+                                            @elseif ($media->isVideo() && $media->url)
+                                                <video src="{{ $media->url }}" controls class="img-thumbnail" style="max-height: 200px; max-width: 100%;"></video>
+                                            @elseif ($media->isAudio() && $media->url)
+                                                <audio src="{{ $media->url }}" controls class="w-100"></audio>
+                                            @elseif ($media->isDocument() && $media->url)
+                                                <a href="{{ $media->url }}" target="_blank" rel="noopener" class="btn btn-outline-primary btn-sm">
+                                                    <i class="bi bi-file-earmark me-1"></i>{{ $media->original_filename }}
+                                                </a>
+                                            @else
+                                                <span class="text-muted small">{{ $media->original_filename }}</span>
+                                            @endif
                                         </div>
                                     @empty
                                         -
