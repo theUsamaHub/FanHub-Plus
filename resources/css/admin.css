@@ -3399,3 +3399,172 @@ body.fh-admin .upload-progress-container {
     background: linear-gradient(135deg, color-mix(in srgb, var(--fh-warning) 12%, transparent), color-mix(in srgb, var(--fh-accent) 8%, transparent));
     border: 1px solid color-mix(in srgb, var(--fh-warning) 30%, transparent);
 }
+
+/* ── Onboarding Modal ── */
+body.fh-admin .modal-fullscreen {
+    max-width: 100%;
+    margin: 0;
+}
+
+body.fh-admin .modal-fullscreen .modal-dialog {
+    max-width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+body.fh-admin .modal-fullscreen .modal-content {
+    height: 100%;
+    border: none;
+    border-radius: 0;
+    overflow-y: auto;
+}
+
+body.fh-admin .modal-fullscreen .modal-header {
+    border-bottom: 1px solid var(--fh-adm-line-soft);
+    padding: 1.5rem 2rem 1rem;
+}
+
+body.fh-admin .modal-fullscreen .modal-body {
+    padding: 0 2rem 2rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+body.fh-admin .modal-fullscreen .modal-footer {
+    border-top: 1px solid var(--fh-adm-line-soft);
+    padding: 1rem 2rem 1.5rem;
+}
+
+body.fh-admin .category-card {
+    border: 2px solid var(--fh-adm-line);
+    border-radius: var(--fh-adm-radius);
+    padding: 1rem 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s var(--fh-ease-out);
+    background: var(--fh-adm-panel);
+    position: relative;
+    overflow: hidden;
+}
+
+body.fh-admin .category-card:hover {
+    border-color: var(--fh-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--fh-accent) 20%, transparent);
+}
+
+body.fh-admin .category-card.selected {
+    border-color: var(--fh-accent);
+    background: color-mix(in srgb, var(--fh-accent) 8%, var(--fh-adm-panel));
+    box-shadow: 0 0 0 2px var(--fh-accent), 0 4px 16px color-mix(in srgb, var(--fh-accent) 15%, transparent);
+}
+
+body.fh-admin .category-card.selected .check-indicator i {
+    display: inline-flex !important;
+}
+
+body.fh-admin .category-card .check-indicator {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--fh-accent);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.2s var(--fh-ease-spring);
+}
+
+body.fh-admin .category-card.selected .check-indicator {
+    opacity: 1;
+    transform: scale(1);
+}
+
+body.fh-admin .category-icon {
+    transition: transform 0.2s var(--fh-ease-out);
+}
+
+body.fh-admin .category-card:hover .category-icon {
+    transform: scale(1.1);
+}
+
+body.fh-admin .category-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--fh-adm-text);
+}
+
+body.fh-admin .category-description {
+    font-size: 0.7rem;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.2s var(--fh-ease-out);
+}
+
+body.fh-admin .category-card:hover .category-description {
+    opacity: 1;
+    max-height: 40px;
+}
+
+body.fh-admin .category-card.selected .category-description {
+    opacity: 1;
+    max-height: 40px;
+}
+
+body.fh-admin .category-check {
+    margin-top: auto;
+    padding-top: 0.5rem;
+}
+
+body.fh-admin .check-indicator i {
+    font-size: 1.25rem;
+}
+
+@keyframes modal-slide-down {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+body.fh-admin .modal.show .modal-dialog {
+    animation: modal-slide-down 0.3s var(--fh-ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body.fh-admin .modal.show .modal-dialog {
+        animation: none;
+    }
+}
+
+/* Focus styles for accessibility */
+body.fh-admin .category-card:focus-within {
+    outline: 2px solid var(--fh-accent);
+    outline-offset: 2px;
+}
+
+/* Selection counter badge animation */
+#selectedCount {
+    transition: all 0.2s var(--fh-ease-spring);
+}
+
+#selectedCount.text-success,
+#selectedCount.text-warning,
+#selectedCount.text-danger {
+    animation: count-pulse 0.3s var(--fh-ease-spring);
+}
+
+@keyframes count-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}

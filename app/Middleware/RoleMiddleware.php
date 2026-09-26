@@ -17,6 +17,11 @@ class RoleMiddleware
 
         $user = Auth::user();
 
+        // Skip role check for onboarding routes
+        if ($request->routeIs('onboarding*')) {
+            return $next($request);
+        }
+
         if (! $user->hasAnyRole($roles)) {
             if ($request->expectsJson()) {
                 return response()->json([

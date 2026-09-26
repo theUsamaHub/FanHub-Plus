@@ -103,4 +103,20 @@ class User extends Authenticatable implements \Illuminate\Contracts\Auth\MustVer
             $this->roles()->detach($role);
         }
     }
+
+    /**
+     * Check if user has completed onboarding.
+     */
+    public function hasCompletedOnboarding(): bool
+    {
+        return $this->profile?->onboarding_completed_at !== null;
+    }
+
+    /**
+     * Get the count of user's favorite categories.
+     */
+    public function favoriteCategoriesCount(): int
+    {
+        return $this->favoriteCategories()->count();
+    }
 }

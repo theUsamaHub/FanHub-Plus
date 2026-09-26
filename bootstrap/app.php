@@ -25,6 +25,10 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\MaintenanceModeMiddleware::class,
         ]);
 
+        $middleware->web(prepend: [
+            \App\Http\Middleware\EnsureOnboardingCompleted::class,
+        ]);
+
         $middleware->api(prepend: [
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
         ]);
@@ -33,6 +37,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \App\Middleware\RoleMiddleware::class,
             'permission' => \App\Middleware\CheckPermission::class,
             'ip-restrict' => \App\Http\Middleware\IpRestrictionMiddleware::class,
+            'onboarding.completed' => \App\Http\Middleware\EnsureOnboardingCompleted::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

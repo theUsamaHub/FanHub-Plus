@@ -33,4 +33,20 @@ class UserProfile extends Model
     {
         return $this->belongsTo(Media::class, 'avatar_media_id');
     }
+
+    /**
+     * Get the count of user's favorite categories.
+     */
+    public function favoriteCategoriesCount(): int
+    {
+        return $this->user->favoriteCategories()->count();
+    }
+
+    /**
+     * Check if onboarding is completed.
+     */
+    public function hasCompletedOnboarding(): bool
+    {
+        return $this->onboarding_completed_at !== null;
+    }
 }

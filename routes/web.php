@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\OnboardingController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\MediaServeController;
 use App\Http\Controllers\ProfileController;
@@ -47,6 +48,12 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/profile/newsletter-preferences', [ProfileController::class, 'updateNewsletterPreferences'])->name('profile.newsletter-preferences');
+});
+
+// Onboarding routes (accessible even if onboarding not completed)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/onboarding', [OnboardingController::class, 'create'])->name('onboarding');
+    Route::post('/onboarding', [OnboardingController::class, 'store'])->name('onboarding.store');
 });
 
 // Unsubscribe
