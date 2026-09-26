@@ -65,10 +65,6 @@
                                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18" aria-hidden="true">
                                             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-5.18 5.18a5.5 5.5 0 0 0 0 7.78L12 21.33l7.78-7.78a5.5 5.5 0 0 0 0-7.78L12 10.67l5.18-5.18a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
-                                    @else
-                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18" aria-hidden="true">
-                                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-5.18 5.18a5.5 5.5 0 0 0 0 7.78L12 21.33l7.78-7.78a5.5 5.5 0 0 0 0-7.78L12 10.67l5.18-5.18a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
                                     @endif
                                 </span>
                                 

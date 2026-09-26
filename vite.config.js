@@ -8,6 +8,7 @@ export default defineConfig({
                 'resources/css/app.scss',
                 'resources/css/admin.css',
                 'resources/css/public.css',
+                "resources/css/onboarding.css",
                 'resources/js/app.js',
                 'resources/js/public.js',
                 'resources/js/pages/home.js',
