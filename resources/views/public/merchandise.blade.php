@@ -20,5 +20,6 @@
         <h2>More from {{ $merchandise->category?->name }}</h2>
         <div class="merch-grid">@foreach($related as $item)<x-merchandise-card :item="$item" :saved="in_array($item->id, $savedMerchandise)" />@endforeach</div>
     @endif
+    <x-member-interactions :item="$merchandise" type="merchandise" />
 </article>
 @endsection

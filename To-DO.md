@@ -1,3 +1,7 @@
+Implementation checkpoint — 2026-09-26
+
+See MEMBER_FEATURE_PROGRESS.md for saved registered-user pages and tests. The main account flows are implemented; final regression/browser verification is in progress. The onboarding and soft-verification requirements below are retained and are the next remaining UX checks.
+
 Onboarding Flow — Logic Summary
 1. Fandom-picker modal (post-registration)
 

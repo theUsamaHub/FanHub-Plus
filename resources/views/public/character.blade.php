@@ -16,5 +16,6 @@
         </ul>
         {{ $stories->links() }}
     @endif
+    <x-member-interactions :item="$character" type="character" />
 </article>
 @endsection

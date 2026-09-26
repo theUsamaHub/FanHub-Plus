@@ -1,5 +1,9 @@
 # FanHubPlus - AI Context File
 
+## Latest work — 2026-09-26
+
+Read [MEMBER_FEATURE_PROGRESS.md](MEMBER_FEATURE_PROGRESS.md) before resuming the registered-user SRS task. Dashboard, bookmarks/notes, favorites, activity, moderated submissions/reviews, feedback, profile preferences, discovery listings, advanced filters and nearby events are saved in code with feature tests. User requested continuous source/test/document checkpoints to avoid losing progress at a usage limit. Preserve the accepted homepage character carousel. Browser QA uses a disposable copied database, not the working database. Final test results are still being checked.
+
 > This file provides persistent context for AI models working on this project.
 
 ## Project Overview
@@ -10,7 +14,7 @@ Production-ready FanHubPlus with Bootstrap 5, Alpine.js, and PostgreSQL. Designe
 
 - PHP 8.2.0
 - Laravel 11.0.0
-- PostgreSQL (not MySQL) — host=127.0.0.1:5432, db=laravel_starter, user=postgres, password=Falcon47#
+- Database connection is configured through `.env`; do not store credentials in project documentation. The current local development database is SQLite; PostgreSQL remains supported by configuration.
 - Bootstrap 5.3 (SCSS compiled via Vite)
 - Bootstrap Icons
 - Alpine.js (installed via npm, used for modals, flash messages, interactive UI)

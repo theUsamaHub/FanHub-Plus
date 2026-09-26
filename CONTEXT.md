@@ -1,5 +1,9 @@
 # FanHubPlus — Full Project Context
 
+## Current checkpoint — 2026-09-26
+
+Registered-user SRS implementation is saved in the workspace. See [MEMBER_FEATURE_PROGRESS.md](MEMBER_FEATURE_PROGRESS.md) for completed pages, route/file map and the latest validation status. New user pages use the public site layout, `member.css`, and `routes/member.php`. The dashboard is now real and registered-user login routes to it. Older overview sections below are historical; the current checkout's Composer requirement is Laravel 11 and local QA uses SQLite. Final regression verification is in progress.
+
 > Use this document to give any AI complete context about this Laravel 13 project without reading every file.
 
 ## Tech Stack

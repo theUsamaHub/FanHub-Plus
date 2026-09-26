@@ -12,7 +12,8 @@ class MerchandiseBookmarkController extends Controller
         $data = $request->validate(['saved' => ['required', 'boolean']]);
         $target = ['bookmarkable_type' => $merchandise->getMorphClass(), 'bookmarkable_id' => $merchandise->id];
         if ($data['saved']) {
-            $request->user()->bookmarks()->firstOrCreate($target);
+            $bookmark = $request->user()->bookmarks()->firstOrCreate($target);
+            if ($bookmark->wasRecentlyCreated) app(\App\Services\MemberLibrary::class)->activity('saved', $merchandise);
         } else {
             $request->user()->bookmarks()->where($target)->delete();
         }

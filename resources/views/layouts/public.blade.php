@@ -7,6 +7,16 @@
     <meta name="theme-color" content="#06060e">
     <title>@yield('title', 'Fan Hub Plus — Every Universe. One Home.')</title>
     <script>try { document.documentElement.dataset.theme = localStorage.getItem('fanhub-theme') === 'light' ? 'light' : 'dark'; } catch (e) {}</script>
+    @auth
+    <meta name="member-preferences-url" content="{{ route('user.preferences') }}">
+    <script>
+        (() => {
+            const theme = @json(auth()->user()->profile?->theme_preference);
+            if (theme) document.documentElement.dataset.theme = theme === 'system' ? (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') : theme;
+            document.documentElement.dataset.fontSize = @json(auth()->user()->profile?->font_size_preference ?? 'medium');
+        })();
+    </script>
+    @endauth
     @vite('resources/js/public.js')
     @stack('styles')
 </head>

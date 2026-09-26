@@ -33,6 +33,9 @@
                         <p>Welcome, {{ auth()->user()->name }}</p>
                         <a href="{{ route('public.account', 'dashboard') }}">My Dashboard</a>
                         <a href="{{ route('public.account', 'bookmarks') }}">Bookmarks</a>
+                        <a href="{{ route('user.favorites') }}">Favorite Fandoms</a>
+                        <a href="{{ route('user.activity') }}">Recent Activity</a>
+                        <a href="{{ route('user.submissions') }}">My Submissions</a>
                         <a href="{{ route('profile.edit') }}">Profile</a>
                         <a href="{{ route('public.account', 'submit-content') }}">Submit Content</a>
                         <form method="POST" action="{{ route('logout') }}">@csrf<button type="submit">Logout</button></form>
