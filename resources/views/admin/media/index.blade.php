@@ -104,76 +104,75 @@
             </div>
         @endif
     </div>
-@endsection
 
-<!-- Upload Modal -->
-<div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="uploadModalLabel"><i class="bi bi-upload me-2"></i>{{ __('Upload Media Files') }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <!-- Upload Modal -->
+    <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="uploadModalLabel"><i class="bi bi-upload me-2"></i>{{ __('Upload Media Files') }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ route('admin.media.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="alt_text" class="form-label">{{ __('Alt text (applied to all uploaded files)') }}</label>
+                            <input type="text" class="form-control" name="alt_text" id="alt_text" maxlength="255" value="{{ old('alt_text') }}" placeholder="{{ __('Descriptive text for accessibility') }}">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">{{ __('Duration (video/audio only)') }}</label>
+                            <div class="row g-2">
+                                <div class="col-4">
+                                    <input type="number" class="form-control" name="duration_hours" id="duration_hours" min="0" max="23" value="{{ old('duration_hours', 0) }}" placeholder="0">
+                                    <small class="text-muted">{{ __('Hours') }}</small>
+                                </div>
+                                <div class="col-4">
+                                    <input type="number" class="form-control" name="duration_minutes" id="duration_minutes" min="0" max="59" value="{{ old('duration_minutes', 0) }}" placeholder="0">
+                                    <small class="text-muted">{{ __('Minutes') }}</small>
+                                </div>
+                                <div class="col-4">
+                                    <input type="number" class="form-control" name="duration_seconds" id="duration_seconds" min="0" max="59.99" step="0.01" value="{{ old('duration_seconds', 0) }}" placeholder="0">
+                                    <small class="text-muted">{{ __('Seconds') }}</small>
+                                </div>
+                            </div>
+                            <small class="text-muted">{{ __('Automatically saved as total seconds.') }}</small>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">{{ __('Select Files') }}</label>
+                            <input type="file" class="form-control @error('files') is-invalid @enderror" name="files[]" multiple accept=".jpg,.jpeg,.png,.gif,.webp,.svg,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.mp4,.webm,.ogv,.mov,.avi,.mkv,.wmv,.3gp,.mp3,.wav,.ogg,.m4a,.aac" required>
+                            <small class="text-muted">{{ __('Images max 5MB, documents 25MB, video 100MB, movies up to 512MB (auto chunked). Up to 10 files per upload.') }}</small>
+                            <div id="fileList" class="mt-2 small text-muted"></div>
+                            @error('files')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                            @error('files.*')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Progress Bar (hidden by default) -->
+                        <div id="uploadProgress" class="d-none mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="fw-medium">{{ __('Uploading...') }}</span>
+                                <button type="button" id="cancelUpload" class="btn btn-sm btn-outline-danger" style="font-size: 0.75rem;">{{ __('Cancel') }}</button>
+                            </div>
+                            <div class="progress" style="height: 8px;">
+                                <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div id="progressText" class="text-muted small mt-1 text-end"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                        <button type="submit" class="btn btn-primary" id="uploadBtn">
+                            <i class="bi bi-upload me-1"></i>{{ __('Upload') }}
+                        </button>
+                    </div>
+                </form>
             </div>
-            <form action="{{ route('admin.media.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="alt_text" class="form-label">{{ __('Alt text (applied to all uploaded files)') }}</label>
-                        <input type="text" class="form-control" name="alt_text" id="alt_text" maxlength="255" value="{{ old('alt_text') }}" placeholder="{{ __('Descriptive text for accessibility') }}">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">{{ __('Duration (video/audio only)') }}</label>
-                        <div class="row g-2">
-                            <div class="col-4">
-                                <input type="number" class="form-control" name="duration_hours" id="duration_hours" min="0" max="23" value="{{ old('duration_hours', 0) }}" placeholder="0">
-                                <small class="text-muted">{{ __('Hours') }}</small>
-                            </div>
-                            <div class="col-4">
-                                <input type="number" class="form-control" name="duration_minutes" id="duration_minutes" min="0" max="59" value="{{ old('duration_minutes', 0) }}" placeholder="0">
-                                <small class="text-muted">{{ __('Minutes') }}</small>
-                            </div>
-                            <div class="col-4">
-                                <input type="number" class="form-control" name="duration_seconds" id="duration_seconds" min="0" max="59.99" step="0.01" value="{{ old('duration_seconds', 0) }}" placeholder="0">
-                                <small class="text-muted">{{ __('Seconds') }}</small>
-                            </div>
-                        </div>
-                        <small class="text-muted">{{ __('Automatically saved as total seconds.') }}</small>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">{{ __('Select Files') }}</label>
-                        <input type="file" class="form-control @error('files') is-invalid @enderror" name="files[]" multiple accept=".jpg,.jpeg,.png,.gif,.webp,.svg,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.mp4,.webm,.ogv,.mov,.avi,.mkv,.wmv,.3gp,.mp3,.wav,.ogg,.m4a,.aac" required>
-                        <small class="text-muted">{{ __('Images max 5MB, documents 10MB, video 50MB, movies up to 512MB (auto chunked). Up to 10 files per upload.') }}</small>
-                        <div id="fileList" class="mt-2 small text-muted"></div>
-                        @error('files')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                        @error('files.*')
-                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <!-- Progress Bar (hidden by default) -->
-                    <div id="uploadProgress" class="d-none mb-3">
-                        <div class="d-flex justify-content-between mb-1">
-                            <span class="fw-medium">{{ __('Uploading...') }}</span>
-                            <button type="button" id="cancelUpload" class="btn btn-sm btn-outline-danger" style="font-size: 0.75rem;">{{ __('Cancel') }}</button>
-                        </div>
-                        <div class="progress" style="height: 8px;">
-                            <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                        <div id="progressText" class="text-muted small mt-1 text-end"></div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">{{ __('Cancel') }}</button>
-                    <button type="submit" class="btn btn-primary" id="uploadBtn">
-                        <i class="bi bi-upload me-1"></i>{{ __('Upload') }}
-                    </button>
-                </div>
-            </form>
         </div>
     </div>
-</div>
 @endsection
 
 @push('scripts')
@@ -460,4 +459,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-@endsection
+@endpush
