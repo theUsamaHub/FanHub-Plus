@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta name="theme-color" content="#05050d">
-        <script>try { document.documentElement.dataset.theme = localStorage.getItem('fanhub-theme') === 'light' ? 'light' : 'dark'; document.documentElement.dataset.sidebar = localStorage.getItem('fanhub-sidebar') === 'collapsed' ? 'collapsed' : 'open'; } catch (e) {}</script>
+        <script>try { const theme = localStorage.getItem('fanhub-theme'); const sidebar = localStorage.getItem('fanhub-sidebar'); if (theme === 'light') { document.documentElement.dataset.theme = 'light'; document.body.dataset.theme = 'light'; } else { document.documentElement.dataset.theme = 'dark'; document.body.dataset.theme = 'dark'; } if (sidebar === 'collapsed') { document.documentElement.dataset.sidebar = 'collapsed'; document.body.classList.add('is-sidebar-collapsed'); } else { document.documentElement.dataset.sidebar = 'open'; document.body.classList.remove('is-sidebar-collapsed'); } } catch (e) {}</script>
 
         <title>{{ config('app.name', 'FanHubPlus') }} — Admin</title>
 
