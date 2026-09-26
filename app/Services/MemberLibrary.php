@@ -29,9 +29,10 @@ class MemberLibrary
             'content' => 'public.content', 'character' => 'public.character', 'merchandise' => 'public.merchandise',
             'event' => 'events.show',
         };
+        $url = $item->slug ? route($route, $item->slug) : route('events.index');
         return ['id' => $item->id, 'type' => $type, 'title' => $item->title ?? $item->name,
             'image' => $item->artwork_url ?: asset('images/fandoms/anime.png'),
-            'category' => $item->category?->name ?? ucfirst($type), 'url' => route($route, $item->slug)];
+            'category' => $item->category?->name ?? ucfirst($type), 'url' => $url];
     }
 
     public function activity(string $event, Model $target): void
