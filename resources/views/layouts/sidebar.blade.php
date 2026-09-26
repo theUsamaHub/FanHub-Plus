@@ -42,19 +42,22 @@
             <i class="bi bi-images"></i> <span>{{ __('Media') }}</span>
         </a>
 
-        <div class="fh-adm-nav-group">{{ __('Community') }}</div>
+<div class="fh-adm-nav-group">{{ __('Community') }}</div>
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.users.*') ? 'is-active' : '' }}" href="{{ route('admin.users.index') }}" title="{{ __('Users') }}">
             <i class="bi bi-people-fill"></i> <span>{{ __('Users') }}</span>
         </a>
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.roles.*') ? 'is-active' : '' }}" href="{{ route('admin.roles.index') }}" title="{{ __('Roles') }}">
             <i class="bi bi-shield-lock"></i> <span>{{ __('Roles') }}</span>
         </a>
-         <a class="fh-adm-nav-link {{ request()->routeIs('admin.contacts.*') ? 'is-active' : '' }}" href="{{ route('admin.contacts.index') }}" title="{{ __('Contacts') }}">
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.contacts.*') ? 'is-active' : '' }}" href="{{ route('admin.contacts.index') }}" title="{{ __('Contacts') }}">
             <i class="bi bi-envelope-open"></i> <span>{{ __('Contacts') }}</span>
         </a>
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.subscribers.*') ? 'is-active' : '' }}" href="{{ route('admin.subscribers.index') }}" title="{{ __('Subscribers') }}">
             <i class="bi bi-person-lines-fill"></i> <span>{{ __('Subscribers') }}</span>
-        </a> 
+        </a>
+        <a class="fh-adm-nav-link {{ request()->routeIs('admin.newsletters.*') ? 'is-active' : '' }}" href="{{ route('admin.newsletters.index') }}" title="{{ __('Newsletters') }}">
+            <i class="bi bi-envelope-heart"></i> <span>{{ __('Newsletters') }}</span>
+        </a>
         <a class="fh-adm-nav-link {{ request()->routeIs('admin.reviews.*') ? 'is-active' : '' }}" href="{{ route('admin.reviews.index') }}" title="{{ __('Reviews') }}">
             <i class="bi bi-chat-square-text"></i> <span>{{ __('Reviews') }}</span>
         </a>
