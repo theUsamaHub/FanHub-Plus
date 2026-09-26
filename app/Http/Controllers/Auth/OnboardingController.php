@@ -13,7 +13,7 @@ use Illuminate\View\View;
 class OnboardingController extends Controller
 {
     /**
-     * Show the onboarding modal/form for selecting favorite categories.
+     * Show the onboarding page for selecting favorite categories.
      */
     public function create(): View
     {
@@ -28,9 +28,13 @@ class OnboardingController extends Controller
         // Get user's current selections (if any - for existing users returning)
         $selectedCategoryIds = $user->favoriteCategories()->pluck('categories.id')->toArray();
         
-        return view('auth.onboarding', [
+        // Determine which layout to use based on user role
+        $layout = $user->hasRole('admin') ? 'layouts.app' : 'layouts.user.app';
+        
+return view('auth.onboarding-page', [
             'categories' => $categories,
             'selectedCategoryIds' => $selectedCategoryIds,
+            'layout' => $layout,
         ]);
     }
 
