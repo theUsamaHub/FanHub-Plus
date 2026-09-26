@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', function() {
         initFormData.append('_token', document.querySelector('meta[name="csrf-token"]').content);
 
         try {
-            const initResponse = await fetch('{{ route('media.chunk.init') }}', {
+            const initResponse = await fetch('{{ route('admin.media.chunk.init') }}', {
                 method: 'POST',
                 body: initFormData,
                 headers: {
@@ -342,7 +342,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 chunkFormData.append('chunk', chunk);
                 chunkFormData.append('_token', document.querySelector('meta[name="csrf-token"]').content);
 
-                const chunkResponse = await fetch('{{ route('media.chunk.upload') }}', {
+                const chunkResponse = await fetch('{{ route('admin.media.chunk.upload') }}', {
                     method: 'POST',
                     body: chunkFormData,
                     headers: {
@@ -371,7 +371,7 @@ document.addEventListener('DOMContentLoaded', function() {
             completeFormData.append('duration_seconds', durationSeconds);
             completeFormData.append('_token', document.querySelector('meta[name="csrf-token"]').content);
 
-            const completeResponse = await fetch('{{ route('media.chunk.complete') }}', {
+            const completeResponse = await fetch('{{ route('admin.media.chunk.complete') }}', {
                 method: 'POST',
                 body: completeFormData,
                 headers: {
@@ -391,7 +391,7 @@ document.addEventListener('DOMContentLoaded', function() {
             showError(error.message);
             // Try to cancel upload
             if (uploadMediaId) {
-                await fetch('{{ route('media.chunk.cancel') }}', {
+                await fetch('{{ route('admin.media.chunk.cancel') }}', {
                     method: 'POST',
                     body: new URLSearchParams({ media_id: uploadMediaId, _token: document.querySelector('meta[name="csrf-token"]').content }),
                 });
