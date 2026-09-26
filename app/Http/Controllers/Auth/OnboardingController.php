@@ -31,10 +31,9 @@ class OnboardingController extends Controller
         // Determine which layout to use based on user role
         $layout = $user->hasRole('admin') ? 'layouts.app' : 'layouts.user.app';
         
-return view('auth.onboarding-page', [
+return view('auth.onboarding', [
             'categories' => $categories,
             'selectedCategoryIds' => $selectedCategoryIds,
-            'layout' => $layout,
         ]);
     }
 

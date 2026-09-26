@@ -1,247 +1,213 @@
-{{-- Onboarding Modal for Favorite Categories Selection --}}
-<div class="modal fade" id="onboardingModal" tabindex="-1" aria-labelledby="onboardingModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-fullscreen modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header border-0 pb-0">
-                <div class="text-center w-100">
-                    <div class="inline-flex items-center justify-content-center w-16 h-16 rounded-full bg-primary/10 text-primary mb-4 mx-auto">
-                        <i class="bi bi-heart-fill fs-2"></i>
-                    </div>
-                    <h2 class="h3 fw-bold mb-1">{{ __('Welcome to FanHub+!') }}</h2>
-                    <p class="text-muted mb-0">{{ __('Choose your favorite fandoms to personalize your experience') }}</p>
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ __('Welcome to FanHub+') }} — {{ config('app.name', 'FanHubPlus') }}</title>
+    <script>try { document.documentElement.dataset.theme = localStorage.getItem('fanhub-theme') === 'light' ? 'light' : 'dark'; } catch (e) {}</script>
+    @vite(['resources/css/onboarding.css', 'resources/js/public.js'])
+</head>
+<body class="fh-site">
+    <div class="fh-onboarding min-vh-100 d-flex align-items-center justify-content-center px-4 py-6">
+        <div class="fh-onboarding-card w-100" style="max-width: 720px;">
+            <div class="fh-onboarding-header text-center mb-5">
+                <div class="fh-onboarding-logo mx-auto mb-5" role="img" aria-label="FanHub+ Logo">
+                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" width="64" height="64" aria-hidden="true">
+                        <defs>
+                            <linearGradient id="onboarding-gradient" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#FF922E"/>
+                                <stop offset="100%" stop-color="#F45132"/>
+                            </linearGradient>
+                        </defs>
+                        <rect width="64" height="64" rx="20" fill="url(#onboarding-gradient)"/>
+                        <path d="M32 18C24.27 18 18 24.27 18 32C18 39.73 24.27 46 32 46C39.73 46 46 39.73 46 32C46 24.27 39.73 18 32 18Z" stroke="white" stroke-width="2.5" fill="none"/>
+                        <path d="M32 14V32M22 26H42" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                 </div>
-                {{-- No close button - user must complete onboarding --}}
+                
+                <h1 class="fh-onboarding-title">{{ __('Welcome to FanHub+!') }}</h1>
+                <p class="fh-onboarding-subtitle">{{ __('Choose your favorite fandoms to personalize your experience') }}</p>
             </div>
-            <div class="modal-body pb-0">
-                <form action="{{ route('onboarding.store') }}" method="POST" id="onboardingForm">
-                    @csrf
-                    <div class="mb-4">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <label class="form-label fw-semibold mb-0">{{ __('Select Your Favorite Fandoms') }}</label>
-                            <span class="badge bg-primary fs-6" id="selectionCounter">{{ __('Selected') }}: <span id="selectedCount">0</span> / 5</label>
+
+            <form action="{{ route('onboarding.store') }}" method="POST" id="onboardingForm" novalidate>
+                @csrf
+                
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <label class="form-label fw-semibold mb-0">{{ __('Select Your Favorite Fandoms') }}</label>
+                        <span class="fh-onboarding-counter" id="selectionCounter" role="status" aria-live="polite">
+                            <span class="counter-label">{{ __('Selected') }}</span>
+                            <span class="counter-value" id="selectedCount">0</span>
+                            <span class="counter-divider" aria-hidden="true">/</span>
+                            <span class="counter-max">5</span>
                         </div>
-                        <p class="text-muted small mb-3">{{ __('Select at least 3, maximum 5 fandoms to personalize your feed.') }}</p>
-                        
-                        <div class="row g-3" id="categoriesContainer">
-                            @foreach ($categories as $category)
-                                <div class="col-6 col-md-4 col-xl-3">
-                                    <label class="category-card h-100 d-flex flex-column {{ in_array($category->id, $selectedCategoryIds) ? 'selected' : '' }}" 
-                                           data-category-id="{{ $category->id }}"
-                                           onclick="toggleCategory(this, {{ $category->id }})">
-                                        <input type="checkbox" name="categories[]" value="{{ $category->id }}" class="d-none" 
-                                               {{ in_array($category->id, $selectedCategoryIds) ? 'checked' : '' }}>
-                                        <div class="category-icon mb-2">
-                                            @if ($category->iconMedia && $category->iconMedia->url)
-                                                <img src="{{ $category->iconMedia->url }}" alt="{{ $category->name }}" class="img-fluid rounded" style="width: 48px; height: 48px; object-fit: cover;">
-                                            @else
-                                                <div class="d-inline-flex align-items-center justify-content-center bg-primary/10 text-primary rounded" style="width: 48px; height: 48px;">
-                                                    <i class="bi bi-tag fs-4"></i>
-                                                </div>
-                                            @endif
-                                        </div>
-                                        <div class="category-name text-center fw-medium text-truncate">{{ $category->name }}</div>
-                                        @if ($category->description)
-                                            <div class="category-description text-muted small text-center mt-1" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{{ $category->description }}</div>
-                                        @endif
-                                        <div class="category-check mt-auto">
-                                            <div class="check-indicator d-inline-flex align-items-center justify-content-center">
-                                                <i class="bi bi-check-lg fs-4 text-primary d-none"></i>
-                                            </div>
-                                        </div>
-                                    </label>
-                                </div>
-                            @endforeach
-                        </div>
-                        
-                        @error('categories')
-                            <div class="alert alert-danger mt-3 py-2 small mb-0">
-                                <i class="bi bi-exclamation-triangle me-1"></i> {{ $message }}
-                            </div>
-                        @enderror
+                    </div>
+                    <p class="fh-onboarding-subtitle mb-3">{{ __('Select 3–5 fandoms to personalize your feed') }}</p>
+                    
+                    <div class="fh-category-pills" id="categoriesContainer" role="group" aria-label="{{ __('Select your favorite fandoms') }}">
+                        @foreach ($categories as $category)
+                            <label class="fh-category-pill {{ in_array($category->id, $selectedCategoryIds) ? 'selected' : '' }}" 
+                                   data-category-id="{{ $category->id }}"
+                                                   onclick="toggleCategory(this, {{ $category->id }})"
+                                   role="checkbox"
+                                                   aria-checked="{{ in_array($category->id, $selectedCategoryIds) ? 'true' : 'false' }}"
+                                                   tabindex="0"
+                                                   aria-label="{{ $category->name }} {{ in_array($category->id, $selectedCategoryIds) ? 'selected' : 'not selected' }}">
+                                <input type="checkbox" name="categories[]" value="{{ $category->id }}" class="sr-only" 
+                                       {{ in_array($category->id, $selectedCategoryIds) ? 'checked' : '' }}
+                                       aria-hidden="true">
+                                
+                                <span class="fh-pill-icon" aria-hidden="true">
+                                    @if ($category->iconMedia && $category->iconMedia->url)
+                                        <img src="{{ $category->iconMedia->url }}" alt="" loading="lazy" width="24" height="24">
+                                    @else
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18" aria-hidden="true">
+                                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-5.18 5.18a5.5 5.5 0 0 0 0 7.78L12 21.33l7.78-7.78a5.5 5.5 0 0 0 0-7.78L12 10.67l5.18-5.18a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    @else
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18" aria-hidden="true">
+                                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-5.18 5.18a5.5 5.5 0 0 0 0 7.78L12 21.33l7.78-7.78a5.5 5.5 0 0 0 0-7.78L12 10.67l5.18-5.18a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    @endif
+                                </span>
+                                
+                                <span class="fh-pill-name">{{ $category->name }}</span>
+                                
+                                <span class="fh-pill-check" aria-hidden="true">
+                                    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                    </svg>
+                                </span>
+                            </label>
+                        @endforeach
                     </div>
                     
-                    <div class="d-grid mt-4">
-                        <button type="submit" class="btn btn-primary btn-lg" id="submitBtn" disabled>
-                            <i class="bi bi-check-circle me-2"></i> {{ __('Complete Setup') }}
-                        </button>
-                    </div>
-                </form>
-            </div>
+                    @error('categories')
+                        <div class="fh-onboarding-error" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+                            <span>{{ $message }}</span>
+                        </div>
+                    @enderror
+                </div>
+    
+                <div class="d-grid mt-4">
+                    <button type="submit" class="fh-onboarding-submit" id="submitBtn" disabled>
+                        <span class="btn-text"><i class="bi bi-check-circle me-2" aria-hidden="true"></i>{{ __('Complete Setup') }}</span>
+                        <span class="btn-loader" aria-hidden="true">
+                            <svg class="spinner" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" fill="none" stroke-dasharray="31.4 31.4" stroke-dashoffset="31.4">
+                                    <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/>
+                                </circle>
+                            </svg>
+                        </span>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
-</div>
 
-@push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById('onboardingModal');
-    const form = document.getElementById('onboardingForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const selectedCountEl = document.getElementById('selectedCount');
-    const categoriesContainer = document.getElementById('categoriesContainer');
-    const submitBtnEl = document.getElementById('submitBtn');
-    
-    // Prevent modal from being dismissed
-    const modalEl = document.getElementById('onboardingModal');
-    if (modalEl) {
-        modalEl.addEventListener('hide.bs.modal', function(event) {
-            event.preventDefault();
-            return false;
-        });
-        
-        // Auto-show the modal on page load
-        const modal = new bootstrap.Modal(modalEl, {
-            backdrop: 'static',
-            keyboard: false
-        });
-        modal.show();
-    }
-    
-    // Disable ESC key to close modal
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modalEl && modalEl.classList.contains('show')) {
-            e.preventDefault();
-            return false;
-        }
-    });
+    @push('scripts')
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('onboardingForm');
+        if (!form) return;
 
-    // Initialize selection count
-    updateSelectionCount();
-    
-    // Handle category card clicks
-    document.querySelectorAll('.category-card').forEach(card => {
-        card.addEventListener('click', function(e) {
-            // Don't toggle if clicking on the checkbox directly (it handles itself)
-            if (e.target.type === 'checkbox') return;
-            
-            const checkbox = this.querySelector('input[type="checkbox"]');
-            checkbox.checked = !checkbox.checked;
-            toggleCategory(this, checkbox.value);
-        });
+        const submitBtnEl = document.getElementById('submitBtn');
+        const selectedCountEl = document.getElementById('selectedCount');
+        const categoriesContainer = document.getElementById('categoriesContainer');
+        const submitBtnEl = document.getElementById('submitBtn');
+
+        // Initialize selection count
+        updateSelectionCount();
         
-        // Handle checkbox change
-        const checkbox = card.querySelector('input[type="checkbox"]');
-        if (checkbox) {
-            checkbox.addEventListener('change', function() {
-                if (this.checked) {
-                    this.closest('.category-card').classList.add('selected');
-                } else {
-                    this.closest('.category-card').classList.remove('selected');
-                }
-                updateSelectionCount();
+        // Handle category pill clicks
+        document.querySelectorAll('.fh-category-pill').forEach(pill => {
+            pill.addEventListener('click', function(e) {
+                // Don't toggle if clicking on the checkbox directly (it handles itself)
+                if (e.target.type === 'checkbox') return;
+                
+                const checkbox = this.querySelector('input[type="checkbox"]');
+                checkbox.checked = !checkbox.checked;
+                toggleCategory(this, checkbox.value);
             });
+            
+            // Handle checkbox change
+            const checkbox = pill.querySelector('input[type="checkbox"]');
+            if (checkbox) {
+                checkbox.addEventListener('change', function() {
+                    if (this.checked) {
+                        this.closest('.fh-category-pill').classList.add('selected');
+                    } else {
+                        this.closest('.fh-category-pill').classList.remove('selected');
+                    }
+                    updateSelectionCount();
+                });
+            });
+            
+            // Keyboard support
+            pill.addEventListener('keydown', function(e) {
+                if (e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    this.click();
+                }
+            });
+        });
+
+        function toggleCategory(pill, categoryId) {
+            const checkbox = pill.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            checkbox.dispatchEvent(new Event('change'));
+        }
+
+        function updateSelectionCount() {
+            const checkedCount = document.querySelectorAll('#categoriesContainer input[type="checkbox"]:checked').length;
+            selectedCountEl.textContent = checkedCount;
+            
+            // Enable/disable submit button
+            submitBtnEl.disabled = checkedCount < 3;
+            
+            // Update counter text
+            selectedCountEl.textContent = checkedCount;
+            
+            // Visual feedback on counter
+            const counterEl = document.getElementById('selectionCounter');
+            if (counterEl) {
+                counterEl.classList.remove('ready');
+                if (checkedCount >= 3 && checkedCount <= 5) {
+                    counterEl.classList.add('ready');
+                }
+            }
+            
+            // Visual feedback on counter
+            selectedCountEl.classList.remove('text-success', 'text-warning', 'text-danger');
+            if (checkedCount >= 3 && checkedCount <= 5) {
+                selectedCountEl.classList.add('text-success');
+            } else if (checkedCount > 5) {
+                selectedCountEl.classList.add('text-danger');
+            } else {
+                selectedCountEl.classList.add('text-warning');
+            }
+        }
+
+        function showError(message) {
+            const existingError = document.querySelector('.fh-onboarding-error');
+            if (existingError) existingError.remove();
+            
+            const alert = document.createElement('div');
+            alert.className = 'fh-onboarding-error';
+            alert.innerHTML = `
+                <svg viewBox="0 0 16 16" fill="currentColor" width="16" height="16" aria-hidden="true">
+                    <path d="M8 16A8 8 0 108 0a8 8 0 000 16zm-3.97-6.03a.75.75 0 00-1.08.022L7 10.94l-2.07-2.07a.75.75 0 10-1.06 1.06l2.5 2.5a.75.75 0 001.06 0l2.5 2.5a.75.75 0 001.06 0l-2.5 2.5a.75.75 0 001.06 0l-2.5 2.5a.75.75 0 001.06 0l-2.5 2.5a.75.75 0 001.06 0z"/>
+                </svg>
+                <span>${message}</span>
+            `;
+            
+            const form = document.getElementById('onboardingForm');
+            const existingError = form.querySelector('.fh-onboarding-error');
+            if (existingError) existingError.remove();
+            form.insertAdjacentElement('afterbegin', alert);
         }
     });
-
-    function toggleCategory(card, categoryId) {
-        const checkbox = card.querySelector('input[type="checkbox"]');
-        checkbox.checked = !checkbox.checked;
-        checkbox.dispatchEvent(new Event('change'));
-    }
-
-    function updateSelectionCount() {
-        const checkedCount = document.querySelectorAll('#categoriesContainer input[type="checkbox"]:checked').length;
-        selectedCountEl.textContent = checkedCount;
-        
-        // Enable/disable submit button
-        submitBtnEl.disabled = checkedCount < 3;
-        
-        // Update counter text
-        selectedCountEl.textContent = checkedCount;
-        
-        // Visual feedback on counter
-        selectedCountEl.classList.remove('text-success', 'text-warning', 'text-danger');
-        if (checkedCount >= 3 && checkedCount <= 5) {
-            selectedCountEl.classList.add('text-success');
-        } else if (checkedCount > 5) {
-            selectedCountEl.classList.add('text-danger');
-        } else {
-            selectedCountEl.classList.add('text-warning');
-        }
-    }
-
-    // Form submission
-    if (form) {
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const checkedCount = document.querySelectorAll('#categoriesContainer input[type="checkbox"]:checked').length;
-            
-            if (checkedCount < 3) {
-                showError('Please select at least 3 favorite categories.');
-                return;
-            }
-            
-            if (checkedCount > 5) {
-                showError('You can select a maximum of 5 categories.');
-                return;
-            }
-            
-            // Show loading state
-            submitBtnEl.disabled = true;
-            submitBtnEl.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Saving...';
-            
-            const formData = new FormData(this);
-            
-            try {
-                const response = await fetch('{{ route('onboarding.store') }}', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Accept': 'application/json',
-                    },
-                    credentials: 'same-origin'
-                });
-                
-                const data = await response.json();
-                
-                if (response.ok) {
-                    // Show success and redirect
-                    showSuccess('Welcome to FanHub+! Your favorite fandoms have been saved.');
-                    setTimeout(() => {
-                        window.location.href = '{{ route('dashboard', absolute: false) }}';
-                    }, 1000);
-                } else {
-                    throw new Error(data.message || 'Failed to save preferences');
-                }
-            } catch (error) {
-                showError(error.message || 'Failed to save preferences. Please try again.');
-                submitBtnEl.disabled = false;
-                submitBtnEl.innerHTML = '<i class="bi bi-check-circle me-2"></i> Complete Setup';
-            }
-        });
-    }
-    
-    function showError(message) {
-        const alert = document.createElement('div');
-        alert.className = 'alert alert-danger alert-dismissible fade show mt-3';
-        alert.innerHTML = `${message} <button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
-        
-        // Remove any existing alerts
-        const existingAlert = document.querySelector('.alert-danger');
-        if (existingAlert) existingAlert.remove();
-        
-        const form = document.getElementById('onboardingForm');
-        form.insertAdjacentElement('afterbegin', alert);
-        
-        // Auto-dismiss after 5 seconds
-        setTimeout(() => {
-            if (alert.parentNode) alert.remove();
-        }, 5000);
-    }
-    
-    function showSuccess(message) {
-        const alert = document.createElement('div');
-        alert.className = 'alert alert-success alert-dismissible fade show mt-3';
-        alert.innerHTML = `${message} <button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
-        
-        const existingAlert = document.querySelector('.alert-success');
-        if (existingAlert) existingAlert.remove();
-        
-        const form = document.getElementById('onboardingForm');
-        form.insertAdjacentElement('afterbegin', alert);
-    }
-});
-</script>
-@endpush
+    </script>
+    @endpush
