@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\MediaServeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubscriberController;
 use Illuminate\Support\Facades\Route;
@@ -52,3 +53,8 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/unsubscribe/{token}', [SubscriberController::class, 'unsubscribe'])->name('unsubscribe');
 
 require __DIR__.'/member.php';
+
+// Media file serving with proper 404 handling
+Route::get('/storage/{path}', [MediaServeController::class, 'serve'])
+    ->where('path', '.*')
+    ->name('storage.serve');
