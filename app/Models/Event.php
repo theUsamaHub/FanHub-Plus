@@ -21,6 +21,7 @@ class Event extends Model
         'city',
         'venue',
         'address',
+        'google_maps_location',
         'latitude',
         'longitude',
         'start_at',
@@ -110,6 +111,10 @@ class Event extends Model
 
     public function getMapUrlAttribute(): ?string
     {
+        if (in_array(strtolower(parse_url($this->google_maps_location ?? '', PHP_URL_SCHEME) ?? ''), ['http', 'https'], true)) {
+            return $this->google_maps_location;
+        }
+
         $location = $this->latitude !== null && $this->longitude !== null
             ? $this->latitude.','.$this->longitude
             : implode(', ', array_filter([$this->venue, $this->address, $this->city]));
@@ -139,6 +144,30 @@ class Event extends Model
     public function scopeInCity(Builder $query, string $city): Builder
     {
         return $query->where('city', $city);
+    }
+
+    public function scopeWithinRadius(Builder $query, float $latitude, float $longitude, int $radius): Builder
+    {
+        // Some SQLite builds omit math functions. Register SQL functions on that
+        // connection so filtering and pagination still happen in the database.
+        $connection = $query->getConnection();
+        if ($connection->getDriverName() === 'sqlite') {
+            $pdo = $connection->getPdo();
+            foreach (['radians' => 'deg2rad', 'sin' => 'sin', 'cos' => 'cos', 'asin' => 'asin', 'sqrt' => 'sqrt'] as $sql => $php) {
+                $pdo->sqliteCreateFunction($sql, fn ($value) => $value === null ? null : $php((float) $value), 1);
+            }
+            $pdo->sqliteCreateFunction('power', fn ($value, $exponent) => $value === null ? null : pow((float) $value, (float) $exponent), 2);
+        }
+        // Haversine distance in SQL; CASE clamps floating point rounding at the poles.
+        $a = '(POWER(SIN(RADIANS(latitude - ?) / 2), 2) + COS(RADIANS(?)) * COS(RADIANS(latitude)) * POWER(SIN(RADIANS(longitude - ?) / 2), 2))';
+        $distance = "(12742 * ASIN(SQRT(CASE WHEN $a > 1 THEN 1 ELSE $a END)))";
+        $bindings = [$latitude, $latitude, $longitude, $latitude, $latitude, $longitude];
+        $margin = rad2deg($radius / 6371);
+
+        return $query->whereBetween('latitude', [max(-90, $latitude - $margin), min(90, $latitude + $margin)])
+            ->whereBetween('longitude', [-180, 180])
+            ->select('events.*')->selectRaw("$distance AS distance_km", $bindings)
+            ->whereRaw("$distance <= ?", [...$bindings, $radius]);
     }
 
     public function scopeForCategory(Builder $query, int $categoryId): Builder

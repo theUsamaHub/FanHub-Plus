@@ -31,7 +31,7 @@ class EventRequest extends FormRequest
             'city' => ['required', 'string', 'max:100'],
             'venue' => ['nullable', 'string', 'max:255'],
             'address' => ['nullable', 'string', 'max:255'],
-            'google_maps_location' => ['nullable', 'url:http,https', 'max:500'],
+            'google_maps_location' => ['nullable', 'url:http,https', 'max:255'],
             'latitude' => ['nullable', 'numeric', 'between:-90,90'],
             'longitude' => ['nullable', 'numeric', 'between:-180,180'],
             'start_at' => ['required', 'date'],
