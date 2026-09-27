@@ -59,9 +59,11 @@ Route::prefix('admin')
 
         Route::get('/media', [\App\Http\Controllers\Admin\MediaController::class, 'index'])->name('media.index');
         Route::post('/media', [\App\Http\Controllers\Admin\MediaController::class, 'store'])->name('media.store');
+        Route::get('/media/{media}', [\App\Http\Controllers\Admin\MediaController::class, 'edit'])->name('media.show');
         Route::get('/media/{media}/edit', [\App\Http\Controllers\Admin\MediaController::class, 'edit'])->name('media.edit');
         Route::put('/media/{media}', [\App\Http\Controllers\Admin\MediaController::class, 'update'])->name('media.update');
         Route::delete('/media/{media}', [\App\Http\Controllers\Admin\MediaController::class, 'destroy'])->name('media.destroy');
+        Route::get('/media/{media}/download', [\App\Http\Controllers\Admin\MediaController::class, 'download'])->name('media.download');
 
         // Chunked upload for large files (movies)
         Route::post('/media/chunk/init', [\App\Http\Controllers\Admin\MediaController::class, 'initChunkedUpload'])->name('media.chunk.init');
