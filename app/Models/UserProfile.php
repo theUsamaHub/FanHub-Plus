@@ -12,6 +12,7 @@ class UserProfile extends Model
         'avatar_media_id',
         'display_name',
         'bio',
+        'google_maps_location',
         'onboarding_completed_at',
     ];
 
