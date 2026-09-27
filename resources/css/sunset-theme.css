@@ -119,8 +119,8 @@
 :root[data-theme] .fh-site .release-date,
 :root[data-theme] .fh-site .release-label { color: var(--fh-accent); }
 :root[data-theme] .fh-site .release-node { border-color: var(--fh-bg); }
-:root[data-theme] .fh-site .release-timeline-line > span { background: var(--fh-border-gradient); box-shadow: none; }
-:root[data-theme] .fh-site .release-timeline { scrollbar-color: var(--brand-lavender) transparent; }
+:root[data-theme] .fh-site .release-pagination .swiper-pagination-bullet { background: var(--brand-lavender); }
+:root[data-theme] .fh-site .release-pagination .swiper-pagination-bullet-active { background: var(--brand-orange); box-shadow: 0 0 10px #FF922E33; }
 :root[data-theme] .fh-site .trending-card:has(:focus-visible),
 :root[data-theme] .fh-site .release-card:has(:focus-visible) { outline-color: var(--fh-cyan); }
 

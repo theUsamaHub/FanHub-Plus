@@ -37,5 +37,5 @@
 .fh-site .home-page { --home-art: none; }
 @media(max-width:700px) { .fh-site .fan-hero { --hero-nav-height: 66px; } .fh-site .home-section { padding-block: 36px; } }
 .fh-site .fan-hero__pick-art { background-size: cover; background-position: center; }
-.fh-site .release-track { min-width: 0; margin-inline: auto; }
+.fh-site .release-swiper { min-width: 0; margin-inline: auto; }
 @media(max-width:700px) { .fh-footer-lite { padding-bottom: 85px; } }

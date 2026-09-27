@@ -149,10 +149,25 @@ class PublicSiteController extends Controller
             ->orderByDesc('view_count')->limit(12)->get();
         // Events tied to this Content record
         $events = $content->events()->with(['category', 'coverMedia'])
+            ->published()
             ->whereRaw('COALESCE(end_at, start_at) >= ?', [now()])
             ->orderBy('start_at')->limit(6)->get();
 
-        return view('public.content', compact('content', 'related', 'characters', 'merchandise', 'events'));
+        $gallery = $content->mediaByRole('gallery')->filter(fn ($media) => $media->isImage() && $media->hasValidPath());
+        $trailers = $content->mediaByRole('trailer')->filter(fn ($media) => $media->isVideo() && $media->hasValidPath());
+        $audioClips = $content->mediaByRole('audio_clip')->filter(fn ($media) => $media->isAudio() && $media->hasValidPath());
+        $attachments = $content->mediaByRole('attachment')->filter(fn ($media) => $media->isDocument() && $media->hasValidPath());
+        $saved = auth()->user()?->bookmarks()->where([
+            'bookmarkable_type' => $content->getMorphClass(), 'bookmarkable_id' => $content->id,
+        ])->exists() ?? false;
+        $watchlisted = auth()->check() && \App\Models\ActivityLog::where([
+            'user_id' => auth()->id(), 'event' => 'member.watchlisted',
+            'auditable_type' => $content->getMorphClass(), 'auditable_id' => $content->id,
+        ])->exists();
+        $savedMerchandise = $this->savedMerchandise();
+
+        return view('public.content', compact('content', 'related', 'characters', 'merchandise', 'events',
+            'gallery', 'trailers', 'audioClips', 'attachments', 'saved', 'watchlisted', 'savedMerchandise'));
     }
 
     public function character(CharacterProfile $character): View
@@ -208,6 +223,7 @@ class PublicSiteController extends Controller
                 'status' => ['nullable', 'in:released,upcoming'],
                 'tag' => ['nullable', 'in:limited_edition,pre_order,collectible,standard'],
                 'sort' => ['nullable', 'in:newest,popular,name'],
+                'content' => ['nullable', 'integer', 'min:1'],
             ]);
             $filters = array_merge(['q' => '', 'category' => 'all', 'status' => '', 'tag' => '', 'sort' => 'newest'], array_filter($filters, fn ($value) => $value !== null));
             $filters['q'] = trim($filters['q']);
@@ -215,6 +231,9 @@ class PublicSiteController extends Controller
             // Keep existing fandom URLs working, including empty fandoms.
             abort_unless(in_array($filters['category'], ['all', ...$categories->pluck('slug')->all(), ...array_keys(config('fandoms'))], true), 404);
             $query = MerchandiseItem::forUser(auth()->user())->with(['category', 'imageMedia']);
+            $linkedContent = ! empty($filters['content'])
+                ? Content::visibleToPublic()->findOrFail($filters['content']) : null;
+            if ($linkedContent) $query->where('content_id', $linkedContent->id);
             if ($filters['q'] !== '') {
                 $term = '%'.str_replace(['!', '%', '_'], ['!!', '!%', '!_'], mb_strtolower($filters['q'])).'%';
                 $query->whereRaw("LOWER(name) LIKE ? ESCAPE '!'", [$term]);
@@ -230,9 +249,9 @@ class PublicSiteController extends Controller
                 default => $query->orderByDesc('created_at'),
             };
             $items = $query->orderByDesc('id')->paginate(12)->withQueryString();
-            $hasFilters = $filters['q'] !== '' || $filters['category'] !== 'all' || $filters['status'] !== '' || $filters['tag'] !== '';
+            $hasFilters = $linkedContent !== null || $filters['q'] !== '' || $filters['category'] !== 'all' || $filters['status'] !== '' || $filters['tag'] !== '';
 
-            return view('public.merchandise-index', compact('items', 'filters', 'categories', 'hasFilters') + ['savedMerchandise' => $this->savedMerchandise()]);
+            return view('public.merchandise-index', compact('items', 'filters', 'categories', 'hasFilters', 'linkedContent') + ['savedMerchandise' => $this->savedMerchandise()]);
         }
 
         if ($section === 'upcoming') {

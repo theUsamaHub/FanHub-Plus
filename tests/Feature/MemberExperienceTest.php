@@ -86,7 +86,9 @@ class MemberExperienceTest extends TestCase
         $this->actingAs(User::factory()->create())->get(route('public.content', $this->story->slug))->assertDontSee('This review needs moderation.');
         $this->delete(route('user.reviews.destroy', $review))->assertForbidden();
         $review->update(['status' => 'approved']);
-        $this->get(route('public.content', $this->story->slug))->assertSee('This review needs moderation.');
+        // Content detail deliberately omits reviews, including approved ones.
+        $this->assertSame('approved', $review->fresh()->status);
+        $this->get(route('public.content', $this->story->slug))->assertDontSee('This review needs moderation.');
     }
 
     public function test_submissions_cannot_self_publish_or_edit_other_users_work(): void

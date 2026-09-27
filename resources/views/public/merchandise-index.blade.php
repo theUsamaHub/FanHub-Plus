@@ -5,12 +5,13 @@
     <header class="merch-catalog__header">
         <p class="merch-eyebrow">THE FAN COLLECTION</p>
         <h1>Find your next <span class="fan-gradient-text">favorite.</span></h1>
-        <p>Explore merchandise from the worlds you love. Discover collectibles, limited editions, and upcoming releases.</p>
+        @if($linkedContent ?? null)<p>Merchandise for <a href="{{ route('public.content', $linkedContent->slug) }}">{{ $linkedContent->title }}</a>.</p>@else<p>Explore merchandise from the worlds you love. Discover collectibles, limited editions, and upcoming releases.</p>@endif
     </header>
     @if($errors->any())
         <div class="merch-empty" role="alert"><p>{{ $errors->first() }}</p><a href="{{ route('public.section', 'merchandise') }}">Reset filters</a></div>
     @endif
     <form method="get" action="{{ route('public.section', 'merchandise') }}" class="merch-catalog__form" role="search" aria-label="Search merchandise">
+        @if($linkedContent ?? null)<input type="hidden" name="content" value="{{ $linkedContent->id }}">@endif
         <div class="merch-catalog__search">
             <label for="merch-search">Search merchandise
                 <input id="merch-search" type="search" name="q" value="{{ $filters['q'] }}" maxlength="120" placeholder="Search by name…">

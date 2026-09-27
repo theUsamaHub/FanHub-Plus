@@ -82,4 +82,19 @@ class InteractionController extends Controller
         else \App\Models\ActivityLog::where($key)->delete();
         return back()->with('success', $data['watched'] ? 'Added to your watched history.' : 'Removed from watched history.');
     }
+
+    public function watchlist(Request $request, Content $content, MemberLibrary $library)
+    {
+        $library->resolve('content', $content->id);
+        $data = $request->validate(['saved' => 'required|boolean']);
+        $key = ['user_id' => $request->user()->id, 'event' => 'member.watchlisted',
+            'auditable_type' => $content->getMorphClass(), 'auditable_id' => $content->id];
+        if ($data['saved']) {
+            \App\Models\ActivityLog::firstOrCreate($key, ['new_values' => ['label' => $content->title]]);
+        } else {
+            \App\Models\ActivityLog::where($key)->delete();
+        }
+
+        return back()->with('success', $data['saved'] ? 'Added to your watchlist.' : 'Removed from your watchlist.');
+    }
 }

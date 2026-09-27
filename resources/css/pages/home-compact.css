@@ -18,7 +18,7 @@
 .home-page .story-card--primary h3 { font-size: clamp(27px, 2.3vw, 36px); }
 .home-page .story-card--primary .story-excerpt { font-size: 14px; }
 .home-page .story-featured-label { margin-bottom: 28px; letter-spacing: 3px; }
-.home-page .release-track { --poster-height: 250px; }
+.home-page .release-card { --poster-height: 250px; }
 .home-page .release-filters a { font-size: 13px; min-height: 44px; padding: 8px 20px; }
 .home-page .fan-hero h1 { font-size: clamp(38px, 3.7vw, 56px); }
 @media (max-width: 1100px) {

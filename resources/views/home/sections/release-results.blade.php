@@ -1,9 +1,10 @@
 <div id="release-results" data-release-results>
     @if($releases->isNotEmpty())
-        <div class="release-timeline" role="region" aria-label="Upcoming releases timeline" tabindex="0" data-release-track>
-            <div class="release-track" data-stagger>
-                <span class="release-timeline-line" aria-hidden="true"><span data-timeline-progress></span></span>
-                @foreach($releases as $release)<x-release-card :release="$release" />@endforeach
+        <div class="swiper release-swiper" role="region" aria-label="Upcoming releases" data-release-swiper>
+            <div class="swiper-wrapper" data-stagger>
+                @foreach($releases as $release)
+                    <div class="swiper-slide release-slide"><x-release-card :release="$release" /></div>
+                @endforeach
             </div>
         </div>
     @else
