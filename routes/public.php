@@ -7,6 +7,7 @@ Route::get('/chatbot/faqs', [\App\Http\Controllers\ChatbotController::class, 'fa
 Route::post('/chatbot/message', [\App\Http\Controllers\ChatbotController::class, 'message'])->middleware('throttle:12,1')->name('chatbot.message');
 
 Route::get('/explore', [PublicSiteController::class, 'explore'])->name('public.explore');
+Route::get('/fandom/{category:slug}', [PublicSiteController::class, 'fandom'])->name('public.fandom');
 Route::get('/events', [\App\Http\Controllers\EventController::class, 'index'])->name('events.index');
 Route::get('/events/nearby', \App\Http\Controllers\NearbyEventsController::class)->name('events.nearby');
 Route::post('/events/nearby', \App\Http\Controllers\NearbyEventsController::class)->name('events.nearby.search');

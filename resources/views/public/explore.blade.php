@@ -14,7 +14,7 @@
     <section class="fandom-hero" aria-labelledby="fandom-title">
         <img class="fandom-hero__art" src="{{ $heroImage }}" alt="" fetchpriority="high" data-image-fallback="{{ asset(config('homepage.images.trending')) }}">
         <div class="fandom-hero__content">
-            <p class="fandom-eyebrow"><x-site-icon :name="$fandom['icon'] ?? 'compass'" /> {{ $activeFandom ? 'THE '.Str::upper($pageTitle).' UNIVERSE' : 'MADE FOR YOUR OBSESSIONS' }}</p>
+            <p class="fandom-eyebrow"><x-site-icon name="{{ $fandom['icon'] ?? 'compass' }}" /> {{ $activeFandom ? 'THE '.Str::upper($pageTitle).' UNIVERSE' : 'MADE FOR YOUR OBSESSIONS' }}</p>
             <h1 id="fandom-title">{{ $pageTitle }}<span>{{ $activeFandom ? 'Your universe.' : 'One home.' }}</span></h1>
             <p class="fandom-hero__intro">{{ $fandom ? implode(' ', $fandom['lines']) : 'Discover the stories, worlds and people worth obsessing over.' }}</p>
             <div class="explore-hero-actions"><a class="fandom-action" href="#fandom-content">Find your next obsession <x-site-icon name="arrow" /></a><span>Read. Watch. Listen. Belong.</span></div>
@@ -24,7 +24,7 @@
     <nav class="fandom-switcher" aria-label="Choose a fandom">
         <a href="{{ route('public.explore') }}" @if(!$activeFandom) aria-current="page" @endif>All universes</a>
         @foreach($categories as $category)
-            <a href="{{ route('public.explore', ['category' => $category->slug]) }}" @if($activeFandom === $category->slug) aria-current="page" @endif><x-site-icon :name="config('fandoms.'.$category->slug.'.icon', 'compass')" />{{ $category->name }}</a>
+            <a href="{{ route('public.explore', ['category' => $category->slug]) }}" @if($activeFandom === $category->slug) aria-current="page" @endif><x-site-icon name="{{ config('fandoms.'.$category->slug.'.icon', 'compass') }}" />{{ $category->name }}</a>
         @endforeach
     </nav>
     <section class="fandom-library" id="fandom-content" aria-labelledby="content-heading">
@@ -50,7 +50,7 @@
             @forelse($contents as $content)
                 <x-fandom-content-card :content="$content" />
             @empty
-                <div class="fandom-empty"><x-site-icon :name="$fandom['icon'] ?? 'compass'" /><h3>A new chapter is on its way.</h3><p>No content found yet. Try another search or fandom.</p><a class="fandom-action" href="{{ route('public.explore') }}">Explore all content <x-site-icon name="arrow" /></a></div>
+                <div class="fandom-empty"><x-site-icon name="{{ $fandom['icon'] ?? 'compass' }}" /><h3>A new chapter is on its way.</h3><p>No content found yet. Try another search or fandom.</p><a class="fandom-action" href="{{ route('public.explore') }}">Explore all content <x-site-icon name="arrow" /></a></div>
             @endforelse
         </div>
         @if($contents->hasPages())

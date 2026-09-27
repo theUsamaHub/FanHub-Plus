@@ -61,6 +61,77 @@ class PublicSiteController extends Controller
         ]);
     }
 
+    public function fandom(\App\Models\Category $category, Request $request): View
+    {
+        $fandomConfig = config('fandoms.'.$category->slug, []);
+        $filters = $request->validate([
+            'q' => ['nullable', 'string', 'max:120'],
+            'sort' => ['nullable', 'in:latest,popular,trending,alphabetical'],
+            'tag' => ['nullable', 'integer', 'exists:tags,id'],
+            'year' => ['nullable', 'integer', 'between:1900,2200'],
+            'type' => ['nullable', 'in:article,video,audio,image'],
+        ]);
+
+        $query = Content::forUser(auth()->user())->visibleToPublic()->with(['category', 'media', 'tags'])
+            ->whereHas('category', fn ($q) => $q->where('slug', $category->slug));
+
+        if ($term = trim($filters['q'] ?? '')) {
+            $term = '%'.str_replace(['!', '%', '_'], ['!!', '!%', '!_'], mb_strtolower($term)).'%';
+            $query->where(fn ($q) => $q
+                ->whereRaw("LOWER(title) LIKE ? ESCAPE '!'", [$term])
+                ->orWhereRaw("LOWER(excerpt) LIKE ? ESCAPE '!'", [$term]));
+        }
+        if (! empty($filters['type'])) {
+            $query->ofType($filters['type']);
+        }
+        if (($filters['sort'] ?? 'latest') === 'popular') {
+            $query->orderByDesc('popularity_score')->orderByDesc('view_count');
+        } elseif (($filters['sort'] ?? '') === 'trending') {
+            $query->orderByDesc('view_count')->orderByDesc('published_at');
+        } elseif (($filters['sort'] ?? '') === 'alphabetical') {
+            $query->orderBy('title');
+        } else {
+            $query->orderByDesc('published_at');
+        }
+        if (! empty($filters['year'])) $query->whereYear('release_date', $filters['year']);
+        if (! empty($filters['tag'])) $query->whereHas('tags', fn ($q) => $q->where('tags.id', $filters['tag']));
+
+        // Get featured content for this fandom
+        $featured = Content::forUser(auth()->user())->visibleToPublic()->with(['category', 'media', 'tags'])
+            ->whereHas('category', fn ($q) => $q->where('slug', $category->slug))
+            ->where('is_featured', true)
+            ->orderByDesc('popularity_score')
+            ->limit(4)->get();
+
+        // Get trending content for this fandom
+        $trending = Content::forUser(auth()->user())->visibleToPublic()->with(['category', 'media', 'tags'])
+            ->whereHas('category', fn ($q) => $q->where('slug', $category->slug))
+            ->orderByDesc('view_count')
+            ->limit(8)->get();
+
+        // Stats
+        $stats = [
+            'total_content' => Content::forUser(auth()->user())->visibleToPublic()
+                ->whereHas('category', fn ($q) => $q->where('slug', $category->slug))
+                ->count(),
+            'total_views' => Content::forUser(auth()->user())->visibleToPublic()
+                ->whereHas('category', fn ($q) => $q->where('slug', $category->slug))
+                ->sum('view_count'),
+            'total_creators' => Content::forUser(auth()->user())->visibleToPublic()
+                ->whereHas('category', fn ($q) => $q->where('slug', $category->slug))
+                ->distinct('submitted_by')
+                ->count('submitted_by'),
+        ];
+
+        $contents = $query->paginate(12)->withQueryString();
+        $categories = \App\Models\Category::orderBy('name')->get();
+        $tags = \App\Models\Tag::whereHas('contents', fn ($q) => $q->visibleToPublic()->whereHas('category', fn ($q2) => $q2->where('slug', $category->slug)))->orderBy('name')->get();
+
+        return view('public.fandom', compact(
+            'category', 'fandomConfig', 'filters', 'contents', 'featured', 'trending', 'stats', 'categories', 'tags'
+        ));
+    }
+
     public function content(Content $content): View
     {
         abort_unless(Content::forUser(auth()->user())->visibleToPublic()->whereKey($content->id)->exists(), 404);
