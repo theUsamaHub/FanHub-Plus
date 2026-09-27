@@ -44,10 +44,13 @@ class ContentController extends Controller
 
     public function create(): View
     {
+        $mediaOptions = $this->mediaOptions();
+
         return view('admin.contents.create', [
             'categories' => Category::orderBy('name')->get(['id', 'name']),
             'tags' => Tag::orderBy('name')->get(),
-            'mediaOptions' => $this->mediaOptions(),
+            'mediaOptions' => $mediaOptions,
+            'mediaPayload' => $this->mediaPayload($mediaOptions),
         ]);
     }
 
@@ -75,12 +78,14 @@ class ContentController extends Controller
     public function edit(Content $content): View
     {
         $content->load(['tags', 'media']);
+        $mediaOptions = $this->mediaOptions();
 
         return view('admin.contents.edit', [
             'content' => $content,
             'categories' => Category::orderBy('name')->get(['id', 'name']),
             'tags' => Tag::orderBy('name')->get(),
-            'mediaOptions' => $this->mediaOptions(),
+            'mediaOptions' => $mediaOptions,
+            'mediaPayload' => $this->mediaPayload($mediaOptions),
             'selected' => $this->selectedMedia($content),
         ]);
     }
@@ -158,12 +163,44 @@ class ContentController extends Controller
 
     private function mediaOptions(): array
     {
+        $fetch = fn (string $type) => Media::with('category')
+            ->where('media_type', $type)
+            ->where('status', '!=', 'uploading')
+            ->orderBy('original_filename')
+            ->get();
+
         return [
-            'images' => Media::where('media_type', 'image')->orderBy('original_filename')->get(),
-            'videos' => Media::where('media_type', 'video')->orderBy('original_filename')->get(),
-            'audio' => Media::where('media_type', 'audio')->orderBy('original_filename')->get(),
-            'documents' => Media::where('media_type', 'document')->orderBy('original_filename')->get(),
+            'images' => $fetch('image'),
+            'videos' => $fetch('video'),
+            'audio' => $fetch('audio'),
+            'documents' => $fetch('document'),
         ];
+    }
+
+    /**
+     * Lightweight JSON payload used by the "View all" media modals.
+     */
+    private function mediaPayload(array $mediaOptions): array
+    {
+        $payload = [];
+
+        foreach ($mediaOptions as $group => $items) {
+            $payload[$group] = $items->map(fn (Media $media) => [
+                'id' => $media->id,
+                'name' => $media->original_filename,
+                'mime' => $media->mime_type,
+                'ext' => strtoupper(pathinfo((string) $media->original_filename, PATHINFO_EXTENSION)),
+                'size' => $media->size_formatted,
+                'duration' => $media->duration_formatted,
+                'dimensions' => ($media->width && $media->height) ? $media->width.'×'.$media->height : null,
+                'url' => $media->hasValidPath() ? $media->url : null,
+                'download' => $media->hasValidPath() ? route('admin.media.download', $media) : null,
+                'category_id' => $media->category_id,
+                'category' => $media->category?->name,
+            ])->values()->all();
+        }
+
+        return $payload;
     }
 
     private function selectedMedia(Content $content): array

@@ -39,36 +39,15 @@
                         <x-input-error :messages="$errors->get('bio')" class="mt-1" />
                     </div>
                     <div class="mb-0">
-                        <x-input-label :value="__('Image')" />
-                        <div class="fh-adm-pick-list fh-adm-pick-list--single">
-                            <label class="fh-adm-pick-item">
-                                <input type="radio" name="image_media_id" value="" @checked((int) old('image_media_id', $character?->image_media_id) === 0)>
-                                <div class="fh-adm-pick-item-body">
-                                    <div class="fh-adm-pick-icon"><i class="bi bi-x-lg"></i></div>
-                                    <div class="min-w-0">
-                                        <div class="fh-adm-pick-name">{{ __('None') }}</div>
-                                        <div class="fh-adm-pick-meta">{{ __('No character image') }}</div>
-                                    </div>
-                                    <span class="fh-adm-pick-state">{{ __('Select') }}</span>
-                                </div>
-                            </label>
-                            @forelse ($images as $image)
-                                <label class="fh-adm-pick-item">
-                                    <input type="radio" name="image_media_id" value="{{ $image->id }}" @checked((int) old('image_media_id', $character?->image_media_id) === $image->id)>
-                                    <div class="fh-adm-pick-item-body">
-                                        <div class="fh-adm-pick-icon"><i class="bi bi-image"></i></div>
-                                        <div class="min-w-0">
-                                            <div class="fh-adm-pick-name">{{ $image->original_filename }}</div>
-                                            <div class="fh-adm-pick-meta">{{ $image->mime_type ?? 'image' }}</div>
-                                        </div>
-                                        <span class="fh-adm-pick-state">{{ __('Select') }}</span>
-                                    </div>
-                                </label>
-                            @empty
-                                <div class="fh-adm-tile-meta">{{ __('No images in the media library yet.') }}</div>
-                            @endforelse
-                        </div>
-                        <x-input-error :messages="$errors->get('image_media_id')" class="mt-1" />
+                        @include('admin.partials.media-image-picker', [
+                            'images' => $images,
+                            'categories' => $categories,
+                            'selectedId' => (int) old('image_media_id', $character?->image_media_id),
+                            'inputName' => 'image_media_id',
+                            'label' => __('Image'),
+                            'description' => __('Select one image to represent this character.'),
+                            'noneLabel' => __('No character image'),
+                        ])
                     </div>
                 </div>
             </div>
