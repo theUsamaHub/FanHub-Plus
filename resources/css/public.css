@@ -48,3 +48,32 @@
 :root[data-theme='light'] .fh-header .fh-brand { color: #211735 !important; }
 @media(max-width: 700px) { .fh-results, .fh-sitemap { grid-template-columns: 1fr; } .fh-home-stage { min-height: 440px; } .fh-main:not(.fh-home-stage) { padding-top: 80px; } }
 @media(prefers-reduced-motion: reduce) { .fh-site *, .fh-site *::before, .fh-site *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; } }
+
+/* ── Member Avatar Fallback ── */
+.member-avatar-fallback {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--fh-accent), var(--fh-accent-600));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 2rem;
+    font-family: 'Rajdhani', sans-serif;
+    text-transform: uppercase;
+    box-shadow: 
+        0 4px 16px color-mix(in srgb, var(--fh-accent) 40%, transparent),
+        0 0 0 1px color-mix(in srgb, var(--fh-accent) 30%, transparent) inset;
+    flex-shrink: 0;
+}
+
+/* Light theme support */
+:root[data-theme='light'] .member-avatar-fallback {
+    background: linear-gradient(135deg, var(--fh-accent), var(--fh-accent-600));
+    color: var(--fh-cream);
+    box-shadow: 
+        0 4px 16px color-mix(in srgb, var(--fh-accent) 30%, transparent),
+        0 0 0 1px color-mix(in srgb, var(--fh-accent) 25%, transparent) inset;
+}
