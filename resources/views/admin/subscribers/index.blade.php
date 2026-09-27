@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
     <div class="mb-4 fh-adm-page-head">
@@ -165,7 +165,7 @@
                                             <a href="{{ route('admin.subscribers.edit', $subscriber) }}" class="btn btn-outline-primary" title="{{ __('Edit') }}">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            <form action="{{ route('admin.subscribers.destroy', $subscriber) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Delete this subscriber?') }}')">
+                                            <form action="{{ route('admin.subscribers.destroy', $subscriber) }}" method="POST" class="d-inline" data-confirm="{{ __('Delete this subscriber?') }}">
                                                 @csrf @method('DELETE')
                                                 <button class="btn btn-outline-danger" title="{{ __('Delete') }}"><i class="bi bi-trash"></i></button>
                                             </form>
@@ -221,20 +221,25 @@
             });
         });
 
-        applyBulkAction.addEventListener('click', function() {
+        applyBulkAction.addEventListener('click', async function() {
             const action = bulkActionSelect.value;
             const checked = document.querySelectorAll('.subscriber-checkbox:checked');
-            
+
             if (!action) {
-                alert('{{ __('Please select an action.') }}');
+                if (window.fhpAlert) { await window.fhpAlert('{{ __('Please select an action.') }}'); }
+                else { alert('{{ __('Please select an action.') }}'); }
                 return;
             }
             if (checked.length === 0) {
-                alert('{{ __('Please select at least one subscriber.') }}');
+                if (window.fhpAlert) { await window.fhpAlert('{{ __('Please select at least one subscriber.') }}'); }
+                else { alert('{{ __('Please select at least one subscriber.') }}'); }
                 return;
             }
-            if (action === 'delete' && !confirm('{{ __('Delete selected subscribers?') }}')) {
-                return;
+            if (action === 'delete') {
+                const ok = window.fhpConfirm
+                    ? await window.fhpConfirm('{{ __('Delete selected subscribers?') }}')
+                    : confirm('{{ __('Delete selected subscribers?') }}');
+                if (!ok) return;
             }
 
             bulkActionInput.value = action;

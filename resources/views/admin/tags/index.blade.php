@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
     <div class="mb-4 fh-adm-page-head">
@@ -53,7 +53,7 @@
                                 <td class="text-end">
                                     <div class="btn-group btn-group-sm">
                                         <a href="{{ route('admin.tags.edit', $tag) }}" class="btn btn-outline-primary"><i class="bi bi-pencil"></i></a>
-                                        <form action="{{ route('admin.tags.destroy', $tag) }}" method="POST" class="d-inline" onsubmit="return confirm()">
+                                        <form action="{{ route('admin.tags.destroy', $tag) }}" method="POST" class="d-inline" data-confirm="Delete this tag?">
                                             @csrf @method('DELETE')
                                             <button class="btn btn-outline-danger"><i class="bi bi-trash"></i></button>
                                         </form>

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
     <div class="mb-4 fh-adm-page-head">
@@ -78,7 +78,7 @@
                         <a href="mailto:{{ $contact->email }}?subject=Re: {{ $contact->subject ?: 'Your message' }}" class="btn btn-primary btn-sm">
                             <i class="bi bi-reply me-1"></i>{{ __('Reply via Email') }}
                         </a>
-                        <form action="{{ route('admin.contacts.destroy', $contact) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure you want to delete this message?') }}')">
+                        <form action="{{ route('admin.contacts.destroy', $contact) }}" method="POST" data-confirm="{{ __('Are you sure you want to delete this message?') }}">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm w-100">

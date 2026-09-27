@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
     <div class="mb-4 fh-adm-page-head">
@@ -75,7 +75,7 @@
                     <p class="text-muted" style="font-size: 0.875rem;">
                         {{ __('Deleting this category will soft-delete it. You can restore it later. Categories with related content cannot be deleted permanently until those records are removed.') }}
                     </p>
-                    <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure you want to delete this category?') }}')">
+                    <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" data-confirm="{{ __('Are you sure you want to delete this category?') }}">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm w-100">

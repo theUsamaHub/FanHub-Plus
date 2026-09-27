@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
     <div class="mb-4 fh-adm-page-head">
@@ -76,7 +76,7 @@
                                     <div class="btn-group btn-group-sm">
                                         <a href="{{ route('admin.events.show', $event) }}" class="btn btn-outline-info" title="{{ __('View') }}"><i class="bi bi-eye"></i></a>
                                         <a href="{{ route('admin.events.edit', $event) }}" class="btn btn-outline-primary" title="{{ __('Edit') }}"><i class="bi bi-pencil"></i></a>
-                                        <form action="{{ route('admin.events.destroy', $event) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Delete this event?') }}')">
+                                        <form action="{{ route('admin.events.destroy', $event) }}" method="POST" class="d-inline" data-confirm="{{ __('Delete this event?') }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-outline-danger" title="{{ __('Delete') }}"><i class="bi bi-trash"></i></button>

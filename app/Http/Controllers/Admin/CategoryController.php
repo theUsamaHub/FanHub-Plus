@@ -41,7 +41,15 @@ class CategoryController extends Controller
             ->except(['icon', 'remove_icon'])
             ->toArray();
 
-        $category = $this->categoryService->create($data);
+        try {
+            $category = $this->categoryService->create($data);
+        } catch (QueryException $e) {
+            report($e);
+
+            return back()
+                ->withInput()
+                ->withErrors(['name' => __('A category with this name or slug already exists.')]);
+        }
 
         if ($request->hasFile('icon')) {
             try {
@@ -87,7 +95,15 @@ class CategoryController extends Controller
             $data['icon_media_id'] = null;
         }
 
-        $this->categoryService->update($category, $data);
+        try {
+            $this->categoryService->update($category, $data);
+        } catch (QueryException $e) {
+            report($e);
+
+            return back()
+                ->withInput()
+                ->withErrors(['name' => __('A category with this name or slug already exists.')]);
+        }
 
         if ($request->hasFile('icon')) {
             try {

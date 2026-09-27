@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
     <div class="mb-4 fh-adm-page-head">
@@ -85,12 +85,12 @@
                 <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Moderation') }}</h6></div>
                 <div class="card-body d-grid gap-2">
                     @if ($content->status === 'pending_review')
-                        <form action="{{ route('admin.submissions.approve', $content) }}" method="POST" onsubmit="return confirm('{{ __('Approve and publish this submission?') }}')">
+                        <form action="{{ route('admin.submissions.approve', $content) }}" method="POST" data-confirm="{{ __('Approve and publish this submission?') }}">
                             @csrf
                             @method('PATCH')
                             <button type="submit" class="btn btn-success w-100"><i class="bi bi-check-lg me-1"></i>{{ __('Approve and publish') }}</button>
                         </form>
-                        <form action="{{ route('admin.submissions.reject', $content) }}" method="POST" onsubmit="return confirm('{{ __('Reject this submission?') }}')">
+                        <form action="{{ route('admin.submissions.reject', $content) }}" method="POST" data-confirm="{{ __('Reject this submission?') }}">
                             @csrf
                             @method('PATCH')
                             <button type="submit" class="btn btn-danger w-100"><i class="bi bi-x-lg me-1"></i>{{ __('Reject') }}</button>

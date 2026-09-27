@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
     <div class="mb-4 fh-adm-page-head">
@@ -118,7 +118,7 @@
                                         <a href="{{ route('admin.contacts.show', $contact) }}" class="btn btn-outline-info" title="{{ __('View') }}">
                                             <i class="bi bi-eye"></i>
                                         </a>
-                                        <form action="{{ route('admin.contacts.destroy', $contact) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Are you sure you want to delete this message?') }}')">
+                                        <form action="{{ route('admin.contacts.destroy', $contact) }}" method="POST" class="d-inline" data-confirm="{{ __('Are you sure you want to delete this message?') }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-outline-danger" title="{{ __('Delete') }}">

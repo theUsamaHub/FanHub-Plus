@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
     <div class="mb-4 fh-adm-page-head">
@@ -39,7 +39,7 @@
                                 <td>{{ $session->last_activity_human }}</td>
                                 <td class="text-end">
                                     @if ($session->id !== session()->getId())
-                                        <form action="{{ route('admin.sessions.destroy', $session->id) }}" method="POST" onsubmit="return confirm('{{ __('Revoke this session?') }}')">
+                                        <form action="{{ route('admin.sessions.destroy', $session->id) }}" method="POST" data-confirm="{{ __('Revoke this session?') }}">
                                             @csrf @method('DELETE')
                                             <button class="btn btn-outline-danger btn-sm"><i class="bi bi-x-circle me-1"></i>{{ __('Revoke') }}</button>
                                         </form>
