@@ -202,13 +202,37 @@ class PublicSiteController extends Controller
         if ($section === 'privacy') return view('public.privacy');
 
         if ($section === 'merchandise') {
-            $filter = $request->query('category', 'all');
-            abort_unless(is_string($filter) && in_array($filter, ['all', ...array_keys(config('fandoms'))], true), 404);
-            $items = MerchandiseItem::forUser(auth()->user())->with(['category', 'imageMedia'])
-                ->when($filter !== 'all', fn ($query) => $query->whereHas('category', fn ($query) => $query->where('slug', $filter)))
-                ->orderByDesc('view_count')->orderByDesc('id')->paginate(12)->withQueryString();
+            $filters = $request->validate([
+                'q' => ['nullable', 'string', 'max:120'],
+                'category' => ['nullable', 'string', 'max:100'],
+                'status' => ['nullable', 'in:released,upcoming'],
+                'tag' => ['nullable', 'in:limited_edition,pre_order,collectible,standard'],
+                'sort' => ['nullable', 'in:newest,popular,name'],
+            ]);
+            $filters = array_merge(['q' => '', 'category' => 'all', 'status' => '', 'tag' => '', 'sort' => 'newest'], array_filter($filters, fn ($value) => $value !== null));
+            $filters['q'] = trim($filters['q']);
+            $categories = \App\Models\Category::orderBy('name')->get(['id', 'name', 'slug']);
+            // Keep existing fandom URLs working, including empty fandoms.
+            abort_unless(in_array($filters['category'], ['all', ...$categories->pluck('slug')->all(), ...array_keys(config('fandoms'))], true), 404);
+            $query = MerchandiseItem::forUser(auth()->user())->with(['category', 'imageMedia']);
+            if ($filters['q'] !== '') {
+                $term = '%'.str_replace(['!', '%', '_'], ['!!', '!%', '!_'], mb_strtolower($filters['q'])).'%';
+                $query->whereRaw("LOWER(name) LIKE ? ESCAPE '!'", [$term]);
+            }
+            if ($filters['category'] !== 'all') {
+                $query->whereHas('category', fn ($query) => $query->where('slug', $filters['category']));
+            }
+            if ($filters['status'] !== '') $query->where('is_upcoming', $filters['status'] === 'upcoming');
+            if ($filters['tag'] !== '') $query->withTag($filters['tag']);
+            match ($filters['sort']) {
+                'popular' => $query->orderByDesc('view_count'),
+                'name' => $query->orderBy('name'),
+                default => $query->orderByDesc('created_at'),
+            };
+            $items = $query->orderByDesc('id')->paginate(12)->withQueryString();
+            $hasFilters = $filters['q'] !== '' || $filters['category'] !== 'all' || $filters['status'] !== '' || $filters['tag'] !== '';
 
-            return view('public.merchandise-index', ['items' => $items, 'activeFilter' => $filter, 'savedMerchandise' => $this->savedMerchandise()]);
+            return view('public.merchandise-index', compact('items', 'filters', 'categories', 'hasFilters') + ['savedMerchandise' => $this->savedMerchandise()]);
         }
 
         if ($section === 'upcoming') {
