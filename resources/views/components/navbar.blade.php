@@ -21,6 +21,7 @@
                 <a class="fh-nav-link {{ request()->is('discover/'.$slug) ? 'is-active' : '' }}" href="{{ route('public.section', $slug) }}">{{ $label }}</a>
             @endforeach
             <a class="fh-nav-link {{ request()->routeIs('events.*') ? 'is-active' : '' }}" href="{{ route('events.index') }}" @if(request()->routeIs('events.*')) aria-current="page" @endif>Events</a>
+            <a class="fh-nav-link {{ request()->routeIs('public.contact') ? 'is-active' : '' }}" href="{{ route('public.contact') }}" @if(request()->routeIs('public.contact')) aria-current="page" @endif>Contact</a>
         </div>
         <div class="fh-nav-actions">
             <button class="fh-icon-button fh-search-toggle" type="button" aria-label="Search Fan Hub Plus" data-search-open><x-site-icon name="search" /><span>Find your fandom...</span></button>
@@ -37,6 +38,7 @@
                         <a href="{{ route('user.activity') }}">Recent Activity</a>
                         <a href="{{ route('user.submissions') }}">My Submissions</a>
                         <a href="{{ route('profile.edit') }}">Profile</a>
+                        <a href="{{ route('user.feedback') }}">Feedback</a>
                         <a href="{{ route('public.account', 'submit-content') }}">Submit Content</a>
                         <form method="POST" action="{{ route('logout') }}">@csrf<button type="submit">Logout</button></form>
                     </div>
