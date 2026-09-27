@@ -39,3 +39,32 @@
 .fh-site .fan-hero__pick-art { background-size: cover; background-position: center; }
 .fh-site .release-track { min-width: 0; margin-inline: auto; }
 @media(max-width:700px) { .fh-footer-lite { padding-bottom: 85px; } }
+
+/* Public footer: readable navigation and a self-contained subscription panel. */
+.fh-footer-lite h2 { font: 600 clamp(22px,2vw,28px)/1.2 'Rajdhani',sans-serif; margin-bottom: 18px; }
+.fh-footer-lite li { margin-bottom: 2px; }
+.fh-footer-lite li a { display: inline-flex; align-items: center; gap: 10px; min-height: 40px; font-size: 14px; padding-block: 6px; }
+.fh-footer-lite li a .bi { width: 18px; flex-shrink: 0; color: var(--fh-accent); font-size: 16px; }
+.fh-footer-lite__main > * { min-width: 0; }
+.fh-footer-lite__news { padding: 26px; border: 1px solid var(--fh-line); border-radius: 18px; background: var(--fh-surface); gap: 24px; }
+.fh-footer-lite__news-copy { flex: 1 1 250px; }
+.fh-footer-lite__news-copy h2 { margin-bottom: 8px; }
+.fh-footer-lite__news-copy p { font-size: 14px; max-width: 360px; }
+.fh-footer-lite__news-form { align-items: end; flex: 1 1 420px; max-width: 540px; gap: 12px; }
+.fh-footer-lite__email-field { flex: 1; min-width: 0; }
+.fh-footer-lite__email-field label { display: block; margin-bottom: 8px; font-size: 12px; color: var(--fh-text); }
+.fh-footer-lite__email-input { position: relative; }
+.fh-footer-lite__email-input > .bi { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+.fh-footer-lite__news-form input { width: 100%; height: 50px; padding: 12px 14px 12px 42px; border-radius: 10px; font-size: 16px; background: var(--fh-bg); }
+.fh-footer-lite__news-form input:focus-visible { outline: 2px solid var(--fh-accent); outline-offset: 2px; }
+.fh-footer-lite__news-form button { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 50px; border-radius: 10px; padding: 12px 20px; font-size: 14px; background: var(--brand-orange,#ff922e); color: #201621; }
+.fh-footer-lite__news-form button:hover { filter: brightness(1.08); }
+.fh-footer-lite__news-msg { font-size: 13px; }
+@media(max-width:700px) {
+    .fh-footer-lite__main { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .fh-footer-lite__news { padding: 22px; gap: 18px; }
+    .fh-footer-lite__news-copy, .fh-footer-lite__news-form { flex: 0 1 auto; width: 100%; max-width: none; }
+    .fh-footer-lite__news-form { flex-wrap: wrap; }
+    .fh-footer-lite__email-field { flex-basis: 100%; }
+    .fh-footer-lite__news-form button { width: 100%; }
+}

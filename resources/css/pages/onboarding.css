@@ -3,9 +3,7 @@
 .onboarding { --onboard-orange: var(--brand-orange, #ff922e); --onboard-lavender: var(--brand-lavender, #c9b6f5); position: fixed; inset: 0; width: 100%; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 0; border: 0; color: var(--fh-text); background: radial-gradient(ellipse at 0 65%, #ff922e0c, transparent 45%), var(--fh-bg); overflow: auto; overscroll-behavior: contain; z-index: 10000; }
 .onboarding::backdrop { background: var(--fh-bg); }
 .onboarding__shell { max-width: 1480px; margin: auto; padding: 30px 5vw 18px; }
-.onboarding__top { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 26px; border-bottom: 1px solid var(--fh-line); }
-.onboarding__wordmark { font: 700 30px/1 'Rajdhani', sans-serif; letter-spacing: -.8px; }
-.onboarding__wordmark > span { color: var(--onboard-orange); }
+.onboarding__top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 26px; border-bottom: 1px solid var(--fh-line); }
 .onboarding__step { display: flex; align-items: center; gap: 12px; font-size: 9px; letter-spacing: 1.8px; color: var(--fh-muted); }
 .onboarding__step i { width: 6px; height: 6px; border-radius: 50%; background: var(--onboard-orange); box-shadow: 0 0 0 5px #ff922e15; }
 .onboarding__step b { margin-left: 25px; color: var(--fh-text); }

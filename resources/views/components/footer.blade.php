@@ -4,6 +4,7 @@
         'Your space' => auth()->check() ? ['Dashboard' => route('public.account', 'dashboard'), 'Bookmarks' => route('public.account', 'bookmarks'), 'Profile' => route('profile.edit'), 'Feedback' => route('user.feedback')] : ['Login' => route('login'), 'Create account' => route('register'), 'Bookmarks' => route('public.account', 'bookmarks')],
         'FanHub Plus' => ['Feedback' => route('public.section', 'feedback'), 'Contact' => route('public.contact'), 'Privacy' => route('public.section', 'privacy'), 'Terms' => route('public.section', 'terms'), 'Sitemap' => route('public.sitemap')],
     ];
+    $linkIcons = ['Fandoms' => 'compass', 'Characters' => 'people', 'Upcoming' => 'calendar-event', 'Merchandise' => 'bag', 'Events' => 'ticket-perforated', 'Contact' => 'envelope', 'Dashboard' => 'grid', 'Bookmarks' => 'bookmark', 'Profile' => 'person-circle', 'Feedback' => 'chat-square-text', 'Login' => 'box-arrow-in-right', 'Create account' => 'person-plus', 'Privacy' => 'shield-check', 'Terms' => 'file-earmark-text', 'Sitemap' => 'diagram-3'];
 @endphp
 <footer class="fh-footer-lite">
     <div class="fh-footer-lite__main">
@@ -15,7 +16,7 @@
         @foreach($groups as $title => $links)
             <nav aria-label="Footer {{ $title }}">
                 <h2>{{ $title }}</h2>
-                <ul>@foreach($links as $label => $href)<li><a href="{{ $href }}">{{ $label }}</a></li>@endforeach</ul>
+                <ul>@foreach($links as $label => $href)<li><a href="{{ $href }}"><i class="bi bi-{{ $linkIcons[$label] }}" aria-hidden="true"></i><span>{{ $label }}</span></a></li>@endforeach</ul>
             </nav>
         @endforeach
         <div class="fh-footer-lite__news">
@@ -25,12 +26,14 @@
             </div>
             <form method="POST" action="{{ route('public.subscribe') }}" class="fh-footer-lite__news-form">
                 @csrf
-                <label class="visually-hidden" for="footer_subscribe_email">Email address</label>
-                <input id="footer_subscribe_email" type="email" name="email" placeholder="you@example.com" required value="{{ old('email') }}">
-                <button type="submit">{{ __('Subscribe') }}</button>
+                <div class="fh-footer-lite__email-field">
+                    <label for="footer_subscribe_email">Email address</label>
+                    <div class="fh-footer-lite__email-input"><i class="bi bi-envelope" aria-hidden="true"></i><input id="footer_subscribe_email" type="email" name="email" autocomplete="email" placeholder="you@example.com" required value="{{ old('email') }}" @error('email', 'subscribe') aria-invalid="true" aria-describedby="footer-subscribe-error" @enderror></div>
+                </div>
+                <button type="submit">{{ __('Subscribe') }} <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
             </form>
             @error('email', 'subscribe')
-                <p class="fh-footer-lite__news-msg fh-footer-lite__news-msg--error">{{ $message }}</p>
+                <p id="footer-subscribe-error" class="fh-footer-lite__news-msg fh-footer-lite__news-msg--error" role="alert">{{ $message }}</p>
             @enderror
             @if (session('success'))
                 <p class="fh-footer-lite__news-msg">{{ session('success') }}</p>
