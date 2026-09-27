@@ -3,7 +3,7 @@
 @section('member-content')
 <section class="member-welcome">
     <img class="member-welcome__art" src="{{ asset('images/fandoms/anime.png') }}" alt="" fetchpriority="high">
-    <div class="member-welcome__copy"><p>Welcome back,</p><h1>{{ $user->profile?->display_name ?: $user->name }}</h1><p class="member-welcome__intro">Continue your fandom journey. Discover new worlds, keep track of what you love, and never miss what’s next.</p><div class="member-actions"><a class="member-button" href="{{ route('public.explore') }}">Explore Fandoms <span aria-hidden="true">↗</span></a><a class="member-button member-button--quiet" href="{{ route('user.bookmarks') }}"><i class="bi bi-bookmark" aria-hidden="true"></i> View Bookmarks</a></div></div>
+    <div class="member-welcome__copy"><p>{{ $welcome['greeting'] }}</p><h1>{{ $user->profile?->display_name ?: $user->name }}</h1><p class="member-welcome__intro">{{ $welcome['message'] }}</p><div class="member-actions"><a class="member-button" href="{{ $welcome['url'] }}">{{ $welcome['action'] }} <span aria-hidden="true">↗</span></a><a class="member-button member-button--quiet" href="{{ route('user.bookmarks') }}"><i class="bi bi-bookmark" aria-hidden="true"></i> View Bookmarks</a></div></div>
     <p class="member-welcome__caption">Same fandoms.<br>New discoveries.</p>
 </section>
 <div class="member-stats">
