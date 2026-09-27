@@ -22,18 +22,10 @@
                     <span class="contact-stat__label">Hour Response</span>
                 </div>
                 <div class="contact-stat" role="listitem">
-                    <span class="contact-stat__value" data-count="98">0</span>
-                    <span class="contact-stat__label">% Satisfaction</span>
-                </div>
-                <div class="contact-stat" role="listitem">
                     <span class="contact-stat__value" data-count="500">0</span>
                     <span class="contact-stat__label">Messages/Month</span>
                 </div>
             </div>
-        </div>
-        <div class="contact-hero__scroll" data-animate="fade-up" data-delay="500" aria-hidden="true">
-            <x-site-icon name="arrow" class="contact-scroll-icon" />
-            <span>Scroll</span>
         </div>
     </section>
 
