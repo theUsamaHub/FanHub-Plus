@@ -15,6 +15,8 @@ export default defineConfig({
                 'resources/js/admin/analytics-charts.js',
                 'resources/css/pages/contact.css',
                 'resources/css/pages/feedback.css',
+                'resources/js/modules/contact-page.js',
+                'resources/js/modules/feedback-page.js',
             ],
             refresh: true,
         }),
