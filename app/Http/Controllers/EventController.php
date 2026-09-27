@@ -55,12 +55,27 @@ class EventController extends Controller
         }
         if (($filters['when'] ?? '') === 'upcoming') $query->where('start_at', '>=', now());
         if (($filters['when'] ?? '') === 'past') $query->whereRaw('COALESCE(end_at, start_at) < ?', [now()]);
-        match ($filters['sort'] ?? 'soonest') {
-            'popular' => $query->orderByDesc('popularity_score')->orderByDesc('view_count'),
-            'latest' => $query->orderByDesc('created_at'),
-            default => $query->orderByRaw('CASE WHEN COALESCE(end_at, start_at) >= ? THEN 0 ELSE 1 END', [now()]),
-        };
-        $events = $query->orderBy('start_at')->orderBy('id')->paginate(config('events.per_page'))->withQueryString()->fragment('explore-events');
+        if ($nearby) {
+            // For nearby events:
+            // - If no sort provided: sort by distance (line 37 handles this)
+            // - If sort explicitly provided: use that sort (popular, latest, soonest)
+            $sort = $filters['sort'] ?? null;
+            match ($sort) {
+                'popular' => $query->orderByDesc('popularity_score')->orderByDesc('view_count'),
+                'latest' => $query->orderByDesc('created_at'),
+                'soonest' => $query->orderByRaw('CASE WHEN COALESCE(end_at, start_at) >= ? THEN 0 ELSE 1 END', [now()]),
+                default => null, // No sort provided - distance already applied at line 37
+            };
+            $query->orderBy('start_at')->orderBy('id'); // Secondary sort for tie-breaking
+        } else {
+            match ($filters['sort'] ?? 'soonest') {
+                'popular' => $query->orderByDesc('popularity_score')->orderByDesc('view_count'),
+                'latest' => $query->orderByDesc('created_at'),
+                default => $query->orderByRaw('CASE WHEN COALESCE(end_at, start_at) >= ? THEN 0 ELSE 1 END', [now()]),
+            };
+            $query->orderBy('start_at')->orderBy('id');
+        }
+        $events = $query->paginate(config('events.per_page'))->withQueryString()->fragment('explore-events');
 
         if ($nearby) {
             return response()->json([
