@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Category;
+use App\Models\Content;
 use App\Models\Media;
 use App\Models\MerchandiseItem;
 use App\Models\User;
@@ -16,6 +17,7 @@ class HomeMerchandiseTest extends TestCase
     private function item(Category $category, array $attributes = []): MerchandiseItem
     {
         return MerchandiseItem::create(array_merge([
+            'content_id' => Content::firstOrCreate(['category_id' => $category->id, 'title' => $category->name.' story'], ['status' => 'published'])->id,
             'category_id' => $category->id, 'name' => 'Collectible '.MerchandiseItem::count(),
             'tag' => 'limited_edition', 'description' => 'Description from the database.',
         ], $attributes));
@@ -46,7 +48,7 @@ class HomeMerchandiseTest extends TestCase
             ->assertOk()->assertSee($game->name)->assertDontSee('Collectible 1')->assertDontSee('<html', false);
         $this->get('/?merch_category=invalid')->assertNotFound();
         $this->get('/discover/merchandise?category=anime')->assertOk()->assertSee('Page 1 of 3');
-        $this->get('/discover/merchandise?category=cosplay')->assertOk()->assertSee('No merchandise in this fandom yet.');
+        $this->get('/discover/merchandise?category=cosplay')->assertOk()->assertSee('No merchandise matches your selected filters.');
     }
 
     public function test_bookmarks_require_login_are_idempotent_and_belong_to_the_current_user(): void
