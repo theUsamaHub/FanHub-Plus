@@ -66,6 +66,53 @@ class ContentTest extends TestCase
         ]);
     }
 
+    public function test_content_form_renders_view_all_media_modals(): void
+    {
+        $image = $this->media('image');
+        $image->update(['category_id' => Category::create(['name' => 'Movies', 'slug' => 'movies'])->id]);
+        $this->media('video', 'mp4');
+        $this->media('document', 'pdf');
+
+        $response = $this->actingAs($this->admin)->get(route('admin.contents.create'));
+
+        $response->assertOk()
+            ->assertSee('id="fhMediaModal"', false)
+            ->assertSee('data-fh-media="cover"', false)
+            ->assertSee('data-fh-media="gallery"', false)
+            ->assertSee('data-fh-media="trailer"', false)
+            ->assertSee('data-fh-media="audio"', false)
+            ->assertSee('data-fh-media="attachment"', false)
+            ->assertSee('Select Cover Image')
+            ->assertSee('Select Trailer Video')
+            ->assertSee('Select Audio Clip')
+            ->assertSee('Select Document')
+            ->assertSee('Media Selection Guide')
+            ->assertSee('"category":"Movies"', false);
+
+        $this->actingAs($this->admin)->get(route('admin.contents.create'))
+            ->assertSee('data-fh-list="cover"', false)
+            ->assertSee('data-fh-list="attachment"', false);
+    }
+
+    public function test_content_edit_form_renders_media_picker_with_selection(): void
+    {
+        $content = Content::create([
+            'title' => 'Picked Story',
+            'slug' => 'picked-story',
+            'category_id' => $this->category->id,
+            'type' => 'article',
+            'status' => 'draft',
+        ]);
+        $cover = $this->media('image');
+        $content->media()->attach($cover->id, ['role' => 'cover', 'sort_order' => 0]);
+
+        $this->actingAs($this->admin)
+            ->get(route('admin.contents.edit', $content))
+            ->assertOk()
+            ->assertSee('id="fhMediaModal"', false)
+            ->assertSee('value="'.$cover->id.'" checked', false);
+    }
+
     public function test_content_create_requires_title_and_category(): void
     {
         $this->actingAs($this->admin)

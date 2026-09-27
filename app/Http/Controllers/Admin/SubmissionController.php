@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Content;
+use App\Notifications\SubmissionApprovedNotification;
+use App\Notifications\SubmissionRejectedNotification;
 use App\Services\ContentService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class SubmissionController extends Controller
@@ -49,7 +53,13 @@ class SubmissionController extends Controller
     {
         abort_unless($content->is_user_submitted, 404);
 
+        $previousStatus = $content->status;
+
         $this->contentService->setStatus($content, 'published', auth()->id());
+
+        if ($previousStatus !== 'published') {
+            $this->notifySubmitter($content, new SubmissionApprovedNotification($content));
+        }
 
         return redirect()->route('admin.submissions.index')
             ->with('success', 'Submission approved and published.');
@@ -59,9 +69,34 @@ class SubmissionController extends Controller
     {
         abort_unless($content->is_user_submitted, 404);
 
+        $previousStatus = $content->status;
+
         $this->contentService->setStatus($content, 'rejected', auth()->id());
+
+        if ($previousStatus !== 'rejected') {
+            $this->notifySubmitter($content, new SubmissionRejectedNotification($content));
+        }
 
         return redirect()->route('admin.submissions.index')
             ->with('success', 'Submission rejected.');
+    }
+
+    private function notifySubmitter(Content $content, Notification $notification): void
+    {
+        $submitter = $content->submittedBy;
+
+        if (! $submitter?->email) {
+            return;
+        }
+
+        try {
+            $submitter->notify($notification);
+        } catch (\Throwable $exception) {
+            Log::warning('Could not email the submitter about a submission decision.', [
+                'content_id' => $content->id,
+                'user_id' => $submitter->id,
+                'error' => $exception->getMessage(),
+            ]);
+        }
     }
 }
