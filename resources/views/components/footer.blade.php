@@ -18,6 +18,24 @@
                 <ul>@foreach($links as $label => $href)<li><a href="{{ $href }}">{{ $label }}</a></li>@endforeach</ul>
             </nav>
         @endforeach
+        <div class="fh-footer-lite__news">
+            <div class="fh-footer-lite__news-copy">
+                <h2>Newsletter</h2>
+                <p>New stories, events and drops — straight to your inbox.</p>
+            </div>
+            <form method="POST" action="{{ route('public.subscribe') }}" class="fh-footer-lite__news-form">
+                @csrf
+                <label class="visually-hidden" for="footer_subscribe_email">Email address</label>
+                <input id="footer_subscribe_email" type="email" name="email" placeholder="you@example.com" required value="{{ old('email') }}">
+                <button type="submit">{{ __('Subscribe') }}</button>
+            </form>
+            @error('email', 'subscribe')
+                <p class="fh-footer-lite__news-msg fh-footer-lite__news-msg--error">{{ $message }}</p>
+            @enderror
+            @if (session('success'))
+                <p class="fh-footer-lite__news-msg">{{ session('success') }}</p>
+            @endif
+        </div>
     </div>
     <div class="fh-footer-lite__bottom">
         <p>&copy; {{ date('Y') }} FanHub Plus. All rights reserved.</p>

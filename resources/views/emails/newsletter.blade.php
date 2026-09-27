@@ -22,7 +22,7 @@
         </div>
 
         <div class="content">
-            {!! $newsletter->body !!}
+            {!! $body ?? $newsletter->body !!}
         </div>
 
         <div class="footer">

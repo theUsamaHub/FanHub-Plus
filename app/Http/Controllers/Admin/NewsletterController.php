@@ -4,12 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
-use App\Models\Content;
-use App\Models\Event;
-use App\Models\CharacterProfile;
-use App\Models\MerchandiseItem;
 use App\Models\Newsletter;
-use App\Models\Subscriber;
 use App\Services\NewsletterService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -45,27 +40,20 @@ class NewsletterController extends Controller
         return view('admin.newsletters.index', compact('newsletters', 'stats'));
     }
 
-    public function create(): View
+    public function create(Request $request): View
     {
         return view('admin.newsletters.create', [
+            'newsletter' => null,
             'categories' => Category::orderBy('name')->get(['id', 'name']),
+            'selectedCategories' => collect($request->input('categories', []))
+                ->map(fn ($id) => (int) $id)
+                ->all(),
         ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'subject' => ['required', 'string', 'max:255'],
-            'body' => ['required', 'string'],
-            'type' => ['nullable', 'in:content,event,character,merchandise,category,custom'],
-            'reference_id' => ['nullable', 'integer'],
-            'recipient_filters' => ['nullable', 'array'],
-            'recipient_filters.categories' => ['nullable', 'array'],
-            'recipient_filters.status' => ['nullable', 'in:active,unsubscribed'],
-        ]);
-
-        $filters = $request->input('recipient_filters', []);
-        $recipients = $this->getRecipients($filters);
+        $filters = $this->validatedFilters($request);
 
         $newsletter = Newsletter::create([
             'subject' => $request->subject,
@@ -73,7 +61,7 @@ class NewsletterController extends Controller
             'type' => $request->type,
             'reference_id' => $request->reference_id,
             'recipient_filters' => $filters,
-            'recipient_count' => $recipients->count(),
+            'recipient_count' => $this->newsletterService->getRecipients($filters)->count(),
             'status' => 'draft',
             'sent_by' => auth()->id(),
         ]);
@@ -85,63 +73,117 @@ class NewsletterController extends Controller
     public function show(Newsletter $newsletter): View
     {
         $newsletter->load('sender');
-        $filters = $newsletter->recipient_filters ?? [];
-        $recipients = $this->getRecipients($filters)->take(50);
+        $recipients = $this->newsletterService
+            ->getRecipients($newsletter->recipient_filters ?? [])
+            ->take(50);
 
         return view('admin.newsletters.show', compact('newsletter', 'recipients'));
     }
 
-    public function send(Request $request, Newsletter $newsletter): RedirectResponse
+    public function edit(Newsletter $newsletter): View|RedirectResponse
     {
         if ($newsletter->status === 'sent') {
+            return redirect()->route('admin.newsletters.show', $newsletter)
+                ->with('error', 'Sent newsletters cannot be edited.');
+        }
+
+        return view('admin.newsletters.create', [
+            'newsletter' => $newsletter,
+            'categories' => Category::orderBy('name')->get(['id', 'name']),
+            'selectedCategories' => array_map(
+                'intval',
+                (array) ($newsletter->recipient_filters['categories'] ?? [])
+            ),
+        ]);
+    }
+
+    public function update(Request $request, Newsletter $newsletter): RedirectResponse
+    {
+        if ($newsletter->status === 'sent') {
+            return back()->with('error', 'Sent newsletters cannot be edited.');
+        }
+
+        $filters = $this->validatedFilters($request);
+
+        $newsletter->update([
+            'subject' => $request->subject,
+            'body' => $request->body,
+            'type' => $request->type,
+            'reference_id' => $request->reference_id,
+            'recipient_filters' => $filters,
+            'recipient_count' => $this->newsletterService->getRecipients($filters)->count(),
+        ]);
+
+        return redirect()->route('admin.newsletters.show', $newsletter)
+            ->with('success', 'Newsletter updated successfully.');
+    }
+
+    public function destroy(Newsletter $newsletter): RedirectResponse
+    {
+        $newsletter->delete();
+
+        return redirect()->route('admin.newsletters.index')
+            ->with('success', 'Newsletter deleted.');
+    }
+
+    public function send(Request $request, Newsletter $newsletter): RedirectResponse
+    {
+        if (in_array($newsletter->status, ['sent', 'sending'], true)) {
             return back()->with('error', 'Newsletter already sent.');
         }
 
-        $filters = $newsletter->recipient_filters ?? [];
-        $recipients = $this->getRecipients($filters);
+        $recipients = $this->newsletterService->getRecipients($newsletter->recipient_filters ?? []);
+
+        if ($recipients->isEmpty()) {
+            return back()->with('error', 'No active subscribers match these filters.');
+        }
 
         $newsletter->update([
             'status' => 'sending',
             'recipient_count' => $recipients->count(),
         ]);
 
-        $this->newsletterService->send($newsletter, $recipients);
+        $result = $this->newsletterService->send($newsletter, $recipients);
 
-        $newsletter->refresh();
         $newsletter->update([
-            'status' => 'sent',
-            'sent_at' => now(),
-            'sent_count' => $newsletter->sent_count,
-            'failed_count' => $newsletter->failed_count,
+            'status' => $result['sent'] > 0 ? 'sent' : 'failed',
+            'sent_at' => $result['sent'] > 0 ? now() : null,
         ]);
 
-        return back()->with('success', 'Newsletter sent to ' . $newsletter->sent_count . ' subscribers.');
+        if ($result['sent'] === 0) {
+            return back()->with('error', 'Newsletter could not be sent to any subscriber. Check the mail configuration.');
+        }
+
+        $message = 'Newsletter sent to ' . $result['sent'] . ' subscribers.';
+
+        if ($result['failed'] > 0) {
+            $message .= ' ' . $result['failed'] . ' failed.';
+        }
+
+        return back()->with('success', $message);
     }
 
     public function preview(Request $request, Newsletter $newsletter): View
     {
-        $filters = $newsletter->recipient_filters ?? [];
-        $sampleRecipient = $this->getRecipients($filters)->first();
+        $sampleRecipient = $this->newsletterService
+            ->getRecipients($newsletter->recipient_filters ?? [])
+            ->first();
 
         return view('admin.newsletters.preview', compact('newsletter', 'sampleRecipient'));
     }
 
-    private function getRecipients(array $filters)
+    private function validatedFilters(Request $request): array
     {
-        $query = Subscriber::query()->where('status', 'active');
+        $request->validate([
+            'subject' => ['required', 'string', 'max:255'],
+            'body' => ['required', 'string'],
+            'type' => ['nullable', 'in:content,event,character,merchandise,category,custom'],
+            'reference_id' => ['nullable', 'integer'],
+            'recipient_filters' => ['nullable', 'array'],
+            'recipient_filters.categories' => ['nullable', 'array'],
+            'recipient_filters.categories.*' => ['integer', 'exists:categories,id'],
+        ]);
 
-        if (!empty($filters['categories'])) {
-            $query->where(function ($q) use ($filters) {
-                foreach ($filters['categories'] as $categoryId) {
-                    $q->orWhereJsonContains('preferences->categories', $categoryId);
-                }
-            });
-        }
-
-        if (!empty($filters['status']) && $filters['status'] !== 'active') {
-            $query->where('status', $filters['status']);
-        }
-
-        return $query->get();
+        return $request->input('recipient_filters', []);
     }
 }

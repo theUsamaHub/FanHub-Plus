@@ -5,13 +5,12 @@ namespace App\Mail;
 use App\Models\Newsletter;
 use App\Models\Subscriber;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class NewsletterMail extends Mailable implements ShouldQueue
+class NewsletterMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -34,8 +33,22 @@ class NewsletterMail extends Mailable implements ShouldQueue
             with: [
                 'newsletter' => $this->newsletter,
                 'subscriber' => $this->subscriber,
-                'unsubscribeUrl' => route('unsubscribe', ['token' => $this->subscriber->unsubscribe_token]),
+                'body' => $this->renderBody(),
+                'unsubscribeUrl' => $this->subscriber->unsubscribeUrl(),
             ],
+        );
+    }
+
+    private function renderBody(): string
+    {
+        return (string) str_replace(
+            ['{name}', '{email}', '{unsubscribe_url}'],
+            [
+                $this->subscriber->name ?: 'there',
+                $this->subscriber->email,
+                $this->subscriber->unsubscribeUrl(),
+            ],
+            (string) $this->newsletter->body
         );
     }
 

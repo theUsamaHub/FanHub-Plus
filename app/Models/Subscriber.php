@@ -4,9 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class Subscriber extends Model
 {
+    use Notifiable;
+
+    protected static function booted(): void
+    {
+        static::creating(function (Subscriber $subscriber): void {
+            if (! $subscriber->unsubscribe_token) {
+                $subscriber->unsubscribe_token = Str::random(64);
+            }
+        });
+    }
+
     protected $fillable = [
         'email',
         'name',
@@ -64,8 +77,22 @@ class Subscriber extends Model
 
     public function generateUnsubscribeToken(): string
     {
-        $this->unsubscribe_token = \Illuminate\Support\Str::random(64);
+        $this->unsubscribe_token = Str::random(64);
         $this->save();
         return $this->unsubscribe_token;
+    }
+
+    public function ensureUnsubscribeToken(): string
+    {
+        if (! $this->unsubscribe_token) {
+            return $this->generateUnsubscribeToken();
+        }
+
+        return $this->unsubscribe_token;
+    }
+
+    public function unsubscribeUrl(): string
+    {
+        return route('unsubscribe', ['token' => $this->ensureUnsubscribeToken()]);
     }
 }

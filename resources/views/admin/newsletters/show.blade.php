@@ -12,10 +12,20 @@
                     <i class="bi bi-eye-fill me-1"></i>{{ __('Preview') }}
                 </a>
                 @if ($newsletter->status === 'draft')
+                    <a href="{{ route('admin.newsletters.edit', $newsletter) }}" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-pencil me-1"></i>{{ __('Edit') }}
+                    </a>
                     <form action="{{ route('admin.newsletters.send', $newsletter) }}" method="POST" class="d-inline" data-confirm="{{ __('Send this newsletter to all recipients?') }}">
                         @csrf
                         <button class="btn btn-success btn-sm">
                             <i class="bi bi-send me-1"></i>{{ __('Send') }}
+                        </button>
+                    </form>
+                    <form action="{{ route('admin.newsletters.destroy', $newsletter) }}" method="POST" class="d-inline" data-confirm="{{ __('Delete this newsletter?') }}">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-outline-danger btn-sm">
+                            <i class="bi bi-trash me-1"></i>{{ __('Delete') }}
                         </button>
                     </form>
                 @endif
@@ -96,9 +106,16 @@
                                     'category' => \App\Models\Category::find($newsletter->reference_id),
                                     default => null,
                                 };
+                                $refRoute = [
+                                    'content' => 'admin.contents.show',
+                                    'event' => 'admin.events.show',
+                                    'character' => 'admin.characters.show',
+                                    'merchandise' => 'admin.merchandise.show',
+                                    'category' => 'admin.categories.show',
+                                ][$newsletter->type] ?? null;
                             @endphp
-                            @if ($ref)
-                                <a href="{{ route('admin.' . $newsletter->type . 's.show', $ref) }}" class="btn btn-outline-primary btn-sm">
+                            @if ($ref && $refRoute)
+                                <a href="{{ route($refRoute, $ref) }}" class="btn btn-outline-primary btn-sm">
                                     <i class="bi bi-box-arrow-up-right me-1"></i>{{ __('View ') . ucfirst($newsletter->type) }}
                                 </a>
                             @endif

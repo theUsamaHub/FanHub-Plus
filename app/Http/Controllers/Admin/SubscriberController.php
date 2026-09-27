@@ -63,8 +63,6 @@ class SubscriberController extends Controller
 
     public function show(Subscriber $subscriber): View
     {
-        $subscriber->load(['preferences']);
-        
         $categories = Category::orderBy('name')->get(['id', 'name']);
         $preferences = $subscriber->getPreferences();
         $selectedCategories = $preferences['categories'] ?? [];
@@ -114,6 +112,10 @@ class SubscriberController extends Controller
             $subscriber->update(['unsubscribed_at' => now()]);
         } elseif ($request->status === 'active' && $subscriber->unsubscribed_at) {
             $subscriber->update(['unsubscribed_at' => null, 'subscribed_at' => $subscriber->subscribed_at ?? now()]);
+        }
+
+        if ($request->status === 'active') {
+            $subscriber->ensureUnsubscribeToken();
         }
 
         return back()->with('success', 'Subscriber status updated.');
