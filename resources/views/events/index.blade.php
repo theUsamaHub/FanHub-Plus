@@ -6,7 +6,6 @@
 @endpush
 @section('content')
 <div class="events-page" data-events-page>
-    @if(!$hasFilters && $events->currentPage() === 1)
         <section class="events-intro" style="--events-hero-image: url('{{ asset('images/hero/photo-1667419674923-9eef9f86c628.avif') }}')" aria-labelledby="events-title" data-events-intro>
             <div class="events-intro__top"><span>FANHUB PLUS / IN REAL LIFE</span><span>EVERY FANDOM. ONE PLACE.</span></div>
             <div class="events-intro__center">
@@ -15,9 +14,6 @@
             </div>
             <div class="events-intro__bottom"><p>Conventions. Meetups. Moments that matter.</p><a href="#{{ $featured->isNotEmpty() ? 'featured-events' : 'explore-events' }}">Scroll to discover <span aria-hidden="true">↓</span></a></div>
         </section>
-    @else
-        <header class="events-compact-heading events-container"><a href="{{ route('events.index') }}">← All events</a><h1>Find your next <span>fan moment.</span></h1></header>
-    @endif
 
     @if($featured->isNotEmpty())
         <section class="events-featured events-container" id="featured-events" aria-labelledby="featured-title" data-featured-events>
@@ -34,9 +30,9 @@
         </section>
     @endif
 
-    <section class="events-explore events-container" id="explore-events" aria-labelledby="explore-title">
+    <section class="events-explore events-container" aria-labelledby="explore-title">
         @include('events.partials.nearby-controls')
-        <div class="events-section-heading" data-event-reveal><div><p class="events-kicker">MAKE ROOM IN YOUR CALENDAR</p><h2 id="explore-title">Explore all <em>events.</em></h2></div><p>Find your people.<br>Make it a date.</p></div>
+        <div class="events-section-heading" id="explore-events" data-event-reveal><div><p class="events-kicker">MAKE ROOM IN YOUR CALENDAR</p><h2 id="explore-title">Explore all <em>events.</em></h2></div><p>Find your people.<br>Make it a date.</p></div>
         @include('events.partials.filters')
         <div data-event-results>@include('events.partials.results')</div>
     </section>

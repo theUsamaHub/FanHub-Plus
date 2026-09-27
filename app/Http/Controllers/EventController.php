@@ -27,14 +27,14 @@ class EventController extends Controller
             'radius' => ['sometimes', 'integer', Rule::in(config('events.nearby_radii'))],
         ] : []));
         $hasFilters = $nearby || collect($filters)->except('page')->contains(fn ($value) => filled($value));
-        $featured = $hasFilters ? collect() : Event::forUser(auth()->user())->published()->where('is_featured', true)
+        $featured = $nearby ? collect() : Event::forUser(auth()->user())->published()->where('is_featured', true)
             ->where('start_at', '>=', now())->with(['category', 'coverMedia'])
             ->orderByDesc('popularity_score')->orderBy('start_at')->orderBy('id')
             ->limit(config('events.featured_limit'))->get();
         $query = Event::forUser(auth()->user())->published()->with(['category', 'coverMedia']);
         // Unfiltered browsing avoids repeating the selected stories in the grid.
         // A search/filter includes every matching event, including featured ones.
-        if ($featured->isNotEmpty()) $query->whereNotIn('id', $featured->modelKeys());
+        if (! $hasFilters && $featured->isNotEmpty()) $query->whereNotIn('id', $featured->modelKeys());
         $term = trim($filters['q'] ?? '');
         if ($term !== '') {
             $pattern = '%'.str_replace(['!', '%', '_'], ['!!', '!%', '!_'], mb_strtolower($term)).'%';
@@ -90,7 +90,7 @@ class EventController extends Controller
         }
 
         return view('events.index', [
-            'events' => $events, 'featured' => $events->currentPage() === 1 ? $featured : collect(),
+            'events' => $events, 'featured' => $featured,
             'filters' => $filters, 'hasFilters' => $hasFilters,
             'categories' => Category::whereHas('events', fn ($q) => $q->published())->orderBy('name')->get(['id', 'name', 'slug']),
             'cities' => Event::published()->select('city')->distinct()->orderBy('city')->pluck('city'),

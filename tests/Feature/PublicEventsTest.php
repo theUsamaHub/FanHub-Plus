@@ -46,7 +46,8 @@ class PublicEventsTest extends TestCase
         $this->assertSame(16, $response['events']->total());
         $this->assertEmpty(array_intersect($response['featured']->modelKeys(), $response['events']->getCollection()->modelKeys()));
         $page2 = $this->get('/events?page=2')->assertOk()->assertSee('Page')->assertSee('of 2');
-        $this->assertCount(0, $page2['featured']);
+        $this->assertCount(4, $page2['featured']);
+        $page2->assertSee('data-events-intro', false)->assertSee('data-featured-events', false);
         $this->assertCount(4, $page2['events']);
         $this->assertSame(16, $page2['events']->total());
     }
@@ -60,12 +61,15 @@ class PublicEventsTest extends TestCase
         $this->event(['category_id' => $game->id, 'city' => 'Karachi', 'event_type' => 'gaming']);
         $this->event(['title' => 'Past show', 'start_at' => now()->subDays(3), 'end_at' => now()->subDay()]);
         $response = $this->get('/events?category=anime&city=Lahore&type=convention&date=2026-09-28&when=upcoming&sort=popular')->assertOk()->assertSee($match->title)->assertDontSee('Past show');
-        $this->assertCount(0, $response['featured']);
+        $this->assertCount(1, $response['featured']);
+        $response->assertSee('data-events-intro', false)->assertSee('data-featured-events', false)
+            ->assertSeeInOrder(['data-events-intro', 'data-featured-events', 'events-filter-form', 'data-event-results'], false);
         $this->assertCount(2, $response['events']);
         $this->assertSame($match->id, $response['events']->first()->id);
         $this->get('/events?q=100%25')->assertOk()->assertSee($match->title)->assertDontSee('Anime anything Gathering');
         $this->get('/events?q=0')->assertOk()->assertSee($match->title)->assertDontSee('Anime anything Gathering');
-        $this->get('/events?when=past')->assertOk()->assertSee('Past show')->assertDontSee($match->title);
+        $this->get('/events?when=past')->assertOk()->assertSee('Past show')
+            ->assertViewHas('events', fn ($events) => !$events->contains('id', $match->id));
         $this->get('/events?date=2026-09-29')->assertOk()->assertSee('No events found this time.');
         $this->from('/events')->get('/events?date=invalid&type=invalid')->assertRedirect('/events')->assertSessionHasErrors(['date', 'type']);
     }
