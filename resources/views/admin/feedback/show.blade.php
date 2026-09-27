@@ -17,7 +17,21 @@
                     <table class="table mb-0 fh-adm-detail-table">
                         <tbody>
                             <tr><td class="fw-semibold" style="width:180px;">{{ __('From') }}</td><td>{{ $feedback->user?->name ?? __('Guest') }} @if ($feedback->user) &lt;{{ $feedback->user->email }}&gt; @endif</td></tr>
-                            <tr><td class="fw-semibold">{{ __('Type') }}</td><td>{{ ucfirst($feedback->type) }}</td></tr>
+                            <tr>
+                                <td class="fw-semibold">{{ __('Type') }}</td>
+                                <td>
+                                    @php
+                                        $typeIcons = ['bug' => 'bug-fill', 'suggestion' => 'lightbulb-fill', 'query' => 'question-circle-fill'];
+                                        $typeColors = ['bug' => 'danger', 'suggestion' => 'success', 'query' => 'info'];
+                                        $icon = $typeIcons[$feedback->type] ?? 'tag';
+                                        $color = $typeColors[$feedback->type] ?? 'secondary';
+                                    @endphp
+                                    <span class="badge text-bg-{{ $color }} d-inline-flex align-items-center gap-1 px-3 py-2" style="font-size: 0.85rem;">
+                                        <x-site-icon :name="$icon" style="width: 14px; height: 14px;" />
+                                        {{ ucfirst($feedback->type) }}
+                                    </span>
+                                </td>
+                            </tr>
                             <tr><td class="fw-semibold">{{ __('Message') }}</td><td style="white-space: pre-wrap;">{{ $feedback->message }}</td></tr>
                             <tr>
                                 <td class="fw-semibold">{{ __('Status') }}</td>

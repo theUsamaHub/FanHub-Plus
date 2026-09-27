@@ -63,7 +63,7 @@
                     <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Message') }}</h6>
                 </div>
                 <div class="card-body">
-                    <div class="bg-light rounded p-3" style="white-space: pre-wrap;">{{ $contact->message }}</div>
+                    <div class="admin-message-content rounded p-4" style="white-space: pre-wrap;">{{ $contact->message }}</div>
                 </div>
             </div>
         </div>
