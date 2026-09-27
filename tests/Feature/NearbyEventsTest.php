@@ -81,4 +81,15 @@ class NearbyEventsTest extends TestCase
         $event->update(['google_maps_location' => 'javascript:alert(1)']);
         $this->assertStringStartsWith('https://www.google.com/maps/', $event->fresh()->map_url);
     }
+
+    public function test_empty_search_reports_nearest_matching_public_event_without_expanding_radius(): void
+    {
+        $this->event('Unpublished close event', ['latitude' => .01, 'status' => 'draft']);
+        $this->event('Outside 5 km', ['latitude' => .1]);
+        $response = $this->postJson(route('events.nearby.search'), ['latitude' => 0, 'longitude' => 0])
+            ->assertOk()->assertJsonPath('total', 0)->assertJsonPath('nearest_distance_km', 11.1);
+        $this->assertStringNotContainsString('Outside 5 km', $response->json('html'));
+        $this->postJson(route('events.nearby.search'), ['latitude' => 0, 'longitude' => 0, 'city' => 'Other city'])
+            ->assertOk()->assertJsonPath('nearest_distance_km', null);
+    }
 }

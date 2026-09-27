@@ -32,10 +32,6 @@ class EventController extends Controller
             ->orderByDesc('popularity_score')->orderBy('start_at')->orderBy('id')
             ->limit(config('events.featured_limit'))->get();
         $query = Event::forUser(auth()->user())->published()->with(['category', 'coverMedia']);
-        if ($nearby) {
-            $query->withinRadius((float) $filters['latitude'], (float) $filters['longitude'], (int) ($filters['radius'] ?? 5));
-            if (empty($filters['sort'])) $query->orderBy('distance_km');
-        }
         // Unfiltered browsing avoids repeating the selected stories in the grid.
         // A search/filter includes every matching event, including featured ones.
         if ($featured->isNotEmpty()) $query->whereNotIn('id', $featured->modelKeys());
@@ -55,16 +51,17 @@ class EventController extends Controller
         }
         if (($filters['when'] ?? '') === 'upcoming') $query->where('start_at', '>=', now());
         if (($filters['when'] ?? '') === 'past') $query->whereRaw('COALESCE(end_at, start_at) < ?', [now()]);
+        $nearbyCandidates = $nearby ? clone $query : null;
         if ($nearby) {
-            // For nearby events:
-            // - If no sort provided: sort by distance (line 37 handles this)
-            // - If sort explicitly provided: use that sort (popular, latest, soonest)
+            $query->withinRadius((float) $filters['latitude'], (float) $filters['longitude'], (int) ($filters['radius'] ?? 5));
+            if (empty($filters['sort'])) $query->orderBy('distance_km');
+            // Preserve explicit sorting; otherwise prefer geographic distance.
             $sort = $filters['sort'] ?? null;
             match ($sort) {
                 'popular' => $query->orderByDesc('popularity_score')->orderByDesc('view_count'),
                 'latest' => $query->orderByDesc('created_at'),
                 'soonest' => $query->orderByRaw('CASE WHEN COALESCE(end_at, start_at) >= ? THEN 0 ELSE 1 END', [now()]),
-                default => null, // No sort provided - distance already applied at line 37
+                default => null,
             };
             $query->orderBy('start_at')->orderBy('id'); // Secondary sort for tie-breaking
         } else {
@@ -78,9 +75,17 @@ class EventController extends Controller
         $events = $query->paginate(config('events.per_page'))->withQueryString()->fragment('explore-events');
 
         if ($nearby) {
+            // Diagnose an empty radius without broadening the actual results.
+            // 20,016 km covers the largest possible great-circle distance.
+            $nearestDistance = $events->total() === 0
+                ? $nearbyCandidates->withoutEagerLoads()->reorder()
+                    ->withinRadius((float) $filters['latitude'], (float) $filters['longitude'], 20016)
+                    ->orderBy('distance_km')->first()?->distance_km
+                : null;
             return response()->json([
                 'html' => view('events.partials.results', compact('events', 'hasFilters'))->render(),
                 'total' => $events->total(),
+                'nearest_distance_km' => $nearestDistance === null ? null : round((float) $nearestDistance, 1),
             ])->header('Cache-Control', 'no-store, private');
         }
 

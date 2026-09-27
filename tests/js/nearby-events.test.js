@@ -7,12 +7,13 @@ class Element {
     addEventListener(name, callback) { this.listeners[name] = callback; }
     fire(name, event = {}) { return this.listeners[name]?.(event); }
     setAttribute() {}
+    removeAttribute(name) { delete this[name]; }
     closest() { return null; }
     querySelectorAll() { return []; }
     reset() {}
 }
 function setup(geo = true) {
-    const keys = ['controls', 'start', 'reset', 'radius', 'radius-label', 'status'];
+    const keys = ['controls', 'start', 'reset', 'radius', 'radius-label', 'status', 'location', 'accuracy', 'map', 'clear-filters'];
     const elements = Object.fromEntries(keys.map(key => [key, new Element()]));
     const results = new Element();
     const form = new Element();
@@ -20,13 +21,15 @@ function setup(geo = true) {
     elements.controls.dataset.endpoint = '/events/nearby';
     elements.controls.querySelector = selector => elements[selector.slice(13, -1)];
     const page = { querySelector: selector => ({ '[data-nearby-controls]': elements.controls, '[data-event-results]': results, '.events-filter-form': form, '[data-featured-events]': featured })[selector] };
-    let success, failure, calls = 0, request;
-    Object.defineProperty(globalThis, 'navigator', { configurable: true, value: geo ? { geolocation: { getCurrentPosition(ok, fail) { calls++; success = ok; failure = fail; } } } : {} });
+    let success, failure, calls = 0, request, options;
+    Object.defineProperty(globalThis, 'navigator', { configurable: true, value: geo ? { geolocation: { getCurrentPosition(ok, fail, settings) { calls++; success = ok; failure = fail; options = settings; } } } : {} });
     globalThis.document = { querySelector: () => ({ content: 'csrf' }) };
-    globalThis.FormData = class { *[Symbol.iterator]() { yield ['city', 'Test city']; } };
+    const fields = { city: { value: 'Test city' }, q: { value: '' } };
+    form.elements = { namedItem(name) { return fields[name]; } };
+    globalThis.FormData = class { *[Symbol.iterator]() { for (const [key, field] of Object.entries(fields)) yield [key, field.value]; } };
     globalThis.fetch = async (url, options) => { request = JSON.parse(options.body); return { ok: true, json: async () => ({ html: 'nearby results', total: 1 }) }; };
     initNearbyEvents(page);
-    return { ...elements, results, form, get calls() { return calls; }, get request() { return request; }, grant: () => success({ coords: { latitude: 0, longitude: 0 } }), deny: code => failure({ code }) };
+    return { ...elements, results, form, get calls() { return calls; }, get request() { return request; }, get options() { return options; }, grant: (coords = { latitude: 0, longitude: 0, accuracy: 30 }) => success({ coords }), deny: code => failure({ code }) };
 }
 const flush = () => new Promise(resolve => setImmediate(resolve));
 
@@ -35,6 +38,8 @@ test('location is requested only on click; search, radius, pagination and reset 
     assert.equal(ui.calls, 0);
     ui.start.fire('click');
     assert.equal(ui.calls, 1);
+    assert.equal(ui.options.maximumAge, 0);
+    assert.equal(ui.options.enableHighAccuracy, true);
     assert.equal(ui.start.disabled, true);
     ui.grant();
     await flush();
@@ -52,6 +57,45 @@ test('location is requested only on click; search, radius, pagination and reset 
     assert.equal(ui.request.page, 2);
     ui.reset.fire('click');
     assert.equal(ui.results.innerHTML, 'normal results');
+    assert.equal(ui.location.hidden, true);
+    assert.equal(ui.map.href, undefined);
+});
+
+test('approximate device locations show accuracy and nearest distance instead of a misleading empty message', async () => {
+    const ui = setup();
+    globalThis.fetch = async () => ({ ok: true, json: async () => ({ html: 'empty results', total: 0, nearest_distance_km: 62.3 }) });
+    ui.start.fire('click');
+    ui.grant({ latitude: 24, longitude: 67, accuracy: 12000 });
+    await flush();
+    assert.match(ui.accuracy.textContent, /12.0 km/);
+    assert.match(ui.status.textContent, /only accurate/);
+    assert.match(ui.status.textContent, /62.3 km/);
+    assert.match(ui.map.href, /24%2C67/);
+    assert.equal(ui.location.hidden, false);
+});
+
+test('clearing filters keeps nearby mode and reuses current coordinates', async () => {
+    const ui = setup();
+    ui.start.fire('click');
+    ui.grant();
+    await flush();
+    assert.equal(ui['clear-filters'].hidden, false);
+    ui['clear-filters'].fire('click');
+    await flush();
+    assert.equal(ui.request.city, '');
+    assert.equal(ui.request.radius, 5);
+    assert.equal(ui.request.latitude, 0);
+    assert.equal(ui.calls, 1);
+});
+
+test('invalid browser coordinates never reach the backend', async () => {
+    const ui = setup();
+    ui.start.fire('click');
+    ui.grant({ latitude: NaN, longitude: 67 });
+    await flush();
+    assert.equal(ui.request, undefined);
+    assert.equal(ui.start.disabled, false);
+    assert.match(ui.status.textContent, /valid location/);
 });
 
 test('denial, unavailable and timeout release loading and preserve listing', () => {
