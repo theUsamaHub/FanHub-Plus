@@ -124,21 +124,18 @@ class Event extends Model
 
     protected static function booted(): void
     {
-        static::creating(function (Event $event) {
-            if (! empty($event->slug)) return;
-            $base = Str::slug($event->title) ?: 'event';
-            $slug = $base;
-            for ($suffix = 2; static::where('slug', $slug)->exists(); $suffix++) $slug = $base.'-'.$suffix;
-            $event->slug = $slug;
-        });
+        static::saving(fn (Event $event) => $event->ensureSlug());
+    }
 
-        static::updating(function (Event $event) {
-            if (! empty($event->slug)) return;
-            $base = Str::slug($event->title) ?: 'event';
-            $slug = $base;
-            for ($suffix = 2; static::where('slug', $slug)->where('id', '!=', $event->id)->exists(); $suffix++) $slug = $base.'-'.$suffix;
-            $event->slug = $slug;
-        });
+    public function ensureSlug(): void
+    {
+        if (filled($this->slug)) return;
+        $base = Str::slug($this->title) ?: 'event';
+        $slug = $base;
+        for ($suffix = 2; static::where('slug', $slug)->when($this->exists, fn ($query) => $query->whereKeyNot($this->id))->exists(); $suffix++) {
+            $slug = $base.'-'.$suffix;
+        }
+        $this->slug = $slug;
     }
 
     public function scopeInCity(Builder $query, string $city): Builder

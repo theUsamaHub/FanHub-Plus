@@ -27,8 +27,8 @@ class EventSeeder extends Seeder
         foreach ($events as $index => $e) {
             $category = $categories[$index % count($categories)] ?? $categories->first();
 
-            Event::updateOrCreate(
-                ['title' => $e['title']],
+            $event = Event::firstOrNew(['title' => $e['title']]);
+            $event->fill(
                 [
                     'category_id' => $category?->id,
                     'title' => $e['title'],
@@ -49,6 +49,9 @@ class EventSeeder extends Seeder
                     'popularity_score' => $e['popularity_score'],
                 ]
             );
+            // DatabaseSeeder disables model events, including automatic slug generation.
+            $event->ensureSlug();
+            $event->save();
         }
     }
 }
