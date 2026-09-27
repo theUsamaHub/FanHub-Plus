@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Media;
 use App\Services\FileUploadService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -20,7 +22,9 @@ class MediaController extends Controller
 
     public function index(Request $request): View
     {
-        $query = Media::with('uploadedBy');
+        $categories = Category::orderBy('name')->get(['id', 'name']);
+
+        $query = Media::with(['uploadedBy', 'category']);
 
         if ($search = $request->input('search')) {
             $query->where(function ($q) use ($search) {
@@ -33,9 +37,15 @@ class MediaController extends Controller
             $query->where('media_type', $type);
         }
 
+        if (($categoryId = $request->input('category_id')) !== null && $categoryId !== '') {
+            $categoryId === 'general'
+                ? $query->whereNull('category_id')
+                : $query->where('category_id', (int) $categoryId);
+        }
+
         $media = $query->latest()->paginate(20)->withQueryString();
 
-        return view('admin.media.index', compact('media'));
+        return view('admin.media.index', compact('media', 'categories'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -43,11 +53,14 @@ class MediaController extends Controller
         $request->validate([
             'files' => ['required', 'array', 'max:10'],
             'files.*' => ['file', 'max:524288'],
+            'category_id' => ['nullable', 'integer', Rule::exists('categories', 'id')->whereNull('deleted_at')],
             'alt_text' => ['nullable', 'string', 'max:255'],
             'duration_hours' => ['nullable', 'integer', 'min:0', 'max:23'],
             'duration_minutes' => ['nullable', 'integer', 'min:0', 'max:59'],
             'duration_seconds' => ['nullable', 'numeric', 'min:0', 'max:59.99'],
         ]);
+
+        $categoryId = $request->filled('category_id') ? (int) $request->input('category_id') : null;
 
         foreach ($request->file('files') as $file) {
             $category = FileUploadService::categoryFromMime($file->getMimeType() ?? '');
@@ -77,7 +90,8 @@ class MediaController extends Controller
                     null,
                     null,
                     $request->input('alt_text'),
-                    $duration
+                    $duration,
+                    $categoryId
                 );
             } catch (\RuntimeException $e) {
                 report($e);
@@ -93,12 +107,15 @@ class MediaController extends Controller
 
     public function edit(Media $media): View
     {
-        return view('admin.media.edit', compact('media'));
+        $categories = Category::orderBy('name')->get(['id', 'name']);
+
+        return view('admin.media.edit', compact('media', 'categories'));
     }
 
     public function update(Request $request, Media $media): RedirectResponse
     {
         $request->validate([
+            'category_id' => ['nullable', 'integer', Rule::exists('categories', 'id')->whereNull('deleted_at')],
             'alt_text' => ['nullable', 'string', 'max:255'],
             'duration_hours' => ['nullable', 'integer', 'min:0', 'max:23'],
             'duration_minutes' => ['nullable', 'integer', 'min:0', 'max:59'],
@@ -108,6 +125,7 @@ class MediaController extends Controller
         $this->fileService->updateMetadata($media, [
             'alt_text' => $request->input('alt_text'),
             'duration' => $this->durationFromParts($request),
+            'category_id' => $request->filled('category_id') ? (int) $request->input('category_id') : null,
         ]);
 
         return redirect()->route('admin.media.index')
@@ -139,11 +157,13 @@ class MediaController extends Controller
             'total_chunks' => ['required', 'integer', 'min:1', 'max:1000'],
             'chunk_size' => ['required', 'integer', 'min:1048576', 'max:10485760'], // 1MB-10MB
             'mime_type' => ['required', 'string'],
+            'category_id' => ['nullable', 'integer', Rule::exists('categories', 'id')->whereNull('deleted_at')],
             'alt_text' => ['nullable', 'string', 'max:255'],
         ]);
 
         $media = Media::create([
             'uploaded_by' => auth()->id(),
+            'category_id' => $request->filled('category_id') ? (int) $request->input('category_id') : null,
             'original_filename' => $request->filename,
             'mime_type' => $request->mime_type,
             'media_type' => FileUploadService::mediaTypeFromMime($request->mime_type),

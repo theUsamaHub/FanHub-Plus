@@ -55,6 +55,14 @@
                                 <td class="fw-semibold">{{ __('Size') }}</td>
                                 <td>{{ $media->size_formatted }}</td>
                             </tr>
+                            <tr>
+                                <td class="fw-semibold">{{ __('Category') }}</td>
+                                <td>
+                                    <span class="badge {{ $media->category ? 'bg-primary' : 'bg-secondary' }}">
+                                        {{ $media->category?->name ?: __('General (no category)') }}
+                                    </span>
+                                </td>
+                            </tr>
                             @if ($media->width && $media->height)
                                 <tr>
                                     <td class="fw-semibold">{{ __('Dimensions') }}</td>
@@ -81,6 +89,18 @@
                     <form action="{{ route('admin.media.update', $media) }}" method="POST">
                         @csrf
                         @method('PUT')
+
+                        <div class="mb-3">
+                            <x-input-label for="category_id" :value="__('Category')" />
+                            <select id="category_id" name="category_id" class="form-select @error('category_id') is-invalid @enderror">
+                                <option value="">{{ __('General / No category') }}</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}" @selected((int) old('category_id', $media->category_id) === $category->id)>{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                            <small class="text-muted">{{ __('Leave empty to keep this file in General (shared) media.') }}</small>
+                            <x-input-error :messages="$errors->get('category_id')" class="mt-1" />
+                        </div>
 
                         <div class="mb-3">
                             <x-input-label for="alt_text" :value="__('Alt text')" />
