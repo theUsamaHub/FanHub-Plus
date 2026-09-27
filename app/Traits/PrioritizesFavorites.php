@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Builder;
 
 trait PrioritizesFavorites
 {
+    // Apply before the feed's normal sorting and pagination. This ranks favourites;
+    // it never restricts the result set or replaces visibility/category filters.
     public function scopeForUser(Builder $query, ?User $user): Builder
     {
         $ids = $user?->favoriteCategoryIds() ?? [];

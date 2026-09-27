@@ -123,7 +123,7 @@ class PublicSiteController extends Controller
                 ->count('submitted_by'),
         ];
 
-        $contents = $query->paginate(12)->withQueryString();
+        $contents = $query->orderByDesc('contents.id')->paginate(12)->withQueryString();
         $categories = \App\Models\Category::orderBy('name')->get();
         $tags = \App\Models\Tag::whereHas('contents', fn ($q) => $q->visibleToPublic()->whereHas('category', fn ($q2) => $q2->where('slug', $category->slug)))->orderBy('name')->get();
 
@@ -143,14 +143,15 @@ class PublicSiteController extends Controller
         // Characters linked ONLY through the character_contents junction —
         // this enforces the many-to-many relation so unrelated Characters
         // never appear on a Content detail page.
-        $characters = $content->characters()->with(['category', 'imageMedia'])->orderBy('name')->get();
+        $characters = $content->characters()->forUser(auth()->user())->with(['category', 'imageMedia'])
+            ->orderBy('name')->orderBy('character_profiles.id')->get();
         // Merchandise scoped to this specific Content record
-        $merchandise = $content->merchandiseItems()->with(['category', 'imageMedia', 'character'])
-            ->orderByDesc('view_count')->limit(12)->get();
+        $merchandise = $content->merchandiseItems()->forUser(auth()->user())->with(['category', 'imageMedia', 'character'])
+            ->orderByDesc('view_count')->orderByDesc('id')->limit(12)->get();
         // Events tied to this Content record
-        $events = $content->events()->with(['category', 'coverMedia'])
+        $events = $content->events()->forUser(auth()->user())->published()->with(['category', 'coverMedia'])
             ->whereRaw('COALESCE(end_at, start_at) >= ?', [now()])
-            ->orderBy('start_at')->limit(6)->get();
+            ->orderBy('start_at')->orderBy('id')->limit(6)->get();
 
         return view('public.content', compact('content', 'related', 'characters', 'merchandise', 'events'));
     }
@@ -159,9 +160,10 @@ class PublicSiteController extends Controller
     {
         $character->load(['category', 'imageMedia']);
         app(\App\Services\MemberLibrary::class)->viewed($character);
-        $stories = $character->contents()->visibleToPublic()->latest('published_at')->paginate(6);
-        $merchandise = $character->merchandiseItems()->with(['category', 'imageMedia', 'content'])
-            ->orderByDesc('view_count')->limit(12)->get();
+        $stories = $character->contents()->forUser(auth()->user())->visibleToPublic()
+            ->latest('published_at')->orderByDesc('contents.id')->paginate(6)->withQueryString();
+        $merchandise = $character->merchandiseItems()->forUser(auth()->user())->with(['category', 'imageMedia', 'content'])
+            ->orderByDesc('view_count')->orderByDesc('id')->limit(12)->get();
 
         return view('public.character', compact('character', 'stories', 'merchandise'));
     }

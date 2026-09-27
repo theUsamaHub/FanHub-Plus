@@ -88,10 +88,10 @@ class HomepageSectionsTest extends TestCase
     public function test_upcoming_dates_merge_with_merchandise_and_unknown_dates_are_honest(): void
     {
         $category = Category::create(['name' => 'Anime', 'slug' => 'anime']);
-        $this->story($category, ['title' => 'Next month', 'release_date' => today()->addDays(20), 'release_label' => 'Special premiere']);
+        $story = $this->story($category, ['title' => 'Next month', 'release_date' => today()->addDays(20), 'release_label' => 'Special premiere']);
         $this->story($category, ['title' => 'Already released', 'release_date' => today()->subDay()]);
-        MerchandiseItem::create(['category_id' => $category->id, 'name' => 'First collectible', 'tag' => 'limited_edition', 'is_upcoming' => true, 'release_date' => today()->addDay()]);
-        MerchandiseItem::create(['category_id' => $category->id, 'name' => 'Undated collectible', 'tag' => 'pre_order', 'is_upcoming' => true]);
+        MerchandiseItem::create(['category_id' => $category->id, 'content_id' => $story->id, 'name' => 'First collectible', 'tag' => 'limited_edition', 'is_upcoming' => true, 'release_date' => today()->addDay()]);
+        MerchandiseItem::create(['category_id' => $category->id, 'content_id' => $story->id, 'name' => 'Undated collectible', 'tag' => 'pre_order', 'is_upcoming' => true]);
         $releases = app(HomepageService::class)->releases();
         $this->assertSame(['First collectible', 'Next month', 'Undated collectible'], $releases->pluck('title')->all());
         $this->get('/?release_category=merchandise')->assertOk()->assertSee('Date TBA')->assertSee('limited edition')->assertSee('Undated collectible');
