@@ -3,7 +3,7 @@
 <dialog open class="onboarding" aria-modal="true" aria-labelledby="onboarding-title" aria-describedby="onboarding-description"
     x-data="fandomOnboarding" data-onboarding data-selected="{{ json_encode(array_values(array_filter($selectedFavorites, 'is_scalar'))) }}" @cancel.prevent>
     <div class="onboarding__shell">
-        <header class="onboarding__top"><span class="onboarding__wordmark">FanHub<span>Plus</span></span><span class="onboarding__step"><i aria-hidden="true"></i> YOUR FIRST CHAPTER <b>01 / 01</b></span></header>
+        <header class="onboarding__top"><x-site-brand /><span class="onboarding__step"><i aria-hidden="true"></i> YOUR FIRST CHAPTER <b>01 / 01</b></span></header>
         <div class="onboarding__layout">
             <aside class="onboarding__intro">
                 <p class="onboarding__eyebrow">A LITTLE MORE YOU.</p>
