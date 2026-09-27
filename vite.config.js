@@ -17,6 +17,7 @@ export default defineConfig({
                 'resources/css/pages/contact.css',
                 'resources/css/pages/privacy.css',
                 'resources/css/pages/feedback.css',
+                'resources/css/pages/static-page.css',
                 'resources/js/modules/contact-page.js',
                 'resources/js/modules/feedback-page.js',
             ],

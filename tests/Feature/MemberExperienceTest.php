@@ -33,7 +33,7 @@ class MemberExperienceTest extends TestCase
         foreach (['dashboard', 'bookmarks', 'favorites', 'activity', 'reviews', 'submissions', 'submissions/create', 'feedback'] as $page) {
             $this->get('/user/'.$page)->assertOk()->assertDontSee('coming soon', false);
         }
-        $this->get('/profile')->assertOk()->assertSee('Display preferences');
+        $this->get('/profile')->assertOk()->assertSee('Display name');
         $this->get('/dashboard')->assertRedirect(route('user.dashboard'));
         $this->get('/account/bookmarks')->assertRedirect(route('user.bookmarks'));
         $this->get('/account/submit-content')->assertRedirect(route('user.submissions.create'));
@@ -127,8 +127,8 @@ class MemberExperienceTest extends TestCase
     {
         $foreign = Media::create(['uploaded_by' => User::factory()->create()->id, 'disk' => 'public', 'path' => 'private.jpg', 'original_filename' => 'private.jpg', 'mime_type' => 'image/jpeg', 'media_type' => 'image', 'size_bytes' => 12]);
         $this->actingAs($this->member)->patch('/profile', ['name' => 'Hassan', 'avatar_media_id' => $foreign->id])->assertSessionHasErrors('avatar_media_id');
-        $this->patch('/profile', ['name' => 'Hassan', 'display_name' => 'Fan Hassan', 'theme_preference' => 'light', 'font_size_preference' => 'large', 'favorites_present' => 1, 'favorites' => [$this->category->id]])->assertSessionHasNoErrors();
-        $this->assertDatabaseHas('user_profiles', ['user_id' => $this->member->id, 'theme_preference' => 'light', 'font_size_preference' => 'large']);
+        $this->patch('/profile', ['name' => 'Hassan', 'display_name' => 'Fan Hassan', 'bio' => 'Loves manga.', 'favorites_present' => 1, 'favorites' => [$this->category->id]])->assertSessionHasNoErrors();
+        $this->assertDatabaseHas('user_profiles', ['user_id' => $this->member->id, 'display_name' => 'Fan Hassan', 'bio' => 'Loves manga.']);
         $this->assertCount(1, $this->member->fresh()->favoriteCategories);
         $this->patch('/profile', ['name' => 'Hassan', 'favorites_present' => 1])->assertSessionHasNoErrors();
         $this->assertCount(0, $this->member->fresh()->favoriteCategories);

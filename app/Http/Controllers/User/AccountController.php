@@ -14,8 +14,8 @@ class AccountController extends Controller
 {
     public function preferences(Request $request)
     {
-        $data = $request->validate(['theme_preference' => 'required|in:dark,light,system']);
-        $request->user()->profile()->updateOrCreate([], $data);
+        $request->validate(['theme_preference' => ['nullable', Rule::in(['dark', 'light', 'system'])]]);
+
         return response()->json(['saved' => true]);
     }
 

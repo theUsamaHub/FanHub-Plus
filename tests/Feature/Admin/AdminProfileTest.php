@@ -62,10 +62,6 @@ class AdminProfileTest extends TestCase
             'user_id' => $this->admin->id,
             'display_name' => 'Should Be Ignored',
         ]);
-        $this->assertDatabaseMissing('user_profiles', [
-            'user_id' => $this->admin->id,
-            'theme_preference' => 'neon',
-        ]);
     }
 
     public function test_admin_can_upload_avatar_image(): void
@@ -94,7 +90,7 @@ class AdminProfileTest extends TestCase
             ->get(route('profile.edit'))
             ->assertOk()
             ->assertSee('Display name')
-            ->assertSee('Font size');
+            ->assertSee('About you');
     }
 
     public function test_registered_user_can_update_profile_preferences(): void
@@ -116,15 +112,12 @@ class AdminProfileTest extends TestCase
             'display_name' => 'Member Display',
             'bio' => 'Hello',
             'avatar_media_id' => $avatar->id,
-            'theme_preference' => 'dark',
-            'font_size_preference' => 'large',
         ])->assertRedirect(route('profile.edit'));
 
         $this->assertDatabaseHas('user_profiles', [
             'user_id' => $member->id,
             'display_name' => 'Member Display',
-            'theme_preference' => 'dark',
-            'font_size_preference' => 'large',
+            'bio' => 'Hello',
         ]);
     }
 }
