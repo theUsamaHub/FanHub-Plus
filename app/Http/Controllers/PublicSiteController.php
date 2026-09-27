@@ -198,6 +198,7 @@ class PublicSiteController extends Controller
         if ($section === 'characters') return app(DiscoveryController::class)->characters($request);
         if ($section === 'multimedia') return app(DiscoveryController::class)->multimedia($request);
         if ($section === 'feedback') return redirect()->route('user.feedback');
+        if ($section === 'privacy') return view('public.privacy');
 
         if ($section === 'merchandise') {
             $filter = $request->query('category', 'all');
