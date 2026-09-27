@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 
 class CharacterProfile extends Model
 {
-    use LogsActivity;
+    use LogsActivity, \App\Traits\PrioritizesFavorites;
 
     protected $fillable = [
         'category_id',

@@ -19,6 +19,7 @@ export function initNearbyEvents(page, refresh = () => {}) {
         start.disabled = value;
         radius.disabled = value;
         results.setAttribute('aria-busy', String(value));
+        controls.setAttribute('aria-busy', String(value));
     };
     const search = async (pageNumber = 1) => {
         const current = ++sequence;
@@ -40,6 +41,12 @@ export function initNearbyEvents(page, refresh = () => {}) {
             if (current !== sequence) return;
             if (originalResults === null) originalResults = results.innerHTML;
             results.innerHTML = payload.html;
+            if (!globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+                results.querySelectorAll('[data-event-card]').forEach((card, index) => {
+                    card.animate?.([{ opacity: 0, transform: 'translateY(18px)' }, { opacity: 1, transform: 'translateY(0)' }],
+                        { duration: 420, delay: Math.min(index, 5) * 55, easing: 'ease-out', fill: 'backwards' });
+                });
+            }
             if (featured) featured.hidden = true;
             status.textContent = payload.total
                 ? `${payload.total} events within ${radius.value} km. Distances are straight-line estimates.`

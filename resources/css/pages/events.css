@@ -198,3 +198,29 @@
 .event-card__distance { color: var(--event-accent); font-size: 12px; }
 .event-card__map { display: inline-block; margin: 0 24px 20px; font-size: 12px; text-decoration: underline !important; }
 @media (max-width: 700px) { .events-nearby { padding: 18px; } .events-nearby__actions { width: 100%; } .events-nearby__actions > button { flex: 1 1 100%; } }
+
+/* Nearby discovery: warm editorial panel with a quiet location signal. */
+.events-nearby { position: relative; display: grid; grid-template-columns: 116px minmax(0,1fr) auto; gap: 24px 30px; padding: 32px; overflow: hidden; background: radial-gradient(ellipse at 0 20%, #ff922e12, transparent 60%), var(--fh-surface); border-radius: 18px; }
+.events-nearby::before { content: ''; position: absolute; inset: 0 auto 0 0; width: 3px; background: linear-gradient(var(--brand-orange, #ff922e),var(--brand-lavender, #c9b6f5)); }
+.events-nearby__copy h3 { font: 600 clamp(28px,3vw,40px)/1.05 'Rajdhani',sans-serif; margin: 10px 0 13px; letter-spacing: -.5px; }
+.events-nearby__copy h3 em { font-style: normal; color: var(--event-soft); }
+.events-nearby__copy > p:not(.events-kicker) { font-size: 11px; line-height: 1.8; color: var(--fh-muted); }
+.events-nearby__privacy { display: flex; gap: 7px; align-items: center; color: var(--fh-muted); font-size: 9px; margin-top: 15px; }.events-nearby__privacy .fh-icon { width: 13px; height: 13px; color: var(--event-accent); }
+.events-nearby__radar { position: relative; width: 110px; height: 110px; border: 1px solid var(--fh-line); border-radius: 50%; display: grid; place-items: center; }
+.events-nearby__radar::before,.events-nearby__radar::after { content: ''; position: absolute; background: var(--fh-line); opacity: .5; }.events-nearby__radar::before { width: 1px; height: 100%; }.events-nearby__radar::after { width: 100%; height: 1px; }
+.events-nearby__radar > i { position: absolute; inset: 14px; border: 1px solid var(--fh-line); border-radius: 50%; }.events-nearby__radar > i:nth-child(2) { inset: 30px; }
+.events-nearby__radar > span { z-index: 1; color: var(--event-accent); width: 42px; height: 42px; display: grid; place-items: center; background: var(--fh-surface); border-radius: 50%; }
+.events-nearby__radar > b { position: absolute; width: 7px; height: 7px; background: var(--event-accent); border-radius: 50%; top: 17px; right: 19px; box-shadow: 0 0 0 5px #ff922e15; }
+.events-nearby__actions { display: grid; min-width: 215px; gap: 10px; align-self: center; }
+.events-nearby__actions label { grid-template-columns: 1fr 95px; align-items: center; font-size: 11px; }
+.events-nearby__status { grid-column: 1/-1; padding-top: 17px; border-top: 1px solid var(--fh-line); font-size: 11px; min-height: 35px; }
+.events-nearby[aria-busy='true'] .events-nearby__status { color: var(--event-accent); }
+.event-card { transition: border-color .25s, box-shadow .25s; }.event-card__art img { transition: transform .65s cubic-bezier(.2,.7,.2,1); }
+.event-card__distance { display: inline-flex; align-items: center; padding: 4px 9px; border-radius: 30px; border: 1px solid color-mix(in srgb,var(--event-accent) 30%,transparent); background: color-mix(in srgb,var(--event-accent) 8%,transparent); font-size: 10px; }
+.event-card__map { color: var(--fh-muted) !important; font-size: 10px; text-underline-offset: 4px; }
+@media (hover: hover) { .event-card:hover { border-color: var(--event-accent); box-shadow: 0 12px 32px #0002; }.event-card:hover .event-card__art img { transform: scale(1.055); } }
+@media (prefers-reduced-motion: no-preference) { .events-nearby[aria-busy='true'] .events-nearby__radar > i { animation: nearby-signal 1.8s ease-out infinite; }.events-nearby[aria-busy='true'] .events-nearby__radar > i:nth-child(2) { animation-delay: .45s; } }
+@keyframes nearby-signal { 0% { transform: scale(.65); opacity: 1; } 100% { transform: scale(1.35); opacity: 0; } }
+@media (max-width: 900px) { .events-nearby { grid-template-columns: minmax(0,1fr) auto; gap: 22px; }.events-nearby__radar { display: none; } }
+@media (max-width: 600px) { .events-nearby { display: flex; padding: 24px 20px; gap: 22px; }.events-nearby__copy { width: 100%; }.events-nearby__copy h3 { font-size: 36px; }.events-nearby__actions { width: 100%; grid-template-columns: 1fr; }.events-nearby__status { width: 100%; }.events-nearby__copy .events-kicker { font-size: 8px; letter-spacing: 2px; } }
+@media (prefers-reduced-motion: reduce) { .event-card__art img { transition: none; }.event-card:hover .event-card__art img { transform: none; } }

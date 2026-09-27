@@ -1,9 +1,10 @@
 <div class="events-nearby" data-nearby-controls data-endpoint="{{ route('events.nearby.search') }}" hidden>
-    <div><p class="events-kicker">CLOSER TO YOUR FANDOM</p><p>Discover fan moments around you.</p></div>
+    <div class="events-nearby__radar" aria-hidden="true"><i></i><i></i><span><x-site-icon name="compass" /></span><b></b></div>
+    <div class="events-nearby__copy"><p class="events-kicker">YOUR WORLD. A LITTLE CLOSER.</p><h3>Great moments.<br><em>Right around you.</em></h3><p>Find your next meetup, screening or fan gathering.<br>Start within 5 km. See where it takes you.</p><span class="events-nearby__privacy"><x-site-icon name="compass" /> Only shared when you choose. Never saved.</span></div>
     <div class="events-nearby__actions">
         <button class="events-button" type="button" data-nearby-start>Show Nearby Events <x-site-icon name="compass" /></button>
         <label hidden data-nearby-radius-label>Search radius<select data-nearby-radius>@foreach(config('events.nearby_radii') as $radius)<option value="{{ $radius }}">{{ $radius }} km</option>@endforeach</select></label>
         <button class="events-button events-button--outline" type="button" data-nearby-reset hidden>Show all events</button>
     </div>
-    <p class="events-nearby__status" role="status" aria-live="polite" data-nearby-status>Your location is used only for this search.</p>
+    <p class="events-nearby__status" role="status" aria-live="polite" data-nearby-status><span>Ready to explore? Start with your location.</span></p>
 </div>

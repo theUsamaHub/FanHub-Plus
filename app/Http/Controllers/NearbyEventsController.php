@@ -21,7 +21,7 @@ class NearbyEventsController extends Controller
             'radius' => ['sometimes', 'integer', Rule::in(config('events.nearby_radii'))],
             'page' => 'nullable|integer|min:1',
         ]);
-        $query = Event::published()->with(['category', 'coverMedia'])
+        $query = Event::forUser(auth()->user())->published()->with(['category', 'coverMedia'])
             ->whereRaw('COALESCE(end_at, start_at) >= ?', [now()]);
         if (isset($filters['latitude'], $filters['longitude'])) {
             $query->withinRadius((float) $filters['latitude'], (float) $filters['longitude'], (int) ($filters['radius'] ?? 5))

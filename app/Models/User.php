@@ -43,6 +43,19 @@ class User extends Authenticatable implements \Illuminate\Contracts\Auth\MustVer
         return $this->belongsToMany(Category::class, 'user_favorite_categories')->withPivot('created_at');
     }
 
+    public function hasCompletedOnboarding(): bool
+    {
+        return $this->profile?->onboarding_completed_at !== null;
+    }
+
+    public function favoriteCategoryIds(): array
+    {
+        // Request-local relation caching avoids stale session preferences.
+        $this->loadMissing('favoriteCategories');
+
+        return $this->favoriteCategories->modelKeys();
+    }
+
     public function bookmarks(): HasMany
     {
         return $this->hasMany(Bookmark::class);

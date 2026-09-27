@@ -28,7 +28,7 @@ class PublicSiteController extends Controller
             'featured' => ['nullable', 'boolean'],
             'type' => ['nullable', 'in:article,video,audio,image'],
         ]);
-        $query = Content::visibleToPublic()->with(['category', 'media', 'tags']);
+        $query = Content::forUser(auth()->user())->visibleToPublic()->with(['category', 'media', 'tags']);
 
         if ($term = trim($filters['q'] ?? '')) {
             // Bind a literal search term (including SQL wildcard characters).
@@ -63,10 +63,10 @@ class PublicSiteController extends Controller
 
     public function content(Content $content): View
     {
-        abort_unless(Content::visibleToPublic()->whereKey($content->id)->exists(), 404);
+        abort_unless(Content::forUser(auth()->user())->visibleToPublic()->whereKey($content->id)->exists(), 404);
         $content->load(['category', 'submittedBy', 'media', 'tags']);
         app(\App\Services\MemberLibrary::class)->viewed($content);
-        $related = Content::visibleToPublic()->with(['category', 'media', 'tags'])
+        $related = Content::forUser(auth()->user())->visibleToPublic()->with(['category', 'media', 'tags'])
             ->where('category_id', $content->category_id)->whereKeyNot($content->id)
             ->orderByDesc('published_at')->orderByDesc('id')->limit(3)->get();
         // Characters linked ONLY through the character_contents junction —
@@ -101,7 +101,7 @@ class PublicSiteController extends Controller
         app(\App\Services\MemberLibrary::class)->viewed($merchandise);
 
         // Prefer related merchandise within the same Content, then fall back to category-level.
-        $related = MerchandiseItem::with(['category', 'imageMedia', 'content', 'character'])
+        $related = MerchandiseItem::forUser(auth()->user())->with(['category', 'imageMedia', 'content', 'character'])
             ->where(function ($q) use ($merchandise) {
                 if ($merchandise->content_id) {
                     $q->where('content_id', $merchandise->content_id);
@@ -131,7 +131,7 @@ class PublicSiteController extends Controller
         if ($section === 'merchandise') {
             $filter = $request->query('category', 'all');
             abort_unless(is_string($filter) && in_array($filter, ['all', ...array_keys(config('fandoms'))], true), 404);
-            $items = MerchandiseItem::with(['category', 'imageMedia'])
+            $items = MerchandiseItem::forUser(auth()->user())->with(['category', 'imageMedia'])
                 ->when($filter !== 'all', fn ($query) => $query->whereHas('category', fn ($query) => $query->where('slug', $filter)))
                 ->orderByDesc('view_count')->orderByDesc('id')->paginate(12)->withQueryString();
 

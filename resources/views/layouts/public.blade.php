@@ -94,6 +94,7 @@
     <x-navbar />
     <main id="main-content" tabindex="-1" class="fh-main @yield('main-class')">@yield('content')</main>
     <x-footer />
+    @if(session('onboarding-success'))<div class="onboarding-toast" role="status">{{ session('onboarding-success') }}</div>@endif
     @include('partials.chatbot')
     @include('partials.merchandise-feedback')
     @stack('scripts')

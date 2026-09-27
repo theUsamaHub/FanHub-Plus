@@ -23,6 +23,7 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 
 // Dashboard - redirect based on role
 Route::get('/dashboard', function () {
+    session()->keep('onboarding-success');
     $user = auth()->user();
 
     if ($user->hasRole('admin')) {

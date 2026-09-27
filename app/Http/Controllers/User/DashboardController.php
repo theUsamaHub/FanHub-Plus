@@ -16,10 +16,9 @@ class DashboardController extends Controller
             ->where('auditable_type', Content::class)->latest('id')->limit(100)->pluck('auditable_id')->unique()->take(4);
         $continue = Content::visibleToPublic()->with(['category', 'media'])->whereIn('id', $history)->get()
             ->sortBy(fn ($item) => $history->search($item->id))->values();
-        $recommendations = Content::visibleToPublic()->with(['category', 'media'])
-            ->when($favorites->isNotEmpty(), fn ($q) => $q->whereIn('category_id', $favorites->modelKeys()))
+        $recommendations = Content::forUser($user)->visibleToPublic()->with(['category', 'media'])
             ->whereNotIn('id', $continue->modelKeys())->orderByDesc('popularity_score')->latest('published_at')->limit(4)->get();
-        $releases = Content::visibleToPublic()->upcoming()->with(['category', 'media'])->orderByRaw('release_date IS NULL')->orderBy('release_date')->limit(3)->get();
+        $releases = Content::forUser($user)->visibleToPublic()->upcoming()->with(['category', 'media'])->orderByRaw('release_date IS NULL')->orderBy('release_date')->limit(3)->get();
         $activity = ActivityLog::where('user_id', $user->id)->where('event', 'like', 'member.%')->latest('id')->limit(4)->get();
         $bookmarks = $user->bookmarks()->with('bookmarkable')->latest()->limit(4)->get();
         $stats = ['bookmarks' => $user->bookmarks()->count(), 'favorites' => $favorites->count(),

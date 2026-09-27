@@ -27,11 +27,11 @@ class EventController extends Controller
             'radius' => ['sometimes', 'integer', Rule::in(config('events.nearby_radii'))],
         ] : []));
         $hasFilters = $nearby || collect($filters)->except('page')->contains(fn ($value) => filled($value));
-        $featured = $hasFilters ? collect() : Event::published()->where('is_featured', true)
+        $featured = $hasFilters ? collect() : Event::forUser(auth()->user())->published()->where('is_featured', true)
             ->where('start_at', '>=', now())->with(['category', 'coverMedia'])
             ->orderByDesc('popularity_score')->orderBy('start_at')->orderBy('id')
             ->limit(config('events.featured_limit'))->get();
-        $query = Event::published()->with(['category', 'coverMedia']);
+        $query = Event::forUser(auth()->user())->published()->with(['category', 'coverMedia']);
         if ($nearby) {
             $query->withinRadius((float) $filters['latitude'], (float) $filters['longitude'], (int) ($filters['radius'] ?? 5));
             if (empty($filters['sort'])) $query->orderBy('distance_km');
@@ -81,7 +81,7 @@ class EventController extends Controller
     {
         abort_unless($event->status === 'published', 404);
         $event->load(['category', 'coverMedia', 'galleryMedia', 'content']);
-        $related = Event::published()->with(['category', 'coverMedia'])->whereKeyNot($event->id)
+        $related = Event::forUser(auth()->user())->published()->with(['category', 'coverMedia'])->whereKeyNot($event->id)
             ->where('category_id', $event->category_id)->where('start_at', '>=', now())
             ->orderBy('start_at')->limit(3)->get();
 

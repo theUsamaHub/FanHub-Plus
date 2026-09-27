@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 
 class MerchandiseItem extends Model
 {
-    use LogsActivity;
+    use LogsActivity, \App\Traits\PrioritizesFavorites;
 
     protected $fillable = [
         'category_id',

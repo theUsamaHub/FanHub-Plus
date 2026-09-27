@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 
 class Event extends Model
 {
-    use LogsActivity;
+    use LogsActivity, \App\Traits\PrioritizesFavorites;
 
     protected $fillable = [
         'category_id',
