@@ -21,8 +21,6 @@ class UserProfileSeeder extends Seeder
                     'avatar_media_id' => $avatarMedia?->id,
                     'display_name' => $user->name,
                     'bio' => "Passionate fan and community member #" . ($index + 1),
-                    'theme_preference' => ($index % 2 === 0) ? 'dark' : 'light',
-                    'font_size_preference' => 'medium',
                     'onboarding_completed_at' => now(),
                 ]
             );
