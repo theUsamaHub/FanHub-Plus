@@ -90,8 +90,6 @@ class ProfileController extends Controller
                     $request->safe()->only([
                         'display_name',
                         'bio',
-                        'theme_preference',
-                        'font_size_preference',
                     ]),
                     [
                         'avatar_media_id' => $request->hasFile('avatar') || $request->boolean('remove_avatar')

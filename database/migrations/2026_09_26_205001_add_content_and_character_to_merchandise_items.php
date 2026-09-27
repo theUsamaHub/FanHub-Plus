@@ -22,8 +22,8 @@ return new class extends Migration
     {
         if (! Schema::hasColumn('merchandise_items', 'content_id')) {
             Schema::table('merchandise_items', function (Blueprint $table) {
-                $table->foreignId('content_id')->nullable()->after('category_id')
-                    ->constrained('contents')->nullOnDelete();
+                $table->foreignId('content_id')->after('category_id')
+                    ->constrained('contents')->restrictOnDelete();
                 $table->foreignId('character_id')->nullable()->after('content_id')
                     ->constrained('character_profiles')->nullOnDelete();
                 $table->index(['content_id'], 'idx_merch_content');

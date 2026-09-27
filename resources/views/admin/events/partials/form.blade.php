@@ -75,6 +75,12 @@
                             <x-text-input id="address" name="address" type="text" class="form-control" :value="old('address', $event?->address)" />
                             <x-input-error :messages="$errors->get('address')" class="mt-1" />
                         </div>
+                        <div class="col-md-8 mb-3">
+                            <x-input-label for="google_maps_location" :value="__('Google Maps Location Link')" />
+                            <x-text-input id="google_maps_location" name="google_maps_location" type="url" class="form-control" :value="old('google_maps_location', $event?->google_maps_location)" placeholder="https://maps.google.com/..." />
+                            <small class="text-muted">{{ __('Paste a Google Maps link for this event location. Used for "events nearby" feature.') }}</small>
+                            <x-input-error :messages="$errors->get('google_maps_location')" class="mt-1" />
+                        </div>
                         <div class="col-md-6 mb-0">
                             <x-input-label for="latitude" :value="__('Latitude')" />
                             <x-text-input id="latitude" name="latitude" type="number" step="0.00000001" min="-90" max="90" class="form-control" :value="old('latitude', $event?->latitude)" />

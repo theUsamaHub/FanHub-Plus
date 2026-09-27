@@ -32,13 +32,12 @@ class ProfileUpdateRequest extends FormRequest
         $rules += [
             'display_name' => ['nullable', 'string', 'max:100'],
             'bio' => ['nullable', 'string', 'max:2000'],
+            'google_maps_location' => ['nullable', 'url:http,https', 'max:500'],
             'remove_avatar' => ['nullable', 'boolean'],
             'avatar_media_id' => ['nullable', 'integer', Rule::exists('media', 'id')->where('uploaded_by', $this->user()->id)->where('media_type', 'image')],
             'favorites_present' => ['nullable', 'boolean'],
             'favorites' => ['nullable', 'array', 'max:100'],
             'favorites.*' => ['integer', 'distinct', Rule::exists('categories', 'id')->whereNull('deleted_at')],
-            'theme_preference' => ['nullable', Rule::in(['light', 'dark', 'system'])],
-            'font_size_preference' => ['nullable', Rule::in(['small', 'medium', 'large'])],
         ];
 
         return $rules;

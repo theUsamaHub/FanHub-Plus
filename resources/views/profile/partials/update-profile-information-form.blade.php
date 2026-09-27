@@ -78,41 +78,6 @@
                 <x-input-error class="mt-1" :messages="$errors->get('bio')" />
             </div>
 
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <x-input-label for="avatar" :value="__('Avatar image')" />
-                    <input type="file" class="form-control" name="avatar" id="avatar" accept="image/jpeg,image/png,image/gif,image/webp">
-                    <small class="text-muted">{{ __('Or choose from library below. Max 2MB.') }}</small>
-                    <x-input-error class="mt-1" :messages="$errors->get('avatar')" />
-                </div>
-                <div class="col-md-6 mb-3">
-                    <x-input-label for="avatar_media_id" :value="__('Avatar from library')" />
-                    <select name="avatar_media_id" id="avatar_media_id" class="form-select">
-                        <option value="">{{ __('None') }}</option>
-                        @foreach ($images as $image)
-                            <option value="{{ $image->id }}" @selected((int) old('avatar_media_id', $user->profile?->avatar_media_id) === $image->id)>{{ $image->original_filename }}</option>
-                        @endforeach
-                    </select>
-                    <x-input-error class="mt-1" :messages="$errors->get('avatar_media_id')" />
-                </div>
-                <div class="col-md-6 mb-3">
-                    <x-input-label for="theme_preference" :value="__('Theme')" />
-                    <select name="theme_preference" id="theme_preference" class="form-select">
-                        @foreach (['system', 'light', 'dark'] as $theme)
-                            <option value="{{ $theme }}" @selected(old('theme_preference', $user->profile?->theme_preference ?? 'system') === $theme)>{{ ucfirst($theme) }}</option>
-                        @endforeach
-                    </select>
-                    <x-input-error class="mt-1" :messages="$errors->get('theme_preference')" />
-                </div>
-                <div class="col-md-6 mb-3">
-                    <x-input-label for="font_size_preference" :value="__('Font size')" />
-                    <select name="font_size_preference" id="font_size_preference" class="form-select">
-                        @foreach (['small', 'medium', 'large'] as $size)
-                            <option value="{{ $size }}" @selected(old('font_size_preference', $user->profile?->font_size_preference ?? 'medium') === $size)>{{ ucfirst($size) }}</option>
-                        @endforeach
-                    </select>
-                    <x-input-error class="mt-1" :messages="$errors->get('font_size_preference')" />
-                </div>
             </div>
         @endif
 
