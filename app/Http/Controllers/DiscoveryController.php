@@ -11,7 +11,7 @@ class DiscoveryController extends Controller
     public function characters(Request $request)
     {
         $filters = $request->validate(['q' => 'nullable|string|max:120', 'category' => 'nullable|string|max:100', 'sort' => 'nullable|in:latest,alphabetical']);
-        $query = CharacterProfile::with(['category', 'imageMedia']);
+        $query = CharacterProfile::forUser(auth()->user())->with(['category', 'imageMedia']);
         if ($q = trim($filters['q'] ?? '')) {
             $term = '%'.str_replace(['!', '%', '_'], ['!!', '!%', '!_'], mb_strtolower($q)).'%';
             $query->where(fn ($query) => $query->whereRaw("LOWER(name) LIKE ? ESCAPE '!'", [$term])->orWhereRaw("LOWER(bio) LIKE ? ESCAPE '!'", [$term]));
@@ -28,7 +28,7 @@ class DiscoveryController extends Controller
         $filters = $request->validate(['q' => 'nullable|string|max:120', 'category' => 'nullable|string|max:100',
             'type' => 'nullable|in:image,video,audio', 'sort' => 'nullable|in:latest,popular,alphabetical',
             'tag' => ['nullable', 'integer', Rule::exists('tags', 'id')], 'year' => 'nullable|integer|between:1900,2200']);
-        $query = Content::visibleToPublic()->whereIn('type', ['image', 'video', 'audio'])->with(['category', 'media']);
+        $query = Content::forUser(auth()->user())->visibleToPublic()->whereIn('type', ['image', 'video', 'audio'])->with(['category', 'media']);
         if ($q = trim($filters['q'] ?? '')) {
             $term = '%'.str_replace(['!', '%', '_'], ['!!', '!%', '!_'], mb_strtolower($q)).'%';
             $query->where(fn ($query) => $query->whereRaw("LOWER(title) LIKE ? ESCAPE '!'", [$term])->orWhereRaw("LOWER(excerpt) LIKE ? ESCAPE '!'", [$term]));

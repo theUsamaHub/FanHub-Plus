@@ -28,6 +28,11 @@ class UserProfile extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function getFavoriteCategoriesCountAttribute(): int
+    {
+        return $this->user?->favoriteCategories()->count() ?? 0;
+    }
+
     public function avatarMedia(): BelongsTo
     {
         return $this->belongsTo(Media::class, 'avatar_media_id');

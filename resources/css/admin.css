@@ -186,6 +186,83 @@ body.fh-admin {
     --bs-table-hover-color: var(--fh-adm-text);
 }
 
+/* Admin Message Content - theme aware */
+.admin-message-content {
+    background: var(--fh-adm-panel-2);
+    border: 1px solid var(--fh-adm-line-soft);
+    border-radius: var(--fh-adm-radius-sm);
+    color: var(--fh-adm-text);
+    line-height: 1.7;
+    font-size: 0.95rem;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+[data-theme='light'] body.fh-admin .admin-message-content {
+    background: #fafafa;
+    border-color: var(--fh-adm-line);
+    box-shadow: inset 0 2px 8px rgba(40, 24, 80, 0.06);
+}
+
+/* Admin Feedback Type Badge */
+.badge.text-bg-danger,
+.badge.text-bg-success,
+.badge.text-bg-info {
+    font-weight: 500;
+    letter-spacing: 0.02em;
+}
+
+[data-theme='light'] body.fh-admin .badge.text-bg-danger {
+    background: linear-gradient(135deg, #dc3545, #e4606d) !important;
+}
+
+[data-theme='light'] body.fh-admin .badge.text-bg-success {
+    background: linear-gradient(135deg, #198754, #2db76f) !important;
+}
+
+[data-theme='light'] body.fh-admin .badge.text-bg-info {
+    background: linear-gradient(135deg, #0dcaf0, #5fdbf4) !important;
+}
+
+[data-theme='light'] body.fh-admin .badge.text-bg-warning {
+    background: linear-gradient(135deg, #ffc107, #ffd14f) !important;
+    color: #1a1730 !important;
+}
+
+[data-theme='light'] body.fh-admin .badge.text-bg-secondary {
+    background: linear-gradient(135deg, #6c757d, #8a9299) !important;
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-filter {
+    background: linear-gradient(165deg, #ffffff, #faf8ff);
+    box-shadow: 0 8px 22px rgba(40, 24, 80, 0.08);
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-filter .card-header {
+    background: rgba(244, 242, 252, 0.8);
+    border-bottom: 1px solid var(--fh-adm-line-soft);
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-danger-card {
+    border-color: #ffccd5 !important;
+    background: linear-gradient(165deg, #fff8f9, #fff0f2);
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-danger-card .card-header {
+    background: rgba(255, 240, 242, 0.8);
+    border-bottom: 1px solid #ffccd5;
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-form-card {
+    background: linear-gradient(165deg, #ffffff, #faf8ff);
+    box-shadow: 0 8px 22px rgba(40, 24, 80, 0.08);
+}
+
+[data-theme='light'] body.fh-admin .fh-adm-form-card .card-header {
+    background: rgba(244, 242, 252, 0.8);
+    border-bottom: 1px solid var(--fh-adm-line-soft);
+}
+
 [data-theme='light'] body.fh-admin .fh-adm-palette-overlay {
     background: rgba(28, 22, 51, 0.35);
 }

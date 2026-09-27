@@ -124,16 +124,24 @@ class PublicEventsTest extends TestCase
         $admin->roles()->attach(Role::create(['name' => 'Admin', 'slug' => 'admin']));
         $image = Media::create(['disk' => 'public', 'path' => 'gallery.jpg', 'original_filename' => 'gallery.jpg', 'media_type' => 'image', 'mime_type' => 'image/jpeg', 'size_bytes' => 100]);
         $data = ['title' => 'Editorial pick', 'city' => 'Lahore', 'start_at' => '2026-10-01 12:00', 'status' => 'published', 'is_featured' => 1, 'event_type' => 'meetup', 'popularity_score' => 95, 'gallery_present' => 1, 'gallery_media_ids' => [$image->id]];
+        $data['category_id'] = Category::create(['name' => 'Anime', 'slug' => 'anime'])->id;
+        $data['latitude'] = 24.86;
+        $data['longitude'] = 67.01;
+        $data['google_maps_location'] = 'https://maps.google.com/?q=venue';
         $this->actingAs($admin)->post(route('admin.events.store'), $data)->assertRedirect(route('admin.events.index'));
         $event = Event::first();
+        $this->assertSame($data['google_maps_location'], $event->map_url);
+        $this->assertEquals(24.86, $event->latitude);
         $this->assertTrue($event->is_featured);
         $this->assertCount(1, $event->galleryMedia);
         $this->get(route('admin.events.create'))->assertOk()->assertSee('Featured event');
         $this->get(route('admin.events.edit', $event))->assertOk()->assertSee('Featured event')->assertSee('gallery.jpg');
         unset($data['gallery_media_ids']);
         $data['is_featured'] = 0;
+        $data['google_maps_location'] = 'https://maps.google.com/?q=updated';
         $this->put(route('admin.events.update', $event), $data)->assertRedirect();
         $this->assertCount(0, $event->fresh()->galleryMedia);
         $this->assertFalse($event->fresh()->is_featured);
+        $this->assertSame($data['google_maps_location'], $event->fresh()->map_url);
     }
 }

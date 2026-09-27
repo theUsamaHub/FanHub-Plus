@@ -13,4 +13,5 @@ import './modules/card-reveal';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import '../css/member.css';
 import './modules/member';
+import './modules/onboarding';
 import '../css/pages/explore-premium.css';

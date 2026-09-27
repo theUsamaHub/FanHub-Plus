@@ -4,8 +4,10 @@
         <div class="event-card__body">
             <p class="event-card__category">{{ $event->category?->name ?? 'All fandoms' }}@if($event->type_label)<span> / {{ $event->type_label }}</span>@endif</p>
             <h3>{{ $event->title }}</h3>
+            @if($event->distance_km !== null)<p class="event-card__distance">{{ number_format($event->distance_km, 1) }} km away</p>@endif
             <p class="event-card__location">{{ $event->city }}<span aria-hidden="true"> · </span><time datetime="{{ $event->start_at->toIso8601String() }}">{{ $event->start_at->format('M j, Y') }}</time></p>
             <span class="event-card__view">View Event <x-site-icon name="arrow" /></span>
         </div>
     </a>
+    @if($event->map_url)<a class="event-card__map" href="{{ $event->map_url }}" target="_blank" rel="noopener noreferrer">View on Map <span class="visually-hidden">for {{ $event->title }}</span></a>@endif
 </article>

@@ -36,6 +36,10 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('onboarding', [\App\Http\Controllers\Auth\OnboardingController::class, 'create'])
+        ->name('onboarding.create');
+    Route::post('onboarding', [\App\Http\Controllers\Auth\OnboardingController::class, 'store'])
+        ->middleware('throttle:10,1')->name('onboarding.store');
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
 

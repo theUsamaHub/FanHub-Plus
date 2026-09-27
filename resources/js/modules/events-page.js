@@ -3,11 +3,22 @@ import 'lenis/dist/lenis.css';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
+import { initNearbyEvents } from './nearby-events';
 
 gsap.registerPlugin(ScrollTrigger);
 const page = document.querySelector('[data-events-page], [data-event-detail]');
 
 if (page) {
+    initNearbyEvents(page, () => {
+        const stories = page.querySelector('[data-featured-events]');
+        if (stories) ScrollTrigger.getAll().forEach((trigger) => {
+            if (stories.contains(trigger.trigger)) {
+                if (stories.hidden) trigger.disable();
+                else trigger.enable();
+            }
+        });
+        ScrollTrigger.refresh();
+    });
     // A single form moves into a native modal drawer on mobile, with focus trapping,
     // Escape support and an inline no-JavaScript fallback.
     const panel = page.querySelector('[data-event-filter-panel]');

@@ -1,6 +1,12 @@
 @props(['name'])
 <svg {{ $attributes->class('fh-icon') }} viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
     @switch($name)
+        @case('mail') <rect x="3" y="6" width="26" height="20" rx="3"/><path d="m4 8 12 10L28 8"/> @break
+        @case('map-pin') <path d="M26 13c0 8-10 17-10 17S6 21 6 13a10 10 0 0 1 20 0Z"/><circle cx="16" cy="13" r="3.5"/> @break
+        @case('shield') <path d="m16 3 11 4v9c0 7-11 13-11 13S5 23 5 16V7L16 3Z"/><path d="m11 16 3 3 7-7"/> @break
+        @case('arrow-right') <path d="M3 16h25m-8-8 8 8-8 8"/> @break
+        @case('x') <path fill="currentColor" stroke="none" transform="translate(4 4)" d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.64 7.584H.47l8.6-9.835L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/> @break
+        @case('discord') <path fill="currentColor" stroke="none" transform="translate(4 4)" d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25A19.736 19.736 0 0 0 3.675 4.37C.533 9.046-.32 13.58.099 18.057a19.9 19.9 0 0 0 5.994 3.03c.483-.66.914-1.36 1.285-2.096a12.8 12.8 0 0 1-2.024-.983l.496-.389c3.9 1.814 8.13 1.814 11.985 0l.496.389a12.8 12.8 0 0 1-2.024.983c.371.736.802 1.436 1.285 2.096a19.9 19.9 0 0 0 5.994-3.03c.5-5.18-.854-9.674-3.269-13.687ZM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419s.974-2.418 2.157-2.418 2.157 1.084 2.157 2.418- .974 2.419-2.157 2.419Zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419s.974-2.418 2.157-2.418 2.146 1.084 2.146 2.418-.963 2.419-2.146 2.419Z"/> @break
         @case('heart') <path d="M16 28 4 16C-3 8 8-1 16 8 24-1 35 8 28 16Z"/> @break
         @case('people') <circle cx="16" cy="9" r="5"/><circle cx="5" cy="12" r="3"/><circle cx="27" cy="12" r="3"/><path d="M8 28v-6a8 8 0 0 1 16 0v6ZM2 25v-6m28 6v-6"/> @break
         @case('chat') <path d="M28 15a12 12 0 0 1-17 11L3 29l3-8A12 12 0 1 1 28 15Z"/><path d="M10 15h.1m6 0h.1m6 0h.1" stroke-width="3"/> @break

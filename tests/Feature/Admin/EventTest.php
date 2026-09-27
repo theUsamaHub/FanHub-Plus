@@ -97,6 +97,7 @@ class EventTest extends TestCase
 
         $this->actingAs($this->admin)->put(route('admin.events.update', $event), [
             'title' => 'Updated',
+            'category_id' => $this->category->id,
             'city' => 'Berlin',
             'start_at' => '2026-12-01 10:00:00',
             'status' => 'cancelled',

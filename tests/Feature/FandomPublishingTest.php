@@ -14,6 +14,23 @@ class FandomPublishingTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_fandom_landings_render_published_stories_and_keep_search_scoped(): void
+    {
+        foreach (['anime', 'k-pop', 'gaming'] as $slug) {
+            $category = Category::create(['name' => config("fandoms.$slug.name"), 'slug' => $slug]);
+            Content::create(['title' => "Featured $slug story", 'category_id' => $category->id, 'status' => 'published', 'is_featured' => true]);
+            Content::create(['title' => "Private $slug story", 'category_id' => $category->id, 'status' => 'draft']);
+            Content::create(['title' => "Future $slug story", 'category_id' => $category->id, 'status' => 'published', 'published_at' => now()->addDay()]);
+
+            $this->get(route('public.fandom', $slug))->assertOk()
+                ->assertSee("Featured $slug story")->assertDontSee("Private $slug story")
+                ->assertDontSee("Future $slug story")->assertSee('discovery--'.$slug);
+            $this->get(route('public.fandom', ['category' => $slug, 'q' => 'unmatched']))->assertOk()
+                ->assertViewHas('contents', fn ($contents) => $contents->isEmpty())
+                ->assertSee('Clear filters');
+        }
+    }
+
     public function test_admin_local_publishing_time_is_visible_in_every_fandom_and_future_content_stays_scheduled(): void
     {
         config(['publishing.timezone' => 'Asia/Karachi', 'app.timezone' => 'UTC']);

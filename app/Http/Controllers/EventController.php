@@ -10,7 +10,7 @@ use Illuminate\View\View;
 
 class EventController extends Controller
 {
-    public function index(Request $request): View
+    public function index(Request $request, bool $nearby = false)
     {
         $filters = $request->validate([
             'q' => ['nullable', 'string', 'max:120'],
@@ -21,13 +21,17 @@ class EventController extends Controller
             'when' => ['nullable', Rule::in(['all', 'upcoming', 'past'])],
             'sort' => ['nullable', Rule::in(['soonest', 'popular', 'latest'])],
             'page' => ['nullable', 'integer', 'min:1'],
-        ]);
-        $hasFilters = collect($filters)->except('page')->contains(fn ($value) => filled($value));
-        $featured = $hasFilters ? collect() : Event::published()->where('is_featured', true)
+        ] + ($nearby ? [
+            'latitude' => ['required', 'numeric', 'between:-90,90'],
+            'longitude' => ['required', 'numeric', 'between:-180,180'],
+            'radius' => ['sometimes', 'integer', Rule::in(config('events.nearby_radii'))],
+        ] : []));
+        $hasFilters = $nearby || collect($filters)->except('page')->contains(fn ($value) => filled($value));
+        $featured = $hasFilters ? collect() : Event::forUser(auth()->user())->published()->where('is_featured', true)
             ->where('start_at', '>=', now())->with(['category', 'coverMedia'])
             ->orderByDesc('popularity_score')->orderBy('start_at')->orderBy('id')
             ->limit(config('events.featured_limit'))->get();
-        $query = Event::published()->with(['category', 'coverMedia']);
+        $query = Event::forUser(auth()->user())->published()->with(['category', 'coverMedia']);
         // Unfiltered browsing avoids repeating the selected stories in the grid.
         // A search/filter includes every matching event, including featured ones.
         if ($featured->isNotEmpty()) $query->whereNotIn('id', $featured->modelKeys());
@@ -47,12 +51,43 @@ class EventController extends Controller
         }
         if (($filters['when'] ?? '') === 'upcoming') $query->where('start_at', '>=', now());
         if (($filters['when'] ?? '') === 'past') $query->whereRaw('COALESCE(end_at, start_at) < ?', [now()]);
-        match ($filters['sort'] ?? 'soonest') {
-            'popular' => $query->orderByDesc('popularity_score')->orderByDesc('view_count'),
-            'latest' => $query->orderByDesc('created_at'),
-            default => $query->orderByRaw('CASE WHEN COALESCE(end_at, start_at) >= ? THEN 0 ELSE 1 END', [now()]),
-        };
-        $events = $query->orderBy('start_at')->orderBy('id')->paginate(config('events.per_page'))->withQueryString()->fragment('explore-events');
+        $nearbyCandidates = $nearby ? clone $query : null;
+        if ($nearby) {
+            $query->withinRadius((float) $filters['latitude'], (float) $filters['longitude'], (int) ($filters['radius'] ?? 5));
+            if (empty($filters['sort'])) $query->orderBy('distance_km');
+            // Preserve explicit sorting; otherwise prefer geographic distance.
+            $sort = $filters['sort'] ?? null;
+            match ($sort) {
+                'popular' => $query->orderByDesc('popularity_score')->orderByDesc('view_count'),
+                'latest' => $query->orderByDesc('created_at'),
+                'soonest' => $query->orderByRaw('CASE WHEN COALESCE(end_at, start_at) >= ? THEN 0 ELSE 1 END', [now()]),
+                default => null,
+            };
+            $query->orderBy('start_at')->orderBy('id'); // Secondary sort for tie-breaking
+        } else {
+            match ($filters['sort'] ?? 'soonest') {
+                'popular' => $query->orderByDesc('popularity_score')->orderByDesc('view_count'),
+                'latest' => $query->orderByDesc('created_at'),
+                default => $query->orderByRaw('CASE WHEN COALESCE(end_at, start_at) >= ? THEN 0 ELSE 1 END', [now()]),
+            };
+            $query->orderBy('start_at')->orderBy('id');
+        }
+        $events = $query->paginate(config('events.per_page'))->withQueryString()->fragment('explore-events');
+
+        if ($nearby) {
+            // Diagnose an empty radius without broadening the actual results.
+            // 20,016 km covers the largest possible great-circle distance.
+            $nearestDistance = $events->total() === 0
+                ? $nearbyCandidates->withoutEagerLoads()->reorder()
+                    ->withinRadius((float) $filters['latitude'], (float) $filters['longitude'], 20016)
+                    ->orderBy('distance_km')->first()?->distance_km
+                : null;
+            return response()->json([
+                'html' => view('events.partials.results', compact('events', 'hasFilters'))->render(),
+                'total' => $events->total(),
+                'nearest_distance_km' => $nearestDistance === null ? null : round((float) $nearestDistance, 1),
+            ])->header('Cache-Control', 'no-store, private');
+        }
 
         return view('events.index', [
             'events' => $events, 'featured' => $events->currentPage() === 1 ? $featured : collect(),
@@ -66,7 +101,7 @@ class EventController extends Controller
     {
         abort_unless($event->status === 'published', 404);
         $event->load(['category', 'coverMedia', 'galleryMedia', 'content']);
-        $related = Event::published()->with(['category', 'coverMedia'])->whereKeyNot($event->id)
+        $related = Event::forUser(auth()->user())->published()->with(['category', 'coverMedia'])->whereKeyNot($event->id)
             ->where('category_id', $event->category_id)->where('start_at', '>=', now())
             ->orderBy('start_at')->limit(3)->get();
 
