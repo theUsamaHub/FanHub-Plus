@@ -52,7 +52,7 @@ class InteractionController extends Controller
         $request->user()->ratings()->updateOrCreate(['rateable_type' => $target->getMorphClass(), 'rateable_id' => $target->id],
             ['rating_type' => 'star', 'stars' => $data['stars'], 'is_thumbs_up' => null]);
         $library->activity('rated', $target);
-        return back()->with('success', 'Your rating has been saved.');
+        return back()->withFragment('community')->with('success', 'Your rating has been saved.');
     }
 
     public function review(Request $request, string $type, int $id, MemberLibrary $library)
@@ -62,7 +62,7 @@ class InteractionController extends Controller
         $request->user()->reviews()->updateOrCreate(['reviewable_type' => $target->getMorphClass(), 'reviewable_id' => $target->id],
             [...$data, 'status' => 'pending']);
         $library->activity('reviewed', $target);
-        return back()->with('success', 'Review submitted. It will appear after moderator approval.');
+        return back()->withFragment('community')->with('success', 'Review submitted. It will appear after moderator approval.');
     }
 
     public function removeReview(Request $request, Review $review)
