@@ -138,7 +138,8 @@
                         </div>
                         <div class="card-footer bg-transparent p-1 text-center">
                             @if ($item->url)
-                            <a href="{{ $item->url }}" class="btn btn-outline-info btn-sm" style="font-size: 0.7rem;" target="_blank" rel="noopener"><i class="bi bi-eye"></i></a>
+                                <a href="{{ $item->isAudio() ? route('admin.media.edit', $item) : $item->url }}" class="btn btn-outline-info btn-sm" style="font-size: 0.7rem;" @if (! $item->isAudio()) target="_blank" rel="noopener" @endif title="{{ $item->isAudio() ? __('Listen') : __('View') }}"><i class="bi {{ $item->isAudio() ? 'bi-play-circle' : 'bi-eye' }}"></i></a>
+                                <a href="{{ route('admin.media.download', $item) }}" class="btn btn-outline-success btn-sm" style="font-size: 0.7rem;" title="{{ __('Download') }}"><i class="bi bi-download"></i></a>
                             @endif
                             <a href="{{ route('admin.media.edit', $item) }}" class="btn btn-outline-primary btn-sm" style="font-size: 0.7rem;" title="{{ __('Edit') }}"><i class="bi bi-pencil"></i></a>
                             <form action="{{ route('admin.media.destroy', $item) }}" method="POST" class="d-inline" data-confirm="{{ __('Delete this file?') }}">

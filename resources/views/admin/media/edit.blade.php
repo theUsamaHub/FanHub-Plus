@@ -14,15 +14,30 @@
         <div class="col-lg-8">
             <div class="card fh-adm-form-card">
                 <div class="card-body p-4">
-                    <div class="mb-4 text-center">
+                    <div class="mb-4 text-center fh-adm-media-preview">
                         @if ($media->isImage() && $media->url)
                             <img src="{{ $media->url }}" alt="{{ $media->alt_text ?: $media->original_filename }}" class="img-thumbnail" style="max-height: 240px;">
                         @elseif ($media->isVideo() && $media->url)
-                            <video src="{{ $media->url }}" controls class="img-thumbnail" style="max-height: 240px;"></video>
+                            <video src="{{ $media->url }}" controls preload="metadata" class="img-thumbnail w-100" style="max-height: 360px;"></video>
                         @elseif ($media->isAudio() && $media->url)
-                            <audio src="{{ $media->url }}" controls class="w-100"></audio>
+                            <div class="fh-adm-audio-player p-4 rounded border">
+                                <i class="bi bi-music-note-beamed text-info fs-1 mb-2 d-block"></i>
+                                <p class="text-muted small mb-2 text-truncate" title="{{ $media->original_filename }}">{{ $media->original_filename }}</p>
+                                <audio src="{{ $media->url }}" controls preload="metadata" class="w-100"></audio>
+                            </div>
                         @else
                             <i class="bi bi-file-earmark fs-1 text-secondary"></i>
+                        @endif
+
+                        @if ($media->url)
+                            <div class="mt-3 d-flex justify-content-center gap-2 flex-wrap">
+                                <a href="{{ route('admin.media.download', $media) }}" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-download me-1"></i>{{ __('Download') }}
+                                </a>
+                                <a href="{{ $media->url }}" target="_blank" rel="noopener" class="btn btn-outline-secondary btn-sm">
+                                    <i class="bi bi-box-arrow-up-right me-1"></i>{{ __('Open in new tab') }}
+                                </a>
+                            </div>
                         @endif
                     </div>
 

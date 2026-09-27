@@ -7,7 +7,10 @@ use App\Models\Media;
 use App\Services\FileUploadService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class MediaController extends Controller
 {
@@ -287,5 +290,27 @@ class MediaController extends Controller
         $this->fileService->delete($media);
 
         return back()->with('success', 'File deleted successfully.');
+    }
+
+    /**
+     * Stream the original file to the admin's browser with a forced
+     * Content-Disposition: attachment header so the file downloads
+     * under its original filename (instead of playing inline).
+     */
+    public function download(Media $media): BinaryFileResponse|StreamedResponse
+    {
+        if (! $media->hasValidPath()) {
+            abort(404);
+        }
+
+        $disk = Storage::disk($media->disk);
+
+        if (! $disk->exists($media->path)) {
+            abort(404);
+        }
+
+        $filename = $media->original_filename ?: basename($media->path);
+
+        return $disk->download($media->path, $filename);
     }
 }
