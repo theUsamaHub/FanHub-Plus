@@ -81,7 +81,8 @@ class FileUploadService
         ?string $disk = null,
         ?int $uploadedBy = null,
         ?string $altText = null,
-        ?float $duration = null
+        ?float $duration = null,
+        ?int $categoryId = null
     ): Media {
         $disk = $disk ?? config('filesystems.media_disk', 'public');
         $path = $file->store($directory, $disk);
@@ -96,6 +97,7 @@ class FileUploadService
 
         $data = [
             'uploaded_by' => $uploadedBy ?? auth()->id(),
+            'category_id' => $categoryId,
             'path' => $path,
             'original_filename' => $file->getClientOriginalName(),
             'mime_type' => $mimeType,
@@ -146,13 +148,14 @@ class FileUploadService
     }
 
     /**
-     * Update media metadata (alt text, duration).
+     * Update media metadata (alt text, duration, category).
      */
     public function updateMetadata(Media $media, array $data): Media
     {
         $media->fill([
             'alt_text' => $data['alt_text'] ?? null,
             'duration' => $data['duration'] ?? null,
+            'category_id' => $data['category_id'] ?? null,
         ])->save();
 
         return $media->fresh();

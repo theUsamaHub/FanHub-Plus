@@ -168,7 +168,7 @@ class PublicSiteController extends Controller
 
     public function merchandise(MerchandiseItem $merchandise): View
     {
-        $merchandise->load(['category', 'imageMedia', 'content', 'character']);
+        $merchandise->load(['category', 'imageMedia', 'content' => fn ($query) => $query->visibleToPublic(), 'character']);
         app(\App\Services\MemberLibrary::class)->viewed($merchandise);
 
         // Prefer related merchandise within the same Content, then fall back to category-level.
@@ -180,7 +180,8 @@ class PublicSiteController extends Controller
                 $q->orWhere('category_id', $merchandise->category_id);
             })
             ->whereKeyNot($merchandise->id)
-            ->orderByDesc('view_count')->limit(4)->get();
+            ->when($merchandise->content_id, fn ($query) => $query->orderByRaw('CASE WHEN content_id = ? THEN 0 ELSE 1 END', [$merchandise->content_id]))
+            ->orderByDesc('view_count')->orderByDesc('id')->limit(4)->get();
         $savedMerchandise = $this->savedMerchandise();
 
         return view('public.merchandise', compact('merchandise', 'related', 'savedMerchandise'));
