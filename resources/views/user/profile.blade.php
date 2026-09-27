@@ -3,7 +3,14 @@
 <header class="member-page-heading"><p>MAKE YOURSELF AT HOME</p><h1>A space that feels like you.</h1><span>Your profile, favorite fandoms and reading preferences.</span></header>
 <div class="member-editor-layout"><div class="member-settings-stack">
 <form class="member-panel member-form" action="{{ route('profile.update') }}" method="post" enctype="multipart/form-data">@csrf @method('PATCH')
-<div class="member-profile-avatar"><img src="{{ $user->profile?->avatarMedia?->url ?: asset('images/fandoms/anime.png') }}" alt="Your avatar" data-image-fallback="{{ asset('images/fandoms/anime.png') }}"><div><h2>{{ $user->profile?->display_name ?: $user->name }}</h2><p class="member-muted">Member since {{ $user->created_at->format('M Y') }}</p></div></div>
+<div class="member-profile-avatar">
+    @if ($user->profile?->avatarMedia?->url)
+        <img src="{{ $user->profile->avatarMedia->url }}" alt="Your avatar" data-image-fallback="{{ asset('images/fandoms/anime.png') }}">
+    @else
+        <div class="member-avatar-fallback" style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--fh-accent), var(--fh-accent-600)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 2rem; font-family: 'Rajdhani', sans-serif; text-transform: uppercase;">{{ mb_substr($user->name, 0, 1) }}</div>
+    @endif
+    <div><h2>{{ $user->profile?->display_name ?: $user->name }}</h2><p class="member-muted">Member since {{ $user->created_at->format('M Y') }}</p></div>
+</div>
 <div class="member-form-grid"><label>Name<input name="name" required maxlength="255" autocomplete="name" value="{{ old('name', $user->name) }}"></label><label>Display name<input name="display_name" maxlength="100" value="{{ old('display_name', $user->profile?->display_name) }}"></label></div>
 <label>Email<input name="email" type="email" required autocomplete="email" value="{{ old('email', $user->email) }}"></label>
 <label>About you<textarea name="bio" rows="3" maxlength="2000" placeholder="Your fandoms, your favorite worlds, a little about you…">{{ old('bio', $user->profile?->bio) }}</textarea></label>
