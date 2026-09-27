@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Feedback;
+use App\Notifications\FeedbackResolvedNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class FeedbackController extends Controller
@@ -66,7 +68,30 @@ class FeedbackController extends Controller
 
         $feedback->update(['status' => $request->input('status')]);
 
+        if ($feedback->wasChanged('status') && $feedback->status === 'resolved') {
+            $this->notifyReporter($feedback);
+        }
+
         return back()->with('success', 'Feedback status updated.');
+    }
+
+    private function notifyReporter(Feedback $feedback): void
+    {
+        $reporter = $feedback->user;
+
+        if (! $reporter?->email) {
+            return;
+        }
+
+        try {
+            $reporter->notify(new FeedbackResolvedNotification($feedback));
+        } catch (\Throwable $exception) {
+            Log::warning('Could not email the reporter about resolved feedback.', [
+                'feedback_id' => $feedback->id,
+                'user_id' => $reporter->id,
+                'error' => $exception->getMessage(),
+            ]);
+        }
     }
 
     public function destroy(Feedback $feedback): RedirectResponse
