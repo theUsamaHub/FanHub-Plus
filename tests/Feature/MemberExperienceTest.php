@@ -91,11 +91,13 @@ class MemberExperienceTest extends TestCase
 
     public function test_submissions_cannot_self_publish_or_edit_other_users_work(): void
     {
+        Storage::fake('public');
         $this->actingAs($this->member);
-        $payload = ['title' => 'My fan article', 'type' => 'article', 'category_id' => $this->category->id,
+        $payload = ['title' => 'My fan article', 'category_id' => $this->category->id,
             'body' => 'A long and thoughtful fan contribution for the community.', 'intent' => 'submit',
             'status' => 'published', 'is_featured' => 1, 'submitted_by' => 999];
-        $this->post(route('user.submissions.store'), $payload)->assertSessionHasNoErrors()->assertRedirect(route('user.submissions'));
+        $withCover = [...$payload, 'cover' => UploadedFile::fake()->createWithContent('cover.png', base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aG1cAAAAASUVORK5CYII='))];
+        $this->post(route('user.submissions.store'), $withCover)->assertSessionHasNoErrors()->assertRedirect(route('user.submissions'));
         $submission = $this->member->submittedContents()->first();
         $this->assertEquals('pending_review', $submission->status);
         $this->assertFalse($submission->is_featured);
@@ -110,16 +112,18 @@ class MemberExperienceTest extends TestCase
         $this->put(route('user.submissions.update', $submission), $payload)->assertForbidden();
     }
 
-    public function test_media_submission_uploads_and_rejects_missing_or_wrong_attachment(): void
+    public function test_submission_requires_a_cover_image_and_stores_it(): void
     {
         Storage::fake('public');
-        $payload = ['title' => 'Fan portrait', 'type' => 'image', 'category_id' => $this->category->id, 'body' => str_repeat('A portrait of a favorite character. ', 2), 'intent' => 'submit'];
-        $this->actingAs($this->member)->post(route('user.submissions.store'), $payload)->assertSessionHasErrors('attachment');
+        $payload = ['title' => 'Fan portrait', 'category_id' => $this->category->id, 'body' => str_repeat('A portrait of a favorite character. ', 2), 'intent' => 'submit'];
         $image = UploadedFile::fake()->createWithContent('portrait.png', base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aG1cAAAAASUVORK5CYII='));
-        $this->post(route('user.submissions.store'), [...$payload, 'attachment' => $image])->assertSessionHasNoErrors();
+        $this->actingAs($this->member)->post(route('user.submissions.store'), $payload)->assertSessionHasErrors('cover');
+        $this->post(route('user.submissions.store'), [...$payload, 'attachment' => $image])->assertSessionHasErrors('cover');
+        $this->post(route('user.submissions.store'), [...$payload, 'cover' => $image])->assertSessionHasNoErrors();
         $submission = $this->member->submittedContents()->first();
         $this->assertEquals('pending_review', $submission->status);
-        $this->assertEquals('gallery', $submission->media->first()->pivot->role);
+        $this->assertEquals('article', $submission->type);
+        $this->assertEquals('cover', $submission->media->first()->pivot->role);
         Storage::disk('public')->assertExists($submission->media->first()->path);
     }
 

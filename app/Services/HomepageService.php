@@ -39,9 +39,9 @@ class HomepageService
             'homeEvents' => Event::forUser(auth()->user())->published()->with(['category:id,name,slug', 'coverMedia'])
                 ->where(fn ($query) => $query->where('start_at', '>=', now())->orWhere('end_at', '>=', now()))
                 ->orderByDesc('is_featured')->orderBy('start_at')->orderBy('id')->limit(5)->get(),
-            'multimediaItems' => Content::forUser(auth()->user())->visibleToPublic()->whereIn('type', ['image', 'video', 'audio'])
+            'multimediaItems' => Content::forUser(auth()->user())->visibleToPublic()->where('is_user_submitted', true)
                 ->with(['category:id,name,slug', 'media'])
-                ->orderByDesc('published_at')->orderByDesc('id')->limit(30)->get(),
+                ->orderByDesc('published_at')->orderByDesc('id')->limit(20)->get(),
         ]);
     }
 
