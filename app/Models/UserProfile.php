@@ -12,8 +12,6 @@ class UserProfile extends Model
         'avatar_media_id',
         'display_name',
         'bio',
-        'theme_preference',
-        'font_size_preference',
         'onboarding_completed_at',
     ];
 

@@ -37,8 +37,6 @@ class ProfileUpdateRequest extends FormRequest
             'favorites_present' => ['nullable', 'boolean'],
             'favorites' => ['nullable', 'array', 'max:100'],
             'favorites.*' => ['integer', 'distinct', Rule::exists('categories', 'id')->whereNull('deleted_at')],
-            'theme_preference' => ['nullable', Rule::in(['light', 'dark', 'system'])],
-            'font_size_preference' => ['nullable', Rule::in(['small', 'medium', 'large'])],
         ];
 
         return $rules;

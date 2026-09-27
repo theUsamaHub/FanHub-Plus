@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\Content;
 use App\Models\Media;
 use App\Models\MerchandiseItem;
 use Illuminate\Database\Seeder;
@@ -13,6 +14,7 @@ class MerchandiseItemSeeder extends Seeder
     public function run(): void
     {
         $categories = Category::all();
+        $contents = Content::all();
         $media = Media::first();
 
         $items = [
@@ -30,11 +32,13 @@ class MerchandiseItemSeeder extends Seeder
 
         foreach ($items as $index => $item) {
             $category = $categories[$index % count($categories)] ?? $categories->first();
+            $content = $contents[$index % count($contents)] ?? $contents->first();
 
             MerchandiseItem::updateOrCreate(
                 ['slug' => Str::slug($item['name'])],
                 [
                     'category_id' => $category?->id,
+                    'content_id' => $content?->id,
                     'name' => $item['name'],
                     'slug' => Str::slug($item['name']),
                     'description' => "Official premium " . $item['name'] . " for dedicated fan collectors.",
