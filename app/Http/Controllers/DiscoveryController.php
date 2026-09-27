@@ -19,7 +19,7 @@ class DiscoveryController extends Controller
         if ($filters['category'] ?? null) $query->whereHas('category', fn ($q) => $q->where('slug', $filters['category']));
         ($filters['sort'] ?? '') === 'alphabetical' ? $query->orderBy('name') : $query->latest('id');
         return view('public.discovery', ['kind' => 'characters', 'title' => 'The faces behind the stories.',
-            'intro' => 'Meet the characters who make your favorite worlds unforgettable.', 'items' => $query->paginate(12)->withQueryString(),
+            'intro' => 'Meet the characters who make your favorite worlds unforgettable.', 'items' => $query->orderByDesc('id')->paginate(12)->withQueryString(),
             'filters' => $filters, 'categories' => Category::orderBy('name')->get(), 'tags' => collect()]);
     }
 
