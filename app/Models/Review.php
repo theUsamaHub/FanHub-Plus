@@ -55,6 +55,7 @@ class Review extends Model
             'MerchandiseItem' => 'Merchandise',
             'CharacterProfile' => 'Character',
             'Event' => 'Event',
+            'Category' => 'Fandom',
             default => class_basename($type),
         };
 

@@ -12,6 +12,7 @@ import '../css/pages/fandoms.css';
 import './modules/card-reveal';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import '../css/member.css';
+import '../css/components/community.css';
 import './modules/member';
 import './modules/onboarding';
 import '../css/pages/explore-premium.css';

@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use App\Models\{ActivityLog, CharacterProfile, Content, Event, MerchandiseItem};
+use App\Models\{ActivityLog, Category, CharacterProfile, Content, Event, MerchandiseItem};
 use Illuminate\Database\Eloquent\Model;
 
 class MemberLibrary
 {
-    public const TYPES = ['content' => Content::class, 'character' => CharacterProfile::class, 'merchandise' => MerchandiseItem::class, 'event' => Event::class];
+    public const TYPES = ['content' => Content::class, 'character' => CharacterProfile::class, 'merchandise' => MerchandiseItem::class, 'event' => Event::class, 'fandom' => Category::class];
 
     public function resolve(string $type, int $id): Model
     {
@@ -27,12 +27,12 @@ class MemberLibrary
         if (! $type) return null;
         $route = match ($type) {
             'content' => 'public.content', 'character' => 'public.character', 'merchandise' => 'public.merchandise',
-            'event' => 'events.show',
+            'event' => 'events.show', 'fandom' => 'public.fandom',
         };
         $url = $item->slug ? route($route, $item->slug) : route('events.index');
         $contentType = $item instanceof Content ? $item->type : $type;
         return ['id' => $item->id, 'type' => $contentType, 'title' => $item->title ?? $item->name,
-            'image' => $item->artwork_url ?: asset('images/fandoms/anime.png'),
+            'image' => ($item instanceof Category ? $item->icon_url : $item->artwork_url) ?: asset('images/fandoms/anime.png'),
             'category' => $item->category?->name ?? ucfirst($type), 'url' => $url];
     }
 
