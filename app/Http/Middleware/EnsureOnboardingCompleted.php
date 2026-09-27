@@ -14,7 +14,7 @@ class EnsureOnboardingCompleted
         $user = $request->user();
         if (! $user || $request->routeIs('onboarding.*', 'login', 'register', 'logout', 'password.*', 'verification.*', 'storage.serve', 'unsubscribe')
             || $request->is('login', 'register', 'forgot-password', 'reset-password', 'confirm-password')
-            || $user->hasCompletedOnboarding() || Category::count() < 3) {
+            || ! $user->requiresOnboarding() || Category::count() < 3) {
             return $next($request);
         }
 

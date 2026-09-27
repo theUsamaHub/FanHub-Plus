@@ -48,6 +48,15 @@ class User extends Authenticatable implements \Illuminate\Contracts\Auth\MustVer
         return $this->profile?->onboarding_completed_at !== null;
     }
 
+    public function requiresOnboarding(): bool
+    {
+        $roles = $this->roles()->pluck('slug');
+
+        return $roles->contains('registered-user')
+            && ! $roles->contains('admin')
+            && ! $this->hasCompletedOnboarding();
+    }
+
     public function favoriteCategoryIds(): array
     {
         // Request-local relation caching avoids stale session preferences.

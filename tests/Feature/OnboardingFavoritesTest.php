@@ -41,6 +41,32 @@ class OnboardingFavoritesTest extends TestCase
         $this->assertGuest();
     }
 
+    public function test_only_registered_users_require_onboarding_and_admin_role_takes_precedence(): void
+    {
+        $ids = $this->categories();
+        $adminRole = Role::firstOrCreate(['slug' => 'admin'], ['name' => 'Admin']);
+        foreach ([[], [$adminRole->id]] as $roles) {
+            $user = $this->member();
+            $user->roles()->sync($roles);
+            $this->actingAs($user)->get('/events')->assertOk()->assertViewIs('events.index');
+            $this->get('/onboarding')->assertRedirect(route('dashboard'));
+            $this->post('/onboarding', ['favorites' => array_slice($ids, 0, 3)])->assertRedirect(route('dashboard'));
+            $this->assertFalse($user->fresh()->hasCompletedOnboarding());
+            $this->assertCount(0, $user->fresh()->favoriteCategories);
+        }
+
+        $admin = $this->member();
+        $admin->roles()->attach($adminRole);
+        $this->actingAs($admin)->get('/dashboard')->assertRedirect(route('admin.dashboard'));
+        $this->get('/events')->assertOk()->assertViewIs('events.index');
+        $this->get('/onboarding')->assertRedirect(route('dashboard'));
+        $this->post('/onboarding', ['favorites' => array_slice($ids, 0, 3)])->assertRedirect(route('dashboard'));
+        $this->assertCount(0, $admin->fresh()->favoriteCategories);
+
+        $member = $this->member();
+        $this->actingAs($member)->get('/events')->assertViewIs('auth.onboarding');
+    }
+
     public function test_login_and_registration_lead_to_modal_without_requiring_email_verification(): void
     {
         $ids = $this->categories();

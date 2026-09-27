@@ -12,7 +12,7 @@ class OnboardingController extends Controller
 {
     public function create(Request $request)
     {
-        if ($request->user()->hasCompletedOnboarding() || Category::count() < 3) {
+        if (! $request->user()->requiresOnboarding() || Category::count() < 3) {
             return redirect()->route('dashboard');
         }
 
@@ -24,7 +24,7 @@ class OnboardingController extends Controller
 
     public function store(Request $request)
     {
-        if ($request->user()->hasCompletedOnboarding()) return redirect()->route('dashboard');
+        if (! $request->user()->requiresOnboarding()) return redirect()->route('dashboard');
         $data = $request->validate([
             'favorites' => ['required', 'array', 'min:3', 'max:5'],
             'favorites.*' => ['required', 'integer', 'distinct', Rule::exists('categories', 'id')->whereNull('deleted_at')],
@@ -37,7 +37,7 @@ class OnboardingController extends Controller
         DB::transaction(function () use ($request, $data) {
             // Serialize double submissions so a completed setup cannot be overwritten.
             $user = $request->user()->newQuery()->lockForUpdate()->findOrFail($request->user()->id);
-            if ($user->hasCompletedOnboarding()) return;
+            if (! $user->requiresOnboarding()) return;
             $user->favoriteCategories()->sync($data['favorites']);
             $user->profile()->updateOrCreate([], ['onboarding_completed_at' => now()]);
         });
