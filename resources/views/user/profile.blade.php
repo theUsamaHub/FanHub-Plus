@@ -7,7 +7,7 @@
     @if ($user->profile?->avatarMedia?->url)
         <img src="{{ $user->profile->avatarMedia->url }}" alt="Your avatar" data-image-fallback="{{ asset('images/fandoms/anime.png') }}">
     @else
-        <div class="member-avatar-fallback" style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--fh-accent), var(--fh-accent-600)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 2rem; font-family: 'Rajdhani', sans-serif; text-transform: uppercase;">{{ mb_substr($user->name, 0, 1) }}</div>
+        <div class="member-avatar-fallback">{{ mb_substr($user->name, 0, 1) }}</div>
     @endif
     <div><h2>{{ $user->profile?->display_name ?: $user->name }}</h2><p class="member-muted">Member since {{ $user->created_at->format('M Y') }}</p></div>
 </div>
