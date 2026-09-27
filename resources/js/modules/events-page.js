@@ -9,16 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 const page = document.querySelector('[data-events-page], [data-event-detail]');
 
 if (page) {
-    initNearbyEvents(page, () => {
-        const stories = page.querySelector('[data-featured-events]');
-        if (stories) ScrollTrigger.getAll().forEach((trigger) => {
-            if (stories.contains(trigger.trigger)) {
-                if (stories.hidden) trigger.disable();
-                else trigger.enable();
-            }
-        });
-        ScrollTrigger.refresh();
-    });
+    initNearbyEvents(page, () => ScrollTrigger.refresh());
     // A single form moves into a native modal drawer on mobile, with focus trapping,
     // Escape support and an inline no-JavaScript fallback.
     const panel = page.querySelector('[data-event-filter-panel]');
@@ -60,10 +51,12 @@ if (page) {
     page.addEventListener('error', (event) => fallback(event.target), true);
     page.querySelectorAll('[data-event-image]').forEach((image) => { if (image.complete && !image.naturalWidth) fallback(image); });
 
+    let pageScroll;
     const motion = gsap.matchMedia();
     motion.add('(prefers-reduced-motion: no-preference)', () => {
         const lenis = new Lenis({ autoRaf: false, smoothWheel: true, anchors: { offset: -100 },
-            prevent: (node) => Boolean(node.closest('[data-lenis-prevent], [data-navigation], dialog, .event-feature__body')) });
+            prevent: (node) => Boolean(node.closest('[data-lenis-prevent], [data-navigation], dialog')) });
+        pageScroll = lenis;
         const tick = (time) => lenis.raf(time * 1000);
         gsap.ticker.add(tick);
         lenis.on('scroll', ScrollTrigger.update);
@@ -79,7 +72,7 @@ if (page) {
         }
         const hero = page.querySelector('[data-detail-hero] img');
         if (hero) gsap.from(hero, { scale: 1.035, opacity: .4, duration: .8, ease: 'power2.out', clearProps: 'transform,opacity' });
-        return () => { gsap.ticker.remove(tick); lenis.destroy(); };
+        return () => { gsap.ticker.remove(tick); lenis.destroy(); pageScroll = null; };
     });
 
     const featured = page.querySelector('[data-featured-events]');
@@ -88,7 +81,7 @@ if (page) {
         const stage = featured.querySelector('[data-event-stage]');
         const counter = featured.querySelector('[data-story-count]');
         const scenes = gsap.matchMedia();
-        scenes.add({ desktop: '(min-width: 901px) and (min-height: 650px)', reduced: '(prefers-reduced-motion: reduce)', full: '(prefers-reduced-motion: no-preference)' }, (context) => {
+        scenes.add({ desktop: '(min-width: 901px)', reduced: '(prefers-reduced-motion: reduce)', full: '(prefers-reduced-motion: no-preference)' }, (context) => {
             const { desktop, reduced } = context.conditions;
             if (desktop && !reduced && cards.length > 1) {
                 featured.classList.add('is-depth-story');
@@ -103,7 +96,7 @@ if (page) {
                 const distance = tablet ? 65 : 120;
                 cards.forEach((card, i) => gsap.set(card, { opacity: 0, scale: tablet ? .9 : .85, x: i % 2 ? distance : -distance, y: 50, z: tablet ? -100 : -180, transformPerspective: 1200, filter: tablet ? 'blur(3px)' : 'blur(6px)', zIndex: i + 1 }));
                 const timeline = gsap.timeline({
-                    scrollTrigger: { trigger: stage, start: 'top 105px', end: () => '+=' + Math.min(innerHeight * .65, 540) * cards.length,
+                    scrollTrigger: { trigger: stage, start: () => `top ${Math.min(105, innerHeight - stage.offsetHeight - 20)}px`, end: () => '+=' + Math.min(innerHeight * .65, 540) * cards.length,
                         pin: true, scrub: .55, anticipatePin: 1, invalidateOnRefresh: true },
                     // Keep the outgoing link active until the incoming card is visibly dominant.
                     onUpdate: () => setActive(Math.min(cards.length - 1, Math.max(0, Math.floor((timeline.time() - .45) / 1.15)))),
@@ -147,6 +140,22 @@ if (page) {
         });
         return () => { triggers.forEach((trigger) => trigger.kill()); gsap.killTweensOf(elements); gsap.set(elements, { clearProps: 'opacity,transform' }); };
     });
-    document.fonts.ready.then(() => ScrollTrigger.refresh());
-    window.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
+    const loaded = document.readyState === 'complete' ? Promise.resolve()
+        : new Promise((resolve) => window.addEventListener('load', resolve, { once: true }));
+    Promise.all([document.fonts.ready, loaded]).then(() => {
+        ScrollTrigger.refresh();
+        // Pin spacing is added after the browser's initial fragment navigation.
+        // Re-align filtered/paginated results once that layout is final.
+        if (location.hash === '#explore-events') {
+            requestAnimationFrame(() => {
+                const target = page.querySelector('#explore-events');
+                if (!target) return;
+                if (pageScroll) {
+                    pageScroll.resize();
+                    pageScroll.scrollTo(window.scrollY + target.getBoundingClientRect().top - 110, { immediate: true, force: true });
+                }
+                else target.scrollIntoView({ block: 'start', behavior: 'instant' });
+            });
+        }
+    });
 }

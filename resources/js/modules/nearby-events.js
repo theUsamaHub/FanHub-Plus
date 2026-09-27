@@ -12,7 +12,6 @@ export function initNearbyEvents(page, refresh = () => {}) {
     const clearFilters = controls.querySelector('[data-nearby-clear-filters]');
     const results = page.querySelector('[data-event-results]');
     const form = page.querySelector('.events-filter-form');
-    const featured = page.querySelector('[data-featured-events]');
     let coordinates = null;
     let originalResults = null;
     let sequence = 0;
@@ -54,7 +53,6 @@ export function initNearbyEvents(page, refresh = () => {}) {
                         { duration: 420, delay: Math.min(index, 5) * 55, easing: 'ease-out', fill: 'backwards' });
                 });
             }
-            if (featured) featured.hidden = true;
             const approximate = accuracy !== null && accuracy > Number(radius.value) * 1000;
             status.textContent = payload.total
                 ? `${payload.total} events within ${radius.value} km of your detected location. Distances are straight-line estimates.`
@@ -144,7 +142,6 @@ export function initNearbyEvents(page, refresh = () => {}) {
             card.style.removeProperty('opacity');
             card.style.removeProperty('transform');
         });
-        if (featured) featured.hidden = false;
         radiusLabel.hidden = true;
         reset.hidden = true;
         form.reset();
