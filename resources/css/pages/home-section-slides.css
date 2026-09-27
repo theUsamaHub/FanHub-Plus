@@ -31,8 +31,8 @@
 }
 @media (min-width: 1101px) {
     .home-page.has-section-slides .home-section.home-slide { padding-top: 26px; padding-bottom: 28px; }
-    .has-section-slides .trending-grid { height: clamp(330px, calc(100svh - 290px), 530px); grid-template-rows: repeat(2,minmax(0,1fr)); }
-    .has-section-slides .trending-card-link, .has-section-slides .trending-card--1 .trending-card-link { min-height: 0; }
+    /* Let the larger cards determine height instead of squeezing them into the viewport. */
+    .has-section-slides .trending-grid { height: auto; grid-template-rows: repeat(2,minmax(320px,auto)); }
     .has-section-slides .story-grid { grid-template-rows: repeat(2,minmax(0,1fr)); }
     .has-section-slides .story-card--primary .story-copy { min-height: clamp(330px, calc(100svh - 370px), 450px); }
     .has-section-slides .story-bottom-signoff { display: none; }
