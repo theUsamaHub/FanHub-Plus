@@ -834,7 +834,9 @@ document.addEventListener('DOMContentLoaded', function () {
     // Prepare + open on the trigger itself (no dependency on Bootstrap data-api).
     Array.prototype.forEach.call(document.querySelectorAll('[data-fh-media]'), function (trigger) {
         trigger.addEventListener('click', function () {
-            prepare(trigger.getAttribute('data-fh-media'));
+            var key = trigger.getAttribute('data-fh-media');
+            if (!SECTIONS[key]) return;
+            prepare(key);
             openModal();
         });
     });
