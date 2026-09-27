@@ -13,6 +13,8 @@ export default defineConfig({
                 'resources/js/modules/events-page.js',
                 'resources/js/pages/admin-dashboard.js',
                 'resources/js/admin/analytics-charts.js',
+                'resources/css/pages/contact.css',
+                'resources/css/pages/feedback.css',
             ],
             refresh: true,
         }),
