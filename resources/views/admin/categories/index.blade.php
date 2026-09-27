@@ -60,7 +60,7 @@
                                         <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-outline-primary" title="{{ __('Edit') }}">
                                             <i class="bi bi-pencil"></i>
                                         </a>
-                                        <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Are you sure you want to delete this category?') }}')">
+                                        <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" class="d-inline" data-confirm="{{ __('Are you sure you want to delete this category?') }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-outline-danger" title="{{ __('Delete') }}">

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
     <div class="mb-4 fh-adm-page-head">
@@ -48,7 +48,7 @@
             <div class="card border-danger fh-adm-danger-card">
                 <div class="card-header"><h6 class="mb-0 fw-semibold text-danger">{{ __('Danger Zone') }}</h6></div>
                 <div class="card-body">
-                    <form action="{{ route('admin.merchandise.destroy', $item) }}" method="POST" onsubmit="return confirm('{{ __('Delete this merchandise item?') }}')">
+                    <form action="{{ route('admin.merchandise.destroy', $item) }}" method="POST" data-confirm="{{ __('Delete this merchandise item?') }}">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm w-100"><i class="bi bi-trash me-1"></i>{{ __('Delete Merchandise') }}</button>

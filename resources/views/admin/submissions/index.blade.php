@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
     <div class="mb-4 fh-adm-page-head">
@@ -64,12 +64,12 @@
                                         <a href="{{ route('admin.submissions.show', $item) }}" class="btn btn-outline-info" title="{{ __('Preview') }}"><i class="bi bi-eye"></i></a>
                                         <a href="{{ route('admin.contents.edit', $item) }}" class="btn btn-outline-primary" title="{{ __('Edit') }}"><i class="bi bi-pencil"></i></a>
                                         @if ($item->status === 'pending_review')
-                                            <form action="{{ route('admin.submissions.approve', $item) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Approve and publish this submission?') }}')">
+                                            <form action="{{ route('admin.submissions.approve', $item) }}" method="POST" class="d-inline" data-confirm="{{ __('Approve and publish this submission?') }}">
                                                 @csrf
                                                 @method('PATCH')
                                                 <button type="submit" class="btn btn-outline-success" title="{{ __('Approve') }}"><i class="bi bi-check-lg"></i></button>
                                             </form>
-                                            <form action="{{ route('admin.submissions.reject', $item) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Reject this submission?') }}')">
+                                            <form action="{{ route('admin.submissions.reject', $item) }}" method="POST" class="d-inline" data-confirm="{{ __('Reject this submission?') }}">
                                                 @csrf
                                                 @method('PATCH')
                                                 <button type="submit" class="btn btn-outline-danger" title="{{ __('Reject') }}"><i class="bi bi-x-lg"></i></button>

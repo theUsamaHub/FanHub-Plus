@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
     <div class="mb-4 fh-adm-page-head">
@@ -73,7 +73,7 @@
                                     <div class="btn-group btn-group-sm">
                                         <a href="{{ route('admin.merchandise.show', $item) }}" class="btn btn-outline-info" title="{{ __('View') }}"><i class="bi bi-eye"></i></a>
                                         <a href="{{ route('admin.merchandise.edit', $item) }}" class="btn btn-outline-primary" title="{{ __('Edit') }}"><i class="bi bi-pencil"></i></a>
-                                        <form action="{{ route('admin.merchandise.destroy', $item) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Delete this merchandise item?') }}')">
+                                        <form action="{{ route('admin.merchandise.destroy', $item) }}" method="POST" class="d-inline" data-confirm="{{ __('Delete this merchandise item?') }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-outline-danger" title="{{ __('Delete') }}"><i class="bi bi-trash"></i></button>

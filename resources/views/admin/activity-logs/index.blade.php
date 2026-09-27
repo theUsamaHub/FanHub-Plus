@@ -11,7 +11,7 @@
                 <a href="{{ route('admin.activity-logs.export', array_filter($filters)) }}" class="btn btn-outline-success btn-sm">
                     <i class="bi bi-download me-1"></i>{{ __('Export CSV') }}
                 </a>
-                <form action="{{ route('admin.activity-logs.destroy') }}" method="POST" onsubmit="return confirm('{{ __('Permanently delete every activity log? This cannot be undone.') }}')">
+                <form action="{{ route('admin.activity-logs.destroy') }}" method="POST" data-confirm="{{ __('Permanently delete every activity log? This cannot be undone.') }}">
                     @csrf @method('DELETE')
                     <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash me-1"></i>{{ __('Clear Logs') }}</button>
                 </form>

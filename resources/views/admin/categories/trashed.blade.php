@@ -30,13 +30,13 @@
                                 <td class="text-muted">{{ $category->deleted_at->diffForHumans() }}</td>
                                 <td class="text-end">
                                     <div class="btn-group btn-group-sm">
-                                        <form action="{{ route('admin.categories.restore', $category->id) }}" method="POST" class="d-inline">
+                                        <form action="{{ route('admin.categories.restore', $category->id) }}" method="POST" class="d-inline" data-confirm="{{ __('Restore this category?') }}">
                                             @csrf
-                                            <button type="submit" class="btn btn-outline-success" title="{{ __('Restore') }}" onclick="return confirm('{{ __('Restore this category?') }}')">
+                                            <button type="submit" class="btn btn-outline-success" title="{{ __('Restore') }}">
                                                 <i class="bi bi-arrow-counterclockwise"></i>
                                             </button>
                                         </form>
-                                        <form action="{{ route('admin.categories.force-delete', $category->id) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Permanently delete this category? This cannot be undone.') }}')">
+                                        <form action="{{ route('admin.categories.force-delete', $category->id) }}" method="POST" class="d-inline" data-confirm="{{ __('Permanently delete this category? This cannot be undone.') }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-outline-danger" title="{{ __('Delete Permanently') }}">

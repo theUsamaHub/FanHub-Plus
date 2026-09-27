@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class CategoryRequest extends FormRequest
@@ -12,12 +13,31 @@ class CategoryRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Pre-fill the slug from the name when blank so that the
+     * unique check matches what the model will persist.
+     */
+    protected function prepareForValidation(): void
+    {
+        $name = $this->input('name');
+        $slug = $this->input('slug');
+
+        if (filled($name) && ! filled($slug)) {
+            $this->merge(['slug' => Str::slug($name)]);
+        }
+    }
+
     public function rules(): array
     {
         $categoryId = $this->route('category')?->id;
 
         return [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('categories', 'name')->ignore($categoryId),
+            ],
             'slug' => [
                 'nullable',
                 'string',
@@ -38,7 +58,8 @@ class CategoryRequest extends FormRequest
         return [
             'name.required' => 'Please enter a category name.',
             'name.max' => 'Category name cannot exceed 255 characters.',
-            'slug.unique' => 'This slug is already taken.',
+            'name.unique' => 'A category with this name already exists.',
+            'slug.unique' => 'A category with this slug already exists.',
             'description.max' => 'Description cannot exceed 500 characters.',
             'icon.image' => 'The file must be an image.',
             'icon.mimes' => 'The icon must be a JPG, PNG, GIF, WebP, or SVG file.',

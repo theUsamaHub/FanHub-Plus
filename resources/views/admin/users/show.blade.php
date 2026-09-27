@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
     <div class="mb-4 fh-adm-page-head">
@@ -169,7 +169,7 @@
                         {{ __('Deleting this user will permanently remove their account and all associated data.') }}
                     </p>
                     @if ($user->id !== auth()->id())
-                        <form action="{{ route('admin.users.destroy', $user) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure you want to delete this user?') }}')">
+                        <form action="{{ route('admin.users.destroy', $user) }}" method="POST" data-confirm="{{ __('Are you sure you want to delete this user?') }}">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger btn-sm w-100">

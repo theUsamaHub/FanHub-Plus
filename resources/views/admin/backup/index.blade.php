@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
     <div class="mb-4 fh-adm-page-head">
@@ -26,7 +26,7 @@
                                 <td class="text-end">
                                     <div class="btn-group btn-group-sm">
                                         <a href="{{ route('admin.backup.download', $backup['name']) }}" class="btn btn-outline-success"><i class="bi bi-download"></i></a>
-                                        <form action="{{ route('admin.backup.destroy', $backup['name']) }}" method="POST" class="d-inline" onsubmit="return confirm()">
+                                        <form action="{{ route('admin.backup.destroy', $backup['name']) }}" method="POST" class="d-inline" data-confirm="Delete this backup file?">
                                             @csrf @method('DELETE')
                                             <button class="btn btn-outline-danger"><i class="bi bi-trash"></i></button>
                                         </form>

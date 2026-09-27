@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
     <div class="mb-4 fh-adm-page-head">
@@ -62,7 +62,7 @@
                                 </td>
                                 <td>{{ $rating->created_at->diffForHumans() }}</td>
                                 <td class="text-end">
-                                    <form action="{{ route('admin.ratings.destroy', $rating) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Delete this rating?') }}')">
+                                    <form action="{{ route('admin.ratings.destroy', $rating) }}" method="POST" class="d-inline" data-confirm="{{ __('Delete this rating?') }}">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-outline-danger btn-sm" title="{{ __('Delete') }}"><i class="bi bi-trash"></i></button>

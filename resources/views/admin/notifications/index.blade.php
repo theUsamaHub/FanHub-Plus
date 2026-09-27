@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
     <div class="mb-4 fh-adm-page-head">
@@ -56,7 +56,7 @@
                                 @if ($data['action_url'] ?? null)
                                     <a href="{{ $data['action_url'] }}" class="btn btn-sm btn-outline-primary" style="font-size: 0.75rem;"><i class="bi bi-eye me-1"></i>{{ __('View') }}</a>
                                 @endif
-                                <form action="{{ route('admin.notifications.destroy', $notif->id) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Delete this notification?') }}')">
+                                <form action="{{ route('admin.notifications.destroy', $notif->id) }}" method="POST" class="d-inline" data-confirm="{{ __('Delete this notification?') }}">
                                     @csrf @method('DELETE')
                                     <button class="btn btn-sm btn-outline-danger" style="font-size: 0.75rem;"><i class="bi bi-trash me-1"></i>{{ __('Delete') }}</button>
                                 </form>

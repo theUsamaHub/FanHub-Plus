@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
     <div class="mb-4 fh-adm-page-head">
@@ -12,7 +12,7 @@
                     <i class="bi bi-eye-fill me-1"></i>{{ __('Preview') }}
                 </a>
                 @if ($newsletter->status === 'draft')
-                    <form action="{{ route('admin.newsletters.send', $newsletter) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Send this newsletter to all recipients?') }}')">
+                    <form action="{{ route('admin.newsletters.send', $newsletter) }}" method="POST" class="d-inline" data-confirm="{{ __('Send this newsletter to all recipients?') }}">
                         @csrf
                         <button class="btn btn-success btn-sm">
                             <i class="bi bi-send me-1"></i>{{ __('Send') }}

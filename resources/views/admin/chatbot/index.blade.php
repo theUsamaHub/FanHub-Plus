@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
     <div class="mb-4">
@@ -121,7 +121,7 @@
                             <td>{{ $q->user?->email ?? 'Guest' }}</td>
                             <td class="text-muted" style="font-size:0.8rem;">{{ $q->created_at?->diffForHumans() }}</td>
                             <td class="text-end">
-                                <form method="POST" action="{{ route('admin.chatbot.destroy', $q) }}" onsubmit="return confirm('Delete this query?')">
+                                <form method="POST" action="{{ route('admin.chatbot.destroy', $q) }}" data-confirm="Delete this query?">
                                     @csrf @method('DELETE')
                                     <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
                                 </form>

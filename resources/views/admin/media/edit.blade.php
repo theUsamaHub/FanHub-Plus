@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
     <div class="mb-4 fh-adm-page-head">
@@ -117,7 +117,7 @@
                     <p class="text-muted" style="font-size: 0.875rem;">
                         {{ __('Files that are still referenced by categories, content, characters, merchandise, events, or profiles cannot be deleted.') }}
                     </p>
-                    <form action="{{ route('admin.media.destroy', $media) }}" method="POST" onsubmit="return confirm('{{ __('Delete this file permanently?') }}')">
+                    <form action="{{ route('admin.media.destroy', $media) }}" method="POST" data-confirm="{{ __('Delete this file permanently?') }}">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm w-100" @if ($media->isReferenced()) disabled @endif>

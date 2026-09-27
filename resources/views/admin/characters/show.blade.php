@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
     <div class="mb-4 fh-adm-page-head">
@@ -61,7 +61,7 @@
                                     <td>{{ $item->type }}</td>
                                     <td>{{ ucwords(str_replace('_', ' ', $item->status)) }}</td>
                                     <td class="text-end">
-                                        <form action="{{ route('admin.characters.contents.detach', [$character, $item]) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Remove this related content?') }}')">
+                                        <form action="{{ route('admin.characters.contents.detach', [$character, $item]) }}" method="POST" class="d-inline" data-confirm="{{ __('Remove this related content?') }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-outline-danger btn-sm" title="{{ __('Remove') }}"><i class="bi bi-x-lg"></i></button>
@@ -117,7 +117,7 @@
                 <div class="card-header"><h6 class="mb-0 fw-semibold text-danger">{{ __('Danger Zone') }}</h6></div>
                 <div class="card-body">
                     <p class="text-muted" style="font-size: 0.875rem;">{{ __('Deleting a character removes its related content links. Content items themselves are kept.') }}</p>
-                    <form action="{{ route('admin.characters.destroy', $character) }}" method="POST" onsubmit="return confirm('{{ __('Delete this character?') }}')">
+                    <form action="{{ route('admin.characters.destroy', $character) }}" method="POST" data-confirm="{{ __('Delete this character?') }}">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm w-100"><i class="bi bi-trash me-1"></i>{{ __('Delete Character') }}</button>

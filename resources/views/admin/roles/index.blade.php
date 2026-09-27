@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
     <div class="mb-4 fh-adm-page-head">
@@ -36,7 +36,7 @@
                                     <div class="btn-group btn-group-sm">
                                         <a href="{{ route('admin.roles.edit', $role) }}" class="btn btn-outline-primary"><i class="bi bi-pencil"></i></a>
                                         @if ($role->users_count === 0)
-                                            <form action="{{ route('admin.roles.destroy', $role) }}" method="POST" class="d-inline" onsubmit="return confirm()">
+                                            <form action="{{ route('admin.roles.destroy', $role) }}" method="POST" class="d-inline" data-confirm="Delete this role?">
                                                 @csrf @method('DELETE')
                                                 <button class="btn btn-outline-danger"><i class="bi bi-trash"></i></button>
                                             </form>
