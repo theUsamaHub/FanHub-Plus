@@ -1,0 +1,28 @@
+/* Support pages use the neutral end of the shared theme token scales. */
+html[data-theme='dark'] body:has(:is(.contact-page, .feedback-page, .privacy-page)) {
+    --fh-bg: var(--dark-text-900);
+    --fh-surface: color-mix(in srgb, var(--dark-text-900) 96%, var(--dark-text-50));
+    --fh-panel: var(--fh-surface);
+    --fh-text: var(--dark-text-50);
+    --fh-muted: var(--dark-text-600);
+    --fh-line: var(--dark-text-800);
+    --fh-accent: var(--brand-orange);
+    background: var(--fh-bg);
+}
+html body :is(.contact-page, .feedback-page) {
+    background: var(--fh-bg);
+}
+html body :is(.contact-hero__bg, .feedback-hero__bg) { display: none; }
+html body .contact-hero { min-height: auto; padding: 72px 24px 48px; }
+html body .contact-form-section { background: var(--fh-bg); }
+html body :is(.contact-highlight, .feedback-highlight) {
+    background: none; color: var(--fh-accent); -webkit-text-fill-color: currentColor; animation: none;
+}
+html body :is(.contact-form-card, .contact-info-card, .contact-faq-card, .feedback-form-card, .feedback-history-card, .feedback-legend-card) {
+    background: var(--fh-surface); border-color: var(--fh-line); box-shadow: none;
+}
+html body :is(.contact-form-card, .feedback-form-card)::before { background: var(--fh-accent); animation: none; }
+html body :is(.contact-method__icon, .contact-method__icon--discord, .contact-method__icon--twitter, .contact-method__icon--location) {
+    background: color-mix(in srgb, var(--fh-text) 6%, var(--fh-bg));
+}
+html body :is(.contact-method__meta, .feedback-kicker) { color: var(--fh-accent); }

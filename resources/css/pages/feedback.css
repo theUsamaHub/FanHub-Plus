@@ -1,3 +1,4 @@
+@import '../components/support-theme.css';
 @import '../../css/components/site-polish.css';
 
 /* ==========================================================================
@@ -5,9 +6,9 @@
    ========================================================================== */
 
 .feedback-page {
-    --feedback-accent: #dc63ff;
-    --feedback-cyan: #44d9ff;
-    --feedback-gold: #ffb300;
+    --feedback-accent: var(--fh-accent);
+    --feedback-cyan: var(--fh-accent);
+    --feedback-gold: var(--brand-yellow);
     --feedback-success: #22c55e;
     --feedback-warning: #f59e0b;
     --feedback-info: #3b82f6;
@@ -42,7 +43,7 @@
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(220, 99, 255, 0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 80% 60% at 20% 30%, color-mix(in srgb, var(--fh-accent) 12%, transparent) 0%, transparent 70%),
         radial-gradient(ellipse 60% 80% at 80% 70%, rgba(68, 217, 255, 0.1) 0%, transparent 70%),
         radial-gradient(ellipse 100% 100% at 50% 50%, rgba(255, 179, 0, 0.05) 0%, transparent 60%);
 }
@@ -128,7 +129,7 @@
 .feedback-main {
     padding: 40px 24px 100px;
     background:
-        radial-gradient(ellipse 100% 50% at 50% 0%, rgba(220, 99, 255, 0.04) 0%, transparent 70%),
+        radial-gradient(ellipse 100% 50% at 50% 0%, color-mix(in srgb, var(--fh-accent) 4%, transparent) 0%, transparent 70%),
         var(--fh-bg);
 }
 
@@ -290,10 +291,10 @@
 }
 
 .feedback-type-option:hover {
-    border-color: rgba(220, 99, 255, 0.5);
+    border-color: color-mix(in srgb, var(--fh-accent) 50%, transparent);
     background: var(--fh-surface);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(220, 99, 255, 0.1);
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--fh-accent) 10%, transparent);
 }
 
 .feedback-type-option:focus-visible {
@@ -303,10 +304,10 @@
 
 .feedback-type-option--active {
     border-color: var(--feedback-accent);
-    background: linear-gradient(135deg, rgba(220, 99, 255, 0.1), rgba(68, 217, 255, 0.05));
+    background: linear-gradient(135deg, color-mix(in srgb, var(--fh-accent) 10%, transparent), rgba(68, 217, 255, 0.05));
     box-shadow:
         0 0 0 1px var(--feedback-accent) inset,
-        0 8px 24px rgba(220, 99, 255, 0.15);
+        0 8px 24px color-mix(in srgb, var(--fh-accent) 15%, transparent);
 }
 
 .feedback-type-option__icon {
@@ -316,7 +317,7 @@
     width: 40px;
     height: 40px;
     border-radius: 10px;
-    background: rgba(220, 99, 255, 0.15);
+    background: color-mix(in srgb, var(--fh-accent) 15%, transparent);
     color: var(--feedback-accent);
     transition: background 0.2s, color 0.2s, transform 0.3s;
 }
@@ -407,15 +408,15 @@
 }
 
 .feedback-field__textarea:hover {
-    border-color: rgba(220, 99, 255, 0.4);
+    border-color: color-mix(in srgb, var(--fh-accent) 40%, transparent);
 }
 
 .feedback-field__textarea:focus {
     outline: none;
     border-color: var(--feedback-accent);
     box-shadow:
-        0 0 0 3px rgba(220, 99, 255, 0.15),
-        0 4px 16px rgba(220, 99, 255, 0.1);
+        0 0 0 3px color-mix(in srgb, var(--fh-accent) 15%, transparent),
+        0 4px 16px color-mix(in srgb, var(--fh-accent) 10%, transparent);
     background: var(--fh-surface);
 }
 
@@ -656,7 +657,7 @@
 }
 
 .feedback-history-item:hover {
-    border-color: rgba(220, 99, 255, 0.3);
+    border-color: color-mix(in srgb, var(--fh-accent) 30%, transparent);
     transform: translateX(4px);
 }
 
@@ -802,7 +803,7 @@
     width: 72px;
     height: 72px;
     border-radius: 50%;
-    background: rgba(220, 99, 255, 0.1);
+    background: color-mix(in srgb, var(--fh-accent) 10%, transparent);
     color: var(--feedback-accent);
     margin-bottom: 20px;
 }
@@ -1043,14 +1044,14 @@
 
 [data-theme='light'] .feedback-hero__gradient {
     background:
-        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(220, 99, 255, 0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 80% 60% at 20% 30%, color-mix(in srgb, var(--fh-accent) 12%, transparent) 0%, transparent 70%),
         radial-gradient(ellipse 60% 80% at 80% 70%, rgba(68, 217, 255, 0.1) 0%, transparent 70%),
         radial-gradient(ellipse 100% 100% at 50% 50%, rgba(255, 179, 0, 0.05) 0%, transparent 60%);
 }
 
 [data-theme='light'] .feedback-main {
     background:
-        radial-gradient(ellipse 100% 50% at 50% 0%, rgba(220, 99, 255, 0.04) 0%, transparent 70%),
+        radial-gradient(ellipse 100% 50% at 50% 0%, color-mix(in srgb, var(--fh-accent) 4%, transparent) 0%, transparent 70%),
         var(--fh-bg);
 }
 
@@ -1063,7 +1064,7 @@
 }
 
 [data-theme='light'] .feedback-form-card::before {
-    box-shadow: 0 2px 8px rgba(220, 99, 255, 0.3);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--fh-accent) 30%, transparent);
 }
 
 [data-theme='light'] .feedback-field__textarea {
@@ -1073,15 +1074,15 @@
 }
 
 [data-theme='light'] .feedback-field__textarea:hover {
-    border-color: rgba(220, 99, 255, 0.5);
+    border-color: color-mix(in srgb, var(--fh-accent) 50%, transparent);
     background: #f0edfa;
 }
 
 [data-theme='light'] .feedback-field__textarea:focus {
     background: #ffffff;
     box-shadow:
-        0 0 0 3px rgba(220, 99, 255, 0.15),
-        0 4px 16px rgba(220, 99, 255, 0.1);
+        0 0 0 3px color-mix(in srgb, var(--fh-accent) 15%, transparent),
+        0 4px 16px color-mix(in srgb, var(--fh-accent) 10%, transparent);
 }
 
 [data-theme='light'] .feedback-history-card,
@@ -1099,7 +1100,7 @@
 }
 
 [data-theme='light'] .feedback-history-item:hover {
-    border-color: rgba(220, 99, 255, 0.3);
+    border-color: color-mix(in srgb, var(--fh-accent) 30%, transparent);
 }
 
 [data-theme='light'] .feedback-type-option {
@@ -1109,11 +1110,11 @@
 
 [data-theme='light'] .feedback-type-option:hover {
     background: #f0edfa;
-    border-color: rgba(220, 99, 255, 0.5);
+    border-color: color-mix(in srgb, var(--fh-accent) 50%, transparent);
 }
 
 [data-theme='light'] .feedback-type-option--active {
-    background: linear-gradient(135deg, rgba(220, 99, 255, 0.1), rgba(68, 217, 255, 0.05));
+    background: linear-gradient(135deg, color-mix(in srgb, var(--fh-accent) 10%, transparent), rgba(68, 217, 255, 0.05));
     border-color: var(--feedback-accent);
 }
 

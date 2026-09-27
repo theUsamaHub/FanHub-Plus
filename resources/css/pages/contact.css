@@ -1,3 +1,4 @@
+@import '../components/support-theme.css';
 @import '../../css/components/site-polish.css';
 
 /* ==========================================================================
@@ -5,9 +6,9 @@
    ========================================================================== */
 
 .contact-page {
-    --contact-accent: #dc63ff;
-    --contact-cyan: #44d9ff;
-    --contact-gold: #ffb300;
+    --contact-accent: var(--fh-accent);
+    --contact-cyan: var(--fh-accent);
+    --contact-gold: var(--brand-yellow);
     --contact-surface: var(--fh-surface);
     --contact-border: var(--fh-line);
     --contact-text: var(--fh-text);
@@ -39,7 +40,7 @@
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(220, 99, 255, 0.15) 0%, transparent 70%),
+        radial-gradient(ellipse 80% 60% at 20% 30%, color-mix(in srgb, var(--fh-accent) 15%, transparent) 0%, transparent 70%),
         radial-gradient(ellipse 60% 80% at 80% 70%, rgba(68, 217, 255, 0.12) 0%, transparent 70%),
         radial-gradient(ellipse 100% 100% at 50% 50%, rgba(255, 179, 0, 0.06) 0%, transparent 60%);
 }
@@ -199,7 +200,7 @@
 .contact-form-section {
     padding: 80px 24px 120px;
     background:
-        radial-gradient(ellipse 100% 50% at 50% 0%, rgba(220, 99, 255, 0.05) 0%, transparent 70%),
+        radial-gradient(ellipse 100% 50% at 50% 0%, color-mix(in srgb, var(--fh-accent) 5%, transparent) 0%, transparent 70%),
         var(--fh-bg);
 }
 
@@ -375,7 +376,7 @@
 .contact-field__input:hover,
 .contact-field__select:hover,
 .contact-field__textarea:hover {
-    border-color: rgba(220, 99, 255, 0.4);
+    border-color: color-mix(in srgb, var(--fh-accent) 40%, transparent);
 }
 
 .contact-field__input:focus,
@@ -384,8 +385,8 @@
     outline: none;
     border-color: var(--contact-accent);
     box-shadow:
-        0 0 0 3px rgba(220, 99, 255, 0.15),
-        0 4px 16px rgba(220, 99, 255, 0.1);
+        0 0 0 3px color-mix(in srgb, var(--fh-accent) 15%, transparent),
+        0 4px 16px color-mix(in srgb, var(--fh-accent) 10%, transparent);
     background: var(--fh-surface);
 }
 
@@ -668,7 +669,7 @@
     width: 52px;
     height: 52px;
     border-radius: 14px;
-    background: linear-gradient(135deg, rgba(220, 99, 255, 0.2), rgba(68, 217, 255, 0.2));
+    background: linear-gradient(135deg, color-mix(in srgb, var(--fh-accent) 20%, transparent), rgba(68, 217, 255, 0.2));
     color: var(--contact-accent);
     flex-shrink: 0;
     transition: background 0.2s, color 0.2s, transform 0.3s;
@@ -806,7 +807,7 @@
 }
 
 .contact-faq-item:hover {
-    border-color: rgba(220, 99, 255, 0.3);
+    border-color: color-mix(in srgb, var(--fh-accent) 30%, transparent);
 }
 
 .contact-faq-item summary {
@@ -1029,14 +1030,14 @@
 
 [data-theme='light'] .contact-hero__gradient {
     background:
-        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(220, 99, 255, 0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 80% 60% at 20% 30%, color-mix(in srgb, var(--fh-accent) 12%, transparent) 0%, transparent 70%),
         radial-gradient(ellipse 60% 80% at 80% 70%, rgba(68, 217, 255, 0.1) 0%, transparent 70%),
         radial-gradient(ellipse 100% 100% at 50% 50%, rgba(255, 179, 0, 0.05) 0%, transparent 60%);
 }
 
 [data-theme='light'] .contact-form-section {
     background:
-        radial-gradient(ellipse 100% 50% at 50% 0%, rgba(220, 99, 255, 0.04) 0%, transparent 70%),
+        radial-gradient(ellipse 100% 50% at 50% 0%, color-mix(in srgb, var(--fh-accent) 4%, transparent) 0%, transparent 70%),
         var(--fh-bg);
 }
 
@@ -1049,7 +1050,7 @@
 }
 
 [data-theme='light'] .contact-form-card::before {
-    box-shadow: 0 2px 8px rgba(220, 99, 255, 0.3);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--fh-accent) 30%, transparent);
 }
 
 [data-theme='light'] .contact-field__input,
@@ -1063,7 +1064,7 @@
 [data-theme='light'] .contact-field__input:hover,
 [data-theme='light'] .contact-field__select:hover,
 [data-theme='light'] .contact-field__textarea:hover {
-    border-color: rgba(220, 99, 255, 0.5);
+    border-color: color-mix(in srgb, var(--fh-accent) 50%, transparent);
     background: #f0edfa;
 }
 
@@ -1072,8 +1073,8 @@
 [data-theme='light'] .contact-field__textarea:focus {
     background: #ffffff;
     box-shadow:
-        0 0 0 3px rgba(220, 99, 255, 0.15),
-        0 4px 16px rgba(220, 99, 255, 0.1);
+        0 0 0 3px color-mix(in srgb, var(--fh-accent) 15%, transparent),
+        0 4px 16px color-mix(in srgb, var(--fh-accent) 10%, transparent);
 }
 
 [data-theme='light'] .contact-field__select {
@@ -1109,7 +1110,7 @@
 }
 
 [data-theme='light'] .contact-faq-item:hover {
-    border-color: rgba(220, 99, 255, 0.3);
+    border-color: color-mix(in srgb, var(--fh-accent) 30%, transparent);
 }
 
 [data-theme='light'] .contact-alert--success {

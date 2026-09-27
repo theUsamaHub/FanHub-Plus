@@ -16,16 +16,6 @@
             <p class="contact-kicker" data-animate="fade-up" data-delay="0">GET IN TOUCH</p>
             <h1 data-animate="fade-up" data-delay="100">Let's start a <span class="contact-highlight">conversation.</span></h1>
             <p class="contact-lead" data-animate="fade-up" data-delay="200">Have a question, suggestion, or just want to say hello? We'd love to hear from you. Our team reads every message personally.</p>
-            <div class="contact-hero__stats" data-animate="fade-up" data-delay="300" role="list" aria-label="Contact statistics">
-                <div class="contact-stat" role="listitem">
-                    <span class="contact-stat__value" data-count="24">0</span>
-                    <span class="contact-stat__label">Hour Response</span>
-                </div>
-                <div class="contact-stat" role="listitem">
-                    <span class="contact-stat__value" data-count="500">0</span>
-                    <span class="contact-stat__label">Messages/Month</span>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -249,23 +239,6 @@
                             </div>
                         </div>
 
-                        <div class="contact-hours" data-animate="fade-up" data-delay="300">
-                            <h3>Business Hours</h3>
-                            <div class="contact-hours__grid">
-                                <div class="contact-hours__day">
-                                    <span>Mon - Fri</span>
-                                    <span>9:00 - 18:00 JST</span>
-                                </div>
-                                <div class="contact-hours__day">
-                                    <span>Saturday</span>
-                                    <span>10:00 - 15:00 JST</span>
-                                </div>
-                                <div class="contact-hours__day">
-                                    <span>Sunday</span>
-                                    <span>Closed</span>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- FAQ Quick Links -->
