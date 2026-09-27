@@ -130,7 +130,7 @@
 
                             <p class="feedback-form__privacy" data-animate="fade-up" data-delay="300">
                                 <x-site-icon name="shield" aria-hidden="true" />
-                                Your feedback is private. We never share your data. <a href="{{ route('discover.privacy') }}">Privacy Policy</a>
+                                Your feedback is private. We never share your data. <a href="{{ route('public.section', 'privacy') }}">Privacy Policy</a>
                             </p>
                         </form>
                     </div>

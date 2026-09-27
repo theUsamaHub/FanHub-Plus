@@ -193,7 +193,7 @@
 
                             <p class="contact-form__privacy" data-animate="fade-up" data-delay="400">
                                 <x-site-icon name="shield" aria-hidden="true" />
-                                By submitting, you agree to our <a href="{{ route('discover.privacy') }}">Privacy Policy</a>. We never share your data.
+                                By submitting, you agree to our <a href="{{ route('public.section', 'privacy') }}">Privacy Policy</a>. We never share your data.
                             </p>
                         </form>
                     </div>
