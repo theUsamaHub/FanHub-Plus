@@ -189,6 +189,105 @@ class MediaCategoryTest extends TestCase
         $this->assertDatabaseMissing('media', ['id' => $media->id]);
     }
 
+    public function test_media_upload_with_category_is_saved(): void
+    {
+        Storage::fake('public');
+        $category = Category::create(['name' => 'Anime', 'slug' => 'anime']);
+        $file = UploadedFile::fake()->create('poster.png', 10, 'image/png');
+
+        $this->actingAs($this->admin)->post(route('admin.media.store'), [
+            'files' => [$file],
+            'category_id' => $category->id,
+        ])->assertRedirect();
+
+        $this->assertDatabaseHas('media', [
+            'original_filename' => 'poster.png',
+            'category_id' => $category->id,
+        ]);
+    }
+
+    public function test_media_upload_without_category_stays_general(): void
+    {
+        Storage::fake('public');
+        $file = UploadedFile::fake()->create('shared.png', 10, 'image/png');
+
+        $this->actingAs($this->admin)->post(route('admin.media.store'), [
+            'files' => [$file],
+            'category_id' => '',
+        ])->assertRedirect();
+
+        $this->assertDatabaseHas('media', [
+            'original_filename' => 'shared.png',
+            'category_id' => null,
+        ]);
+    }
+
+    public function test_media_upload_rejects_unknown_category(): void
+    {
+        Storage::fake('public');
+        $file = UploadedFile::fake()->create('poster.png', 10, 'image/png');
+
+        $this->actingAs($this->admin)->post(route('admin.media.store'), [
+            'files' => [$file],
+            'category_id' => 999999,
+        ])->assertSessionHasErrors('category_id');
+    }
+
+    public function test_media_update_can_assign_and_clear_category(): void
+    {
+        $category = Category::create(['name' => 'Gaming', 'slug' => 'gaming']);
+        $media = $this->media();
+
+        $this->actingAs($this->admin)
+            ->put(route('admin.media.update', $media), ['category_id' => $category->id])
+            ->assertRedirect(route('admin.media.index'));
+
+        $this->assertDatabaseHas('media', ['id' => $media->id, 'category_id' => $category->id]);
+
+        $this->actingAs($this->admin)
+            ->put(route('admin.media.update', $media), ['category_id' => ''])
+            ->assertRedirect(route('admin.media.index'));
+
+        $this->assertDatabaseHas('media', ['id' => $media->id, 'category_id' => null]);
+    }
+
+    public function test_media_index_filters_by_category_and_general(): void
+    {
+        $category = Category::create(['name' => 'Anime', 'slug' => 'anime']);
+        $categorized = $this->media(['original_filename' => 'anime-cover.png', 'category_id' => $category->id]);
+        $general = $this->media(['original_filename' => 'shared-cover.png']);
+
+        $this->actingAs($this->admin)
+            ->get(route('admin.media.index', ['category_id' => $category->id]))
+            ->assertOk()
+            ->assertSee('anime-cover.png')
+            ->assertDontSee('shared-cover.png');
+
+        $this->actingAs($this->admin)
+            ->get(route('admin.media.index', ['category_id' => 'general']))
+            ->assertOk()
+            ->assertSee('shared-cover.png')
+            ->assertDontSee('anime-cover.png');
+
+        $this->actingAs($this->admin)
+            ->get(route('admin.media.index'))
+            ->assertOk()
+            ->assertSee('anime-cover.png')
+            ->assertSee('shared-cover.png');
+    }
+
+    public function test_media_edit_form_shows_category_selector(): void
+    {
+        $category = Category::create(['name' => 'Anime', 'slug' => 'anime']);
+        $media = $this->media(['category_id' => $category->id]);
+
+        $this->actingAs($this->admin)
+            ->get(route('admin.media.edit', $media))
+            ->assertOk()
+            ->assertSee('name="category_id"', false)
+            ->assertSee($category->name);
+    }
+
     public function test_non_admin_cannot_access_admin_routes(): void
     {
         $user = User::factory()->create();

@@ -20,28 +20,53 @@
                 @csrf
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <label for="alt_text" class="form-label">{{ __('Alt text (applied to all uploaded files)') }}</label>
-                        <input type="text" class="form-control" name="alt_text" id="alt_text" maxlength="255" value="{{ old('alt_text') }}" placeholder="{{ __('Descriptive text for accessibility') }}">
+                        <label for="category_id" class="form-label">{{ __('Category (optional)') }}</label>
+                        <select class="form-select @error('category_id') is-invalid @enderror" name="category_id" id="category_id">
+                            <option value="">{{ __('General / No category') }}</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}" @selected((int) old('category_id') === $category->id)>{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                        <small class="text-muted">{{ __('Leave empty to keep the file in General (shared) media.') }}</small>
+                        @error('category_id')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-8">
+                        <label for="alt_text" class="form-label">{{ __('Alt text (applied to all uploaded files)') }}</label>
+                        <input type="text" class="form-control @error('alt_text') is-invalid @enderror" name="alt_text" id="alt_text" maxlength="255" value="{{ old('alt_text') }}" placeholder="{{ __('Descriptive text for accessibility') }}">
+                        @error('alt_text')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-5">
                         <label class="form-label">{{ __('Duration (video/audio only)') }}</label>
                         <div class="row g-2">
                             <div class="col-4">
-                                <input type="number" class="form-control" name="duration_hours" id="duration_hours" min="0" max="23" value="{{ old('duration_hours', 0) }}" placeholder="0">
+                                <input type="number" class="form-control @error('duration_hours') is-invalid @enderror" name="duration_hours" id="duration_hours" min="0" max="23" value="{{ old('duration_hours', 0) }}" placeholder="0">
                                 <small class="text-muted">{{ __('Hours') }}</small>
                             </div>
                             <div class="col-4">
-                                <input type="number" class="form-control" name="duration_minutes" id="duration_minutes" min="0" max="59" value="{{ old('duration_minutes', 0) }}" placeholder="0">
+                                <input type="number" class="form-control @error('duration_minutes') is-invalid @enderror" name="duration_minutes" id="duration_minutes" min="0" max="59" value="{{ old('duration_minutes', 0) }}" placeholder="0">
                                 <small class="text-muted">{{ __('Minutes') }}</small>
                             </div>
                             <div class="col-4">
-                                <input type="number" class="form-control" name="duration_seconds" id="duration_seconds" min="0" max="59.99" step="0.01" value="{{ old('duration_seconds', 0) }}" placeholder="0">
+                                <input type="number" class="form-control @error('duration_seconds') is-invalid @enderror" name="duration_seconds" id="duration_seconds" min="0" max="59.99" step="0.01" value="{{ old('duration_seconds', 0) }}" placeholder="0">
                                 <small class="text-muted">{{ __('Seconds') }}</small>
                             </div>
                         </div>
                         <small class="text-muted">{{ __('Automatically saved as total seconds.') }}</small>
+                        @error('duration_hours')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                        @error('duration_minutes')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                        @error('duration_seconds')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-7">
                         <label class="form-label">{{ __('Select Files') }}</label>
                         <input type="file" class="form-control @error('files') is-invalid @enderror" name="files[]" multiple accept=".jpg,.jpeg,.png,.gif,.webp,.svg,.pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.mp4,.webm,.ogv,.mov,.avi,.mkv,.wmv,.3gp,.mp3,.wav,.ogg,.m4a,.aac" required>
                         <small class="text-muted">{{ __('Images max 5MB, documents 25MB, video 100MB, movies up to 512MB (auto chunked). Up to 10 files per upload.') }}</small>
@@ -80,16 +105,25 @@
     <div class="card mb-4 fh-adm-filter">
         <div class="card-body">
             <form method="GET" action="{{ route('admin.media.index') }}" class="row g-3">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <input type="text" class="form-control" name="search" placeholder="{{ __('Search files...') }}" value="{{ request('search') }}">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <select class="form-select" name="type">
                         <option value="">{{ __('All Types') }}</option>
                         <option value="image" {{ request('type') === 'image' ? 'selected' : '' }}>{{ __('Images') }}</option>
                         <option value="video" {{ request('type') === 'video' ? 'selected' : '' }}>{{ __('Video') }}</option>
                         <option value="audio" {{ request('type') === 'audio' ? 'selected' : '' }}>{{ __('Audio') }}</option>
                         <option value="document" {{ request('type') === 'document' ? 'selected' : '' }}>{{ __('Documents') }}</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select" name="category_id">
+                        <option value="">{{ __('All Categories') }}</option>
+                        <option value="general" @selected(request('category_id') === 'general')>{{ __('General (no category)') }}</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}" @selected(request('category_id') == $category->id)>{{ $category->name }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="col-md-2">
@@ -127,6 +161,11 @@
                             @endif
                             <div class="text-truncate" style="font-size: 0.75rem;" title="{{ $item->original_filename }}">{{ $item->original_filename ?: __('Untitled') }}</div>
                             <div class="text-muted" style="font-size: 0.65rem;">{{ $item->size_formatted }} &middot; {{ $item->media_type }}</div>
+                            <div class="mt-1">
+                                <span class="badge {{ $item->category ? 'bg-primary' : 'bg-secondary' }} text-truncate" style="font-size: 0.6rem; max-width: 100%;">
+                                    {{ $item->category?->name ?: __('General') }}
+                                </span>
+                            </div>
                             @if ($item->isReferenced())
                                 <div class="text-warning" style="font-size: 0.65rem;"><i class="bi bi-link-45deg"></i> {{ __('In use') }}</div>
                             @endif
@@ -138,7 +177,8 @@
                         </div>
                         <div class="card-footer bg-transparent p-1 text-center">
                             @if ($item->url)
-                            <a href="{{ $item->url }}" class="btn btn-outline-info btn-sm" style="font-size: 0.7rem;" target="_blank" rel="noopener"><i class="bi bi-eye"></i></a>
+                                <a href="{{ $item->isAudio() ? route('admin.media.edit', $item) : $item->url }}" class="btn btn-outline-info btn-sm" style="font-size: 0.7rem;" @if (! $item->isAudio()) target="_blank" rel="noopener" @endif title="{{ $item->isAudio() ? __('Listen') : __('View') }}"><i class="bi {{ $item->isAudio() ? 'bi-play-circle' : 'bi-eye' }}"></i></a>
+                                <a href="{{ route('admin.media.download', $item) }}" class="btn btn-outline-success btn-sm" style="font-size: 0.7rem;" title="{{ __('Download') }}"><i class="bi bi-download"></i></a>
                             @endif
                             <a href="{{ route('admin.media.edit', $item) }}" class="btn btn-outline-primary btn-sm" style="font-size: 0.7rem;" title="{{ __('Edit') }}"><i class="bi bi-pencil"></i></a>
                             <form action="{{ route('admin.media.destroy', $item) }}" method="POST" class="d-inline" data-confirm="{{ __('Delete this file?') }}">
@@ -238,6 +278,7 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('files[]', file);
         }
         formData.append('alt_text', document.getElementById('alt_text')?.value || '');
+        formData.append('category_id', document.getElementById('category_id')?.value || '');
         
         const durationHours = document.getElementById('duration_hours')?.value || 0;
         const durationMinutes = document.getElementById('duration_minutes')?.value || 0;
@@ -299,6 +340,7 @@ document.addEventListener('DOMContentLoaded', function() {
         initFormData.append('chunk_size', chunkSize);
         initFormData.append('mime_type', file.type);
         initFormData.append('alt_text', document.getElementById('alt_text')?.value || '');
+        initFormData.append('category_id', document.getElementById('category_id')?.value || '');
         initFormData.append('_token', document.querySelector('meta[name="csrf-token"]').content);
 
         try {

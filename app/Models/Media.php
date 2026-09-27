@@ -11,6 +11,7 @@ class Media extends Model
 {
     protected $fillable = [
         'uploaded_by',
+        'category_id',
         'disk',
         'path',
         'original_filename',
@@ -43,6 +44,11 @@ class Media extends Model
     public function uploadedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'uploaded_by');
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 
     public function contents(): BelongsToMany
