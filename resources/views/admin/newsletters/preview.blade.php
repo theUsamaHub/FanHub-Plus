@@ -33,7 +33,7 @@
                             if ($sampleRecipient) {
                                 $body = str_replace('{name}', $sampleRecipient->name ?? 'Subscriber', $body);
                                 $body = str_replace('{email}', $sampleRecipient->email, $body);
-                                $body = str_replace('{unsubscribe_url}', route('unsubscribe', ['token' => $sampleRecipient->unsubscribe_token]), $body);
+                                $body = str_replace('{unsubscribe_url}', $sampleRecipient->unsubscribeUrl(), $body);
                             } else {
                                 $body = str_replace('{name}', 'Subscriber', $body);
                                 $body = str_replace('{email}', 'subscriber@example.com', $body);

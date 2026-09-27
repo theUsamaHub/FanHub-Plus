@@ -132,17 +132,21 @@ class ProfileController extends Controller
                 'preferences' => $preferences,
             ]);
             $subscriber->save();
+            $subscriber->ensureUnsubscribeToken();
 
             return back()->with('success', 'Newsletter preferences saved. You are now subscribed!');
-        } else {
-            // Unsubscribe
-            $subscriber->update([
-                'status' => 'unsubscribed',
-                'unsubscribed_at' => now(),
-            ]);
-
-            return back()->with('success', 'You have been unsubscribed from the newsletter.');
         }
+
+        if (! $subscriber->exists) {
+            return back()->with('success', 'You are not subscribed to the newsletter.');
+        }
+
+        $subscriber->update([
+            'status' => 'unsubscribed',
+            'unsubscribed_at' => now(),
+        ]);
+
+        return back()->with('success', 'You have been unsubscribed from the newsletter.');
     }
 
     public function destroy(Request $request): RedirectResponse

@@ -49,4 +49,6 @@ Route::get('/contact', function () {
     return view('public.contact');
 })->name('public.contact');
 
-Route::post('/subscribe', [\App\Http\Controllers\SubscriberController::class, 'store'])->name('public.subscribe');
+Route::post('/subscribe', [\App\Http\Controllers\SubscriberController::class, 'store'])
+    ->middleware('throttle:60,1')
+    ->name('public.subscribe');

@@ -30,7 +30,7 @@
         <div class="mb-3">
             <label class="form-label">{{ __('Subscribe to Newsletter') }}</label>
             <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" name="subscribe" id="subscribeSwitch" {{ $subscriber && $subscriber->isActive() ? 'checked' : '' }}>
+                <input class="form-check-input" type="checkbox" role="switch" name="subscribe" id="subscribeSwitch" value="1" {{ $subscriber && $subscriber->isActive() ? 'checked' : '' }}>
                 <label class="form-check-label" for="subscribeSwitch">
                     {{ __('I want to receive email newsletters') }}
                 </label>

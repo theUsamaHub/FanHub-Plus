@@ -4,12 +4,20 @@
     <div class="mb-4 fh-adm-page-head">
         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div>
-                <h2 class="h4 mb-0 fw-semibold">{{ __('Create Newsletter') }}</h2>
+                <h2 class="h4 mb-0 fw-semibold">{{ $newsletter ? __('Edit Newsletter') : __('Create Newsletter') }}</h2>
                 <p class="text-muted mb-0 mt-1" style="font-size:.8rem;">{{ __('Compose and send an email newsletter to your subscribers.') }}</p>
             </div>
-            <a href="{{ route('admin.newsletters.index') }}" class="btn btn-outline-secondary btn-sm">
-                <i class="bi bi-arrow-left me-1"></i>{{ __('Back') }}
-            </a>
+            <div class="d-flex gap-2">
+                @if ($newsletter)
+                    <a href="{{ route('admin.newsletters.show', $newsletter) }}" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-arrow-left me-1"></i>{{ __('Back') }}
+                    </a>
+                @else
+                    <a href="{{ route('admin.newsletters.index') }}" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-arrow-left me-1"></i>{{ __('Back') }}
+                    </a>
+                @endif
+            </div>
         </div>
     </div>
 
@@ -20,31 +28,35 @@
                     <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Email Content') }}</h6>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('admin.newsletters.store') }}">
+                    <form method="POST" action="{{ $newsletter ? route('admin.newsletters.update', $newsletter) : route('admin.newsletters.store') }}">
                         @csrf
+                        @if ($newsletter)
+                            @method('PUT')
+                        @endif
 
                         <div class="mb-3">
                             <label class="form-label">{{ __('Subject') }}</label>
                             <input type="text" class="form-control" name="subject" required maxlength="255"
+                                   value="{{ old('subject', $newsletter?->subject) }}"
                                    placeholder="{{ __('Enter email subject') }}">
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">{{ __('Email Body (HTML supported)') }}</label>
                             <textarea class="form-control" name="body" rows="15" required
-                                      placeholder="{{ __('Write your email content here...') }}"></textarea>
+                                      placeholder="{{ __('Write your email content here...') }}">{{ old('body', $newsletter?->body) }}</textarea>
                             <div class="form-text">{{ __('You can use HTML tags for formatting.') }}</div>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">{{ __('Type') }}</label>
                             <select class="form-select" name="type" id="newsletterType">
-                                <option value="custom">{{ __('Custom Newsletter') }}</option>
-                                <option value="content">{{ __('Content (Anime/Manga/Article)') }}</option>
-                                <option value="event">{{ __('Event') }}</option>
-                                <option value="character">{{ __('Character') }}</option>
-                                <option value="merchandise">{{ __('Merchandise') }}</option>
-                                <option value="category">{{ __('Category/Fandom') }}</option>
+                                <option value="custom" @selected(old('type', $newsletter?->type ?? 'custom') === 'custom')>{{ __('Custom Newsletter') }}</option>
+                                <option value="content" @selected(old('type', $newsletter?->type) === 'content')>{{ __('Content (Anime/Manga/Article)') }}</option>
+                                <option value="event" @selected(old('type', $newsletter?->type) === 'event')>{{ __('Event') }}</option>
+                                <option value="character" @selected(old('type', $newsletter?->type) === 'character')>{{ __('Character') }}</option>
+                                <option value="merchandise" @selected(old('type', $newsletter?->type) === 'merchandise')>{{ __('Merchandise') }}</option>
+                                <option value="category" @selected(old('type', $newsletter?->type) === 'category')>{{ __('Category/Fandom') }}</option>
                             </select>
                         </div>
 
@@ -63,24 +75,22 @@
                                     <label class="form-label">{{ __('Categories/Fandoms') }}</label>
                                     <select class="form-select" name="recipient_filters[categories][]" id="categoryFilter" multiple>
                                         @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                            <option value="{{ $category->id }}" @selected(in_array($category->id, $selectedCategories))>{{ $category->name }}</option>
                                         @endforeach
                                     </select>
                                     <div class="form-text">{{ __('Only send to subscribers interested in these categories. Hold Ctrl/Cmd to select multiple.') }}</div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label">{{ __('Subscriber Status') }}</label>
-                                    <select class="form-select" name="recipient_filters[status]">
-                                        <option value="active">{{ __('Active subscribers only') }}</option>
-                                        <option value="unsubscribed">{{ __('Unsubscribed') }}</option>
-                                    </select>
+                                    <label class="form-label">{{ __('Audience') }}</label>
+                                    <input type="text" class="form-control" value="{{ __('Active subscribers only') }}" readonly>
+                                    <div class="form-text">{{ __('Unsubscribed, bounced and complained addresses are never emailed.') }}</div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="d-flex gap-2">
                             <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-save me-1"></i>{{ __('Save as Draft') }}
+                                <i class="bi bi-save me-1"></i>{{ $newsletter ? __('Update Draft') : __('Save as Draft') }}
                             </button>
                         </div>
                     </form>
@@ -147,8 +157,9 @@
             category: @json(\App\Models\Category::orderBy('name')->get(['id', 'name'])),
         };
 
-        typeSelect.addEventListener('change', function() {
-            const type = this.value;
+        const selectedReference = @json((int) old('reference_id', $newsletter?->reference_id));
+
+        function applyType(type) {
             referenceSelect.innerHTML = '<option value="">Select an item...</option>';
 
             if (references[type]) {
@@ -159,17 +170,22 @@
                     referenceSelect.appendChild(option);
                 });
                 referenceField.style.display = 'block';
+                if (selectedReference) {
+                    referenceSelect.value = String(selectedReference);
+                }
             } else {
                 referenceField.style.display = 'none';
             }
 
-            // Show filters for custom, content, event, character, merchandise, category
-            if (type !== 'custom') {
-                filterField.style.display = 'block';
-            } else {
-                filterField.style.display = 'none';
-            }
+            // Recipient filters are available for every newsletter type
+            filterField.style.display = 'block';
+        }
+
+        typeSelect.addEventListener('change', function() {
+            applyType(this.value);
         });
+
+        applyType(typeSelect.value);
     });
 </script>
 @endpush

@@ -149,11 +149,21 @@
                                         <a href="{{ route('admin.newsletters.preview', $newsletter) }}" class="btn btn-outline-info" title="{{ __('Preview') }}">
                                             <i class="bi bi-eye-fill"></i>
                                         </a>
-@if ($newsletter->status === 'draft')
+                                        @if ($newsletter->status === 'draft')
+                                            <a href="{{ route('admin.newsletters.edit', $newsletter) }}" class="btn btn-outline-primary" title="{{ __('Edit') }}">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
                                             <form action="{{ route('admin.newsletters.send', $newsletter) }}" method="POST" class="d-inline" data-confirm="{{ __('Send this newsletter to all recipients?') }}">
                                                 @csrf
                                                 <button class="btn btn-success" title="{{ __('Send') }}">
                                                     <i class="bi bi-send"></i>
+                                                </button>
+                                            </form>
+                                            <form action="{{ route('admin.newsletters.destroy', $newsletter) }}" method="POST" class="d-inline" data-confirm="{{ __('Delete this newsletter?') }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-outline-danger" title="{{ __('Delete') }}">
+                                                    <i class="bi bi-trash"></i>
                                                 </button>
                                             </form>
                                         @endif
