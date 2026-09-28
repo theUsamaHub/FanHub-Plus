@@ -96,6 +96,7 @@ class EventController extends Controller
     {
         abort_unless($event->status === 'published', 404);
         $event->load(['category', 'coverMedia', 'galleryMedia', 'content']);
+        $event->recordView();
         $related = Event::forUser(auth()->user())->published()->with(['category', 'coverMedia'])->whereKeyNot($event->id)
             ->where('category_id', $event->category_id)->where('start_at', '>=', now())
             ->orderBy('start_at')->limit(3)->get();

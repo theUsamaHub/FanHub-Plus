@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\LogsActivity;
+use App\Traits\RecordsViews;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,7 +14,7 @@ use Illuminate\Support\Str;
 
 class Content extends Model
 {
-    use LogsActivity, \App\Traits\PrioritizesFavorites;
+    use LogsActivity, RecordsViews, \App\Traits\PrioritizesFavorites;
 
     protected $fillable = [
         'category_id',
