@@ -20,3 +20,11 @@ html[data-font-size=large] .fh-site{font-size:18px}html[data-font-size=small] .f
 @media(prefers-reduced-motion:reduce){.member-space *,.member-interactions *,.member-discovery *{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 
 .fh-main.member-main{padding-top:96px}.member-favorite>div{min-width:0}.member-favorite strong{overflow-wrap:anywhere}.member-space .member-stats .member-stat{min-height:85px}@media(max-width:700px){.fh-main.member-main{padding-top:78px}}
+
+.member-welcome.member-welcome--clean { min-height: 0; gap: 24px; align-items: flex-start; padding: 30px; margin-bottom: 24px; border: 1px solid var(--member-border); background: var(--member-panel); }
+.member-welcome--clean::after { content: none; }
+.member-welcome--clean .member-welcome__copy { max-width: 720px; }
+.member-welcome--clean .member-welcome__intro { max-width: 60ch; }
+.member-welcome--clean .member-welcome__avatar { width: 72px; height: 72px; font-size: 28px; border: 1px solid var(--member-border); }
+.member-welcome--clean h1 { font-size: clamp(32px, 4vw, 48px); }
+@media (max-width: 600px) { .member-welcome.member-welcome--clean { padding: 22px; gap: 16px; flex-direction: column; } .member-welcome--clean .member-welcome__avatar { width: 56px; height: 56px; font-size: 23px; } }

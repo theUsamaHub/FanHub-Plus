@@ -1,10 +1,9 @@
 @extends('user.layout', ['pageTitle' => 'My Dashboard'])
 @inject('library', 'App\Services\MemberLibrary')
 @section('member-content')
-<section class="member-welcome">
-    <img class="member-welcome__art" src="{{ asset('images/fandoms/anime.png') }}" alt="" fetchpriority="high">
+<section class="member-welcome member-welcome--clean">
+    <x-user-avatar :user="$user" class="member-welcome__avatar" />
     <div class="member-welcome__copy"><p>{{ $welcome['greeting'] }}</p><h1>{{ $user->profile?->display_name ?: $user->name }}</h1><p class="member-welcome__intro">{{ $welcome['message'] }}</p><div class="member-actions"><a class="member-button" href="{{ $welcome['url'] }}">{{ $welcome['action'] }} <span aria-hidden="true">↗</span></a><a class="member-button member-button--quiet" href="{{ route('user.bookmarks') }}"><i class="bi bi-bookmark" aria-hidden="true"></i> View Bookmarks</a></div></div>
-    <p class="member-welcome__caption">Same fandoms.<br>New discoveries.</p>
 </section>
 <div class="member-stats">
     @foreach([

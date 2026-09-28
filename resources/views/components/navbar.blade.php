@@ -29,7 +29,7 @@
             <button class="fh-theme-toggle" type="button" role="switch" aria-checked="true" aria-label="Dark mode" data-theme-toggle><x-site-icon name="sun" /></button>
             @auth
                 <div class="fh-account" data-account>
-                    <button class="fh-login fh-avatar-button" type="button" aria-expanded="false" aria-controls="account-menu" aria-label="Open account menu" data-account-toggle><span class="fh-avatar">{{ mb_substr(auth()->user()->name, 0, 1) }}</span><span class="fh-account-name">{{ auth()->user()->name }}</span><x-site-icon name="chevron" /></button>
+                    <button class="fh-login fh-avatar-button" type="button" aria-expanded="false" aria-controls="account-menu" aria-label="Open account menu" data-account-toggle><x-user-avatar :user="auth()->user()" class="fh-avatar" /><span class="fh-account-name">{{ auth()->user()->name }}</span><x-site-icon name="chevron" /></button>
                     <div class="fh-account-menu" id="account-menu" hidden>
                         <p>Welcome, {{ auth()->user()->name }}</p>
                         <a href="{{ route('public.account', 'dashboard') }}">My Dashboard</a>
