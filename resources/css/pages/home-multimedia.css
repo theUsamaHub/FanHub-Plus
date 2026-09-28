@@ -58,3 +58,5 @@
     .home-multimedia [data-media-clone], .home-multimedia [data-media-pause] { display: none; }
     .home-multimedia__card:hover, .home-multimedia__card:focus-visible { transform: none; }
 }
+
+.home-multimedia__view-all { margin-top: 20px; gap: 14px; }

@@ -1,0 +1,53 @@
+.fan-list { max-width: 1240px; margin: auto; padding: 32px 28px 72px; color: var(--fh-text); }
+.fan-list__breadcrumb { display: flex; gap: 12px; padding: 10px 0 24px; font-size: 13px; color: var(--fh-muted); }
+.fan-list__heading { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 32px; }
+.fan-list__heading h1, .fan-list__heading h2 { font: 600 clamp(36px, 5vw, 64px)/1.1 'Rajdhani', sans-serif; margin: 0 0 14px; }
+.fan-list__heading p:not(.fan-list__eyebrow) { margin: 0; color: var(--fh-muted); max-width: 60ch; font-size: 14px; line-height: 1.8; }
+.fan-list__eyebrow { color: var(--fh-accent); font-size: 12px; margin: 0 0 12px; }
+.fan-list__heading .fh-button { flex-shrink: 0; gap: 16px; }
+.fan-list__filters { display: grid; grid-template-columns: 2fr 1fr 1fr auto; align-items: end; gap: 16px; padding: 22px; border: 1px solid var(--fh-line); background: var(--fh-surface); border-radius: 14px; }
+.fan-list__filters label { display: grid; gap: 9px; min-width: 0; font-size: 12px; color: var(--fh-muted); }
+.fan-list__filters input, .fan-list__filters select { width: 100%; min-width: 0; min-height: 46px; border: 1px solid var(--fh-line); border-radius: 8px; padding: 10px 12px; background: var(--fh-bg); color: var(--fh-text); font: inherit; font-size: 14px; }
+.fan-list__results, .fan-list__pagination { display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: 24px 0; color: var(--fh-muted); font-size: 13px; }
+.fan-list__results a { text-decoration: underline; text-underline-offset: 4px; }
+.fan-list__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.fan-card { min-width: 0; border: 1px solid var(--fh-line); border-radius: 16px; background: var(--fh-surface); overflow: hidden; transition: border-color .2s; }
+.fan-card:hover, .fan-card:focus-within { border-color: var(--fh-accent); }
+.fan-card > a { display: flex; flex-direction: column; height: 100%; color: var(--fh-text); }
+.fan-card__art { position: relative; aspect-ratio: 1.5; overflow: hidden; }
+.fan-card__art img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.fan-card__art > span, .fan-card__art > i { position: absolute; bottom: 14px; padding: 6px 10px; border-radius: 6px; background: #241c30ed; color: #fff9f2; font-size: 12px; }
+.fan-card__art > span { left: 14px; }
+.fan-card__art > i { right: 14px; }
+.fan-card__body { display: flex; flex-direction: column; flex: 1; padding: 22px; }
+.fan-card__body > p:first-child { color: var(--fh-accent); font-size: 11px; margin: 0 0 12px; }
+.fan-card h3 { font: 600 27px/1.2 'Rajdhani', sans-serif; margin: 0 0 14px; overflow-wrap: anywhere; }
+.fan-card__excerpt { color: var(--fh-muted); font-size: 13px; line-height: 1.8; margin: 0 0 22px; }
+.fan-card__author { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--fh-line); font-size: 11px; color: var(--fh-muted); overflow-wrap: anywhere; }
+.fan-card__author > span:last-child { color: var(--fh-accent); }
+.fan-list__empty { grid-column: 1/-1; padding: 38px 22px; border: 1px dashed var(--fh-line); border-radius: 14px; text-align: center; color: var(--fh-muted); }
+.fan-list__empty > i { color: var(--fh-accent); font-size: 32px; }
+.fan-list__empty h2 { color: var(--fh-text); font: 600 30px 'Rajdhani', sans-serif; }
+.fan-list__empty a { color: var(--fh-accent); text-decoration: underline; }
+.fan-list__pagination a { padding: 12px 16px; border: 1px solid var(--fh-line); border-radius: 8px; }
+.fan-dialog { width: min(900px, calc(100% - 32px)); max-height: calc(100dvh - 40px); padding: 0; border: 1px solid var(--fh-line); border-radius: 18px; background: var(--fh-bg); color: var(--fh-text); overscroll-behavior: contain; }
+.fan-dialog::backdrop { background: #0b0714b8; backdrop-filter: blur(5px); }
+.fan-dialog__bar { position: sticky; top: 0; z-index: 1; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 14px 24px; background: var(--fh-surface); border-bottom: 1px solid var(--fh-line); }
+.fan-dialog__bar h2 { font: 600 22px 'Rajdhani', sans-serif; margin: 0; }
+.fan-dialog__bar button { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--fh-line); background: var(--fh-bg); color: var(--fh-text); }
+.fan-dialog__status { padding: 36px 24px; text-align: center; color: var(--fh-muted); }
+.fan-dialog__status a { display: inline-block; padding: 14px; text-decoration: underline; }
+.fan-detail { padding: 28px; overflow-wrap: anywhere; }
+.fan-detail h2 { margin: 0 0 14px; font: 600 clamp(28px, 4vw, 42px)/1.15 'Rajdhani', sans-serif; }
+.fan-detail__byline { color: var(--fh-muted); font-size: 12px; line-height: 1.8; margin-bottom: 24px; }
+.fan-detail__cover, .fan-detail__gallery { display: block; width: 100%; max-height: 520px; height: auto; object-fit: contain; border-radius: 10px; background: var(--fh-surface); margin: 20px 0; }
+.fan-detail__lead { font-size: 17px; line-height: 1.8; }
+.fan-detail__prose { font-size: 14px; line-height: 1.9; color: var(--fh-muted); }
+.fan-detail__prose img, .fan-detail video, .fan-detail audio { max-width: 100%; }
+.fan-detail video, .fan-detail audio { display: block; width: 100%; margin: 20px 0; }
+.fan-detail__prose a { color: var(--fh-accent); text-decoration: underline; }
+.fan-list--reading { max-width: 900px; }
+.fan-home { color: var(--fh-text); }
+@media (max-width: 900px) { .fan-list__filters { grid-template-columns: repeat(2, minmax(0, 1fr)); } .fan-list__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; } }
+@media (max-width: 600px) { .fan-list { padding: 22px 18px 48px; } .fan-list__heading { flex-direction: column; align-items: flex-start; gap: 18px; } .fan-list__filters, .fan-list__grid { grid-template-columns: 1fr; } .fan-list__filters { padding: 16px; } .fan-list__filters input, .fan-list__filters select { font-size: 16px; } .fan-dialog { width: calc(100% - 16px); max-height: calc(100dvh - 16px); border-radius: 12px; } .fan-dialog__bar, .fan-detail { padding: 16px; } .fan-card__body { padding: 18px; } .fan-list__pagination { font-size: 11px; gap: 8px; } }
+@media (prefers-reduced-motion: reduce) { .fan-card { transition: none; } }

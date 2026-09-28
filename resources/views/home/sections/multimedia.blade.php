@@ -8,6 +8,7 @@
         <p class="home-multimedia__eyebrow"><span></span>Fan creations<span></span></p>
         <h2 id="home-multimedia-title">Fan <span>Content</span></h2>
         <p class="home-section-subtitle">Fan art, clips, wallpapers and stories submitted by the community.</p>
+        <a class="fh-button home-multimedia__view-all" href="{{ route('public.fan-content.index') }}">View all <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
     </header>
     @if($multimediaItems->isNotEmpty())
         <div class="home-multimedia__rows">

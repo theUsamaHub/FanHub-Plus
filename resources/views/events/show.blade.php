@@ -28,7 +28,7 @@
                 <div><dt>Location</dt><dd>{{ $event->venue ?: 'Venue to be announced' }}<span>{{ $event->city }}</span></dd></div>
                 <div><dt>Status</dt><dd>{{ $event->display_status }}</dd></div>
             </dl>
-            <a class="events-button events-button--outline" href="{{ route('events.calendar', $event->slug) }}">Add to Calendar <span aria-hidden="true">+</span></a>
+            {{-- <a class="events-button events-button--outline" href="{{ route('events.calendar', $event->slug) }}">Add to Calendar <span aria-hidden="true">+</span></a> --}}
             @if($event->safe_ticket_url)<a class="events-button" href="{{ $event->safe_ticket_url }}" target="_blank" rel="noopener noreferrer">Official event / tickets <span aria-hidden="true">↗</span></a>@endif
         </aside>
     </div>
