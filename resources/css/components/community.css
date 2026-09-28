@@ -19,7 +19,9 @@
 .community__heading h2 { font-size: clamp(26px, 3vw, 34px); }
 .community__count, .community__badge { font-size: 12px; padding: 6px 10px; border-radius: 30px; background: var(--member-panel); color: var(--member-muted); }
 .community__summary { display: flex; align-items: center; flex-wrap: wrap; gap: 20px; padding: 24px 0; }
-.community__summary > strong { font-size: 42px; line-height: 1.2; }
+.community__summary .community__score { display: inline-flex; align-items: baseline; gap: 6px; flex-shrink: 0; font-size: clamp(30px, 4vw, 42px); line-height: 1.2; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.community__summary .community__unrated { font-size: 20px; line-height: 1.4; color: var(--member-text); }
+.community__summary > div { min-width: 0; }
 .community__summary small { font-size: 16px; font-weight: 400; color: var(--member-muted); }
 .community__summary p { font-size: 12px; color: var(--member-muted); margin: 6px 0 0; }
 .community__stars { display: flex; gap: 5px; color: var(--member-accent); font-size: 18px; }
