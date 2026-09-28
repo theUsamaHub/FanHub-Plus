@@ -1,10 +1,4 @@
 <section id="characters" class="character-spotlight" data-character-spotlight aria-labelledby="character-spotlight-title">
-    <picture class="character-spotlight__backdrop character-spotlight__backdrop--dark" aria-hidden="true">
-        <img src="{{ asset(config('homepage.images.characters_dark')) }}" alt="" loading="lazy" decoding="async" width="1672" height="941">
-    </picture>
-    <picture class="character-spotlight__backdrop character-spotlight__backdrop--light" aria-hidden="true">
-        <img src="{{ asset(config('homepage.images.characters_light')) }}" alt="" loading="lazy" decoding="async" width="1672" height="941">
-    </picture>
     <header class="character-spotlight__heading">
         <p class="character-spotlight__eyebrow"><span aria-hidden="true"></span>CHARACTER SPOTLIGHT<span aria-hidden="true"></span></p>
         <h2 id="character-spotlight-title">MEET THE <span>ICONS</span></h2>
