@@ -10,11 +10,9 @@
 
         <title>{{ config('app.name', 'FanHubPlus') }} — Admin</title>
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Saira:wght@400;500;600&display=swap" rel="stylesheet" />
 
         @vite(['resources/css/app.scss', 'resources/css/admin.css', 'resources/js/app.js'])
+        @include('partials.font-links')
         <style>[x-cloak] { display: none !important; }</style>
 
         {{-- SweetAlert2 for styled confirm/alert dialogs in the admin panel --}}

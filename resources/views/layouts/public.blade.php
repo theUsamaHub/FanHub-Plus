@@ -19,6 +19,7 @@
     </script>
     @endauth
     @vite('resources/js/public.js')
+    @include('partials.font-links')
     @stack('styles')
 </head>
 <body class="fh-site">
