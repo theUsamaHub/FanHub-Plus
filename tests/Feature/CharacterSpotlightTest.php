@@ -79,4 +79,30 @@ class CharacterSpotlightTest extends TestCase
         $this->get('/')->assertOk()->assertSee('Character spotlights will appear here soon.')
             ->assertDontSee('data-character-carousel', false);
     }
+
+    public function test_detail_shows_only_linked_merchandise_and_live_events_from_public_stories(): void
+    {
+        $category = Category::create(['name' => 'Anime', 'slug' => 'anime']);
+        $character = CharacterProfile::create(['name' => 'Event hero', 'category_id' => $category->id]);
+        $story = Content::create(['title' => 'Hero story', 'type' => 'article', 'category_id' => $category->id,
+            'status' => 'published', 'published_at' => now()->subDay()]);
+        $character->contents()->attach($story);
+        \App\Models\MerchandiseItem::create(['content_id' => $story->id, 'name' => 'Hero figure', 'category_id' => $category->id, 'character_id' => $character->id]);
+        \App\Models\MerchandiseItem::create(['content_id' => $story->id, 'name' => 'Unrelated figure', 'category_id' => $category->id]);
+        foreach (['Upcoming gathering', 'Ongoing gathering', 'Past gathering', 'Draft gathering', 'Unrelated gathering'] as $title) {
+            \App\Models\Event::create(['title' => $title, 'category_id' => $category->id,
+                'content_id' => $title === 'Unrelated gathering' ? null : $story->id,
+                'status' => $title === 'Draft gathering' ? 'draft' : 'published',
+                'start_at' => in_array($title, ['Past gathering', 'Ongoing gathering']) ? now()->subDay() : now()->addDay(),
+                'end_at' => $title === 'Past gathering' ? now()->subHour() : now()->addDays(2),
+                'city' => 'Karachi', 'venue' => 'Fan hall']);
+        }
+        $url = route('public.character', $character->slug);
+        $this->get($url)->assertOk()->assertSee('Hero figure')->assertDontSee('Unrelated figure')
+            ->assertSee('Upcoming gathering')->assertSee('Ongoing gathering')->assertDontSee('Past gathering')
+            ->assertDontSee('Draft gathering')->assertDontSee('Unrelated gathering');
+        $story->update(['status' => 'draft']);
+        $this->get($url)->assertOk()->assertDontSee('Upcoming gathering')->assertDontSee('Ongoing gathering')
+            ->assertSee('A story still unfolding')->assertSee('The next gathering awaits');
+    }
 }
