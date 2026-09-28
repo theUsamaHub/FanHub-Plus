@@ -22,7 +22,7 @@
                                     $mediaImage = $imageMedia?->url ?: $mediaFallback;
                                     $mediaIcon = match ($item->type) { 'video' => 'bi-play-circle', 'audio' => 'bi-music-note-beamed', default => 'bi-images' };
                                 @endphp
-                                <a class="home-multimedia__card" href="{{ route('public.content', $item->slug) }}" aria-label="{{ $item->title }}">
+                                <a class="home-multimedia__card" href="{{ route('public.fan-content.show', $item->slug) }}" data-fan-open data-fan-home aria-label="{{ $item->title }}" aria-haspopup="dialog">
                                     <img src="{{ $mediaImage }}" data-image-fallback="{{ $mediaFallback }}" alt="{{ $imageMedia?->alt_text ?: $item->title }}" width="256" height="144" loading="lazy" decoding="async">
                                     <span class="home-multimedia__caption"><i class="bi {{ $mediaIcon }}" aria-hidden="true"></i><strong>{{ $item->title }}</strong>@if($item->category)<small>{{ $item->category->name }}</small>@endif</span>
                                 </a>

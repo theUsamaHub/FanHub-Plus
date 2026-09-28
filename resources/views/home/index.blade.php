@@ -40,4 +40,7 @@
 @else
     <x-content-modal />
 @endif
+
+<!-- Fan Content Modal (opens when clicking fan content tiles in the home Fan Content section) -->
+@include('public.fan-content.modal')
 @endsection

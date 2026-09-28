@@ -10,7 +10,14 @@ export function initMultimedia(page) {
             copy.dataset.mediaClone = '';
             copy.setAttribute('aria-hidden', 'true');
             if (copy.matches('a')) copy.tabIndex = -1;
-            copy.querySelectorAll('a').forEach((link) => { link.tabIndex = -1; });
+            // Strip modal triggers so cloned loop tiles do not open extra dialogs.
+            copy.removeAttribute('data-fan-open');
+            copy.removeAttribute('data-fan-home');
+            copy.querySelectorAll('a').forEach((link) => {
+                link.tabIndex = -1;
+                link.removeAttribute('data-fan-open');
+                link.removeAttribute('data-fan-home');
+            });
             return copy;
         };
         let lastWidth = 0;
