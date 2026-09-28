@@ -2,17 +2,21 @@
 @section('title', $character->name.' | Fan Hub Plus')
 @section('content')
 <article class="character-detail">
-    <a class="character-detail__back" href="{{ route('home') }}#characters">← Character spotlight</a>
+    <nav class="character-detail__back" aria-label="Breadcrumb"><a href="{{ route('home') }}">Home</a><span aria-hidden="true">›</span><a href="{{ route('home') }}#characters">Characters</a><span aria-hidden="true">›</span><span aria-current="page">{{ $character->name }}</span></nav>
     <header class="character-detail__hero">
-        <div class="character-detail__portrait">
+        <div class="character-detail__portrait" data-character-tilt>
             <img src="{{ $character->artwork_url }}" data-image-fallback="{{ asset(config('homepage.images.character')) }}" width="474" height="632" alt="{{ $character->name }}" fetchpriority="high">
         </div>
         <div class="character-detail__intro">
-            <p class="character-detail__category">{{ $character->category?->name ?? 'Fandom' }} <span>/ Character spotlight</span></p>
             <h1>{{ $character->name }}</h1>
+            <p class="character-detail__category"><i class="bi bi-sparkle" aria-hidden="true"></i> {{ $character->category?->name ?? 'Fandom' }} character</p>
+            <div class="character-detail__tags"><span>{{ $character->category?->name ?? 'Fandom' }}</span><span>Character spotlight</span></div>
             <div class="character-detail__bio">{{ trim(strip_tags($character->bio ?? '')) ?: 'There’s more to discover about this character. Explore their stories, collection and community below.' }}</div>
-            <a class="fh-button" href="#character-content">Explore their world <i class="bi bi-arrow-down" aria-hidden="true"></i></a>
-            <a class="character-detail__community-link" href="#community">Join the conversation</a>
+            <div class="character-detail__facts">
+                <a href="#character-content"><i class="bi bi-collection" aria-hidden="true"></i><small>Appears in</small><strong>{{ $stories->total() }} {{ Str::plural('story', $stories->total()) }}</strong></a>
+                <a href="#character-merchandise"><i class="bi bi-bag" aria-hidden="true"></i><small>Merchandise</small><strong>{{ $merchandise->total() }} {{ Str::plural('item', $merchandise->total()) }}</strong></a>
+                <a href="#character-events"><i class="bi bi-calendar-event" aria-hidden="true"></i><small>Events</small><strong>{{ $events->total() }} upcoming / live</strong></a>
+            </div>
         </div>
     </header>
     <nav class="character-detail__nav" aria-label="Character sections">
@@ -22,7 +26,7 @@
         <a href="#community">Community</a>
     </nav>
     <section class="character-detail__section" id="character-content" aria-labelledby="character-content-title">
-        <div class="character-detail__heading"><div><h2 id="character-content-title">Inside their world</h2><p>Stories, videos and more featuring {{ $character->name }}.</p></div></div>
+        <div class="character-detail__heading"><h2 id="character-content-title"><i class="bi bi-stack" aria-hidden="true"></i>Appears in</h2><span class="character-detail__meta">{{ $stories->total() }} related</span></div>
         <div class="character-detail__grid">
             @forelse($stories as $story)
                 <a class="character-detail__card" href="{{ route('public.content', $story->slug) }}">
@@ -36,7 +40,7 @@
         {{ $stories->links() }}
     </section>
     <section class="character-detail__section" id="character-merchandise" aria-labelledby="character-merchandise-title">
-        <div class="character-detail__heading"><div><h2 id="character-merchandise-title">For your collection</h2><p>Merchandise inspired by {{ $character->name }}.</p></div></div>
+        <div class="character-detail__heading"><h2 id="character-merchandise-title"><i class="bi bi-bag-fill" aria-hidden="true"></i>Merchandise</h2><span class="character-detail__meta">{{ $merchandise->total() }} items</span></div>
         <div class="character-detail__grid character-detail__grid--merch">
             @forelse($merchandise as $item)
                 <a class="character-detail__card character-detail__card--merch" href="{{ route('public.merchandise', $item->slug) }}">
@@ -50,7 +54,7 @@
         {{ $merchandise->links() }}
     </section>
     <section class="character-detail__section" id="character-events" aria-labelledby="character-events-title">
-        <div class="character-detail__heading"><div><h2 id="character-events-title">Meet beyond the screen</h2><p>Upcoming and ongoing events connected to their stories.</p></div><a href="{{ route('events.index') }}">All events <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></div>
+        <div class="character-detail__heading"><h2 id="character-events-title"><i class="bi bi-calendar-event" aria-hidden="true"></i>Events</h2><a href="{{ route('events.index') }}">All events <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></div>
         <div class="character-detail__events">
             @forelse($events as $event)
                 <a class="character-detail__event" href="{{ route('events.show', $event->slug) }}">

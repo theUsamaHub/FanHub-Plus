@@ -13,6 +13,14 @@
                 <strong>{{ $ratingCount ? number_format($average, 1) : '—' }}<small> / 5</small></strong>
                 <div><div class="community__stars" aria-hidden="true">@for($star = 1; $star <= 5; $star++)<i class="bi {{ $average >= $star ? 'bi-star-fill' : ($average >= $star - 0.5 ? 'bi-star-half' : 'bi-star') }}"></i>@endfor</div><p>{{ $ratingCount }} {{ Str::plural('star rating', $ratingCount) }}@unless($ratingCount) · Be the first @endunless</p></div>
             </div>
+            @if($type === 'character')
+                <div class="character-detail__rating-bars" aria-label="Rating breakdown">
+                    @for($score = 5; $score >= 1; $score--)
+                        @php($percentage = $ratingCount ? round(($ratingDistribution[$score] ?? 0) / $ratingCount * 100) : 0)
+                        <div><span>{{ $score }} <span aria-hidden="true">★</span></span><meter min="0" max="100" value="{{ $percentage }}" aria-label="{{ $score }} stars: {{ $percentage }} percent">{{ $percentage }}%</meter><span>{{ $percentage }}%</span></div>
+                    @endfor
+                </div>
+            @endif
             @if($myReview && $myReview->status !== 'approved')
                 <article class="community__review community__review--private">
                     <div class="community__review-meta"><strong>Your review</strong><span class="community__badge">{{ $myReview->status === 'pending' ? 'Awaiting approval' : 'Not published' }}</span></div>

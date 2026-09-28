@@ -22,6 +22,9 @@ class MemberInteractions extends Component
         $summary = (clone $ratings)->selectRaw('COUNT(*) as total, AVG(stars) as average')->first();
         $ratingCount = (int) $summary->total;
         $average = (float) $summary->average;
+        $ratingDistribution = $this->type === 'character'
+            ? (clone $ratings)->selectRaw('stars, COUNT(*) as total')->groupBy('stars')->pluck('total', 'stars')
+            : collect();
         $reviewRatings = (clone $ratings)->whereIn('user_id', $reviews->pluck('user_id'))->pluck('stars', 'user_id');
         $mine = $user ? (clone $ratings)->where('user_id', $user->id)->first() : null;
         $myReview = $user?->reviews()->where($target)->first();
@@ -29,6 +32,6 @@ class MemberInteractions extends Component
         $watched = $user && $this->type === 'content' && ActivityLog::where(['user_id' => $user->id, 'event' => 'member.watched',
             'auditable_type' => $this->item->getMorphClass(), 'auditable_id' => $this->item->id])->exists();
 
-        return view('components.member-interactions', compact('reviews', 'ratingCount', 'average', 'reviewRatings', 'mine', 'myReview', 'saved', 'watched'));
+        return view('components.member-interactions', compact('reviews', 'ratingCount', 'average', 'ratingDistribution', 'reviewRatings', 'mine', 'myReview', 'saved', 'watched'));
     }
 }
