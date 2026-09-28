@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -18,7 +19,7 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
-        $admin->assignRole('admin');
+        $admin->roles()->sync([Role::where('slug', 'admin')->firstOrFail()->id]);
 
         $testUser = User::updateOrCreate(
             ['email' => 'user@example.com'],
@@ -28,17 +29,18 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
             ]
         );
-        $testUser->assignRole('registered-user');
+        $memberRole = Role::where('slug', 'registered-user')->firstOrFail();
+        $testUser->roles()->sync([$memberRole->id]);
 
         $additionalUsers = [
-            ['name' => 'Alex Rivera', 'email' => 'alex.rivera@example.com', 'role' => 'editor'],
-            ['name' => 'Samantha Chen', 'email' => 'samantha.chen@example.com', 'role' => 'moderator'],
-            ['name' => 'Marcus Vance', 'email' => 'marcus.vance@example.com', 'role' => 'vip-member'],
-            ['name' => 'Elena Rostova', 'email' => 'elena.rostova@example.com', 'role' => 'contributor'],
-            ['name' => 'Daisuke Sato', 'email' => 'daisuke.sato@example.com', 'role' => 'creator'],
-            ['name' => 'Chloe Bennett', 'email' => 'chloe.bennett@example.com', 'role' => 'reviewer'],
-            ['name' => 'Liam O\'Connor', 'email' => 'liam.oconnor@example.com', 'role' => 'subscriber'],
-            ['name' => 'Zahra Ahmed', 'email' => 'zahra.ahmed@example.com', 'role' => 'registered-user'],
+            ['name' => 'Alex Rivera', 'email' => 'alex.rivera@example.com'],
+            ['name' => 'Samantha Chen', 'email' => 'samantha.chen@example.com'],
+            ['name' => 'Marcus Vance', 'email' => 'marcus.vance@example.com'],
+            ['name' => 'Elena Rostova', 'email' => 'elena.rostova@example.com'],
+            ['name' => 'Daisuke Sato', 'email' => 'daisuke.sato@example.com'],
+            ['name' => 'Chloe Bennett', 'email' => 'chloe.bennett@example.com'],
+            ['name' => 'Liam O\'Connor', 'email' => 'liam.oconnor@example.com'],
+            ['name' => 'Zahra Ahmed', 'email' => 'zahra.ahmed@example.com'],
         ];
 
         foreach ($additionalUsers as $u) {
@@ -50,7 +52,7 @@ class UserSeeder extends Seeder
                     'email_verified_at' => now(),
                 ]
             );
-            $user->assignRole($u['role']);
+            $user->roles()->sync([$memberRole->id]);
         }
     }
 }
