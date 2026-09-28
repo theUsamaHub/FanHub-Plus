@@ -2,7 +2,6 @@ $ErrorActionPreference = 'Stop'
 
 $base = 'F:\Devfihter\FanHub-Plus\resources\views\admin'
 
-# Per-file default confirm messages when the existing pattern is `confirm()` (no message).
 $defaults = @{
     "$base\backup\index.blade.php"           = 'Delete this backup file?'
     "$base\roles\index.blade.php"            = 'Delete this role?'
@@ -19,14 +18,12 @@ foreach ($file in $files) {
 
     $defaultMsg = $defaults[$path]
 
-    # 1) onsubmit="return confirm('...')"  -> drop onsubmit, add data-confirm
     $content = [regex]::Replace(
         $content,
         'onsubmit="return confirm\(\''([^'']+)\''\)"',
         'data-confirm="$1"'
     )
 
-    # 2) onsubmit="return confirm()"  -> drop onsubmit, add data-confirm with default message
     if ($defaultMsg) {
         $content = [regex]::Replace(
             $content,
@@ -41,14 +38,12 @@ foreach ($file in $files) {
         )
     }
 
-    # 3) onsubmit="return confirm(\"...\")"  (escaped double quotes) -> data-confirm="..."
     $content = [regex]::Replace(
         $content,
         'onsubmit="return confirm\(\\"([^"\\]+)\\"\)"',
         'data-confirm="$1"'
     )
 
-    # 4) onclick="return confirm('...')" on a button -> data-confirm on the button
     $content = [regex]::Replace(
         $content,
         'onclick="return confirm\(\''([^'']+)\''\)"',

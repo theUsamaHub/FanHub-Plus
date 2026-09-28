@@ -23,7 +23,6 @@ if (page) {
             navigation: { prevEl: page.querySelector('[data-character-prev]'), nextEl: page.querySelector('[data-character-next]') },
             a11y: { containerMessage: 'Characters linked to this content', itemRoleDescriptionMessage: 'Character', slideRole: 'link' },
         });
-        // Bring keyboard-focused cards into view without changing the focused link.
         characters.addEventListener('focusin', event => {
             const card = event.target.closest('.swiper-slide');
             if (card) slider.slideTo([...slider.slides].indexOf(card));
@@ -59,7 +58,6 @@ if (page) {
     let galleryTrigger;
     page.querySelectorAll('[data-gallery-image]').forEach(link => {
         link.addEventListener('click', event => {
-            // Swiper suppresses click after a drag; a regular click opens the full image.
             if (gallery.swiper && !gallery.swiper.allowClick) return;
             event.preventDefault();
             galleryTrigger = link;
@@ -70,7 +68,6 @@ if (page) {
             dialog.showModal();
         });
     });
-    // The requested interaction closes on any click, including the enlarged image.
     dialog.addEventListener('click', () => dialog.close());
     dialog.addEventListener('close', () => galleryTrigger?.focus({ preventScroll: true }));
     dialog.querySelector('[data-lightbox-image]').addEventListener('error', () => {
@@ -89,7 +86,7 @@ if (page) {
             cover.hidden = true;
             video.controls = true;
             video.focus();
-            try { await video.play(); } catch { /* Native controls remain available on playback failure. */ }
+            try { await video.play(); } catch {   }
         });
         video.addEventListener('play', () => { cover.hidden = true; pauseOthers(video); });
         video.addEventListener('ended', () => { cover.hidden = false; video.controls = false; });

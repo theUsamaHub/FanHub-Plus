@@ -98,7 +98,6 @@
             </div>
         </div>
         <script>
-            // Auto-refresh every 30 seconds
             let seconds = 30;
             const el = document.getElementById('countdown');
             const timer = setInterval(() => {

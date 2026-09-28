@@ -13,10 +13,6 @@ class CategoryRequest extends FormRequest
         return true;
     }
 
-    /**
-     * Pre-fill the slug from the name when blank so that the
-     * unique check matches what the model will persist.
-     */
     protected function prepareForValidation(): void
     {
         $name = $this->input('name');

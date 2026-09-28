@@ -6,7 +6,6 @@ $kernel->bootstrap();
 
 $httpKernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
-// Find a registered user
 $user = App\Models\User::whereHas('roles', function ($q) { $q->where('slug', 'registered-user'); })->first();
 if (!$user) { echo "No registered user found\n"; exit(1); }
 

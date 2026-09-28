@@ -6,7 +6,6 @@ use DOMDocument;
 use DOMElement;
 use DOMNode;
 
-/** Small, explicit rich-text vocabulary for public articles and fan submissions. */
 class SafeArticleHtml
 {
     public static function render(?string $html): string

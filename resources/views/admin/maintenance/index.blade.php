@@ -13,7 +13,6 @@
     @endif
 
     <div class="row g-3">
-        <!-- Toggle -->
         <div class="col-md-6">
             <div class="card h-100">
                 <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Status') }}</h6></div>
@@ -38,7 +37,6 @@
             </div>
         </div>
 
-        <!-- Message -->
         <div class="col-md-6">
             <div class="card h-100">
                 <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Maintenance Message') }}</h6></div>
@@ -57,7 +55,6 @@
             </div>
         </div>
 
-        <!-- Bypass Routes -->
         <div class="col-12">
             <div class="card fh-adm-form-card">
                 <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Bypass Routes') }}</h6></div>

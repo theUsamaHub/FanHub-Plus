@@ -85,7 +85,6 @@ export function initReleaseTimeline(page) {
             const results = document.querySelector('[data-release-results]');
             const newFilters = document.querySelector('[data-release-filters]');
             if (!results || !newFilters) throw new Error('Invalid releases response');
-            // Do not detach elements that still belong to active animation contexts.
             page.dispatchEvent(new Event('releases:before-update'));
             section.querySelector('[data-release-results]').replaceWith(results);
             const selected = newFilters.querySelector('[aria-current="true"]')?.dataset.releaseFilter;

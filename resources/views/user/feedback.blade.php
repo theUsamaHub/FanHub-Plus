@@ -5,7 +5,6 @@
 @endpush
 @section('member-content')
 <div class="feedback-page" data-feedback-page>
-    <!-- Hero Section -->
     <section class="feedback-hero" data-feedback-hero>
         <div class="feedback-hero__bg" aria-hidden="true">
             <div class="feedback-hero__gradient"></div>
@@ -18,11 +17,9 @@
         </div>
     </section>
 
-    <!-- Main Content -->
     <section class="feedback-main">
         <div class="feedback-container">
             <div class="feedback-grid">
-                <!-- Form Side -->
                 <div class="feedback-form-wrapper" data-feedback-form-wrapper>
                     <div class="feedback-form-card" data-animate="slide-up" data-delay="100">
                         <div class="feedback-form-header">
@@ -48,7 +45,6 @@
                         <form action="{{ route('user.feedback.store') }}" method="POST" class="feedback-form" data-feedback-form>
                             @csrf
 
-                            <!-- Type Selector -->
                             <div class="feedback-type-selector" data-animate="fade-up" data-delay="100">
                                 <label class="feedback-type-label">What type of feedback?</label>
                                 <div class="feedback-type-options" role="radiogroup" aria-label="Feedback type">
@@ -81,7 +77,6 @@
                                 @enderror
                             </div>
 
-                            <!-- Message Field -->
                             <div class="feedback-field" data-animate="fade-up" data-delay="150">
                                 <label for="message" class="feedback-field__label">
                                     <span>Your Message</span>
@@ -109,7 +104,6 @@
                                 </div>
                             </div>
 
-                            <!-- Submit Button -->
                             <button
                                 type="submit"
                                 class="feedback-submit"
@@ -136,7 +130,6 @@
                     </div>
                 </div>
 
-                <!-- History Side -->
                 <div class="feedback-history-wrapper" data-feedback-history-wrapper>
                     <div class="feedback-history-card" data-animate="slide-up" data-delay="200">
                         <div class="feedback-history-header">
@@ -182,7 +175,6 @@
                         @endif
                     </div>
 
-                    <!-- Status Legend -->
                     <div class="feedback-legend-card" data-animate="slide-up" data-delay="300">
                         <h3>Status Meanings</h3>
                         <div class="feedback-legend">
@@ -221,7 +213,6 @@
         </div>
     </section>
 
-    <!-- Success Toast -->
     <div class="feedback-toast" id="feedback-toast" role="status" aria-live="polite" hidden>
         <div class="feedback-toast__content">
             <x-site-icon name="check-circle" class="feedback-toast__icon" />

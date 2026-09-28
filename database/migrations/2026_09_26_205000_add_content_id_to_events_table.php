@@ -6,12 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Add content_id (nullable FK -> contents.id) on events.
-     *
-     * Nullable because Events may be general "Category-level" events
-     * (e.g. Karachi Anime Convention) which have no specific Content.
-     */
     public function up(): void
     {
         if (! Schema::hasColumn('events', 'content_id')) {

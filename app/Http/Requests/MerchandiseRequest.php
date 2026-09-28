@@ -38,13 +38,6 @@ class MerchandiseRequest extends FormRequest
         ];
     }
 
-    /**
-     * Server-side cross-relation validation:
-     *   - selected Content must belong to selected Category
-     *   - if a Character is selected, it must belong to the selected
-     *     Content through character_contents (same Content the merch
-     *     belongs to)
-     */
     public function withValidator(Validator $validator): void
     {
         $validator->after(function (Validator $validator) {

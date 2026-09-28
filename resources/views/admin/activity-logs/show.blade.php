@@ -17,7 +17,7 @@
 
     <div class="row g-3">
         <div class="col-lg-8">
-            {{-- The headline --}}
+
             <div class="card mb-3 fh-adm-detail-card">
                 <div class="card-body">
                     <div class="d-flex align-items-start gap-3">
@@ -34,7 +34,7 @@
                 </div>
             </div>
 
-            {{-- Field by field diff --}}
+
             <div class="card fh-adm-detail-card">
                 <div class="card-header">
                     <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Field Changes') }}</h6>

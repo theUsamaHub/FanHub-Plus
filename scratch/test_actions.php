@@ -10,7 +10,6 @@ $user = App\Models\User::whereHas('roles', function ($q) { $q->where('slug', 're
 auth()->login($user);
 echo "Logged in as: " . $user->name . "\n\n";
 
-// Test sending feedback
 echo "=== Test 1: Send feedback ===\n";
 $request = Illuminate\Http\Request::create(route('user.feedback.store'), 'POST', [
     'type' => 'suggestion',
@@ -21,7 +20,6 @@ $response = $httpKernel->handle($request);
 echo "POST user.feedback.store: " . $response->getStatusCode() . "\n";
 $httpKernel->terminate($request, $response);
 
-// Test toggling favorite category
 echo "\n=== Test 2: Toggle favorite category ===\n";
 $category = App\Models\Category::first();
 $request = Illuminate\Http\Request::create(route('user.favorites.store', $category), 'POST', [
@@ -32,7 +30,6 @@ $response = $httpKernel->handle($request);
 echo "POST user.favorites.store: " . $response->getStatusCode() . "\n";
 $httpKernel->terminate($request, $response);
 
-// Test preference update
 echo "\n=== Test 3: Update preferences ===\n";
 $request = Illuminate\Http\Request::create(route('user.preferences'), 'PATCH', [
     'theme_preference' => 'dark',
@@ -42,7 +39,6 @@ $response = $httpKernel->handle($request);
 echo "PATCH user.preferences: " . $response->getStatusCode() . "\n";
 $httpKernel->terminate($request, $response);
 
-// Test bookmarking content
 echo "\n=== Test 4: Bookmark content ===\n";
 $content = App\Models\Content::visibleToPublic()->first();
 if ($content) {
@@ -55,7 +51,6 @@ if ($content) {
     $httpKernel->terminate($request, $response);
 }
 
-// Test rating content
 echo "\n=== Test 5: Rate content ===\n";
 if ($content) {
     $request = Illuminate\Http\Request::create(route('user.rating', ['content', $content->id]), 'POST', [
@@ -67,7 +62,6 @@ if ($content) {
     $httpKernel->terminate($request, $response);
 }
 
-// Test marking as watched (only for video/audio)
 echo "\n=== Test 6: Mark as watched ===\n";
 $videoContent = App\Models\Content::visibleToPublic()->whereIn('type', ['video', 'audio'])->first();
 if ($videoContent) {

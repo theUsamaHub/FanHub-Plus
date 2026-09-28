@@ -1,6 +1,5 @@
 <?php
 
-// Shared navigation artwork and copy. Content itself comes from the database.
 return [
     'anime' => ['name' => 'Anime', 'image' => 'Anime.png', 'icon' => 'torii', 'lines' => ['Infinite stories.', 'Timeless emotions.']],
     'gaming' => ['name' => 'Gaming', 'image' => 'Gaming.png', 'icon' => 'controller', 'lines' => ['Play beyond', 'reality.']],

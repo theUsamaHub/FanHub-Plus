@@ -1,7 +1,5 @@
 import { gsap } from 'gsap';
 
-// Each card owns its viewport trigger: stacked mobile cards must not finish
-// animating while the visitor is still reading the first card in the group.
 export function revealCards(cards) {
     [...cards].forEach((card, index) => {
         gsap.from(card, {

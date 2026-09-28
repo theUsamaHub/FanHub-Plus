@@ -22,7 +22,6 @@ class BookmarkSeeder extends Seeder
 
         $count = 0;
         foreach ($users as $uIndex => $user) {
-            // Bookmark a content
             if (isset($contents[$uIndex])) {
                 Bookmark::updateOrCreate(
                     [
@@ -39,7 +38,6 @@ class BookmarkSeeder extends Seeder
 
             if ($count >= 10) break;
 
-            // Bookmark an event
             if (isset($events[$uIndex])) {
                 Bookmark::updateOrCreate(
                     [

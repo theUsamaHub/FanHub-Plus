@@ -16,11 +16,9 @@ if (chat) {
 
     const scroll = () => { body.scrollTop = body.scrollHeight; };
 
-    // ── Auto-resize textarea ──
     const autoResize = () => { input.style.height = 'auto'; input.style.height = Math.min(input.scrollHeight, 100) + 'px'; };
     input.addEventListener('input', autoResize);
 
-    // ── Minimal markdown → HTML ──
     const renderMd = (text) => {
         let html = text
             .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -29,7 +27,6 @@ if (chat) {
             .replace(/`(.+?)`/g, '<code>$1</code>')
             .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
             .replace(/\n/g, '<br>');
-        // Basic unordered list
         html = html.replace(/(?:^|<br>)((?:\s*[-*]\s+.+<br>)+)/g, (_, block) => {
             const items = block.split('<br>').filter(l => l.trim()).map(l => '<li>' + l.replace(/^\s*[-*]\s+/, '') + '</li>').join('');
             return '<ul>' + items + '</ul>';
@@ -64,7 +61,6 @@ if (chat) {
         scroll();
     };
 
-    // ── Quick reply chips ──
     const quickReplies = ['Tell me more', 'Recommend something similar', 'What else can you do?'];
     const showQuickReplies = (context) => {
         const existing = messages.querySelector('.fh-chat__quick-replies');
@@ -92,7 +88,6 @@ if (chat) {
         typing.setAttribute('aria-hidden', 'false');
         form.querySelector('button').disabled = true;
         suggestions.querySelectorAll('button').forEach(button => { button.disabled = true; });
-        // Remove previous quick replies
         messages.querySelectorAll('.fh-chat__quick-replies').forEach(el => el.remove());
         if (!retry) addMessage(text, 'user');
         input.value = '';
@@ -109,7 +104,6 @@ if (chat) {
             if (!response.ok) throw new Error(response.status === 429 ? 'A little too fast! Please wait a minute before trying again.' : response.status === 419 ? 'Your session expired. Refresh this page to continue.' : data.message || 'Unable to connect. Please try again.');
             addMessage(data.answer, 'assistant', data.source);
             failed = null;
-            // Show quick replies after assistant response
             const isAnimeTopic = /anime|manga|recommend/i.test(text + data.answer);
             showQuickReplies(isAnimeTopic ? 'anime' : 'general');
         } catch (exception) {
@@ -141,7 +135,7 @@ if (chat) {
                 suggestions.append(button);
             });
             loaded = true;
-        } catch { /* Free-form chat stays available; retry loading on next open. */ }
+        } catch {   }
     }
 
     const setOpen = (open) => {

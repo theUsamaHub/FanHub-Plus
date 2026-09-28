@@ -109,11 +109,6 @@ class EventController extends Controller
         ];
     }
 
-    /**
-     * Lookup payload for the dependent Content dropdown.
-     * Events may be general category-level (content_id = NULL), so the
-     * dropdown is optional and includes a "No specific content" option.
-     */
     private function relationPayload(?Event $event = null): array
     {
         $categoryId = old('category_id', $event?->category_id);

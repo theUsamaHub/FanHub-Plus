@@ -8,9 +8,6 @@ use Illuminate\Support\Str;
 
 class ModuleRegistry
 {
-    /**
-     * Scan admin controllers and auto-discover modules with their capabilities.
-     */
     public static function discoverModules(): array
     {
         return Cache::rememberForever('module_registry.modules', function () {
@@ -72,9 +69,6 @@ class ModuleRegistry
         });
     }
 
-    /**
-     * Register special controllers (non-CRUD) with custom permissions.
-     */
     private static function registerSpecialController(string $controllerName): ?array
     {
         return match ($controllerName) {
@@ -145,10 +139,6 @@ class ModuleRegistry
         };
     }
 
-    /**
-     * Generate permission keys from discovered modules.
-     * Returns ['module.action' => 'Label', ...]
-     */
     public static function generatePermissions(): array
     {
         $modules = self::discoverModules();
@@ -164,7 +154,6 @@ class ModuleRegistry
             }
         }
 
-        // Always include system-level permissions
         $permissions['settings.view'] = 'View Settings';
         $permissions['settings.edit'] = 'Edit Settings';
         $permissions['roles.view'] = 'View Roles';
@@ -173,9 +162,6 @@ class ModuleRegistry
         return $permissions;
     }
 
-    /**
-     * Get modules grouped by category for the admin panel.
-     */
     public static function getGroupedPermissions(): array
     {
         $modules = self::discoverModules();
@@ -190,7 +176,6 @@ class ModuleRegistry
             }
         }
 
-        // System settings
         $grouped['System']['settings.view'] = 'View Settings';
         $grouped['System']['settings.edit'] = 'Edit Settings';
         $grouped['System']['roles.view'] = 'View Roles';
@@ -199,9 +184,6 @@ class ModuleRegistry
         return $grouped;
     }
 
-    /**
-     * Check if a module exists.
-     */
     public static function moduleExists(string $slug): bool
     {
         return isset(self::discoverModules()[$slug]);

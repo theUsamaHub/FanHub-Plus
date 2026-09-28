@@ -51,7 +51,6 @@
 .character-spotlight__pagination .swiper-pagination-bullet-active::after { width: 24px; left: 3px; background: #ff742f; box-shadow: 0 0 9px #ff6a2b55; }
 .character-spotlight :focus-visible { outline: 2px solid #ffa456; outline-offset: 4px; }
 .character-spotlight__empty { text-align: center; padding: 90px 20px; font-size: 14px; }
-/* Before enhancement (and without JS), every database card remains reachable. */
 .character-spotlight:not(.is-enhanced) .character-spotlight__carousel { overflow-x: auto; scroll-snap-type: x mandatory; }
 .character-spotlight:not(.is-enhanced) .swiper-wrapper { gap: var(--spot-gap); }
 .character-spotlight:not(.is-enhanced) .character-spotlight__slide { scroll-snap-align: center; }

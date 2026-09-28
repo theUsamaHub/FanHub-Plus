@@ -9,7 +9,6 @@ class SettingsSeeder extends Seeder
 {
     public function run(): void
     {
-        // Default settings
         $settings = [
             ['group' => 'general', 'key' => 'site_name', 'value' => 'FanHubPlus', 'type' => 'text'],
             ['group' => 'general', 'key' => 'site_description', 'value' => 'A production-ready FanHubPlus', 'type' => 'textarea'],
@@ -31,7 +30,6 @@ class SettingsSeeder extends Seeder
             Setting::updateOrCreate(['key' => $setting['key']], $setting);
         }
 
-        // Mail settings
         $mailSettings = [
             ['group' => 'mail', 'key' => 'mail_driver', 'value' => 'log', 'type' => 'text'],
             ['group' => 'mail', 'key' => 'mail_host', 'value' => '', 'type' => 'text'],

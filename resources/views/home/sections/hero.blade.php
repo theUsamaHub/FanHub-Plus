@@ -25,7 +25,7 @@
         <div class="fan-hero__picks" aria-label="Explore a fandom">
             @foreach(['anime' => ['01', 'torii', 'Anime', 'Find your next story'], 'manga' => ['02', 'book', 'Manga', 'A world on every page'], 'gaming' => ['03', 'controller', 'Gaming', 'Enter another world']] as $slug => $pick)
                 <a href="{{ route('public.explore', ['category' => $slug]) }}" class="fan-hero__pick fan-hero__pick--{{ $slug }}">
-                    <span class="fan-hero__pick-art" style="background-image: url('{{ asset(config('homepage.artwork.'.$slug)) }}')" aria-hidden="true"></span>
+                    <img class="fan-hero__pick-art" src="{{ $heroArtwork[$slug] }}" data-image-fallback="{{ asset(config('homepage.artwork.'.$slug)) }}" alt="" aria-hidden="true" width="360" height="360">
                     <span class="fan-hero__pick-top"><x-site-icon :name="$pick[1]" /><span>{{ $pick[0] }}</span></span>
                     <strong>{{ $pick[2] }} <span aria-hidden="true">↗</span></strong><small>{{ $pick[3] }}</small>
                 </a>

@@ -101,7 +101,6 @@ function renderViewsChart(data, period = 'daily') {
 
     if (viewsChart) viewsChart.destroy();
 
-    // data can be an object with period keys or a single period data
     const periodData = data[period] || data;
 
     viewsChart = new Chart(ctx, {
@@ -135,7 +134,6 @@ function renderUsersChart(data, period = 'daily') {
 
     if (usersChart) usersChart.destroy();
 
-    // data can be an object with period keys or a single period data
     const periodData = data[period] || data;
 
     usersChart = new Chart(ctx, {
@@ -380,7 +378,6 @@ function renderRatingsChart(data) {
     });
 }
 
-// Track current period for each chart
 let currentPeriods = {
     views: 'daily',
     users: 'daily',
@@ -398,13 +395,11 @@ function initCharts() {
     renderRatingsChart(data.ratings);
 }
 
-// Period switcher for chart-specific buttons
 document.querySelectorAll('[data-chart]').forEach(btn => {
     btn.addEventListener('click', function() {
         const chartName = this.dataset.chart;
         const period = this.dataset.period;
         
-        // Only handle period switching for charts that support it
         if (period && currentPeriods[chartName] !== undefined) {
             currentPeriods[chartName] = period;
         }
@@ -412,31 +407,25 @@ document.querySelectorAll('[data-chart]').forEach(btn => {
         document.querySelectorAll(`[data-chart="${chartName}"]`).forEach(b => b.classList.remove('active'));
         this.classList.add('active');
         
-        // Re-render with selected period
         initCharts();
     });
 });
 
-// Top-level period filter (30 Days, 90 Days, 1 Year) - applies to all period-aware charts
 document.querySelectorAll('[data-range]').forEach(btn => {
     btn.addEventListener('click', function() {
         const range = parseInt(this.dataset.range);
         let period = 'daily';
         
-        // Map range to period
         if (range >= 365) period = 'monthly';
         else if (range >= 90) period = 'weekly';
         
-        // Update all period-aware charts
         Object.keys(currentPeriods).forEach(key => {
             currentPeriods[key] = period;
         });
         
-        // Update UI for top-level buttons
         document.querySelectorAll('[data-range]').forEach(b => b.classList.remove('active'));
         this.classList.add('active');
         
-        // Also update chart-specific period buttons to match
         document.querySelectorAll('[data-chart][data-period]').forEach(b => {
             if (b.dataset.period === period) {
                 b.classList.add('active');
@@ -445,7 +434,6 @@ document.querySelectorAll('[data-range]').forEach(btn => {
             }
         });
         
-        // Re-render with selected period
         initCharts();
     });
 });

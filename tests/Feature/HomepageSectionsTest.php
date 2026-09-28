@@ -28,6 +28,22 @@ class HomepageSectionsTest extends TestCase
         parent::tearDown();
     }
 
+    public function test_hero_cards_use_category_media_and_refresh_after_backend_updates(): void
+    {
+        $cover = Media::create(['disk' => 'public', 'path' => 'covers/hero-anime.jpg', 'original_filename' => 'hero-anime.jpg', 'mime_type' => 'image/jpeg', 'media_type' => 'image', 'size_bytes' => 100]);
+        $category = Category::create(['name' => 'Anime', 'slug' => 'anime', 'icon_media_id' => $cover->id]);
+        $service = app(HomepageService::class);
+        $this->assertSame($cover->url, $service->heroArtwork()['anime']);
+        $this->assertSame(asset(config('homepage.artwork.manga')), $service->heroArtwork()['manga']);
+        $this->get('/')->assertOk()->assertSee('src="'.$cover->url.'"', false);
+        $cover->update(['path' => 'covers/updated-anime.jpg']);
+        $this->assertSame($cover->url, $service->heroArtwork()['anime']);
+        $cover->update(['media_type' => 'video']);
+        $this->assertSame(asset(config('homepage.artwork.anime')), $service->heroArtwork()['anime']);
+        $category->update(['icon_media_id' => null]);
+        $this->assertSame(asset(config('homepage.artwork.anime')), $service->heroArtwork()['anime']);
+    }
+
     private function story(Category $category, array $attributes = []): Content
     {
         return Content::create(array_merge([

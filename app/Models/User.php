@@ -59,7 +59,6 @@ class User extends Authenticatable implements \Illuminate\Contracts\Auth\MustVer
 
     public function favoriteCategoryIds(): array
     {
-        // Request-local relation caching avoids stale session preferences.
         $this->loadMissing('favoriteCategories');
 
         return $this->favoriteCategories->modelKeys();

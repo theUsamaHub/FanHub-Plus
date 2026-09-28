@@ -8,7 +8,6 @@
         <title>{{ config('app.name', 'FanHubPlus') }}</title>
 
 
-        <!-- Styles -->
         @vite(['resources/css/app.scss', 'resources/js/app.js'])
         @include('partials.font-links')
     </head>

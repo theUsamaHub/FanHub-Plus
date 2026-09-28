@@ -7,12 +7,6 @@ use App\Services\ActivityLogger;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-/**
- * Records created / updated / deleted / restored activity for a model.
- *
- * Payloads are redacted and stripped of bookkeeping attributes before they are
- * written, so the log stays readable and never stores secrets.
- */
 trait LogsActivity
 {
     public static function bootLogsActivity(): void
@@ -26,7 +20,6 @@ trait LogsActivity
         static::updated(function (Model $model) use ($logger) {
             $changes = $logger->changed($model);
 
-            // Pure counter or timestamp churn carries no audit value.
             if ($changes === []) {
                 return;
             }
@@ -37,8 +30,6 @@ trait LogsActivity
         });
 
         static::deleted(function (Model $model) use ($logger) {
-            // Soft-deleted models emit `deleted` here; the full pre-delete state
-            // is captured so the detail view can still show what was removed.
             ActivityLog::log('deleted', $model, $logger->redact($model->getAttributes()), null);
         });
 

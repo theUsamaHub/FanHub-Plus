@@ -9,14 +9,11 @@ use RuntimeException;
 
 class FileUploadService
 {
-    /**
-     * Allowed file types organized by category.
-     */
     public const FILE_TYPES = [
         'images' => [
             'mime_types' => ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'],
             'extensions' => ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'],
-            'max_size' => 5120, // 5MB
+            'max_size' => 5120,
         ],
         'documents' => [
             'mime_types' => [
@@ -26,7 +23,7 @@ class FileUploadService
                 'text/plain',
             ],
             'extensions' => ['pdf', 'doc', 'docx', 'txt'],
-            'max_size' => 25600, // 25MB
+            'max_size' => 25600,
         ],
         'spreadsheets' => [
             'mime_types' => [
@@ -35,7 +32,7 @@ class FileUploadService
                 'text/csv',
             ],
             'extensions' => ['xls', 'xlsx', 'csv'],
-            'max_size' => 25600, // 25MB
+            'max_size' => 25600,
         ],
         'videos' => [
             'mime_types' => [
@@ -49,7 +46,7 @@ class FileUploadService
                 'video/3gpp',
             ],
             'extensions' => ['mp4', 'webm', 'ogv', 'mov', 'avi', 'mkv', 'wmv', '3gp'],
-            'max_size' => 102400, // 100MB
+            'max_size' => 102400,
         ],
         'movies' => [
             'mime_types' => [
@@ -63,18 +60,15 @@ class FileUploadService
                 'video/3gpp',
             ],
             'extensions' => ['mp4', 'webm', 'ogv', 'mov', 'avi', 'mkv', 'wmv', '3gp'],
-            'max_size' => 524288, // 512MB
+            'max_size' => 524288,
         ],
         'audio' => [
             'mime_types' => ['audio/mpeg', 'audio/wav', 'audio/ogg', 'audio/mp4', 'audio/aac'],
             'extensions' => ['mp3', 'wav', 'ogg', 'm4a', 'aac'],
-            'max_size' => 20480, // 20MB
+            'max_size' => 20480,
         ],
     ];
 
-    /**
-     * Upload a file and create a media record.
-     */
     public function upload(
         UploadedFile $file,
         string $directory = 'uploads',
@@ -87,8 +81,6 @@ class FileUploadService
         $disk = $disk ?? config('filesystems.media_disk', 'public');
         $path = $file->store($directory, $disk);
 
-        // Disk is configured with throw=false, so a failed write returns false
-        // and would otherwise be saved as path "0".
         if (! is_string($path) || $path === '' || $path === '0') {
             throw new RuntimeException("Failed to store uploaded file [{$file->getClientOriginalName()}] on disk [{$disk}].");
         }
@@ -119,9 +111,6 @@ class FileUploadService
         return Media::create($data);
     }
 
-    /**
-     * Upload multiple files.
-     */
     public function uploadMultiple(
         array $files,
         string $directory = 'uploads',
@@ -137,9 +126,6 @@ class FileUploadService
         return $media;
     }
 
-    /**
-     * Delete a media file and its record.
-     */
     public function delete(Media $media): bool
     {
         Storage::disk($media->disk)->delete($media->path);
@@ -147,9 +133,6 @@ class FileUploadService
         return $media->delete();
     }
 
-    /**
-     * Update media metadata (alt text, duration, category).
-     */
     public function updateMetadata(Media $media, array $data): Media
     {
         $media->fill([
@@ -161,9 +144,6 @@ class FileUploadService
         return $media->fresh();
     }
 
-    /**
-     * File-type category for a given MIME type (images|documents|spreadsheets|videos|audio).
-     */
     public static function categoryFromMime(string $mimeType): string
     {
         return match (true) {
@@ -175,9 +155,6 @@ class FileUploadService
         };
     }
 
-    /**
-     * Map a MIME type to the media_type enum value.
-     */
     public static function mediaTypeFromMime(string $mimeType): string
     {
         if (str_starts_with($mimeType, 'image/')) {
@@ -193,9 +170,6 @@ class FileUploadService
         return 'document';
     }
 
-    /**
-     * Get validation rules for a file type category.
-     */
     public static function getValidationRules(string $category = 'images'): array
     {
         $type = self::FILE_TYPES[$category] ?? self::FILE_TYPES['images'];
@@ -208,9 +182,6 @@ class FileUploadService
         ];
     }
 
-    /**
-     * Get all allowed extensions.
-     */
     public static function getAllowedExtensions(): array
     {
         $extensions = [];
@@ -221,9 +192,6 @@ class FileUploadService
         return array_unique($extensions);
     }
 
-    /**
-     * Get file type info from mime type.
-     */
     public static function getFileTypeInfo(string $mimeType): string
     {
         if (str_starts_with($mimeType, 'image/')) {

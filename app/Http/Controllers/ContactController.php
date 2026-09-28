@@ -22,7 +22,6 @@ class ContactController extends Controller
         $validated['ip_address'] = $request->ip();
         $contact = Contact::create($validated);
 
-        // Notify all admin users
         $admins = User::whereHas('roles', fn($q) => $q->where('slug', 'admin'))->get();
         foreach ($admins as $admin) {
             $admin->notify(new ContactFormNotification(

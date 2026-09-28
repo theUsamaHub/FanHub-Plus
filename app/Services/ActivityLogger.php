@@ -16,17 +16,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
-/**
- * Translates raw model attribute dumps into human-readable audit trail entries.
- *
- * Everything the admin activity log renders as prose originates here, so the
- * wording stays consistent between the list, the detail page and the CSV export.
- */
 class ActivityLogger
 {
-    /**
-     * Friendly singular name for each auditable model.
-     */
     public const MODEL_LABELS = [
         Category::class => 'Fandom',
         CharacterProfile::class => 'Character',
@@ -40,9 +31,6 @@ class ActivityLogger
         User::class => 'User',
     ];
 
-    /**
-     * Attribute that best identifies a record of the given type.
-     */
     public const SUBJECT_ATTRIBUTES = [
         Category::class => 'name',
         CharacterProfile::class => 'name',
@@ -56,9 +44,6 @@ class ActivityLogger
         User::class => 'name',
     ];
 
-    /**
-     * Never persisted into the log, even when the attribute is dirty.
-     */
     public const HIDDEN_ATTRIBUTES = [
         'password',
         'password_confirmation',
@@ -70,9 +55,6 @@ class ActivityLogger
         'two_factor_recovery_codes',
     ];
 
-    /**
-     * Bookkeeping attributes that change constantly and carry no audit value.
-     */
     public const NOISE_ATTRIBUTES = [
         'created_at',
         'updated_at',
@@ -82,9 +64,6 @@ class ActivityLogger
         'remember_token',
     ];
 
-    /**
-     * Field names that do not read well when naively title-cased.
-     */
     public const FIELD_LABELS = [
         'category_id' => 'Fandom',
         'icon_media_id' => 'Icon',
@@ -112,9 +91,6 @@ class ActivityLogger
         'user_agent' => 'Browser',
     ];
 
-    /**
-     * Phrases used when building the log description.
-     */
     public const EVENT_PHRASES = [
         'created' => 'created',
         'updated' => 'updated',
@@ -133,10 +109,6 @@ class ActivityLogger
         return self::MODEL_LABELS[$type] ?? class_basename($type);
     }
 
-    /**
-     * The human label for a record, snapshotted so the entry stays readable
-     * even after the record is renamed or deleted.
-     */
     public function subjectFor(Model $model): ?string
     {
         $attribute = self::SUBJECT_ATTRIBUTES[$model::class] ?? 'name';
@@ -154,9 +126,6 @@ class ActivityLogger
         return $value === null ? null : Str::limit(trim((string) $value), 200, '');
     }
 
-    /**
-     * Rebuild a subject from a stored value bag (used when backfilling).
-     */
     public function subjectFromValues(?array $values): ?string
     {
         if (! $values) {
@@ -172,8 +141,6 @@ class ActivityLogger
     }
 
     /**
-     * Dirty attributes worth auditing: secrets and counters removed.
-     *
      * @return array<string, mixed>
      */
     public function changed(Model $model): array
@@ -181,9 +148,6 @@ class ActivityLogger
         return $this->redact($model->getDirty());
     }
 
-    /**
-     * Strip secrets and bookkeeping noise from an attribute bag.
-     */
     public function redact(?array $values): array
     {
         if (! $values) {
@@ -193,9 +157,6 @@ class ActivityLogger
         return array_diff_key($values, array_flip(self::HIDDEN_ATTRIBUTES), array_flip(self::NOISE_ATTRIBUTES));
     }
 
-    /**
-     * Build the one-line sentence shown in the log list.
-     */
     public function describe(string $event, ?string $modelType, ?string $subject, ?array $old, ?array $new): string
     {
         $label = $this->modelLabel($modelType);
@@ -252,8 +213,6 @@ class ActivityLogger
     }
 
     /**
-     * Turn a stored event into rows suitable for an old -> new diff table.
-     *
      * @return array<int, array{field: string, label: string, old: mixed, new: mixed, type: string}>
      */
     public function diff(string $event, ?array $old, ?array $new): array
@@ -296,9 +255,6 @@ class ActivityLogger
         return $rows;
     }
 
-    /**
-     * Human label for a raw attribute name.
-     */
     public function fieldLabel(string $key): string
     {
         if (isset(self::FIELD_LABELS[$key])) {
@@ -310,9 +266,6 @@ class ActivityLogger
         return Str::headline($key);
     }
 
-    /**
-     * Render a stored value for display.
-     */
     public function formatValue(mixed $value, int $limit = 120): string
     {
         if ($value === null || $value === '') {
@@ -369,10 +322,6 @@ class ActivityLogger
     }
 
     /**
-     * Every model type that currently writes to the log, for the filter dropdown.
-     *
-     * Session events reuse the User type, since that is who signed in.
-     *
      * @return array<string, string>
      */
     public function auditableTypes(): array

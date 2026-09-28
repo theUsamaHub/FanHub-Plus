@@ -127,7 +127,6 @@
         @endif
     </form>
 
-    <!-- Add Setting Modal -->
     <div class="modal fade" id="addSettingModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">

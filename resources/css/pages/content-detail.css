@@ -1,4 +1,3 @@
-/* Content detail only: keep the shared navigation and other public pages intact. */
 .fh-site .fh-main.content-detail-main { padding-top: 98px; background: #0b0d17; }
 :root[data-theme='light'] .fh-site .fh-main.content-detail-main { background: #f5f3fc; }
 .content-detail { --cd-bg: #0c0e19; --cd-panel: #11131f; --cd-line: #292b40; --cd-muted: #b4b4c5; --cd-orange: #ffa21b; max-width: 1440px; margin: 0 auto; padding: 0 38px 44px; color: #f4f3fa; font-size: 12px; background: radial-gradient(ellipse at 94% 22%, #84156b13, transparent 32%); }
@@ -70,7 +69,6 @@
 @keyframes cd-lightbox-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes cd-page-in { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: translateY(0); } }
 @media(prefers-reduced-motion: no-preference) { .cd-hero { animation: cd-page-in .6s ease-out both; }.cd-middle { animation: cd-page-in .6s .08s ease-out both; }.cd-characters { animation: cd-page-in .65s .15s ease-out both; } }
-/* Before JS loads, every card remains reachable by horizontal scrolling. */
 .content-detail .swiper:not(.swiper-initialized) { overflow-x: auto; }.content-detail .swiper:not(.swiper-initialized) .swiper-wrapper { gap: 12px; }.cd-gallery:not(.swiper-initialized) .swiper-slide { width: 170px; }.cd-merch-slider:not(.swiper-initialized) .swiper-slide { width: 155px; }
 :root[data-theme='light'] .content-detail { --cd-bg: #faf8ff; --cd-panel: #fff; --cd-line: #ddd5e5; --cd-muted: #655c73; color: #251c33; }:root[data-theme='light'] .cd-synopsis { color: #655c73; }:root[data-theme='light'] .cd-audio { background: #fff; }:root[data-theme='light'] .cd-tag:not(.cd-tag--category) { color: #62596f; background: #ece7f3; }:root[data-theme='light'] .cd-prose :is(h1,h2,h3,h4) { color: #251c33; }
 @media(min-width:1500px) { .content-detail { padding-inline: 28px; }.cd-poster img { height: 305px; }.cd-trailer { min-height: 207px; } }
@@ -80,3 +78,7 @@
 
 .cd-title-accent { color: var(--cd-orange); }
 .cd-view-all { margin-left: auto; color: var(--cd-orange) !important; font-size: 10px; margin-bottom: 7px; }
+:root[data-theme='light'] .content-detail .cd-actions .cd-button { background: #fff; color: #35243e; border-color: #b9a9c6; }
+:root[data-theme='light'] .content-detail .cd-actions .cd-button:hover,
+:root[data-theme='light'] .content-detail .cd-actions .cd-button[aria-pressed='true'] { background: #fff0dc; color: #753600; border-color: #b96017; }
+.content-detail .cd-actions .cd-button:focus-visible { outline: 2px solid var(--cd-orange); outline-offset: 3px; }

@@ -13,7 +13,6 @@ export function fandomOnboarding() {
                 dialog.removeAttribute('open');
                 dialog.showModal();
             }
-            // Native dialogs provide focus containment; this also covers older browsers.
             dialog.addEventListener('keydown', (event) => {
                 if (event.key === 'Escape') { event.preventDefault(); return; }
                 if (event.key !== 'Tab') return;
@@ -27,7 +26,6 @@ export function fandomOnboarding() {
         },
         submit(event) {
             if (!this.valid || this.submitting) { event.preventDefault(); this.message = 'Please choose between 3 and 5 fandoms.'; return; }
-            // Keep successful checkbox values enabled until the browser serializes the form.
             this.submitting = true;
             this.message = 'Saving your favorites...';
         },

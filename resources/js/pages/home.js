@@ -28,7 +28,6 @@ if (page) {
 
     const motion = gsap.matchMedia();
     motion.add('(prefers-reduced-motion: no-preference)', () => {
-        // GSAP owns the smooth-scroll clock; each carousel has its own Swiper instance.
         const lenis = new Lenis({
             autoRaf: false,
             smoothWheel: true,

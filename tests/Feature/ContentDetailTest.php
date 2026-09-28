@@ -56,9 +56,9 @@ class ContentDetailTest extends TestCase
         $this->actingAs($user)->post($url, ['saved' => 1])->assertSessionHasNoErrors();
         $this->post($url, ['saved' => 1])->assertSessionHasNoErrors();
         $this->assertSame(1, ActivityLog::where('event', 'member.watchlisted')->count());
-        $this->get(route('public.content', $content->slug))->assertOk()->assertSee('In Watchlist')->assertSee('Add to Favorites');
+        $this->get(route('public.content', $content->slug))->assertOk()->assertDontSee('In Watchlist')->assertDontSee('Add to Watchlist')->assertSee('Add to Favorites');
         $this->post(route('user.bookmark', ['content', $content->id]), ['saved' => 1])->assertSessionHasNoErrors();
-        $this->get(route('public.content', $content->slug))->assertOk()->assertSee('In Watchlist')->assertSee('Saved to Favorites');
+        $this->get(route('public.content', $content->slug))->assertOk()->assertDontSee('In Watchlist')->assertDontSee('Add to Watchlist')->assertSee('Saved to Favorites');
         $this->actingAs($otherUser)->get(route('public.content', $content->slug))->assertDontSee('In Watchlist')->assertDontSee('Saved to Favorites');
         $this->post($url, ['saved' => 0])->assertSessionHasNoErrors();
         $this->assertSame(1, ActivityLog::where('event', 'member.watchlisted')->count());

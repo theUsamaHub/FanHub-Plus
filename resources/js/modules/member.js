@@ -48,6 +48,6 @@ if (preferenceUrl) {
                 body: JSON.stringify({ theme_preference: document.documentElement.dataset.theme }),
             });
             if (!response.ok) throw new Error('Preference was not saved');
-        } catch { /* The local theme toggle remains available offline. */ }
+        } catch {   }
     });
 }

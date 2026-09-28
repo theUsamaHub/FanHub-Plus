@@ -457,7 +457,6 @@
 </div>
 
 @push('modals')
-<!-- Media picker modal (View all): kept outside .fh-adm-main-inner because that node has a persistent transform. -->
 <div class="fh-adm-media-modal" id="fhMediaModal" role="dialog" aria-modal="true" aria-labelledby="fhMediaModalTitle">
     <div class="fh-adm-media-modal__backdrop" data-fh-media-close></div>
     <div class="fh-adm-media-modal__panel">
@@ -638,7 +637,6 @@ document.addEventListener('DOMContentLoaded', function () {
             tabs.push({ id: id, label: category.name, count: counts[id] || 0 });
         });
 
-        // Categories used by media but missing from the content category list.
         Object.keys(counts).forEach(function (key) {
             if (key === 'none' || known[key]) return;
             var name = '';
@@ -671,7 +669,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var query = searchText.trim().toLowerCase();
         return (PAYLOAD[cfg.group] || []).filter(function (item) {
             if (activeCat === 'all') {
-                // keep everything
+
             } else if (activeCat === 'none') {
                 if (item.category_id) return false;
             } else if (String(item.category_id) !== String(activeCat)) {
@@ -831,7 +829,6 @@ document.addEventListener('DOMContentLoaded', function () {
         currentKey = null;
     }
 
-    // Prepare + open on the trigger itself (no dependency on Bootstrap data-api).
     Array.prototype.forEach.call(document.querySelectorAll('[data-fh-media]'), function (trigger) {
         trigger.addEventListener('click', function () {
             var key = trigger.getAttribute('data-fh-media');

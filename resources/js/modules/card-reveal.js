@@ -1,4 +1,3 @@
-// Progressive enhancement: cards remain visible without JavaScript or animation support.
 const cards = document.querySelectorAll('[data-card-reveal]');
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 

@@ -203,7 +203,6 @@
 .event-card__map { display: inline-block; margin: 0 24px 20px; font-size: 12px; text-decoration: underline !important; }
 @media (max-width: 700px) { .events-nearby { padding: 18px; } .events-nearby__actions { width: 100%; } .events-nearby__actions > button { flex: 1 1 100%; } }
 
-/* Nearby discovery: warm editorial panel with a quiet location signal. */
 .events-nearby { position: relative; display: grid; grid-template-columns: 116px minmax(0,1fr) auto; gap: 24px 30px; padding: 32px; overflow: hidden; background: radial-gradient(ellipse at 0 20%, #ff922e12, transparent 60%), var(--fh-surface); border-radius: 18px; }
 .events-nearby::before { content: ''; position: absolute; inset: 0 auto 0 0; width: 3px; background: linear-gradient(var(--brand-orange, #ff922e),var(--brand-lavender, #c9b6f5)); }
 .events-nearby__copy h3 { font: 600 clamp(28px,3vw,40px)/1.05 'Rajdhani',sans-serif; margin: 10px 0 13px; letter-spacing: -.5px; }

@@ -114,11 +114,6 @@ class MerchandiseController extends Controller
         ];
     }
 
-    /**
-     * Lookup payload for dependent dropdowns. Used by both create/edit to
-     * populate the Content dropdown from the selected Category and the
-     * Character dropdown from the selected Content.
-     */
     private function relationPayload(?MerchandiseItem $item = null): array
     {
         $categoryId = old('category_id', $item?->category_id);

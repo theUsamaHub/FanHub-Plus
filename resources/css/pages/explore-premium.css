@@ -1,4 +1,3 @@
-/* Explore: editorial discovery layout, scoped away from story pages. */
 .explore-premium { --fandom-color:#ffb477; padding-top:18px; }
 .explore-premium.fandom-page--gaming,.explore-premium.fandom-page--esports { --fandom-color:#8de3c1; --fandom-glow:#60d3ab26; }
 .explore-premium.fandom-page--music { --fandom-color:#c3b2ef; --fandom-glow:#c3b2ef26; }

@@ -54,8 +54,6 @@ export function initExploreFandoms(page) {
                 return;
             }
             step = width + (innerWidth <= 700 ? 18 : 24);
-            // Copies fill the visual belt while the database links remain the
-            // single keyboard and screen-reader sequence.
             const sets = Math.max(1, Math.ceil((cluster.clientWidth + step * 2) / (originals.length * step)));
             for (let set = 1; set < sets; set++) originals.forEach((item) => {
                 const copy = item.cloneNode(true);

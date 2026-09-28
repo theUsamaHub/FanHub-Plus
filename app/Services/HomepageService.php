@@ -17,13 +17,25 @@ class HomepageService
 {
     private function remember(string $key, callable $callback): mixed
     {
-        // Personalized result sets must never enter the shared guest cache.
         if (auth()->check()) return $callback();
 
         $version = Cache::get('homepage:version', 'initial');
 
         return Cache::remember('homepage:v4:'.$version.':'.today()->toDateString().':'.$key,
             config('homepage.cache_seconds'), $callback);
+    }
+
+    public function heroArtwork(): array
+    {
+        return $this->remember('hero-artwork', function () {
+            $categories = Category::with('iconMedia')->whereIn('slug', ['anime', 'manga', 'gaming'])->get()->keyBy('slug');
+
+            return collect(['anime', 'manga', 'gaming'])->mapWithKeys(function ($slug) use ($categories) {
+                $media = $categories->get($slug)?->iconMedia;
+
+                return [$slug => ($media?->isImage() ? $media->url : null) ?: asset(config('homepage.artwork.'.$slug))];
+            })->all();
+        });
     }
 
     public function sections(): array

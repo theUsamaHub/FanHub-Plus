@@ -11,11 +11,6 @@ use Illuminate\Database\Seeder;
 
 class ActivityLogSeeder extends Seeder
 {
-    /**
-     * Seed a believable audit trail using only the event types the application
-     * actually writes. Each row goes through ActivityLogger so the generated
-     * subject and description match what a real change would produce.
-     */
     public function run(): void
     {
         $logger = app(ActivityLogger::class);
@@ -63,7 +58,6 @@ class ActivityLogSeeder extends Seeder
 
         $rows = array_filter($rows);
 
-        // Oldest first so `latest()` on the admin page reads newest-first.
         foreach (array_reverse($rows) as $offset => $row) {
             ActivityLog::create($row['data'] + ['created_at' => now()->subMinutes($offset * 37)]);
         }

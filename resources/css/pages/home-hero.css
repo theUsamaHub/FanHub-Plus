@@ -65,14 +65,13 @@
 .fan-hero__pick strong { display: flex; justify-content: space-between; gap: 5px; color: #FFF9F2; font-size: 14px; }
 .fan-hero__pick small { color: #D0C1DF; font-size: 9px; margin-top: 3px; }
 .fan-hero__pick { position: relative; isolation: isolate; overflow: hidden; min-height: 185px; }
-.fan-hero__pick-art { position: absolute; inset: 0; z-index: -2; background-size: 300% 100%; background-position: left center; transition: transform .4s ease; }
+.fan-hero__pick-art { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform .4s ease; }
 .fan-hero__pick--manga .fan-hero__pick-art { background-position: center; }
 .fan-hero__pick--gaming .fan-hero__pick-art { background-position: right center; }
 .fan-hero__pick::after { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, #18132055, transparent 35%, #181320E8 80%); }
 .fan-hero__pick:hover .fan-hero__pick-art, .fan-hero__pick:focus-visible .fan-hero__pick-art { transform: scale(1.06); }
 .fan-hero__pick-top { text-shadow: 0 2px 6px #000; }
 .fan-hero__pick-top > .fh-icon { padding: 4px; border-radius: 7px; background: #181320A8; }
-/* Keep controls below the fixed navigation while video fills the viewport. */
 .fan-hero .fan-hero__playback { top: calc(var(--hero-nav-height) + 18px); }
 @media (max-width: 1180px) { .fan-hero { --hero-nav-height: 78px; } }
 @media (max-width: 700px) { .fan-hero { --hero-nav-height: 70px; } }

@@ -31,7 +31,6 @@ class PublicSiteController extends Controller
         $query = Content::forUser(auth()->user())->visibleToPublic()->with(['category', 'media', 'tags']);
 
         if ($term = trim($filters['q'] ?? '')) {
-            // Bind a literal search term (including SQL wildcard characters).
             $term = '%'.str_replace(['!', '%', '_'], ['!!', '!%', '!_'], mb_strtolower($term)).'%';
             $query->where(fn ($query) => $query
                 ->whereRaw("LOWER(title) LIKE ? ESCAPE '!'", [$term])
@@ -96,20 +95,17 @@ class PublicSiteController extends Controller
         if (! empty($filters['year'])) $query->whereYear('release_date', $filters['year']);
         if (! empty($filters['tag'])) $query->whereHas('tags', fn ($q) => $q->where('tags.id', $filters['tag']));
 
-        // Get featured content for this fandom
         $featured = Content::forUser(auth()->user())->visibleToPublic()->with(['category', 'media', 'tags'])
             ->whereHas('category', fn ($q) => $q->where('slug', $category->slug))
             ->where('is_featured', true)
             ->orderByDesc('popularity_score')
             ->limit(4)->get();
 
-        // Get trending content for this fandom
         $trending = Content::forUser(auth()->user())->visibleToPublic()->with(['category', 'media', 'tags'])
             ->whereHas('category', fn ($q) => $q->where('slug', $category->slug))
             ->orderByDesc('view_count')
             ->limit(8)->get();
 
-        // Stats
         $stats = [
             'total_content' => Content::forUser(auth()->user())->visibleToPublic()
                 ->whereHas('category', fn ($q) => $q->where('slug', $category->slug))
@@ -140,15 +136,10 @@ class PublicSiteController extends Controller
         $related = Content::forUser(auth()->user())->visibleToPublic()->with(['category', 'media', 'tags'])
             ->where('category_id', $content->category_id)->whereKeyNot($content->id)
             ->orderByDesc('published_at')->orderByDesc('id')->limit(3)->get();
-        // Characters linked ONLY through the character_contents junction —
-        // this enforces the many-to-many relation so unrelated Characters
-        // never appear on a Content detail page.
         $characters = $content->characters()->forUser(auth()->user())->with(['category', 'imageMedia'])
             ->orderBy('name')->orderBy('character_profiles.id')->get();
-        // Merchandise scoped to this specific Content record
         $merchandise = $content->merchandiseItems()->forUser(auth()->user())->with(['category', 'imageMedia', 'character'])
             ->orderByDesc('view_count')->orderByDesc('id')->limit(12)->get();
-        // Events tied to this Content record
         $events = $content->events()->forUser(auth()->user())->published()->with(['category', 'coverMedia'])
             ->whereRaw('COALESCE(end_at, start_at) >= ?', [now()])
             ->orderBy('start_at')->orderBy('id')->limit(6)->get();
@@ -187,7 +178,6 @@ class PublicSiteController extends Controller
         $merchandise->load(['category', 'imageMedia', 'content' => fn ($query) => $query->visibleToPublic(), 'character']);
         app(\App\Services\MemberLibrary::class)->viewed($merchandise);
 
-        // Prefer related merchandise within the same Content, then fall back to category-level.
         $related = MerchandiseItem::forUser(auth()->user())->with(['category', 'imageMedia', 'content', 'character'])
             ->where(function ($q) use ($merchandise) {
                 if ($merchandise->content_id) {
@@ -229,7 +219,6 @@ class PublicSiteController extends Controller
             $filters = array_merge(['q' => '', 'category' => 'all', 'status' => '', 'tag' => '', 'sort' => 'newest'], array_filter($filters, fn ($value) => $value !== null));
             $filters['q'] = trim($filters['q']);
             $categories = \App\Models\Category::orderBy('name')->get(['id', 'name', 'slug']);
-            // Keep existing fandom URLs working, including empty fandoms.
             abort_unless(in_array($filters['category'], ['all', ...$categories->pluck('slug')->all(), ...array_keys(config('fandoms'))], true), 404);
             $query = MerchandiseItem::forUser(auth()->user())->with(['category', 'imageMedia']);
             $linkedContent = ! empty($filters['content'])

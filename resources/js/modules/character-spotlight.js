@@ -79,8 +79,6 @@ export function initCharacterSpotlight(page) {
             });
             gsap.set(slides, { clearProps: 'transform,zIndex' });
             gsap.set(wrapper, { clearProps: 'transform' });
-            // Repeat complete sets when all database cards fit on screen so
-            // Swiper always has spare slides to loop beyond either edge.
             const spacing = parseFloat(getComputedStyle(section).getPropertyValue('--spot-gap'));
             const visible = Math.ceil(viewport.clientWidth / (slides[0].offsetWidth + spacing));
             const loop = slides.length > 1;
@@ -108,7 +106,6 @@ export function initCharacterSpotlight(page) {
                 watchOverflow: !loop,
                 touchEventsTarget: 'container',
                 touchStartPreventDefault: false,
-                // Vertical wheel/touch movement stays with the page and Lenis.
                 autoplay: reduced || slides.length < 2 ? false : {
                     delay: 2600, disableOnInteraction: false, waitForTransition: true,
                 },
@@ -130,8 +127,6 @@ export function initCharacterSpotlight(page) {
             const p = progress.value;
             if (completed) {
                 if (p >= .999 || reduced || slides.length < 2) return;
-                // Return ownership to GSAP when scrolling back into the reveal.
-                // Restoring the original order also removes Swiper's loop reordering.
                 swiper?.destroy(true, true);
                 swiper = null;
                 removeCopies();
@@ -171,8 +166,6 @@ export function initCharacterSpotlight(page) {
             slides[center].classList.add('is-featured');
             slides.forEach((slide, index) => { slide.inert = index !== center; });
             measure();
-            // A short mobile hold also preserves the stack on direct #characters links.
-            // It lasts just 180px, so normal page scrolling resumes promptly.
             const sharedSlide = page.classList.contains('has-section-overlap');
             const pin = !sharedSlide && (mobile || section.offsetHeight < window.innerHeight - 110);
             timeline = gsap.timeline({
@@ -187,7 +180,7 @@ export function initCharacterSpotlight(page) {
             }).to(progress, {
                 value: 1, duration: .82, ease: 'none',
                 onUpdate: renderStack, onComplete: startCarousel,
-            }, .18); // Let the tight stack remain visible before spreading.
+            }, .18);
         }
 
         observer = new IntersectionObserver(([entry]) => {
@@ -204,7 +197,6 @@ export function initCharacterSpotlight(page) {
         };
         const focusIn = (event) => {
             focused = event.target.matches(':focus-visible');
-            // Keyboard users can reach every card without having to scroll the reveal.
             if (!completed && event.target.matches(':focus-visible')) timeline?.progress(1);
             syncAutoplay();
         };
@@ -237,7 +229,6 @@ export function initCharacterSpotlight(page) {
             viewport.removeEventListener('pointerleave', leave);
             document.removeEventListener('visibilitychange', syncAutoplay);
             window.removeEventListener('resize', resize);
-            // Swiper may reorder looped slides; restore database order before rebuilding.
             slides.forEach((slide) => {
                 wrapper.append(slide);
                 slide.inert = false;

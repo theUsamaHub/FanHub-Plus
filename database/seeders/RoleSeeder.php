@@ -9,7 +9,6 @@ class RoleSeeder extends Seeder
 {
     public function run(): void
     {
-        // Migrate legacy 'user' role to the final schema naming
         Role::where('slug', 'user')->update([
             'slug' => 'registered-user',
             'name' => 'Registered User',

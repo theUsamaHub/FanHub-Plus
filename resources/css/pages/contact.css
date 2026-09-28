@@ -1,9 +1,6 @@
 @import '../components/support-theme.css';
 @import '../../css/components/site-polish.css';
 
-/* ==========================================================================
-   CONTACT PAGE - VIP Design System
-   ========================================================================== */
 
 .contact-page {
     --contact-accent: var(--fh-accent);
@@ -15,9 +12,6 @@
     --contact-muted: var(--fh-muted);
 }
 
-/* ==========================================================================
-   HERO SECTION
-   ========================================================================== */
 
 .contact-hero {
     position: relative;
@@ -126,7 +120,6 @@
     transform: translateY(20px);
 }
 
-/* Hero Stats */
 .contact-hero__stats {
     display: flex;
     justify-content: center;
@@ -157,7 +150,6 @@
     letter-spacing: 0.1em;
 }
 
-/* Scroll Indicator */
 .contact-hero__scroll {
     position: absolute;
     bottom: 40px;
@@ -193,9 +185,6 @@
     50% { transform: translateY(6px); opacity: 1; }
 }
 
-/* ==========================================================================
-   FORM SECTION
-   ========================================================================== */
 
 .contact-form-section {
     padding: 80px 24px 120px;
@@ -225,7 +214,6 @@
     }
 }
 
-/* Form Wrapper */
 .contact-form-wrapper {
     position: sticky;
     top: 120px;
@@ -283,7 +271,6 @@
     font-size: 16px;
 }
 
-/* Alerts */
 .contact-alert {
     display: flex;
     align-items: center;
@@ -318,7 +305,6 @@
     flex-shrink: 0;
 }
 
-/* Form Fields */
 .contact-form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -452,7 +438,6 @@
     font-weight: 600;
 }
 
-/* Honeypot */
 .contact-honeypot {
     position: absolute;
     left: -9999px;
@@ -460,7 +445,6 @@
     pointer-events: none;
 }
 
-/* Submit Button */
 .contact-submit {
     position: relative;
     width: 100%;
@@ -568,7 +552,6 @@
     to { transform: rotate(360deg); }
 }
 
-/* Privacy */
 .contact-form__privacy {
     display: flex;
     align-items: center;
@@ -591,9 +574,6 @@
     text-underline-offset: 2px;
 }
 
-/* ==========================================================================
-   INFO SIDE
-   ========================================================================== */
 
 .contact-info-wrapper {
     display: flex;
@@ -636,7 +616,6 @@
     color: var(--contact-text);
 }
 
-/* Contact Methods */
 .contact-methods {
     display: flex;
     flex-direction: column;
@@ -745,7 +724,6 @@
     color: var(--contact-accent);
 }
 
-/* Hours */
 .contact-hours {
     padding-top: 24px;
     border-top: 1px solid var(--contact-border);
@@ -784,7 +762,6 @@
     font-family: 'Rajdhani', sans-serif;
 }
 
-/* FAQ Card */
 .contact-faq-card h3 {
     font-family: 'Rajdhani', sans-serif;
     font-weight: 700;
@@ -855,9 +832,6 @@
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* ==========================================================================
-   TOAST
-   ========================================================================== */
 
 .contact-toast {
     position: fixed;
@@ -945,9 +919,6 @@
     to { width: 0%; }
 }
 
-/* ==========================================================================
-   ANIMATION UTILITIES
-   ========================================================================== */
 
 [data-animate] {
     opacity: 0;
@@ -1018,9 +989,6 @@
     to { opacity: 1; transform: scale(1); }
 }
 
-/* ==========================================================================
-   LIGHT THEME SUPPORT
-   ========================================================================== */
 
 [data-theme='light'] .contact-page {
     --contact-surface: #ffffff;
@@ -1138,7 +1106,6 @@
     color: #1a1730;
 }
 
-/* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
     [data-animate] {
         opacity: 1 !important;
@@ -1175,9 +1142,6 @@
     }
 }
 
-/* ==========================================================================
-   FOCUS VISIBLE POLYFILL
-   ========================================================================== */
 
 .contact-field__input:focus-visible,
 .contact-field__select:focus-visible,
@@ -1186,9 +1150,6 @@
     outline-offset: 2px;
 }
 
-/* ==========================================================================
-   PRINT STYLES
-   ========================================================================== */
 
 @media print {
     .contact-hero__scroll,

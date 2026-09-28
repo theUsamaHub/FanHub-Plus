@@ -1,4 +1,3 @@
-/* Public-site palette. Keep layout and artwork independent of theme colors. */
 :root {
     --fh-bg: var(--brand-ink);
     --fh-surface: var(--brand-surface);
@@ -24,7 +23,6 @@
     --fh-secondary: var(--brand-lavender-ink);
 }
 
-/* The scope keeps these overrides independent of page asset loading order. */
 :root[data-theme] .fh-site .fh-brand__accent {
     color: var(--brand-orange);
     background-image: var(--fh-warm-gradient);
@@ -124,7 +122,6 @@
 :root[data-theme] .fh-site .trending-card:has(:focus-visible),
 :root[data-theme] .fh-site .release-card:has(:focus-visible) { outline-color: var(--fh-cyan); }
 
-/* Footer art stays dark, with warm accents in either theme. */
 :root[data-theme] .fh-site .fh-footer { color: #D0C1DF; --fh-accent: var(--brand-orange); }
 :root[data-theme] .fh-site .fh-footer-panel,
 :root[data-theme] .fh-site .fh-footer-bottom { background: linear-gradient(var(--brand-ink), var(--brand-surface)) padding-box, var(--fh-border-gradient) border-box; box-shadow: 0 8px 24px #18132022; }

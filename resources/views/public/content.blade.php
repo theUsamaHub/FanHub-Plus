@@ -28,10 +28,8 @@
             @if($content->excerpt)<p class="cd-synopsis">{{ $content->excerpt }}</p>@elseif($content->body)<p class="cd-synopsis">{{ Str::limit(html_entity_decode(strip_tags($content->body)), 400) }}</p>@endif
             <div class="cd-actions">
                 @auth
-                    <form method="post" action="{{ route('user.watchlist', $content) }}">@csrf<input type="hidden" name="saved" value="{{ $watchlisted ? 0 : 1 }}"><button class="cd-button cd-button--primary" aria-pressed="{{ $watchlisted ? 'true' : 'false' }}"><i class="bi bi-{{ $watchlisted ? 'check2' : 'play-fill' }}" aria-hidden="true"></i>{{ $watchlisted ? 'In Watchlist' : 'Add to Watchlist' }}</button></form>
                     <form method="post" action="{{ route('user.bookmark', ['content', $content->id]) }}">@csrf<input type="hidden" name="saved" value="{{ $saved ? 0 : 1 }}"><button class="cd-button" aria-pressed="{{ $saved ? 'true' : 'false' }}"><i class="bi bi-bookmark{{ $saved ? '-fill' : '' }}" aria-hidden="true"></i>{{ $saved ? 'Saved to Favorites' : 'Add to Favorites' }}</button></form>
                 @else
-                    <a href="{{ route('login') }}" class="cd-button cd-button--primary"><i class="bi bi-play-fill" aria-hidden="true"></i>Add to Watchlist</a>
                     <a href="{{ route('login') }}" class="cd-button"><i class="bi bi-bookmark" aria-hidden="true"></i>Add to Favorites</a>
                 @endauth
                 <button class="cd-button cd-button--share" type="button" data-share-url="{{ url()->current() }}" data-share-title="{{ $content->title }}" aria-label="Share {{ $content->title }}"><i class="bi bi-share" aria-hidden="true"></i></button>

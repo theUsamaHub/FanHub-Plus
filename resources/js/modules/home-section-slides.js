@@ -8,8 +8,6 @@ export function initHomeSectionSlides(page) {
     if (!sections.length) return;
     gsap.registerPlugin(ScrollTrigger);
 
-    // Bound sticky panels to consecutive slide sections. A normal-flow section
-    // ends the group, so no pinned panel can cover Multimedia, Upcoming, etc.
     const groups = [];
     let group;
     allSections.forEach((section) => {
@@ -27,8 +25,6 @@ export function initHomeSectionSlides(page) {
     });
 
     page.classList.add('has-section-slides');
-    // These markers stay in normal flow while the panels themselves are sticky.
-    // ScrollTrigger can therefore measure the character reveal at any scroll position.
     const anchors = sections.map((section, index) => {
         const anchor = document.createElement('div');
         anchor.className = 'home-slide-anchor';
@@ -38,8 +34,6 @@ export function initHomeSectionSlides(page) {
         section.style.setProperty('--slide-order', index + 1);
         return anchor;
     });
-    // Real flow space gives every panel a reading interval, including the last one.
-    // Keeping it outside the sticky element avoids its bottom-margin constraint.
     const holds = sections.map((section) => {
         const hold = document.createElement('div');
         hold.className = 'home-slide-hold';
@@ -68,7 +62,6 @@ export function initHomeSectionSlides(page) {
                 ? gsap.utils.clamp(140, 240, innerHeight * .24)
                 : gsap.utils.clamp(480, 850, innerHeight * .75);
             sections.forEach((section, index) => {
-                // Long mobile sections finish scrolling before the next panel covers them.
                 const top = Math.min(nav, innerHeight - section.offsetHeight);
                 section.style.setProperty('--slide-top', `${top}px`);
                 const revealDistance = section.matches('[data-character-spotlight]')

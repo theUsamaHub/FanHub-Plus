@@ -6,7 +6,6 @@
 @endpush
 @section('content')
 <div class="contact-page" data-contact-page>
-    <!-- Hero Section -->
     <section class="contact-hero" data-contact-hero>
         <div class="contact-hero__bg" aria-hidden="true">
             <div class="contact-hero__gradient"></div>
@@ -19,11 +18,9 @@
         </div>
     </section>
 
-    <!-- Contact Form Section -->
     <section class="contact-form-section" data-contact-form-section>
         <div class="contact-container">
             <div class="contact-grid">
-                <!-- Form Side -->
                 <div class="contact-form-wrapper" data-contact-form-wrapper>
                     <div class="contact-form-card" data-animate="slide-up" data-delay="100">
                         <div class="contact-form-header">
@@ -149,7 +146,6 @@
                                 </div>
                             </div>
 
-                            <!-- Honeypot for spam protection -->
                             <div class="contact-honeypot" aria-hidden="true">
                                 <label for="website">Don't fill this out if you're human</label>
                                 <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
@@ -181,7 +177,6 @@
                     </div>
                 </div>
 
-                <!-- Info Side -->
                 <div class="contact-info-wrapper" data-contact-info-wrapper>
                     <div class="contact-info-card" data-animate="slide-up" data-delay="200">
                         <div class="contact-info-header">
@@ -241,7 +236,6 @@
 
                     </div>
 
-                    <!-- FAQ Quick Links -->
                     <div class="contact-faq-card" data-animate="slide-up" data-delay="300">
                         <h3>Quick Answers</h3>
                         <div class="contact-faq-list">
@@ -268,7 +262,6 @@
         </div>
     </section>
 
-    <!-- Success Toast -->
     <div class="contact-toast" id="contact-toast" role="status" aria-live="polite" hidden>
         <div class="contact-toast__content">
             <x-site-icon name="check-circle" class="contact-toast__icon" />

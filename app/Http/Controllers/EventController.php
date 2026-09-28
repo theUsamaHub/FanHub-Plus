@@ -32,8 +32,6 @@ class EventController extends Controller
             ->orderByDesc('popularity_score')->orderBy('start_at')->orderBy('id')
             ->limit(config('events.featured_limit'))->get();
         $query = Event::forUser(auth()->user())->published()->with(['category', 'coverMedia']);
-        // Unfiltered browsing avoids repeating the selected stories in the grid.
-        // A search/filter includes every matching event, including featured ones.
         if (! $hasFilters && $featured->isNotEmpty()) $query->whereNotIn('id', $featured->modelKeys());
         $term = trim($filters['q'] ?? '');
         if ($term !== '') {
@@ -55,7 +53,6 @@ class EventController extends Controller
         if ($nearby) {
             $query->withinRadius((float) $filters['latitude'], (float) $filters['longitude'], (int) ($filters['radius'] ?? 5));
             if (empty($filters['sort'])) $query->orderBy('distance_km');
-            // Preserve explicit sorting; otherwise prefer geographic distance.
             $sort = $filters['sort'] ?? null;
             match ($sort) {
                 'popular' => $query->orderByDesc('popularity_score')->orderByDesc('view_count'),
@@ -63,7 +60,7 @@ class EventController extends Controller
                 'soonest' => $query->orderByRaw('CASE WHEN COALESCE(end_at, start_at) >= ? THEN 0 ELSE 1 END', [now()]),
                 default => null,
             };
-            $query->orderBy('start_at')->orderBy('id'); // Secondary sort for tie-breaking
+            $query->orderBy('start_at')->orderBy('id');
         } else {
             match ($filters['sort'] ?? 'soonest') {
                 'popular' => $query->orderByDesc('popularity_score')->orderByDesc('view_count'),
@@ -75,8 +72,6 @@ class EventController extends Controller
         $events = $query->paginate(config('events.per_page'))->withQueryString()->fragment('explore-events');
 
         if ($nearby) {
-            // Diagnose an empty radius without broadening the actual results.
-            // 20,016 km covers the largest possible great-circle distance.
             $nearestDistance = $events->total() === 0
                 ? $nearbyCandidates->withoutEagerLoads()->reorder()
                     ->withinRadius((float) $filters['latitude'], (float) $filters['longitude'], 20016)
@@ -122,7 +117,6 @@ class EventController extends Controller
             'DESCRIPTION:'.$escape(strip_tags($event->description ?? '')),
             'LOCATION:'.$escape(implode(', ', array_filter([$event->venue, $event->address, $event->city]))),
             'URL:'.route('events.show', $event->slug), 'END:VEVENT', 'END:VCALENDAR']);
-        // RFC 5545: fold long UTF-8 lines without splitting a multibyte character.
         $body = collect($lines)->map(function ($line) {
             $parts = [];
             while (strlen($line) > 74) {

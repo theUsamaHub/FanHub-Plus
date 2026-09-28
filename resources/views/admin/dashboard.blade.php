@@ -39,9 +39,9 @@
         </a>
     </div>
 
-    {{-- Hero bento (fixed placement — reference layout) --}}
+
     <div class="fh-adm-bento fh-adm-bento--hero mb-4">
-        {{-- Left column: statistics + two mini cards --}}
+
         <div class="b-col-left">
             <div class="fh-adm-tile b-stats fh-adm-tile-pad">
                 <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
@@ -76,7 +76,7 @@
             </div>
 
             <div class="b-mini-row">
-                {{-- Mini A: media balance-style --}}
+
                 <a href="{{ route('admin.media.index') }}" class="fh-adm-tile b-mini-a">
                     <div class="fh-adm-tile-pad flex-grow-1">
                         <div class="d-flex align-items-center gap-2 mb-3">
@@ -92,7 +92,7 @@
                     </div>
                 </a>
 
-                {{-- Mini B: published progress (dream-laptop style) --}}
+
                 <div class="fh-adm-tile b-mini-b fh-adm-tile--solid fh-adm-tile--ink fh-adm-tile-pad">
                     <div class="d-flex justify-content-between align-items-start">
                         <div>
@@ -114,7 +114,7 @@
             </div>
         </div>
 
-        {{-- Solid hero (users) --}}
+
         <a href="{{ route('admin.users.index') }}" class="fh-adm-tile b-hero fh-adm-tile--solid fh-adm-tile--sun fh-adm-tile-pad">
             <div class="d-flex justify-content-between align-items-start">
                 <div class="min-w-0">
@@ -135,7 +135,7 @@
             </div>
         </a>
 
-        {{-- Transaction-style list under hero --}}
+
         <div class="fh-adm-tile b-list">
             <div class="fh-adm-tile-list">
                 <a href="{{ route('admin.submissions.index') }}" class="fh-adm-tile-row">
@@ -166,7 +166,7 @@
         </div>
     </div>
 
-    {{-- Live performance signals --}}
+
     @if (! empty($insightCards))
         <div class="fh-adm-bento mb-4">
             <div class="fh-adm-tile fh-adm-tile--span12">
@@ -190,7 +190,7 @@
         </div>
     @endif
 
-    {{-- Quick actions --}}
+
     <div class="fh-adm-bento mb-4">
         <div class="fh-adm-tile fh-adm-tile--span12 fh-adm-tile-pad d-flex flex-wrap gap-2">
             <a href="{{ route('admin.contents.create') }}" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle me-1"></i>{{ __('Add Content') }}</a>
@@ -202,7 +202,7 @@
         </div>
     </div>
 
-    {{-- Middle row: chips + status --}}
+
     <div class="fh-adm-bento mb-4">
         @if ($categories)
             <a href="{{ route($categories['route'], $categories['params'] ?? []) }}" class="fh-adm-tile fh-adm-tile--span4 fh-adm-tile-pad d-flex align-items-center gap-3" data-accent="warning">
@@ -241,10 +241,10 @@
         </div>
     </div>
 
-    {{-- Chart.js data payload --}}
+
     <script type="application/json" id="fh-dashboard-data">@json($chartPayload ?? [])</script>
 
-    {{-- Charts bento --}}
+
     <div class="fh-adm-bento mb-4">
         <div class="fh-adm-tile fh-adm-tile--span6 fh-adm-tile--chart">
             <div class="fh-adm-tile-head">
@@ -320,7 +320,7 @@
         </div>
     </div>
 
-    {{-- Lists --}}
+
     <div class="fh-adm-bento">
         <div class="fh-adm-tile fh-adm-tile--span6">
             <div class="fh-adm-tile-head">

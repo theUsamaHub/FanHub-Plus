@@ -35,17 +35,6 @@ class CharacterRequest extends FormRequest
         ];
     }
 
-    /**
-     * Server-side cross-category validation:
-     *   - every selected Content must exist
-     *   - every selected Content must belong to the chosen Category
-     * A Character MUST belong to at least one specific Content record.
-     *
-     * Strict comparison (===) is unreliable because form-submitted
-     * checkbox values come in as strings while DB ids are integers.
-     * We normalise both sides to integers and rebuild a position map
-     * so the error key lines up with the field that actually failed.
-     */
     public function withValidator(Validator $validator): void
     {
         $validator->after(function (Validator $validator) {

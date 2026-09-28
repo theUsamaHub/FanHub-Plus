@@ -23,23 +23,19 @@
     @stack('styles')
 </head>
 <body class="fh-site">
-    <!-- Video Splash Screen (only shown once per browser session) -->
     <script>
-        // Decide BEFORE paint whether the splash should be rendered this load.
         (function () {
             try {
                 if (sessionStorage.getItem('fanhub-splash-shown') === '1') {
                     document.documentElement.dataset.splashSeen = '1';
                 }
-            } catch (e) { /* sessionStorage unavailable: fall back to showing splash */ }
+            } catch (e) {   }
         })();
     </script>
     <div id="splash-screen" data-splash style="position:fixed;inset:0;z-index:9999;background:#000;display:none;align-items:center;justify-content:center;transition:opacity 0.8s ease;">
-        <!-- Desktop: Video -->
         <video id="splash-video" class="splash-desktop-only" autoplay muted playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;">
             <source src="{{ asset('videos/splash screen video.mp4') }}" type="video/mp4">
         </video>
-        <!-- Mobile: Animation -->
         <div class="splash-mobile-only" style="display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
             <style>
                 @keyframes splashPulse { 0%,100%{opacity:.3;transform:scale(.95)} 50%{opacity:1;transform:scale(1)} }
@@ -69,19 +65,17 @@
             video=document.getElementById('splash-video'),
             skip=document.getElementById('splash-skip'),
             STORAGE_KEY='fanhub-splash-shown';
-        // If the user already saw the splash this session, leave it hidden (display:none from inline style).
         try {
             if (sessionStorage.getItem(STORAGE_KEY) === '1') {
                 if (splash) splash.parentNode && splash.parentNode.removeChild(splash);
                 return;
             }
-        } catch (e) { /* sessionStorage blocked: fall through and show splash */ }
+        } catch (e) {   }
 
-        // First visit of this session: reveal the splash, then mark it as seen after it hides.
         if (splash) splash.style.display='flex';
 
         function markSeenAndHide(){
-            try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (e) { /* ignore quota errors */ }
+            try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (e) {   }
             splash.style.opacity='0';
             setTimeout(function(){ splash.style.display='none'; }, 800);
         }
@@ -90,7 +84,6 @@
         setTimeout(markSeenAndHide, 2000);
     })();
     </script>
-    <!-- End Video Splash Screen -->
 
     <a class="fh-skip" href="#main-content">Skip to content</a>
     <x-navbar />

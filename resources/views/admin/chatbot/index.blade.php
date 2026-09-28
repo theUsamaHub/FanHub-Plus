@@ -17,7 +17,6 @@
         </div>
     @endif
 
-    <!-- Stats -->
     <div class="row g-3 mb-4">
         <div class="col-md-3">
             <div class="card border-start border-primary border-4 h-100">
@@ -53,7 +52,6 @@
         </div>
     </div>
 
-    <!-- Top Questions -->
     @if($topQuestions->count())
     <div class="card mb-4">
         <div class="card-header"><i class="bi bi-fire me-1"></i>{{ __('Most Asked Questions') }}</div>
@@ -70,7 +68,6 @@
     </div>
     @endif
 
-    <!-- Filters -->
     <div class="card mb-4">
         <div class="card-body">
             <form method="GET" class="row g-3">

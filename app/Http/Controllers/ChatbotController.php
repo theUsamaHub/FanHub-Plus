@@ -41,7 +41,6 @@ class ChatbotController extends Controller
                 return response()->json(['message' => 'AI chat is not available yet. You can still use the frequently asked questions.'], 503);
             }
             $contents = [];
-            // Only this visitor's server-side session supplies conversation context.
             $history = ChatbotQuery::forSession($request->session()->getId())
                 ->where('user_id', $request->user()?->id)->latest('id')->limit(6)->get()->reverse();
             foreach ($history as $turn) {

@@ -19,7 +19,6 @@ export function initMultimedia(page) {
             lastWidth = row.clientWidth;
             row.classList.remove('is-ready');
             track.querySelectorAll('[data-media-clone]').forEach((copy) => copy.remove());
-            // Each half must cover the viewport, even when only one record exists.
             const baseWidth = group.getBoundingClientRect().width;
             if (!baseWidth) return;
             const repeats = Math.ceil((row.clientWidth + originals[0].offsetWidth) / baseWidth);

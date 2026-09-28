@@ -21,8 +21,6 @@ class EnsureOnboardingCompleted
         if ($request->expectsJson()) return response()->json(['message' => 'Complete your fandom setup before continuing.'], 403);
         if (! $request->isMethod('get') || $request->header('X-Home-Section')) return redirect()->route('onboarding.create');
 
-        // Render the blocking dialog at the requested URL, before protected data
-        // or controller side effects are accessed. No browsing redirect is needed.
         return app(OnboardingController::class)->create($request);
     }
 }

@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    {{-- Stats --}}
+
     <div class="row g-3 mb-4">
         <div class="col-6 col-xl-3">
             <div class="card border-start border-secondary border-4 h-100">
@@ -49,7 +49,7 @@
         </div>
     </div>
 
-    {{-- Filters --}}
+
     <div class="card mb-4 fh-adm-filter">
         <div class="card-body">
             <form method="GET" class="row g-3">
@@ -81,7 +81,7 @@
         </div>
     </div>
 
-    {{-- Newsletters Table --}}
+
     <div class="card fh-adm-form-card">
         <div class="card-body p-0">
             <div class="table-responsive fh-adm-table-scroll">

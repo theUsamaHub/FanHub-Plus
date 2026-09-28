@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('subject')->nullable();
             $table->text('message');
             $table->string('ip_address', 45)->nullable();
-            $table->string('status')->default('new'); // new, read, replied
+            $table->string('status')->default('new');
             $table->timestamps();
         });
     }

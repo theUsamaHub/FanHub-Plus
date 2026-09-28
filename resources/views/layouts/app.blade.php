@@ -15,7 +15,7 @@
         @include('partials.font-links')
         <style>[x-cloak] { display: none !important; }</style>
 
-        {{-- SweetAlert2 for styled confirm/alert dialogs in the admin panel --}}
+
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         @stack('styles')
     </head>
@@ -91,8 +91,7 @@
             })();
         </script>
 
-        {{-- Global SweetAlert2 helpers: any <form data-confirm="..."> or <button data-confirm="...">
-             shows a styled dialog instead of the native browser confirm(). --}}
+
         <script>
             (function () {
                 if (typeof window.Swal === 'undefined') return;
@@ -136,7 +135,6 @@
                     }));
                 }
 
-                // Programmatic helpers for inline scripts.
                 window.fhpConfirm = async function (message) {
                     const r = await ask(message);
                     return !!(r && r.isConfirmed);
@@ -145,7 +143,6 @@
                     return info(message, 'info');
                 };
 
-                // Delegation: any form with [data-confirm] shows SweetAlert first.
                 document.addEventListener('submit', function (e) {
                     const form = e.target;
                     if (!(form instanceof HTMLFormElement)) return;
@@ -157,7 +154,7 @@
                     });
                 }, true);
 
-                // Delegation: any <button data-confirm> or <a data-confirm> standalone.
+
                 document.addEventListener('click', function (e) {
                     const el = e.target.closest('button[data-confirm], a[data-confirm]');
                     if (!el) return;
@@ -175,7 +172,6 @@
                     });
                 }, true);
 
-                // Style the popup to match the admin theme.
                 const style = document.createElement('style');
                 style.textContent = '.swal2-popup.fh-swal-popup{border-radius:14px;padding:1.75rem;box-shadow:0 24px 60px rgba(0,0,0,.45);font-family:inherit}.swal2-popup.fh-swal-popup .swal2-title{font-weight:600;font-size:1.15rem}.swal2-popup.fh-swal-popup .swal2-actions{gap:.5rem;margin-top:1.25rem}.swal2-popup.fh-swal-popup .swal2-styled.swal2-confirm{padding:.5rem 1.25rem;font-weight:500}.swal2-popup.fh-swal-popup .swal2-styled.swal2-cancel{padding:.5rem 1.25rem;font-weight:500;margin-right:.5rem}';
                 document.head.appendChild(style);

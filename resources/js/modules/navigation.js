@@ -84,7 +84,7 @@ if (header) {
         const theme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
         document.documentElement.dataset.theme = theme;
         document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#06060e' : '#f5f3fc';
-        try { localStorage.setItem('fanhub-theme', theme); } catch { /* Theme still works when storage is unavailable. */ }
+        try { localStorage.setItem('fanhub-theme', theme); } catch {   }
         syncTheme();
     });
 

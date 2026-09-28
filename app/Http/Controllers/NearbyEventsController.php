@@ -14,7 +14,6 @@ class NearbyEventsController extends Controller
             return app(EventController::class)->index($request, true);
         }
 
-        // Preserve existing links to the standalone discovery page.
         $filters = $request->validate([
             'latitude' => 'nullable|required_with:longitude|numeric|between:-90,90',
             'longitude' => 'nullable|required_with:latitude|numeric|between:-180,180',

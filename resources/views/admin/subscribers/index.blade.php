@@ -22,7 +22,7 @@
         </div>
     @endif
 
-    {{-- Stats --}}
+
     <div class="row g-3 mb-4">
         <div class="col-6 col-xl-3">
             <div class="card border-start border-primary border-4 h-100">
@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    {{-- Filters --}}
+
     <div class="card mb-4 fh-adm-filter">
         <div class="card-body">
             <form method="GET" class="row g-3">
@@ -88,7 +88,7 @@
         </div>
     </div>
 
-    {{-- Bulk Actions Form --}}
+
     <form action="{{ route('admin.subscribers.bulk') }}" method="POST" id="bulkActionForm">
         @csrf
         <input type="hidden" name="action" id="bulkActionInput">
