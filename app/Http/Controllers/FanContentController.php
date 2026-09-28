@@ -38,6 +38,7 @@ class FanContentController extends Controller
     {
         abort_unless($content->is_user_submitted && Content::visibleToPublic()->whereKey($content->id)->exists(), 404);
         $content->load(['category', 'media', 'submittedBy.profile']);
+        $content->recordView();
 
         return view($request->ajax() ? 'public.fan-content.detail' : 'public.fan-content.show', compact('content'));
     }

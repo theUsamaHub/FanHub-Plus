@@ -132,6 +132,7 @@ class PublicSiteController extends Controller
     {
         abort_unless(Content::forUser(auth()->user())->visibleToPublic()->whereKey($content->id)->exists(), 404);
         $content->load(['category', 'submittedBy', 'media', 'tags']);
+        $content->recordView();
         app(\App\Services\MemberLibrary::class)->viewed($content);
         $related = Content::forUser(auth()->user())->visibleToPublic()->with(['category', 'media', 'tags'])
             ->where('category_id', $content->category_id)->whereKeyNot($content->id)
@@ -178,6 +179,7 @@ class PublicSiteController extends Controller
     public function merchandise(MerchandiseItem $merchandise): View
     {
         $merchandise->load(['category', 'imageMedia', 'content' => fn ($query) => $query->visibleToPublic(), 'character']);
+        $merchandise->recordView();
         app(\App\Services\MemberLibrary::class)->viewed($merchandise);
 
         $related = MerchandiseItem::forUser(auth()->user())->with(['category', 'imageMedia', 'content', 'character'])
