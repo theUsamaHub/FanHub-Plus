@@ -198,8 +198,8 @@
         </div>
 
         @if ($media->hasPages())
-            <div class="card-footer bg-white">
-                {{ $media->links() }}
+            <div class="card-footer py-3 overflow-auto">
+                {{ $media->onEachSide(1)->links('pagination::bootstrap-5') }}
             </div>
         @endif
     </div>

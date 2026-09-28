@@ -5,12 +5,6 @@
         <h2 class="h4 mb-0 fw-semibold">{{ __('Maintenance Mode') }}</h2>
     </div>
 
-    @if (session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
 
     <div class="row g-3">
         <div class="col-md-6">
