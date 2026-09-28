@@ -63,6 +63,13 @@ class Category extends Model
         return $this->iconMedia?->url;
     }
 
+    public function getArtworkUrlAttribute(): string
+    {
+        return $this->iconMedia?->isImage() && $this->iconMedia->hasValidPath()
+            ? $this->iconMedia->url
+            : asset(config('homepage.artwork.'.$this->slug, config('homepage.images.trending')));
+    }
+
     public static function boot(): void
     {
         parent::boot();

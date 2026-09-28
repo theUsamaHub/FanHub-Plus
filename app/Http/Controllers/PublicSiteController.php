@@ -56,7 +56,7 @@ class PublicSiteController extends Controller
         return view('public.explore', [
             'contents' => $query->orderByDesc('published_at')->orderByDesc('id')->paginate(12)->withQueryString(),
             'filters' => $filters,
-            'categories' => \App\Models\Category::orderBy('name')->get(),
+            'categories' => \App\Models\Category::with('iconMedia')->orderBy('name')->get(),
             'tags' => \App\Models\Tag::whereHas('contents', fn ($q) => $q->visibleToPublic())->orderBy('name')->get(),
         ]);
     }
@@ -124,7 +124,7 @@ class PublicSiteController extends Controller
         ];
 
         $contents = $query->orderByDesc('contents.id')->paginate(12)->withQueryString();
-        $categories = \App\Models\Category::orderBy('name')->get();
+        $categories = \App\Models\Category::with('iconMedia')->orderBy('name')->get();
         $tags = \App\Models\Tag::whereHas('contents', fn ($q) => $q->visibleToPublic()->whereHas('category', fn ($q2) => $q2->where('slug', $category->slug)))->orderBy('name')->get();
 
         return view('public.fandom', compact(

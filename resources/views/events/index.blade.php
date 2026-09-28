@@ -6,7 +6,8 @@
 @endpush
 @section('content')
 <div class="events-page" data-events-page>
-        <section class="events-intro" style="--events-hero-image: url('{{ asset('images/hero/photo-1667419674923-9eef9f86c628.avif') }}')" aria-labelledby="events-title" data-events-intro>
+        {{-- Previous hero artwork: images/hero/photo-1667419674923-9eef9f86c628.avif. Kept disabled for the plain theme background. --}}
+        <section class="events-intro" aria-labelledby="events-title" data-events-intro>
             <div class="events-intro__top"><span>FANHUB PLUS / IN REAL LIFE</span><span>EVERY FANDOM. ONE PLACE.</span></div>
             <div class="events-intro__center">
                 <p class="events-kicker">YOUR NEXT GREAT MEMORY</p>

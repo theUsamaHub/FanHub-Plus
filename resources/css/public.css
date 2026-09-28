@@ -77,3 +77,9 @@
         0 4px 16px color-mix(in srgb, var(--fh-accent) 30%, transparent),
         0 0 0 1px color-mix(in srgb, var(--fh-accent) 25%, transparent) inset;
 }
+
+/* Shared photo/initials avatar; a failed image reveals the initials underneath. */
+.user-avatar { position: relative; display: inline-grid; place-items: center; flex-shrink: 0; width: 40px; height: 40px; overflow: hidden; border-radius: 50%; background: var(--fh-surface); color: var(--fh-text); }
+.user-avatar img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
+.user-avatar.fh-avatar { width: 30px; height: 30px; }
+@media (max-width: 700px) { .user-avatar.fh-avatar { width: 25px; height: 25px; } }

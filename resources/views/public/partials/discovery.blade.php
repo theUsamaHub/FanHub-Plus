@@ -5,7 +5,7 @@
     $headlines = ['anime' => ['Beyond the', 'last episode.'], 'gaming' => ['A world beyond', 'the next level.'], 'k-pop' => ['More than music.', 'Your whole world.']];
     $headline = $headlines[$activeSlug] ?? ($activeSlug ? [$pageTitle.'.', 'Your universe.'] : ['Find your next', 'obsession.']);
     $heroContent = $landing ? ($featured->first() ?? $trending->first()) : null;
-    $heroArt = $heroContent?->artwork_url ?? ($activeCategory?->iconMedia?->isImage() ? $activeCategory->iconMedia->url : asset(config('homepage.artwork.'.$activeSlug, 'images/hero/fandom-cards.png')));
+    $heroArt = $activeCategory?->artwork_url ?? asset(config('homepage.artwork.'.$activeSlug, 'images/hero/fandom-cards.png'));
     $portalCategories = $categories->sortBy(fn ($item) => array_search($item->slug, ['anime', 'gaming', 'k-pop']) === false ? 9 : array_search($item->slug, ['anime', 'gaming', 'k-pop']))->take(3);
 @endphp
 <div class="discovery discovery--{{ $activeSlug ?: 'all' }}" data-discovery>
@@ -31,7 +31,7 @@
                     <div class="discovery-collage">
                         @forelse($portalCategories as $portal)
                             <a class="discovery-poster discovery-poster--{{ $loop->iteration }}" href="{{ route('public.fandom', $portal->slug) }}">
-                                <img src="{{ asset(config('homepage.artwork.'.$portal->slug, 'images/fandoms/anime.png')) }}" alt="" width="420" height="600" fetchpriority="{{ $loop->first ? 'high' : 'auto' }}"><span><small>STEP INTO</small><strong>{{ $portal->name }}</strong><x-site-icon name="arrow" /></span>
+                                <img src="{{ $portal->artwork_url }}" data-image-fallback="{{ asset(config('homepage.artwork.'.$portal->slug, config('homepage.images.trending'))) }}" alt="" width="420" height="600" fetchpriority="{{ $loop->first ? 'high' : 'auto' }}"><span><small>STEP INTO</small><strong>{{ $portal->name }}</strong><x-site-icon name="arrow" /></span>
                             </a>
                         @empty
                             <img class="discovery-collage__fallback" src="{{ asset('images/hero/fandom-cards.png') }}" alt="A collection of fandom worlds" width="900" height="700">
