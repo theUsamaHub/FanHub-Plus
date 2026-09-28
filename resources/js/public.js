@@ -16,3 +16,5 @@ import '../css/components/community.css';
 import './modules/member';
 import './modules/onboarding';
 import '../css/pages/explore-premium.css';
+import '../css/pages/character-detail.css';
+import './modules/character-detail';

@@ -166,9 +166,11 @@ class PublicSiteController extends Controller
         $character->load(['category', 'imageMedia']);
         app(\App\Services\MemberLibrary::class)->viewed($character);
         $stories = $character->contents()->forUser(auth()->user())->visibleToPublic()
-            ->latest('published_at')->orderByDesc('contents.id')->paginate(6)->withQueryString();
+            ->with(['category', 'media'])->latest('published_at')->orderByDesc('contents.id')
+            ->paginate(6, ['*'], 'stories_page')->withQueryString()->fragment('character-content');
         $merchandise = $character->merchandiseItems()->forUser(auth()->user())->with(['category', 'imageMedia', 'content'])
-            ->orderByDesc('view_count')->orderByDesc('id')->limit(12)->get();
+            ->orderByDesc('view_count')->orderByDesc('id')->paginate(8, ['*'], 'merchandise_page')
+            ->withQueryString()->fragment('character-merchandise');
 
         return view('public.character', compact('character', 'stories', 'merchandise'));
     }
