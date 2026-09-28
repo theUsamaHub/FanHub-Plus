@@ -31,7 +31,6 @@ class PublicSiteController extends Controller
         $query = Content::forUser(auth()->user())->visibleToPublic()->with(['category', 'media', 'tags']);
 
         if ($term = trim($filters['q'] ?? '')) {
-            // Bind a literal search term (including SQL wildcard characters).
             $term = '%'.str_replace(['!', '%', '_'], ['!!', '!%', '!_'], mb_strtolower($term)).'%';
             $query->where(fn ($query) => $query
                 ->whereRaw("LOWER(title) LIKE ? ESCAPE '!'", [$term])
@@ -96,20 +95,17 @@ class PublicSiteController extends Controller
         if (! empty($filters['year'])) $query->whereYear('release_date', $filters['year']);
         if (! empty($filters['tag'])) $query->whereHas('tags', fn ($q) => $q->where('tags.id', $filters['tag']));
 
-        // Get featured content for this fandom
         $featured = Content::forUser(auth()->user())->visibleToPublic()->with(['category', 'media', 'tags'])
             ->whereHas('category', fn ($q) => $q->where('slug', $category->slug))
             ->where('is_featured', true)
             ->orderByDesc('popularity_score')
             ->limit(4)->get();
 
-        // Get trending content for this fandom
         $trending = Content::forUser(auth()->user())->visibleToPublic()->with(['category', 'media', 'tags'])
             ->whereHas('category', fn ($q) => $q->where('slug', $category->slug))
             ->orderByDesc('view_count')
             ->limit(8)->get();
 
-        // Stats
         $stats = [
             'total_content' => Content::forUser(auth()->user())->visibleToPublic()
                 ->whereHas('category', fn ($q) => $q->where('slug', $category->slug))
@@ -140,20 +136,29 @@ class PublicSiteController extends Controller
         $related = Content::forUser(auth()->user())->visibleToPublic()->with(['category', 'media', 'tags'])
             ->where('category_id', $content->category_id)->whereKeyNot($content->id)
             ->orderByDesc('published_at')->orderByDesc('id')->limit(3)->get();
-        // Characters linked ONLY through the character_contents junction —
-        // this enforces the many-to-many relation so unrelated Characters
-        // never appear on a Content detail page.
         $characters = $content->characters()->forUser(auth()->user())->with(['category', 'imageMedia'])
             ->orderBy('name')->orderBy('character_profiles.id')->get();
-        // Merchandise scoped to this specific Content record
         $merchandise = $content->merchandiseItems()->forUser(auth()->user())->with(['category', 'imageMedia', 'character'])
             ->orderByDesc('view_count')->orderByDesc('id')->limit(12)->get();
-        // Events tied to this Content record
         $events = $content->events()->forUser(auth()->user())->published()->with(['category', 'coverMedia'])
             ->whereRaw('COALESCE(end_at, start_at) >= ?', [now()])
             ->orderBy('start_at')->orderBy('id')->limit(6)->get();
 
-        return view('public.content', compact('content', 'related', 'characters', 'merchandise', 'events'));
+        $gallery = $content->mediaByRole('gallery')->filter(fn ($media) => $media->isImage() && $media->hasValidPath());
+        $trailers = $content->mediaByRole('trailer')->filter(fn ($media) => $media->isVideo() && $media->hasValidPath());
+        $audioClips = $content->mediaByRole('audio_clip')->filter(fn ($media) => $media->isAudio() && $media->hasValidPath());
+        $attachments = $content->mediaByRole('attachment')->filter(fn ($media) => $media->isDocument() && $media->hasValidPath());
+        $saved = auth()->user()?->bookmarks()->where([
+            'bookmarkable_type' => $content->getMorphClass(), 'bookmarkable_id' => $content->id,
+        ])->exists() ?? false;
+        $watchlisted = auth()->check() && \App\Models\ActivityLog::where([
+            'user_id' => auth()->id(), 'event' => 'member.watchlisted',
+            'auditable_type' => $content->getMorphClass(), 'auditable_id' => $content->id,
+        ])->exists();
+        $savedMerchandise = $this->savedMerchandise();
+
+        return view('public.content', compact('content', 'related', 'characters', 'merchandise', 'events',
+            'gallery', 'trailers', 'audioClips', 'attachments', 'saved', 'watchlisted', 'savedMerchandise'));
     }
 
     public function character(CharacterProfile $character): View
@@ -175,7 +180,6 @@ class PublicSiteController extends Controller
         $merchandise->load(['category', 'imageMedia', 'content' => fn ($query) => $query->visibleToPublic(), 'character']);
         app(\App\Services\MemberLibrary::class)->viewed($merchandise);
 
-        // Prefer related merchandise within the same Content, then fall back to category-level.
         $related = MerchandiseItem::forUser(auth()->user())->with(['category', 'imageMedia', 'content', 'character'])
             ->where(function ($q) use ($merchandise) {
                 if ($merchandise->content_id) {
@@ -212,13 +216,16 @@ class PublicSiteController extends Controller
                 'status' => ['nullable', 'in:released,upcoming'],
                 'tag' => ['nullable', 'in:limited_edition,pre_order,collectible,standard'],
                 'sort' => ['nullable', 'in:newest,popular,name'],
+                'content' => ['nullable', 'integer', 'min:1'],
             ]);
             $filters = array_merge(['q' => '', 'category' => 'all', 'status' => '', 'tag' => '', 'sort' => 'newest'], array_filter($filters, fn ($value) => $value !== null));
             $filters['q'] = trim($filters['q']);
             $categories = \App\Models\Category::orderBy('name')->get(['id', 'name', 'slug']);
-            // Keep existing fandom URLs working, including empty fandoms.
             abort_unless(in_array($filters['category'], ['all', ...$categories->pluck('slug')->all(), ...array_keys(config('fandoms'))], true), 404);
             $query = MerchandiseItem::forUser(auth()->user())->with(['category', 'imageMedia']);
+            $linkedContent = ! empty($filters['content'])
+                ? Content::visibleToPublic()->findOrFail($filters['content']) : null;
+            if ($linkedContent) $query->where('content_id', $linkedContent->id);
             if ($filters['q'] !== '') {
                 $term = '%'.str_replace(['!', '%', '_'], ['!!', '!%', '!_'], mb_strtolower($filters['q'])).'%';
                 $query->whereRaw("LOWER(name) LIKE ? ESCAPE '!'", [$term]);
@@ -234,17 +241,38 @@ class PublicSiteController extends Controller
                 default => $query->orderByDesc('created_at'),
             };
             $items = $query->orderByDesc('id')->paginate(12)->withQueryString();
-            $hasFilters = $filters['q'] !== '' || $filters['category'] !== 'all' || $filters['status'] !== '' || $filters['tag'] !== '';
+            $hasFilters = $linkedContent !== null || $filters['q'] !== '' || $filters['category'] !== 'all' || $filters['status'] !== '' || $filters['tag'] !== '';
 
-            return view('public.merchandise-index', compact('items', 'filters', 'categories', 'hasFilters') + ['savedMerchandise' => $this->savedMerchandise()]);
+            $statsQuery = MerchandiseItem::forUser(auth()->user())
+                ->when($linkedContent, fn ($query) => $query->where('content_id', $linkedContent->id));
+            $stats = [
+                'total' => (clone $statsQuery)->count(),
+                'upcoming' => (clone $statsQuery)->upcoming()->count(),
+                'fandoms' => (clone $statsQuery)->distinct()->count('category_id'),
+            ];
+
+            return view('public.merchandise-index', compact('items', 'filters', 'categories', 'hasFilters', 'linkedContent', 'stats') + ['savedMerchandise' => $this->savedMerchandise()]);
         }
 
         if ($section === 'upcoming') {
             $filters = $homepage->releaseFilters();
             $filter = $request->query('category', 'all');
             abort_unless(is_string($filter) && in_array($filter, ['all', 'merchandise', ...$filters->pluck('slug')->all()], true), 404);
+            $validated = $request->validate([
+                'q' => ['nullable', 'string', 'max:120'],
+                'sort' => ['nullable', 'in:nearest,farthest,name,newest'],
+            ]);
+            $search = trim($validated['q'] ?? '');
+            $sort = $validated['sort'] ?? 'nearest';
 
-            return view('public.upcoming', ['releases' => $homepage->paginatedReleases($filter), 'filters' => $filters, 'activeFilter' => $filter]);
+            return view('public.upcoming', [
+                'releases' => $homepage->paginatedReleases($filter, $search, $sort),
+                'filters' => $filters,
+                'activeFilter' => $filter,
+                'stats' => $homepage->releaseStats() + ['fandoms' => $filters->count()],
+                'search' => $search,
+                'sort' => $sort,
+            ]);
         }
 
         return view('public.coming-soon', ['title' => self::SECTIONS[$section]]);

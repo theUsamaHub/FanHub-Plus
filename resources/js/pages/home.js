@@ -28,7 +28,6 @@ if (page) {
 
     const motion = gsap.matchMedia();
     motion.add('(prefers-reduced-motion: no-preference)', () => {
-        // GSAP owns the smooth-scroll clock; each carousel has its own Swiper instance.
         const lenis = new Lenis({
             autoRaf: false,
             smoothWheel: true,
@@ -73,14 +72,6 @@ if (page) {
                         scrollTrigger: { trigger: card, start: 'top 80%', once: true },
                     });
                 });
-                const progress = timeline.querySelector('[data-timeline-progress]');
-                if (progress) {
-                    gsap.from(progress, {
-                        [isMobile ? 'scaleY' : 'scaleX']: 0,
-                        ease: 'none',
-                        scrollTrigger: { trigger: timeline, start: 'top 85%', end: 'bottom 75%', scrub: .5 },
-                    });
-                }
             }, page);
             ScrollTrigger.refresh();
         };

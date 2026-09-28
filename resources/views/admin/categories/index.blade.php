@@ -15,7 +15,6 @@
                 </div>
     </div>
 
-    <!-- Search -->
     <div class="card mb-4 fh-adm-filter">
         <div class="card-body">
             <form method="GET" action="{{ route('admin.categories.index') }}" class="row g-3">
@@ -31,7 +30,6 @@
         </div>
     </div>
 
-    <!-- Categories Table -->
     <div class="card fh-adm-form-card">
         <div class="card-body p-0">
             <div class="table-responsive fh-adm-table-scroll">

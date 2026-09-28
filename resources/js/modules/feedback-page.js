@@ -1,10 +1,4 @@
-/**
- * Feedback Page - VIP Interactions & Animations
- */
 
-// ==========================================================================
-// Intersection Observer for Scroll Animations
-// ==========================================================================
 
 function initScrollAnimations() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -31,9 +25,6 @@ function initScrollAnimations() {
     document.querySelectorAll('[data-animate]').forEach(el => observer.observe(el));
 }
 
-// ==========================================================================
-// Character Counter for Message Field
-// ==========================================================================
 
 function initCharCounter() {
     const textarea = document.getElementById('message');
@@ -50,9 +41,6 @@ function initCharCounter() {
     updateCounter();
 }
 
-// ==========================================================================
-// Type Selector Interaction
-// ==========================================================================
 
 function initTypeSelector() {
     const options = document.querySelectorAll('.feedback-type-option');
@@ -62,12 +50,10 @@ function initTypeSelector() {
         option.addEventListener('click', () => {
             const type = option.dataset.type;
 
-            // Update hidden radio inputs
             hiddenInputs.forEach(input => {
                 input.checked = input.value === type;
             });
 
-            // Update visual state
             options.forEach(opt => {
                 const isActive = opt.dataset.type === type;
                 opt.classList.toggle('feedback-type-option--active', isActive);
@@ -75,14 +61,12 @@ function initTypeSelector() {
                 opt.setAttribute('tabindex', isActive ? '0' : '-1');
             });
 
-            // Trigger validation if previously errored
             const errorEl = document.querySelector('.feedback-field__error');
             if (errorEl) {
                 errorEl.remove();
             }
         });
 
-        // Keyboard support
         option.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -91,7 +75,6 @@ function initTypeSelector() {
         });
     });
 
-    // Initialize active state from hidden input
     const checkedInput = document.querySelector('.feedback-type-option input[type="radio"]:checked');
     if (checkedInput) {
         const activeOption = document.querySelector(`.feedback-type-option[data-type="${checkedInput.value}"]`);
@@ -103,9 +86,6 @@ function initTypeSelector() {
     }
 }
 
-// ==========================================================================
-// Form Submission with Animation
-// ==========================================================================
 
 function initFormSubmission() {
     const form = document.querySelector('[data-feedback-form]');
@@ -113,14 +93,12 @@ function initFormSubmission() {
     if (!form || !submitBtn) return;
 
     form.addEventListener('submit', (e) => {
-        // Validate required fields
         const typeRadio = form.querySelector('input[name="type"]:checked');
         const messageField = form.querySelector('[name="message"]');
         let isValid = true;
 
         if (!typeRadio) {
             isValid = false;
-            // Show error on type selector
             const typeSelector = form.querySelector('.feedback-type-selector');
             if (typeSelector && !typeSelector.querySelector('.feedback-field__error')) {
                 const errorEl = document.createElement('p');
@@ -150,13 +128,11 @@ function initFormSubmission() {
         if (!isValid) {
             e.preventDefault();
 
-            // Focus first invalid field
             const firstInvalid = form.querySelector('.feedback-field__textarea--error, .feedback-type-option--active');
             if (firstInvalid) {
                 firstInvalid.focus();
             }
 
-            // Shake animation
             const invalidFields = form.querySelectorAll('.feedback-field__textarea--error, .feedback-type-selector:has(.feedback-field__error)');
             invalidFields.forEach(field => {
                 field.animate([
@@ -171,12 +147,10 @@ function initFormSubmission() {
             return;
         }
 
-        // Show submitting state
         submitBtn.dataset.submitting = 'true';
         submitBtn.disabled = true;
     });
 
-    // Remove error state on input
     const messageField = form.querySelector('[name="message"]');
     messageField?.addEventListener('input', () => {
         if (messageField.value.trim()) {
@@ -186,7 +160,6 @@ function initFormSubmission() {
         }
     });
 
-    // Remove error when type selected
     document.querySelectorAll('.feedback-type-option').forEach(option => {
         option.addEventListener('click', () => {
             const errorEl = form.querySelector('.feedback-type-selector .feedback-field__error');
@@ -195,9 +168,6 @@ function initFormSubmission() {
     });
 }
 
-// ==========================================================================
-// Particle Mouse Parallax
-// ==========================================================================
 
 function initParticleParallax() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -234,14 +204,10 @@ function initParticleParallax() {
     animate();
 }
 
-// ==========================================================================
-// Toast Notification System
-// ==========================================================================
 
 function initToast() {
     const toast = document.getElementById('feedback-toast');
 
-    // Check for success message
     const urlParams = new URLSearchParams(window.location.search);
     if (toast && (urlParams.get('sent') === 'true' || document.querySelector('.feedback-alert--success'))) {
         showToast();
@@ -266,9 +232,6 @@ function initToast() {
     }
 }
 
-// ==========================================================================
-// History Item Stagger Animation
-// ==========================================================================
 
 function initHistoryStagger() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -292,9 +255,6 @@ function initHistoryStagger() {
     items.forEach(item => observer.observe(item));
 }
 
-// ==========================================================================
-// Page Visibility Handler
-// ==========================================================================
 
 function initVisibilityHandler() {
     document.addEventListener('visibilitychange', () => {
@@ -306,9 +266,6 @@ function initVisibilityHandler() {
     });
 }
 
-// ==========================================================================
-// Main Initialization
-// ==========================================================================
 
 export function initFeedbackPage() {
     const page = document.querySelector('[data-feedback-page]');
@@ -323,7 +280,6 @@ export function initFeedbackPage() {
     initHistoryStagger();
     initVisibilityHandler();
 
-    // Handle browser back/forward cache
     window.addEventListener('pageshow', (e) => {
         if (e.persisted) {
             initScrollAnimations();
@@ -332,7 +288,6 @@ export function initFeedbackPage() {
     });
 }
 
-// Auto-init if not using modules
 if (typeof window !== 'undefined' && !window.__FEEDBACK_PAGE_INITIALIZED__) {
     window.__FEEDBACK_PAGE_INITIALIZED__ = true;
     document.addEventListener('DOMContentLoaded', initFeedbackPage);

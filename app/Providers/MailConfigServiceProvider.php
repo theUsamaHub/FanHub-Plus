@@ -12,7 +12,6 @@ class MailConfigServiceProvider extends ServiceProvider
         try {
             $this->overrideMailConfig();
         } catch (\Exception $e) {
-            // DB not ready yet (migrations not run), fall back to .env
         }
     }
 

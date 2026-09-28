@@ -63,6 +63,5 @@
 
 @push('scripts')
 <script>
-    // toggleSidebar / toggleSidebarCollapse / toggleTheme live in layouts/app.blade.php
 </script>
 @endpush

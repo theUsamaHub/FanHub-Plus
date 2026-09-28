@@ -12,9 +12,9 @@ return new class extends Migration
             $table->id();
             $table->string('subject');
             $table->longText('body');
-            $table->string('type')->nullable(); // content, event, character, merchandise, category, custom
-            $table->unsignedBigInteger('reference_id')->nullable(); // ID of the related model
-            $table->json('recipient_filters')->nullable(); // category_ids, status, etc.
+            $table->string('type')->nullable();
+            $table->unsignedBigInteger('reference_id')->nullable();
+            $table->json('recipient_filters')->nullable();
             $table->integer('recipient_count')->default(0);
             $table->integer('sent_count')->default(0);
             $table->integer('failed_count')->default(0);

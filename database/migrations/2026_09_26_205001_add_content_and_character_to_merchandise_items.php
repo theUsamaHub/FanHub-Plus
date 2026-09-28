@@ -7,17 +7,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Merchandise hierarchy:
-     *   Category -> Content -> (optional Character) -> Merchandise
-     *
-     * Content is REQUIRED, Character is OPTIONAL.
-     *
-     * Existing rows must NOT be deleted. We add the columns as
-     * nullable first, auto-assign any obvious rows (matching
-     * category) to a default Content row in that category, then
-     * a follow-up migration enforces NOT NULL after data is clean.
-     */
     public function up(): void
     {
         if (! Schema::hasColumn('merchandise_items', 'content_id')) {
@@ -31,9 +20,6 @@ return new class extends Migration
             });
         }
 
-        // Auto-assign existing merchandise rows that have a category but no content:
-        // pick the first published content in the same category so the FK can later
-        // be tightened to NOT NULL without breaking data.
         $items = DB::table('merchandise_items')->whereNull('content_id')->whereNotNull('category_id')->get(['id', 'category_id']);
         foreach ($items as $item) {
             $fallback = DB::table('contents')

@@ -49,7 +49,6 @@ class EventSeeder extends Seeder
                     'popularity_score' => $e['popularity_score'],
                 ]
             );
-            // DatabaseSeeder disables model events, including automatic slug generation.
             $event->ensureSlug();
             $event->save();
         }

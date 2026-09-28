@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    {{-- Key Metrics Cards --}}
+
     <div class="row g-3 mb-4" id="metricsRow">
         <div class="col-6 col-xl-3">
             <div class="card h-100 fh-adm-stat-card" data-accent="primary">
@@ -101,9 +101,9 @@
         </div>
     </div>
 
-    {{-- Main Charts Row --}}
+
     <div class="row g-3 mb-4">
-        {{-- Views Trend Chart --}}
+
         <div class="col-xl-8">
             <div class="card h-100 fh-adm-chart-card">
                 <div class="card-header">
@@ -124,7 +124,7 @@
             </div>
         </div>
 
-        {{-- User Growth Chart --}}
+
         <div class="col-xl-4">
             <div class="card h-100 fh-adm-chart-card">
                 <div class="card-header">
@@ -146,9 +146,9 @@
         </div>
     </div>
 
-    {{-- Secondary Charts Row --}}
+
     <div class="row g-3 mb-4">
-        {{-- Content by Category --}}
+
         <div class="col-lg-6">
             <div class="card h-100 fh-adm-chart-card">
                 <div class="card-header">
@@ -162,7 +162,7 @@
             </div>
         </div>
 
-        {{-- Content by Status --}}
+
         <div class="col-lg-6">
             <div class="card h-100 fh-adm-chart-card">
                 <div class="card-header">
@@ -177,7 +177,7 @@
         </div>
     </div>
 
-    {{-- Top Content & Merchandise Tables --}}
+
     <div class="row g-3 mb-4">
         <div class="col-lg-6">
             <div class="card h-100 fh-adm-table-card">
@@ -280,9 +280,9 @@
         </div>
     </div>
 
-    {{-- Reviews, Feedback & Ratings --}}
+
     <div class="row g-3 mb-4">
-        {{-- Review Moderation --}}
+
         <div class="col-lg-4">
             <div class="card h-100 fh-adm-chart-card">
                 <div class="card-header">
@@ -315,7 +315,7 @@
             </div>
         </div>
 
-        {{-- Feedback Volume --}}
+
         <div class="col-lg-4">
             <div class="card h-100 fh-adm-chart-card">
                 <div class="card-header">
@@ -342,7 +342,7 @@
             </div>
         </div>
 
-        {{-- Ratings Distribution --}}
+
         <div class="col-lg-4">
             <div class="card h-100 fh-adm-chart-card">
                 <div class="card-header">
@@ -368,7 +368,7 @@
         </div>
     </div>
 
-    {{-- User Growth Table --}}
+
     <div class="row g-3">
         <div class="col-12">
             <div class="card fh-adm-table-card">
@@ -411,7 +411,7 @@
         </div>
     </div>
 
-    {{-- Chart Data (injected for JS) --}}
+
     <script>
         window.analyticsData = {
             views: @json($viewsChartData ?? []),

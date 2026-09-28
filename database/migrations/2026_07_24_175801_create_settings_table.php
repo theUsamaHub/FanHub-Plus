@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('group')->default('general');
             $table->string('key')->unique();
             $table->text('value')->nullable();
-            $table->string('type')->default('text'); // text, textarea, number, boolean, image, json
+            $table->string('type')->default('text');
             $table->timestamps();
         });
     }

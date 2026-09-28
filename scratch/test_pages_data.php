@@ -31,7 +31,6 @@ foreach ($routes as $name) {
         $bodyLen = strlen($body);
         $hasError = str_contains($body, 'Whoops') || str_contains($body, 'Undefined') || str_contains($body, 'Error:');
 
-        // Find any error messages
         $errorMsg = '';
         if ($hasError) {
             if (preg_match('/(Undefined|Whoops|Error)[\s\S]{0,400}/', $body, $matches)) {

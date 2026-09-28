@@ -8,7 +8,6 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // Roles table
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
@@ -17,7 +16,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Role-User pivot
         Schema::create('role_user', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('role_id')->constrained()->cascadeOnDelete();

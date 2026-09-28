@@ -2,12 +2,6 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication Language Lines
-    |--------------------------------------------------------------------------
-    | Custom friendly messages for login, logout, and password flows.
-    */
 
     'failed' => 'Invalid email or password. Please check your credentials and try again.',
 

@@ -73,7 +73,6 @@
 </div>
 
 @push('modals')
-<!-- Image picker modal (View all): outside .fh-adm-main-inner because that node has a persistent transform. -->
 <div class="fh-adm-media-modal" id="fhImagePickerModal" role="dialog" aria-modal="true" aria-labelledby="fhImagePickerTitle">
     <div class="fh-adm-media-modal__backdrop" data-fh-media-close></div>
     <div class="fh-adm-media-modal__panel">
@@ -227,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var query = searchText.trim().toLowerCase();
         return (PAYLOAD.images || []).filter(function (item) {
             if (activeCat === 'all') {
-                // keep everything
+
             } else if (activeCat === 'none') {
                 if (item.category_id) return false;
             } else if (String(item.category_id) !== String(activeCat)) {

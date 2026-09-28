@@ -7,6 +7,7 @@
     <title>Make it your universe | FanHub Plus</title>
     <script>try { document.documentElement.dataset.theme = localStorage.getItem('fanhub-theme') === 'light' ? 'light' : 'dark'; } catch (e) {}</script>
     @vite('resources/js/public.js')
+    @include('partials.font-links')
 </head>
 <body class="fh-site onboarding-body">
     <div class="onboarding-backdrop" aria-hidden="true" inert><span>EVERY UNIVERSE.<br>ONE HOME.</span></div>

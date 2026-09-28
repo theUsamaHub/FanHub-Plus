@@ -12,9 +12,6 @@ use Illuminate\Support\Str;
 
 class ActivityLog extends Model
 {
-    /**
-     * Event key => [label, chip tone, icon].
-     */
     public const EVENTS = [
         'created' => ['Created', 'success', 'bi-plus-circle'],
         'updated' => ['Updated', 'warning', 'bi-pencil'],
@@ -43,13 +40,6 @@ class ActivityLog extends Model
     ];
 
     /**
-     * Memoised diff, so `field_changes`, `field_change_count` and `summary`
-     * share one build.
-     *
-     * Note: this cannot be named `changes` — Eloquent declares a real
-     * `protected $changes` property on every model, which shadows the accessor
-     * for any read performed from inside the class.
-     *
      * @var array<int, array{field: string, label: string, old: mixed, new: mixed, type: string}>|null
      */
     private ?array $fieldChangesCache = null;
@@ -81,9 +71,6 @@ class ActivityLog extends Model
             ->when($to, fn (Builder $q) => $q->whereDate('created_at', '<=', $to));
     }
 
-    /**
-     * Write an audit entry, snapshotting a readable subject and sentence.
-     */
     public static function log(
         string $event,
         Model $model,
@@ -137,9 +124,6 @@ class ActivityLog extends Model
         return $this->user?->name ?? 'System';
     }
 
-    /**
-     * Fall back to a generated sentence for rows written before this column existed.
-     */
     public function getDescriptionAttribute(?string $value): string
     {
         if ($value) {
@@ -155,13 +139,6 @@ class ActivityLog extends Model
         );
     }
 
-    /**
-     * Coerce a stored value bag to an array.
-     *
-     * Legacy rows were written through a seeder that called json_encode() on an
-     * already-cast value, so the column holds a JSON *string* rather than a JSON
-     * object. Decoding the cast once yields a string, which must be unwrapped.
-     */
     protected function normalizeValues(mixed $values): ?array
     {
         if ($values === null || $values === '') {
@@ -177,11 +154,6 @@ class ActivityLog extends Model
     }
 
     /**
-     * Field-by-field old -> new rows for the detail view.
-     *
-     * Memoised because the list view reads `changes`, `change_count` and
-     * `summary` for every row, and each would otherwise rebuild the diff.
-     *
      * @return array<int, array{field: string, label: string, old: mixed, new: mixed, type: string}>
      */
     public function getChangesAttribute(): array
@@ -201,9 +173,6 @@ class ActivityLog extends Model
         ));
     }
 
-    /**
-     * A compact "field: old -> new" preview for the list view.
-     */
     public function getSummaryAttribute(): string
     {
         $logger = app(ActivityLogger::class);
@@ -223,17 +192,11 @@ class ActivityLog extends Model
         return implode(' · ', $parts);
     }
 
-    /**
-     * Whether the underlying record still exists, so the UI can offer a link.
-     */
     public function getTargetExistsAttribute(): bool
     {
         return $this->auditable !== null;
     }
 
-    /**
-     * Admin URL for the underlying record, when one is known.
-     */
     public function getTargetUrlAttribute(): ?string
     {
         $target = $this->auditable;
@@ -259,9 +222,6 @@ class ActivityLog extends Model
     }
 
     /**
-     * Distinct actors for the "filter by user" dropdown, cached because the
-     * list only changes when a new actor appears.
-     *
      * @return \Illuminate\Support\Collection<int, User>
      */
     public static function actors()
@@ -278,9 +238,6 @@ class ActivityLog extends Model
             ->values());
     }
 
-    /**
-     * Forget cached actor list after a new entry is written.
-     */
     protected static function booted(): void
     {
         static::created(fn () => Cache::forget('activity-log-actors'));

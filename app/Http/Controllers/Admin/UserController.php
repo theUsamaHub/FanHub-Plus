@@ -95,7 +95,6 @@ class UserController extends Controller
             'password' => $validated['password'],
         ]);
 
-        // Admin-created accounts always get the admin role only.
         Role::firstOrCreate(['slug' => 'admin'], ['name' => 'Admin']);
         $user->assignRole('admin');
 

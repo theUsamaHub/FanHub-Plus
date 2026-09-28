@@ -8,7 +8,6 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // Categories
         Schema::table('categories', function (Blueprint $table) {
             $table->index(['is_active', 'sort_order', 'name']);
             $table->index(['is_active', 'published_at']);
@@ -19,7 +18,6 @@ return new class extends Migration
             $table->index('unpublish_at');
         });
 
-        // Contacts
         Schema::table('contacts', function (Blueprint $table) {
             $table->index('status');
             $table->index('created_at');
@@ -27,7 +25,6 @@ return new class extends Migration
             $table->index('email');
         });
 
-        // Media
         Schema::table('media', function (Blueprint $table) {
             $table->index('mime_type');
             $table->index('name');
@@ -35,37 +32,31 @@ return new class extends Migration
             $table->index(['mime_type', 'created_at']);
         });
 
-        // Activity Logs
         Schema::table('activity_logs', function (Blueprint $table) {
             $table->index('created_at');
             $table->index(['event', 'created_at']);
             $table->index(['user_id', 'created_at']);
         });
 
-        // Subscribers
         Schema::table('subscribers', function (Blueprint $table) {
             $table->index('subscribed_at');
             $table->index('unsubscribed_at');
             $table->index(['subscribed_at', 'unsubscribed_at']);
         });
 
-        // Notifications
         Schema::table('notifications', function (Blueprint $table) {
             $table->index('read_at');
             $table->index(['notifiable_type', 'notifiable_id', 'read_at'], 'notif_type_id_read_index');
         });
 
-        // Settings
         Schema::table('settings', function (Blueprint $table) {
             $table->index('group');
         });
 
-        // Sessions
         Schema::table('sessions', function (Blueprint $table) {
             $table->index('ip_address');
         });
 
-        // Tags
         Schema::table('tags', function (Blueprint $table) {
             $table->index('name');
         });

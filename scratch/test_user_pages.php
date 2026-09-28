@@ -6,7 +6,6 @@ $kernel->bootstrap();
 
 $httpKernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
-// Find a registered user with some data
 $user = App\Models\User::whereHas('roles', function ($q) { $q->where('slug', 'registered-user'); })->first();
 if (!$user) { echo "No registered user found\n"; exit(1); }
 
@@ -37,7 +36,6 @@ $routes = [
     'events.show' => null,
 ];
 
-// Find first content
 $content = App\Models\Content::visibleToPublic()->first();
 if ($content) $routes['public.content'] = $content->slug;
 $char = App\Models\CharacterProfile::first();

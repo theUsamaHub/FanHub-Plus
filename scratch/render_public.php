@@ -6,7 +6,6 @@ $kernel->bootstrap();
 
 $httpKernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
-// Find a registered user
 $user = App\Models\User::whereHas('roles', function ($q) { $q->where('slug', 'registered-user'); })->first();
 if (!$user) { echo "No registered user found\n"; exit(1); }
 
@@ -29,7 +28,6 @@ $routes = [
     ['public.sitemap', null],
 ];
 
-// Find a content, character, merchandise, event for member interactions
 $content = App\Models\Content::visibleToPublic()->first();
 $char = App\Models\CharacterProfile::first();
 $merch = App\Models\MerchandiseItem::first();
@@ -48,7 +46,6 @@ foreach ($routes as [$name, $param]) {
         $code = $response->getStatusCode();
         $body = $response->getContent();
 
-        // Check for errors
         $hasError = str_contains($body, 'Whoops') || str_contains($body, 'Exception');
         $bodyLen = strlen($body);
 

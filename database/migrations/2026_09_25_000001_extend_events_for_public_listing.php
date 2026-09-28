@@ -20,7 +20,6 @@ return new class extends Migration
             $table->index(['status', 'is_featured', 'start_at'], 'events_public_featured');
             $table->index(['status', 'event_type', 'start_at'], 'events_public_type');
         });
-        // Preserve existing records and give each an unambiguous public URL.
         DB::table('events')->orderBy('id')->chunkById(200, function ($events) {
             foreach ($events as $event) {
                 DB::table('events')->where('id', $event->id)->update([

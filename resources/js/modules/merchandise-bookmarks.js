@@ -53,7 +53,6 @@ document.addEventListener('submit', async (event) => {
     }
 });
 
-// Capture image failures for initial markup and subsequently filtered cards.
 const fallback = (image) => {
     if (!image.matches?.('[data-merch-image]') || image.src === image.dataset.fallback) return;
     image.src = image.dataset.fallback;
@@ -62,3 +61,17 @@ document.addEventListener('error', (event) => fallback(event.target), true);
 document.querySelectorAll('[data-merch-image]').forEach((image) => {
     if (image.complete && !image.naturalWidth) fallback(image);
 });
+
+const products = document.getElementById('merch-products');
+const viewBtns = document.querySelectorAll('.merch-view-btn');
+if (products && viewBtns.length) {
+    viewBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const view = btn.dataset.view;
+            viewBtns.forEach((b) => b.setAttribute('aria-pressed', 'false'));
+            btn.setAttribute('aria-pressed', 'true');
+            products.dataset.view = view;
+            document.cookie = `merch_view=${view}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
+        });
+    });
+}

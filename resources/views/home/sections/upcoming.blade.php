@@ -16,6 +16,7 @@
         <button type="button" class="release-arrow release-arrow--prev home-round-arrow" aria-label="Previous releases" aria-controls="release-results" data-release-prev hidden><x-site-icon name="next" /></button>
         @include('home.sections.release-results')
         <button type="button" class="release-arrow release-arrow--next home-round-arrow" aria-label="Next releases" aria-controls="release-results" data-release-next hidden><x-site-icon name="next" /></button>
+        <div class="release-pagination" data-release-pagination></div>
     </div>
     <p class="release-status home-sr-only" role="status" aria-live="polite" data-release-status></p>
 </section>

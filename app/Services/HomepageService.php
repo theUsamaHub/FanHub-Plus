@@ -17,13 +17,25 @@ class HomepageService
 {
     private function remember(string $key, callable $callback): mixed
     {
-        // Personalized result sets must never enter the shared guest cache.
         if (auth()->check()) return $callback();
 
         $version = Cache::get('homepage:version', 'initial');
 
         return Cache::remember('homepage:v4:'.$version.':'.today()->toDateString().':'.$key,
             config('homepage.cache_seconds'), $callback);
+    }
+
+    public function heroArtwork(): array
+    {
+        return $this->remember('hero-artwork', function () {
+            $categories = Category::with('iconMedia')->whereIn('slug', ['anime', 'manga', 'gaming'])->get()->keyBy('slug');
+
+            return collect(['anime', 'manga', 'gaming'])->mapWithKeys(function ($slug) use ($categories) {
+                $media = $categories->get($slug)?->iconMedia;
+
+                return [$slug => ($media?->isImage() ? $media->url : null) ?: asset(config('homepage.artwork.'.$slug))];
+            })->all();
+        });
     }
 
     public function sections(): array
@@ -39,9 +51,9 @@ class HomepageService
             'homeEvents' => Event::forUser(auth()->user())->published()->with(['category:id,name,slug', 'coverMedia'])
                 ->where(fn ($query) => $query->where('start_at', '>=', now())->orWhere('end_at', '>=', now()))
                 ->orderByDesc('is_featured')->orderBy('start_at')->orderBy('id')->limit(5)->get(),
-            'multimediaItems' => Content::forUser(auth()->user())->visibleToPublic()->whereIn('type', ['image', 'video', 'audio'])
+            'multimediaItems' => Content::forUser(auth()->user())->visibleToPublic()->where('is_user_submitted', true)
                 ->with(['category:id,name,slug', 'media'])
-                ->orderByDesc('published_at')->orderByDesc('id')->limit(30)->get(),
+                ->orderByDesc('published_at')->orderByDesc('id')->limit(20)->get(),
         ]);
     }
 
@@ -51,6 +63,21 @@ class HomepageService
             ->whereHas('contents', fn ($q) => $q->visibleToPublic()->upcoming())
             ->orderByRaw("CASE slug WHEN 'anime' THEN 0 WHEN 'gaming' THEN 1 WHEN 'movies' THEN 2 WHEN 'tv-shows' THEN 3 ELSE 4 END")
             ->orderBy('name')->get(['id', 'name', 'slug']));
+    }
+
+    public function releaseStats(): array
+    {
+        return $this->remember('release-stats', function () {
+            $month = [now()->startOfMonth()->toDateString(), now()->endOfMonth()->toDateString()];
+            $merchandise = fn () => MerchandiseItem::upcoming()
+                ->where(fn ($query) => $query->whereNull('release_date')->orWhereDate('release_date', '>=', today()));
+
+            return [
+                'total' => Content::visibleToPublic()->upcoming()->count() + $merchandise()->count(),
+                'thisMonth' => Content::visibleToPublic()->upcoming()->whereBetween('release_date', $month)->count()
+                    + MerchandiseItem::upcoming()->whereBetween('release_date', $month)->count(),
+            ];
+        });
     }
 
     public function merchandise(string $category = 'all'): Collection
@@ -100,16 +127,20 @@ class HomepageService
         });
     }
 
-    public function paginatedReleases(string $filter): LengthAwarePaginator
+    public function paginatedReleases(string $filter, string $q = '', string $sort = 'nearest'): LengthAwarePaginator
     {
+        $q = trim($q);
+        $term = $q === '' ? null : '%'.str_replace(['!', '%', '_'], ['!!', '!%', '!_'], mb_strtolower($q)).'%';
         $content = Content::visibleToPublic()
             ->leftJoin('categories', 'categories.id', '=', 'contents.category_id')
-            ->selectRaw("contents.id, contents.category_id, contents.title, contents.slug, contents.release_date, contents.kind, categories.name as category, categories.slug as category_slug, 'content' as source_kind, NULL as tag, contents.release_label")
+            ->selectRaw("contents.id, contents.category_id, contents.title, contents.slug, contents.release_date, contents.kind, categories.name as category, categories.slug as category_slug, 'content' as source_kind, NULL as tag, contents.release_label, contents.created_at")
             ->upcoming()
+            ->when($term !== null, fn ($query) => $query->whereRaw("LOWER(contents.title) LIKE ? ESCAPE '!'", [$term]))
             ->when($filter === 'merchandise', fn ($query) => $query->whereRaw('1 = 0'))
             ->when(! in_array($filter, ['all', 'merchandise'], true), fn ($query) => $query->where('categories.slug', $filter));
         $merchandise = MerchandiseItem::upcoming()
-            ->selectRaw("id, category_id, name as title, slug, release_date, NULL as kind, 'Merchandise' as category, 'merchandise' as category_slug, 'merchandise' as source_kind, tag, NULL as release_label")
+            ->selectRaw("id, category_id, name as title, slug, release_date, NULL as kind, 'Merchandise' as category, 'merchandise' as category_slug, 'merchandise' as source_kind, tag, NULL as release_label, created_at")
+            ->when($term !== null, fn ($query) => $query->whereRaw("LOWER(name) LIKE ? ESCAPE '!'", [$term]))
             ->where(fn ($query) => $query->whereNull('release_date')->orWhereDate('release_date', '>=', today()))
             ->when(! in_array($filter, ['all', 'merchandise'], true), fn ($query) => $query->whereRaw('1 = 0'));
 
@@ -118,9 +149,13 @@ class HomepageService
             $content->toBase()->unionAll($merchandise->toBase()),
             'releases'
         )
-            ->when($favoriteIds !== [], fn ($query) => $query->orderByRaw('CASE WHEN category_id IN ('.implode(',', array_fill(0, count($favoriteIds), '?')).') THEN 0 ELSE 1 END', $favoriteIds))
-            ->orderByRaw('CASE WHEN release_date IS NULL THEN 1 ELSE 0 END')
-            ->orderBy('release_date')->orderBy('source_kind')->orderBy('id')->paginate(12)->withQueryString();
+            ->when($favoriteIds !== [] && $sort === 'nearest', fn ($query) => $query->orderByRaw('CASE WHEN category_id IN ('.implode(',', array_fill(0, count($favoriteIds), '?')).') THEN 0 ELSE 1 END', $favoriteIds))
+            ->when($sort === 'name', fn ($query) => $query->orderBy('title'), fn ($query) => match ($sort) {
+                'farthest' => $query->orderByRaw('CASE WHEN release_date IS NULL THEN 1 ELSE 0 END')->orderByDesc('release_date'),
+                'newest' => $query->orderByDesc('created_at'),
+                default => $query->orderByRaw('CASE WHEN release_date IS NULL THEN 1 ELSE 0 END')->orderBy('release_date'),
+            })
+            ->orderBy('source_kind')->orderBy('id')->paginate(12)->withQueryString();
 
         $ids = collect($paginator->items())->pluck('id');
         $kinds = collect($paginator->items())->pluck('source_kind', 'id');

@@ -80,7 +80,6 @@ class ActivityLogTest extends TestCase
         $this->assertSame('Doomed', $log->old_values['name']);
         $this->assertSame('Fandom "Doomed" was deleted', $log->description);
 
-        // Regression: the old view read only new_values, so deletes rendered blank.
         $this->assertNotEmpty($log->changes, 'A delete must expose the removed fields.');
         $this->assertSame('removed', collect($log->changes)->firstWhere('field', 'name')['type']);
     }
@@ -260,7 +259,6 @@ class ActivityLogTest extends TestCase
 
     public function test_login_event_is_recorded(): void
     {
-        // actingAs() bypasses the auth flow, so sign in for real to fire the event.
         auth()->login($this->admin);
 
         $log = ActivityLog::where('event', 'login')->latest('id')->first();

@@ -34,10 +34,6 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Give pre-existing rows a best-effort subject so the log stays readable.
-     * The subject is derived from whichever value looks like a human label.
-     */
     private function backfillLegacyRows(): void
     {
         DB::table('activity_logs')

@@ -1,6 +1,5 @@
 import '../../css/pages/discovery.css';
 
-// Everything remains visible and usable without motion or JavaScript.
 const root = document.querySelector('[data-discovery]');
 if (root) {
     const preference = matchMedia('(prefers-reduced-motion: reduce)');

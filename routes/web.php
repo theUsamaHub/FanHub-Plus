@@ -6,22 +6,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubscriberController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Routes for the web interface. These routes use the "web" middleware group.
-| Authentication routes are in routes/auth.php
-|
-*/
 
 Route::get('/', \App\Http\Controllers\HomeController::class)->name('home');
 
-// Contact form
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
-// Dashboard - redirect based on role
 Route::get('/dashboard', function () {
     session()->keep('onboarding-success');
     $user = auth()->user();
@@ -37,12 +26,10 @@ Route::get('/dashboard', function () {
     return redirect()->route('profile.edit')->with('error', __('Your account has no role assigned. Please contact an administrator.'));
 })->middleware(['auth'])->name('dashboard');
 
-// User Dashboard
 Route::get('/user/dashboard', [\App\Http\Controllers\User\DashboardController::class, 'index'])
     ->middleware(['auth', 'role:registered-user'])
     ->name('user.dashboard');
 
-// Profile
 Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -50,12 +37,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/profile/newsletter-preferences', [ProfileController::class, 'updateNewsletterPreferences'])->name('profile.newsletter-preferences');
 });
 
-// Unsubscribe
 Route::get('/unsubscribe/{token}', [SubscriberController::class, 'unsubscribe'])->name('unsubscribe');
 
 require __DIR__.'/member.php';
 
-// Media file serving with proper 404 handling
 Route::get('/storage/{path}', [MediaServeController::class, 'serve'])
     ->where('path', '.*')
     ->name('storage.serve');

@@ -9,8 +9,6 @@ use Illuminate\Validation\Rule;
 class ProfileUpdateRequest extends FormRequest
 {
     /**
-     * Get the validation rules that apply to the request.
-     *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
@@ -21,14 +19,12 @@ class ProfileUpdateRequest extends FormRequest
             'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,gif,webp', 'max:2048'],
         ];
 
-        // Admin: basic + avatar upload only.
         if ($this->user()->hasRole('admin')) {
             $rules['remove_avatar'] = ['nullable', 'boolean'];
 
             return $rules;
         }
 
-        // Registered-user profile extras.
         $rules += [
             'display_name' => ['nullable', 'string', 'max:100'],
             'bio' => ['nullable', 'string', 'max:2000'],

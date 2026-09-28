@@ -145,8 +145,6 @@ class Event extends Model
 
     public function scopeWithinRadius(Builder $query, float $latitude, float $longitude, int $radius): Builder
     {
-        // Some SQLite builds omit math functions. Register SQL functions on that
-        // connection so filtering and pagination still happen in the database.
         $connection = $query->getConnection();
         if ($connection->getDriverName() === 'sqlite') {
             $pdo = $connection->getPdo();
@@ -155,7 +153,6 @@ class Event extends Model
             }
             $pdo->sqliteCreateFunction('power', fn ($value, $exponent) => $value === null ? null : pow((float) $value, (float) $exponent), 2);
         }
-        // Haversine distance in SQL; CASE clamps floating point rounding at the poles.
         $a = '(POWER(SIN(RADIANS(latitude - ?) / 2), 2) + COS(RADIANS(?)) * COS(RADIANS(latitude)) * POWER(SIN(RADIANS(longitude - ?) / 2), 2))';
         $distance = "(12742 * ASIN(SQRT(CASE WHEN $a > 1 THEN 1 ELSE $a END)))";
         $bindings = [$latitude, $latitude, $longitude, $latitude, $latitude, $longitude];

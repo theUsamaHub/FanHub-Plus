@@ -6,7 +6,6 @@ $kernel->bootstrap();
 
 $httpKernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
-// Find a registered user with data
 $user = App\Models\User::whereHas('roles', function ($q) { $q->where('slug', 'registered-user'); })->first();
 if (!$user) { echo "No registered user found\n"; exit(1); }
 
@@ -32,11 +31,9 @@ foreach ($routes as $name) {
         $code = $response->getStatusCode();
         $body = $response->getContent();
 
-        // Check for errors in the body
         $hasError = str_contains($body, 'Whoops') || str_contains($body, 'Exception') || str_contains($body, 'Fatal error');
         $hasLaravelError = str_contains($body, '<title>') && str_contains($body, 'Error');
 
-        // Look for first line with content
         $bodyLen = strlen($body);
         $preview = substr(strip_tags($body), 0, 80);
 
@@ -44,7 +41,6 @@ foreach ($routes as $name) {
         $errNote = $hasError || $hasLaravelError ? ' [HAS ERROR]' : '';
         echo sprintf("[%s] %s -> %d (size=%d)%s\n", $status, str_pad($name, 25), $code, $bodyLen, $errNote);
         if ($hasError || $hasLaravelError) {
-            // Find error message
             if (preg_match('/(Whoops|Exception|Error)[\s\S]{0,500}/', $body, $matches)) {
                 echo "  -> " . substr(strip_tags($matches[0]), 0, 200) . "\n";
             }

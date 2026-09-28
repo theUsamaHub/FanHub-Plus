@@ -135,7 +135,6 @@ class MediaCategoryTest extends TestCase
             ])
             ->assertRedirect(route('admin.media.index'));
 
-        // 1h 2m 5.5s = 3725.5 seconds
         $this->assertDatabaseHas('media', [
             'id' => $media->id,
             'alt_text' => 'Trailer clip',

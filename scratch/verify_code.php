@@ -1,11 +1,8 @@
 <?php
-// Standalone verification: parse every modified PHP file and assert
-// the new fields/relations/routes are syntactically valid + present.
 
 $base = 'F:/Devfihter/FanHub-Plus/.worktrees/feat-auto-20260926-474f4a56';
 
 $checks = [
-    // Files
     'app/Models/MerchandiseItem.php' => ["content_id", "character_id", "function content()", "function character()"],
     'app/Models/Event.php' => ["content_id", "function content()"],
     'app/Models/Content.php' => ["function merchandiseItems()", "function events()", "function characters()"],
@@ -47,7 +44,6 @@ foreach ($checks as $relPath => $needles) {
 
 echo $failed === 0 ? "\nAll checks passed.\n" : "\n$failed checks failed.\n";
 
-// PHP syntax check on every modified PHP file
 $phpFiles = array_map(fn($r) => $baseDir = $base . '/' . $r, array_keys(array_filter($checks, fn($k) => str_ends_with($k, '.php') && !str_contains($k, 'migrations/'), ARRAY_FILTER_USE_KEY)));
 $phpFiles = array_merge($phpFiles, [
     $base . '/database/migrations/2026_09_26_205000_add_content_id_to_events_table.php',

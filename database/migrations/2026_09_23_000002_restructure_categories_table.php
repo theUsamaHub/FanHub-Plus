@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('description', 500)->nullable()->change();
         });
 
-        // Drop indexes that reference columns about to be removed (required on SQLite)
         foreach (Schema::getIndexes('categories') as $index) {
             if (array_intersect($index['columns'], ['is_active', 'sort_order', 'deleted_at', 'image', 'body'])) {
                 Schema::table('categories', function (Blueprint $table) use ($index) {

@@ -10,7 +10,6 @@
         </div>
     </div>
 
-    <!-- Upload Form (Inline at Top) -->
     <div class="card mb-4 fh-adm-form-card">
         <div class="card-header">
             <h6 class="mb-0 fw-semibold fh-adm-section-title">{{ __('Upload Files') }}</h6>
@@ -80,7 +79,6 @@
                     </div>
                 </div>
 
-                <!-- Progress Bar (hidden by default) -->
                 <div id="uploadProgress" class="d-none mb-3">
                     <div class="d-flex justify-content-between mb-1">
                         <span class="fw-medium">{{ __('Uploading...') }}</span>
@@ -101,7 +99,6 @@
         </div>
     </div>
 
-    <!-- Filters -->
     <div class="card mb-4 fh-adm-filter">
         <div class="card-body">
             <form method="GET" action="{{ route('admin.media.index') }}" class="row g-3">
@@ -135,7 +132,6 @@
         </div>
     </div>
 
-    <!-- Files Grid -->
     <div class="card fh-adm-form-card">
         <div class="card-body">
             @forelse ($media as $item)
@@ -212,7 +208,6 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // File upload form functionality
     const uploadForm = document.getElementById('uploadForm');
     if (!uploadForm) return;
 
@@ -229,11 +224,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let uploadMediaId = null;
     let totalChunks = 0;
     let uploadedChunks = 0;
-    let chunkSize = 5 * 1024 * 1024; // 5MB default chunk size
+    let chunkSize = 5 * 1024 * 1024;
     let currentFile = null;
     let currentChunkIndex = 0;
 
-    // File input change - show file list
     fileInput.addEventListener('change', function() {
         fileList.innerHTML = '';
         Array.from(this.files).forEach((file, index) => {
@@ -247,27 +241,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Form submit - handle both regular and chunked upload
     uploadForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         
         const files = fileInput.files;
         if (files.length === 0) return;
 
-        // Check if any file needs chunked upload (> 100MB)
         let needsChunked = false;
         for (let file of files) {
-            if (file.size > 100 * 1024 * 1024) { // > 100MB
+            if (file.size > 100 * 1024 * 1024) {
                 needsChunked = true;
                 break;
             }
         }
 
         if (needsChunked && files.length === 1) {
-            // Use chunked upload for single large file
             await uploadChunked(files[0]);
         } else {
-            // Regular upload for multiple or smaller files
             await uploadRegular(files);
         }
     });
@@ -322,8 +312,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function uploadChunked(file) {
-        // Initialize chunked upload
-        const chunkSize = 5 * 1024 * 1024; // 5MB chunks
+        const chunkSize = 5 * 1024 * 1024;
         const totalChunks = Math.ceil(file.size / chunkSize);
         
         isChunkedUpload = true;
@@ -332,7 +321,6 @@ document.addEventListener('DOMContentLoaded', function() {
         currentFile = file;
         currentChunkIndex = 0;
 
-        // Initialize upload session
         const initFormData = new FormData();
         initFormData.append('filename', file.name);
         initFormData.append('total_size', file.size);
@@ -359,10 +347,8 @@ document.addEventListener('DOMContentLoaded', function() {
             uploadMediaId = initData.media_id;
             showProgress();
 
-            // Upload chunks
             for (let i = 0; i < totalChunks; i++) {
                 if (uploadXhr && uploadXhr.readyState === XMLHttpRequest.OPENED) {
-                    // Check if cancelled
                     if (cancelBtn?.dataset.cancelled === 'true') break;
                 }
 
@@ -394,7 +380,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 updateProgress(progress, `Chunk ${i + 1} / ${totalChunks} (${formatBytes(i * chunkSize)} / ${formatBytes(file.size)})`);
             }
 
-            // Complete upload
             const durationHours = document.getElementById('duration_hours')?.value || 0;
             const durationMinutes = document.getElementById('duration_minutes')?.value || 0;
             const durationSeconds = document.getElementById('duration_seconds')?.value || 0;
@@ -423,7 +408,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         } catch (error) {
             showError(error.message);
-            // Try to cancel upload
             if (uploadMediaId) {
                 await fetch('{{ route('admin.media.chunk.cancel') }}', {
                     method: 'POST',
@@ -433,7 +417,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Cancel upload
     cancelBtn?.addEventListener('click', function() {
         if (uploadXhr) {
             uploadXhr.abort();

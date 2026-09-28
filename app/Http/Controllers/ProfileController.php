@@ -35,7 +35,6 @@ class ProfileController extends Controller
             'selected' => $user->favoriteCategories()->pluck('categories.id')->all(),
         ];
 
-        // Add subscriber info for newsletter preferences
         $subscriber = Subscriber::where('email', $user->email)->first();
         $preferences = $subscriber?->getPreferences() ?? [];
         $data['subscriber'] = $subscriber;

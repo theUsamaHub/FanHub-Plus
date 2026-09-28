@@ -23,15 +23,6 @@ Route::get('/discover/{section}', [PublicSiteController::class, 'section'])->nam
 Route::get('/account/{section}', [PublicSiteController::class, 'account'])->middleware('auth')->name('public.account');
 Route::view('/sitemap', 'public.sitemap')->name('public.sitemap');
 
-/*
-|--------------------------------------------------------------------------
-| Public Routes
-|--------------------------------------------------------------------------
-|
-| Public-facing routes that don't require authentication.
-| These are separate from web.php to keep concerns clean.
-|
-*/
 
 Route::get('/about', function () {
     return view('public.about');

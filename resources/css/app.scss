@@ -1,18 +1,12 @@
-/* ── FanHubPlus - Bootstrap 5 Custom Styles ── */
 
-/* Fonts: Rajdhani (headings) + Saira (body) */
 @import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Saira:wght@400;500&display=swap");
 
-/* Import Bootstrap SCSS */
 @import "bootstrap/scss/bootstrap";
 
-/* Import Bootstrap Icons */
 @import "bootstrap-icons/font/bootstrap-icons.css";
 
-/* ── CSS Custom Properties (Design Tokens) ── */
 @import "theme-tokens";
 
-/* ── Typography ── */
 body {
     font-family: var(--bs-body-font-family);
     font-size: 0.875rem;
@@ -27,7 +21,6 @@ h1, h2, h3, h4, h5, h6 {
     color: #1A1730;
 }
 
-/* ── Card Enhancements ── */
 .card {
     border: none;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
@@ -39,7 +32,6 @@ h1, h2, h3, h4, h5, h6 {
     border-bottom: 1px solid #e5e7eb;
 }
 
-/* ── Form Enhancements ── */
 .form-control:focus,
 .form-select:focus {
     border-color: var(--bs-primary);
@@ -52,7 +44,6 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 0.375rem;
 }
 
-/* ── Button Enhancements ── */
 .btn {
     font-family: var(--bs-heading-font-family);
     font-weight: 500;
@@ -71,7 +62,6 @@ h1, h2, h3, h4, h5, h6 {
     border-color: #5331A3;
 }
 
-/* ── Table Enhancements ── */
 .table {
     --bs-table-hover-bg: #f3f4f6;
 }
@@ -86,18 +76,15 @@ h1, h2, h3, h4, h5, h6 {
     border-bottom-width: 1px;
 }
 
-/* ── Alert Enhancements ── */
 .alert {
     border: none;
     border-radius: 0.5rem;
 }
 
-/* ── Badge Enhancements ── */
 .badge {
     font-weight: 500;
 }
 
-/* ── Sidebar ── */
 .sidebar {
     width: 250px;
     min-height: 100vh;
@@ -105,7 +92,6 @@ h1, h2, h3, h4, h5, h6 {
     transition: width 0.3s ease;
 }
 
-/* Mobile: force sidebar visible when toggled */
 .sidebar.show-mobile {
     display: flex !important;
     position: fixed;
@@ -140,12 +126,10 @@ h1, h2, h3, h4, h5, h6 {
     margin-right: 0.5rem;
 }
 
-/* ── Navbar ── */
 .navbar-brand {
     font-weight: 600;
 }
 
-/* ── Page Transitions ── */
 .fade-in {
     animation: fadeIn 0.3s ease-in;
 }
@@ -155,7 +139,6 @@ h1, h2, h3, h4, h5, h6 {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Scrollbar ── */
 ::-webkit-scrollbar {
     width: 6px;
 }
@@ -173,7 +156,6 @@ h1, h2, h3, h4, h5, h6 {
     background: #a8a8a8;
 }
 
-/* ── Auth Pages ── */
 .auth-wrapper {
     min-height: 100vh;
     display: flex;
@@ -191,7 +173,6 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
 }
 
-/* ── Empty State ── */
 .empty-state {
     text-align: center;
     padding: 3rem 1rem;
@@ -204,7 +185,6 @@ h1, h2, h3, h4, h5, h6 {
     color: #d1d5db;
 }
 
-/* ── Loading State ── */
 .loading-overlay {
     position: fixed;
     top: 0;

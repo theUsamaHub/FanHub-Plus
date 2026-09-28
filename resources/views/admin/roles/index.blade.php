@@ -11,7 +11,6 @@
     </div>
 
 
-    <!-- Roles Table -->
     <div class="card fh-adm-form-card">
         <div class="card-body p-0">
             <div class="table-responsive fh-adm-table-scroll">

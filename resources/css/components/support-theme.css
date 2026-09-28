@@ -1,4 +1,3 @@
-/* Support pages use the neutral end of the shared theme token scales. */
 html[data-theme='dark'] body:has(:is(.contact-page, .feedback-page, .privacy-page)) {
     --fh-bg: var(--dark-text-900);
     --fh-surface: color-mix(in srgb, var(--dark-text-900) 96%, var(--dark-text-50));

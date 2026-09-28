@@ -30,7 +30,6 @@
 @media(max-width: 1200px) { .home-side-note { display: none; } .home-page { padding-top: 80px; } }
 @media(max-width: 700px) { .home-page { padding-top: 70px; } .home-section { padding: 38px 18px 52px; scroll-margin-top: 75px; } .home-section-heading h2 { font-size: clamp(28px,7.4vw,42px); letter-spacing: -.8px; } .home-eyebrow { font-size: 10px; letter-spacing: 3px; gap: 12px; margin-bottom: 15px; } .home-eyebrow > span { width: 30px; } .home-section-subtitle { font-size: 13px; letter-spacing: .2px; margin-top: 12px; } .home-section-toolbar { margin: 12px 0; } .home-view-all { font-size: 14px; } }
 
-/* Full-Width Outer Layout Fixes for Explore Fandoms, Trending Now, Featured Stories, Upcoming Releases */
 .home-page .home-section.explore-fandoms,
 .home-page .home-section.home-trending,
 .home-page .home-section.home-featured,

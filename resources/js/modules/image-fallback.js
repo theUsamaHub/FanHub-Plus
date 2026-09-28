@@ -1,5 +1,3 @@
-// Capture also covers images cloned by the multimedia carousel. Never retry a
-// failed fallback indefinitely if a deployment is missing the local artwork.
 const attempted = new WeakSet();
 const useFallback = (image) => {
     if (image instanceof HTMLImageElement && image.hasAttribute('data-avatar-image')) {

@@ -43,6 +43,7 @@ class HomeEventsMultimediaTest extends TestCase
             'category_id' => Category::firstOrCreate(['slug' => 'anime'], ['name' => 'Anime'])->id,
             'title' => 'Artwork '.Content::count(), 'type' => 'image',
             'status' => 'published', 'published_at' => now()->subHour(),
+            'is_user_submitted' => true,
         ], $attributes));
     }
 
@@ -84,21 +85,23 @@ class HomeEventsMultimediaTest extends TestCase
         $this->get('/')->assertDontSee('Renamed gathering');
     }
 
-    public function test_multimedia_uses_public_content_and_does_not_expose_unpublished_uploads(): void
+    public function test_fan_content_shows_only_public_user_submitted_items(): void
     {
         $visible = $this->content(['title' => 'Public fan art']);
         $video = $this->content(['title' => 'Public trailer', 'type' => 'video']);
+        $article = $this->content(['title' => 'Text article', 'type' => 'article']);
+        $this->content(['title' => 'Admin announcement', 'is_user_submitted' => false]);
         $this->content(['title' => 'Draft art', 'status' => 'draft']);
         $this->content(['title' => 'Scheduled art', 'published_at' => now()->addDay()]);
         $this->content(['title' => 'Pending art', 'status' => 'pending_review']);
-        $this->content(['title' => 'Text article', 'type' => 'article']);
         $this->image('private/unpublished.jpg');
 
         $items = app(HomepageService::class)->sections()['multimediaItems'];
-        $this->assertEqualsCanonicalizing([$visible->id, $video->id], $items->modelKeys());
+        $this->assertEqualsCanonicalizing([$visible->id, $video->id, $article->id], $items->modelKeys());
         $response = $this->get('/')->assertOk()->assertSee('Public fan art')->assertSee('Public trailer')
-            ->assertSee(route('public.content', $visible->slug))->assertDontSee('Draft art')
-            ->assertDontSee('Scheduled art')->assertDontSee('Pending art')->assertDontSee('private/unpublished.jpg');
+            ->assertSee(route('public.content', $visible->slug))
+            ->assertDontSee('Draft art')->assertDontSee('Scheduled art')->assertDontSee('Pending art')
+            ->assertDontSee('private/unpublished.jpg');
         $this->assertSame(2, substr_count($response->getContent(), 'data-media-row aria-label='));
     }
 
@@ -125,7 +128,7 @@ class HomeEventsMultimediaTest extends TestCase
     public function test_empty_and_single_record_sections_render_without_fabricating_records(): void
     {
         $this->get('/')->assertOk()->assertSee('New events are on their way.')
-            ->assertSee('Fan art, videos, and more will appear here when published.');
+            ->assertSee('Approved community submissions will appear here when published.');
         $this->event();
         $this->content();
         $response = $this->get('/')->assertOk();

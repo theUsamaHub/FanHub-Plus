@@ -42,13 +42,6 @@ class EventRequest extends FormRequest
         ];
     }
 
-    /**
-     * Server-side cross-relation validation:
-     *   - if content_id is provided, that Content must belong to the
-     *     selected Category.
-     *   - When content_id is null/empty the Event is a general
-     *     Category-level event and is allowed.
-     */
     public function withValidator(Validator $validator): void
     {
         $validator->after(function (Validator $validator) {

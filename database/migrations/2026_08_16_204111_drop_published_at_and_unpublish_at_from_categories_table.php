@@ -8,7 +8,6 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // Drop any indexes that reference the columns before removing them (required on SQLite)
         foreach (Schema::getIndexes('categories') as $index) {
             if (array_intersect($index['columns'], ['published_at', 'unpublish_at'])) {
                 Schema::table('categories', function (Blueprint $table) use ($index) {

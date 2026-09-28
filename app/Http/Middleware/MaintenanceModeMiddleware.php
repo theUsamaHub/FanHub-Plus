@@ -15,12 +15,10 @@ class MaintenanceModeMiddleware
             return $next($request);
         }
 
-        // Allow health check
         if ($request->is('up', 'health')) {
             return $next($request);
         }
 
-        // Allow auth routes so users can log in
         $bypassRoutes = Setting::get('maintenance_bypass_routes', 'login,register,forgot-password,reset-password*,admin/*');
         $bypassPatterns = array_map('trim', explode(',', $bypassRoutes));
         foreach ($bypassPatterns as $pattern) {
@@ -29,7 +27,6 @@ class MaintenanceModeMiddleware
             }
         }
 
-        // Allow admin users
         if ($request->user() && $request->user()->hasRole('admin')) {
             return $next($request);
         }

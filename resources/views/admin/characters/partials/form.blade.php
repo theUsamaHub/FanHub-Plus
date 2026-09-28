@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function reload() {
         var cat = categorySelect.value;
         if (!cat || !lookupTemplate) {
-            // No category yet — keep server-rendered list intact.
+
             return;
         }
         var url = lookupTemplate.replace('__CAT__', encodeURIComponent(cat));
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     categorySelect.addEventListener('change', function () {
-        // Clear stale selections that don't belong to the new category.
+
         selectedIds = [];
         reload();
     });

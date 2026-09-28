@@ -1,10 +1,4 @@
-/**
- * Contact Page - VIP Interactions & Animations
- */
 
-// ==========================================================================
-// Intersection Observer for Scroll Animations
-// ==========================================================================
 
 function initScrollAnimations() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -31,9 +25,6 @@ function initScrollAnimations() {
     document.querySelectorAll('[data-animate]').forEach(el => observer.observe(el));
 }
 
-// ==========================================================================
-// Character Counter for Message Field
-// ==========================================================================
 
 function initCharCounter() {
     const textarea = document.getElementById('message');
@@ -50,9 +41,6 @@ function initCharCounter() {
     updateCounter();
 }
 
-// ==========================================================================
-// Form Submission with Animation
-// ==========================================================================
 
 function initFormSubmission() {
     const form = document.querySelector('[data-contact-form]');
@@ -60,10 +48,7 @@ function initFormSubmission() {
     if (!form || !submitBtn) return;
 
     form.addEventListener('submit', async (e) => {
-        // Don't prevent default - let Laravel handle the form submission
-        // We just add the submitting state for UX
 
-        // Validate required fields first
         const requiredFields = form.querySelectorAll('[required]');
         let isValid = true;
         requiredFields.forEach(field => {
@@ -77,7 +62,6 @@ function initFormSubmission() {
 
         if (!isValid) {
             e.preventDefault();
-            // Shake the first invalid field
             const firstInvalid = form.querySelector('.contact-field__input--error');
             if (firstInvalid) {
                 firstInvalid.focus();
@@ -92,12 +76,10 @@ function initFormSubmission() {
             return;
         }
 
-        // Show submitting state
         submitBtn.dataset.submitting = 'true';
         submitBtn.disabled = true;
     });
 
-    // Remove error state on input
     form.querySelectorAll('[required]').forEach(field => {
         field.addEventListener('input', () => {
             if (field.value.trim()) {
@@ -107,9 +89,6 @@ function initFormSubmission() {
     });
 }
 
-// ==========================================================================
-// Particle Mouse Parallax
-// ==========================================================================
 
 function initParticleParallax() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -146,13 +125,9 @@ function initParticleParallax() {
 
     animate();
 
-    // Cleanup
     return () => cancelAnimationFrame(rafId);
 }
 
-// ==========================================================================
-// Counter Animation for Stats
-// ==========================================================================
 
 function initCounterAnimation() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -186,7 +161,6 @@ function animateCounter(element) {
     function update(currentTime) {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        // Easing: easeOutExpo
         const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
         const current = Math.floor(eased * target);
         element.textContent = current.toLocaleString();
@@ -199,12 +173,8 @@ function animateCounter(element) {
     requestAnimationFrame(update);
 }
 
-// ==========================================================================
-// Toast Notification System
-// ==========================================================================
 
 function initToast() {
-    // Check for success message in URL or session
     const urlParams = new URLSearchParams(window.location.search);
     const toast = document.getElementById('contact-toast');
 
@@ -212,7 +182,6 @@ function initToast() {
         showToast();
     }
 
-    // Listen for toast close
     const closeBtn = toast?.querySelector('.contact-toast__close');
     closeBtn?.addEventListener('click', hideToast);
 
@@ -222,7 +191,6 @@ function initToast() {
             toast.setAttribute('open', '');
         });
 
-        // Auto hide after 5 seconds
         setTimeout(hideToast, 5000);
     }
 
@@ -234,9 +202,6 @@ function initToast() {
     }
 }
 
-// ==========================================================================
-// FAQ Accordion Enhancement
-// ==========================================================================
 
 function initFaqAccordion() {
     document.querySelectorAll('.contact-faq-item').forEach(item => {
@@ -245,7 +210,6 @@ function initFaqAccordion() {
 
         if (!summary || !content) return;
 
-        // Add keyboard support
         summary.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -253,7 +217,6 @@ function initFaqAccordion() {
             }
         });
 
-        // Smooth height animation
         item.addEventListener('toggle', () => {
             if (item.open) {
                 content.style.maxHeight = content.scrollHeight + 'px';
@@ -264,7 +227,6 @@ function initFaqAccordion() {
             }
         });
 
-        // Initial state
         content.style.maxHeight = item.open ? content.scrollHeight + 'px' : '0';
         content.style.opacity = item.open ? '1' : '0';
         content.style.transition = 'max-height 0.3s ease, opacity 0.2s ease';
@@ -272,9 +234,6 @@ function initFaqAccordion() {
     });
 }
 
-// ==========================================================================
-// Method Card Hover Effects
-// ==========================================================================
 
 function initMethodCards() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -291,26 +250,18 @@ function initMethodCards() {
     });
 }
 
-// ==========================================================================
-// Page Visibility Handler
-// ==========================================================================
 
 function initVisibilityHandler() {
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
-            // Pause animations when tab is not visible
             document.body.classList.add('contact-page-hidden');
         } else {
             document.body.classList.remove('contact-page-hidden');
-            // Re-trigger counter if needed
             initCounterAnimation();
         }
     });
 }
 
-// ==========================================================================
-// Main Initialization
-// ==========================================================================
 
 export function initContactPage() {
     const page = document.querySelector('[data-contact-page]');
@@ -326,7 +277,6 @@ export function initContactPage() {
     initMethodCards();
     initVisibilityHandler();
 
-    // Handle browser back/forward cache
     window.addEventListener('pageshow', (e) => {
         if (e.persisted) {
             initScrollAnimations();
@@ -335,7 +285,6 @@ export function initContactPage() {
     });
 }
 
-// Auto-init if not using modules
 if (typeof window !== 'undefined' && !window.__CONTACT_PAGE_INITIALIZED__) {
     window.__CONTACT_PAGE_INITIALIZED__ = true;
     document.addEventListener('DOMContentLoaded', initContactPage);

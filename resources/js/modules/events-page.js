@@ -10,8 +10,6 @@ const page = document.querySelector('[data-events-page], [data-event-detail]');
 
 if (page) {
     initNearbyEvents(page, () => ScrollTrigger.refresh());
-    // A single form moves into a native modal drawer on mobile, with focus trapping,
-    // Escape support and an inline no-JavaScript fallback.
     const panel = page.querySelector('[data-event-filter-panel]');
     if (panel && 'HTMLDialogElement' in window) {
         const marker = document.createComment('Event filter position');
@@ -98,7 +96,6 @@ if (page) {
                 const timeline = gsap.timeline({
                     scrollTrigger: { trigger: stage, start: () => `top ${Math.min(105, innerHeight - stage.offsetHeight - 20)}px`, end: () => '+=' + Math.min(innerHeight * .65, 540) * cards.length,
                         pin: true, scrub: .55, anticipatePin: 1, invalidateOnRefresh: true },
-                    // Keep the outgoing link active until the incoming card is visibly dominant.
                     onUpdate: () => setActive(Math.min(cards.length - 1, Math.max(0, Math.floor((timeline.time() - .45) / 1.15)))),
                 });
                 cards.forEach((card, i) => {
@@ -120,7 +117,6 @@ if (page) {
                     counter.textContent = '01';
                 };
             }
-            // Tablets/mobile and reduced motion remain in ordinary document flow.
             cards.forEach((card, i) => gsap.from(card, {
                 opacity: reduced ? .5 : 0, x: reduced ? 0 : (i % 2 ? 30 : -30), y: reduced ? 0 : 20,
                 scale: reduced ? 1 : .94, duration: reduced ? .2 : .65, ease: 'power2.out', clearProps: 'opacity,transform',
@@ -129,7 +125,6 @@ if (page) {
         });
     }
 
-    // Only the 12 loaded grid cards get inexpensive viewport reveals.
     gsap.matchMedia().add({ reduced: '(prefers-reduced-motion: reduce)', full: '(prefers-reduced-motion: no-preference)' }, (context) => {
         const reduced = context.conditions.reduced;
         const elements = page.querySelectorAll('[data-event-card], [data-event-reveal]');
@@ -144,8 +139,6 @@ if (page) {
         : new Promise((resolve) => window.addEventListener('load', resolve, { once: true }));
     Promise.all([document.fonts.ready, loaded]).then(() => {
         ScrollTrigger.refresh();
-        // Pin spacing is added after the browser's initial fragment navigation.
-        // Re-align filtered/paginated results once that layout is final.
         if (location.hash === '#explore-events') {
             requestAnimationFrame(() => {
                 const target = page.querySelector('#explore-events');

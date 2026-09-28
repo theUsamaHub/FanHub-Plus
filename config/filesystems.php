@@ -2,31 +2,9 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Default Filesystem Disk
-    |--------------------------------------------------------------------------
-    |
-    | Here you may specify the default filesystem disk that should be used
-    | by the framework. The "local" disk, as well as a variety of cloud
-    | based disks are available to your application for file storage.
-    |
-    */
 
     'default' => env('FILESYSTEM_DISK', 'local'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Filesystem Disks
-    |--------------------------------------------------------------------------
-    |
-    | Below you may configure as many filesystem disks as necessary, and you
-    | may even configure multiple disks for the same driver. Examples for
-    | most supported storage drivers are configured here for reference.
-    |
-    | Supported drivers: "local", "ftp", "sftp", "s3"
-    |
-    */
 
     'disks' => [
 
@@ -75,26 +53,9 @@ return [
 
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Media Disk
-    |--------------------------------------------------------------------------
-    |
-    | Disk used for admin media uploads. Set MEDIA_DISK=r2 in production to
-    | store images/videos on Cloudflare R2 via the S3-compatible endpoint.
-    |
-    */
 
     'media_disk' => env('MEDIA_DISK', 'public'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Symbolic Links
-    |--------------------------------------------------------------------------
-    |
-    | Files are stored directly in public/storage/ - no symlink needed.
-    |
-    */
 
     'links' => [
         public_path('storage/images') => storage_path('app/public/images'),

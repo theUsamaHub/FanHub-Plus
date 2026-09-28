@@ -20,7 +20,6 @@ $test = function ($method, $name, $params = [], $body = []) use ($httpKernel, $a
     $request->setLaravelSession($session);
     $request->headers->set('X-CSRF-TOKEN', $token);
     $request->headers->set('X-Requested-With', 'XMLHttpRequest');
-    // Also set the token in body for Laravel to pick up
     $request->merge(['_token' => $token]);
     $response = $httpKernel->handle($request);
     $code = $response->getStatusCode();

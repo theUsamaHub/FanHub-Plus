@@ -12,7 +12,6 @@ class DashboardController extends Controller
     {
         $user = $request->user()->load('profile');
         $favorites = $user->favoriteCategories()->with('iconMedia')->withCount(['contents' => fn ($q) => $q->visibleToPublic()])->orderBy('categories.name')->get();
-        // Reuse the activity log for a cross-session first visit marker, without new schema.
         $visit = ActivityLog::firstOrCreate([
             'user_id' => $user->id,
             'event' => 'dashboard.visited',

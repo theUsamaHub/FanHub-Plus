@@ -19,7 +19,7 @@
         </div>
     </div>
 
-    {{-- Stats --}}
+
     <div class="row g-3 mb-4">
         <div class="col-6 col-xl-4">
             <div class="card border-start border-secondary border-4 h-100">
@@ -48,7 +48,7 @@
     </div>
 
 <div class="row g-3 mb-4">
-        {{-- Event breakdown --}}
+
         <div class="col-12">
             <div class="card h-100 fh-adm-form-card">
                 <div class="card-header">
@@ -83,7 +83,7 @@
         </div>
     </div>
 
-    {{-- Filters --}}
+
     <div class="card mb-4 fh-adm-filter">
         <div class="card-body">
             <form method="GET" action="{{ route('admin.activity-logs.index') }}" class="row g-2">
@@ -131,7 +131,7 @@
         </div>
     </div>
 
-    {{-- Log list --}}
+
     <div class="card fh-adm-table-card">
         <div class="card-body p-0">
             <div class="table-responsive fh-adm-table-scroll">

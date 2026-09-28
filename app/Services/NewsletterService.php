@@ -11,9 +11,6 @@ use Illuminate\Support\Facades\Mail;
 class NewsletterService
 {
     /**
-     * Send synchronously so the caller can report honest sent/failed counts
-     * and subscribers get their email immediately.
-     *
      * @return array{sent: int, failed: int}
      */
     public function send(Newsletter $newsletter, $recipients): array

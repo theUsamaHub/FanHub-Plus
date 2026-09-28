@@ -9,10 +9,6 @@ use App\Models\Review;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 
-/**
- * Live performance signals for the admin dashboard.
- * Computed from real activity — how the platform is doing right now.
- */
 class DashboardInsightService
 {
     /**

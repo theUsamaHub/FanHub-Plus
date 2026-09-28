@@ -26,5 +26,6 @@ Route::middleware('auth')->prefix('user')->name('user.')->group(function () {
         Route::post('items/{type}/{id}/review', [InteractionController::class, 'review'])->name('review');
         Route::delete('reviews/{review}', [InteractionController::class, 'removeReview'])->name('reviews.destroy');
         Route::post('watched/{content}', [InteractionController::class, 'watched'])->name('watched');
+        Route::post('watchlist/{content}', [InteractionController::class, 'watchlist'])->name('watchlist');
     });
 });

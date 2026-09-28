@@ -1,18 +1,18 @@
 @php
     $mediaFallback = asset(config('homepage.images.multimedia'));
-    $mediaRows = $multimediaItems->isEmpty() ? collect() : $multimediaItems->chunk((int) ceil($multimediaItems->count() / 2))->values();
+    $mediaRows = $multimediaItems->isEmpty() ? collect() : $multimediaItems->take(20)->chunk(10)->values();
     if ($mediaRows->count() === 1) $mediaRows->push($mediaRows->first());
 @endphp
 <section id="multimedia" class="home-section home-multimedia" data-home-multimedia aria-labelledby="home-multimedia-title">
     <header class="home-section-heading home-multimedia__heading">
-        <p class="home-multimedia__eyebrow"><span></span>Visual universe<span></span></p>
-        <h2 id="home-multimedia-title">Multi<span>media</span></h2>
-        <p class="home-section-subtitle">Wallpapers, fan art, screenshots, and more from every universe.</p>
+        <p class="home-multimedia__eyebrow"><span></span>Fan creations<span></span></p>
+        <h2 id="home-multimedia-title">Fan <span>Content</span></h2>
+        <p class="home-section-subtitle">Fan art, clips, wallpapers and stories submitted by the community.</p>
     </header>
     @if($multimediaItems->isNotEmpty())
         <div class="home-multimedia__rows">
             @foreach($mediaRows as $row)
-                <div class="home-multimedia__row {{ $loop->last ? 'home-multimedia__row--reverse' : '' }}" data-media-row aria-label="{{ $loop->first ? 'First' : 'Second' }} multimedia row">
+                <div class="home-multimedia__row {{ $loop->last ? 'home-multimedia__row--reverse' : '' }}" data-media-row aria-label="{{ $loop->first ? 'First' : 'Second' }} fan content row">
                     <div class="home-multimedia__track" data-media-track>
                         <div class="home-multimedia__group" data-media-group>
                             @foreach($row as $item)
@@ -36,6 +36,6 @@
             <button type="button" data-media-pause aria-pressed="false"><i class="bi bi-pause" aria-hidden="true"></i><span>Pause motion</span></button>
         </div>
     @else
-        <p class="home-empty">Fan art, videos, and more will appear here when published.</p>
+        <p class="home-empty">Approved community submissions will appear here when published.</p>
     @endif
 </section>

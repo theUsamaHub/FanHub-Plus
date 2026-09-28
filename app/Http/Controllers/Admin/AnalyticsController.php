@@ -52,14 +52,12 @@ class AnalyticsController extends Controller
 
         $maxRatingCount = $ratingsDistribution->max() ?? 1;
 
-        // Aggregate metrics
         $totalViews = Content::sum('view_count') + MerchandiseItem::sum('view_count');
         $totalUsers = User::count();
         $newUsers30d = User::where('created_at', '>=', now()->subDays(30))->count();
         $prevPeriodUsers = User::whereBetween('created_at', [now()->subDays(60), now()->subDays(30)])->count();
         $engagementRate = $totalViews > 0 ? round(($totalViews / max($totalUsers, 1)) * 100, 1) : 0;
 
-        // Chart data for different periods
         $viewsChartData = [
             'daily' => $this->getViewsChartData('daily'),
             'weekly' => $this->getViewsChartData('weekly'),

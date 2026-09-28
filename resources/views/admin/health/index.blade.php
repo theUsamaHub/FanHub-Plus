@@ -6,7 +6,6 @@
     </div>
 
     <div class="row g-3">
-        <!-- PHP & Laravel -->
         <div class="col-md-6">
             <div class="card h-100">
                 <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title"><i class="bi bi-info-circle me-1"></i>{{ __('Application') }}</h6></div>
@@ -37,7 +36,6 @@
             </div>
         </div>
 
-        <!-- Database & Cache -->
         <div class="col-md-6">
             <div class="card h-100">
                 <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title"><i class="bi bi-database me-1"></i>{{ __('Services') }}</h6></div>
@@ -80,7 +78,6 @@
             </div>
         </div>
 
-        <!-- Storage -->
         <div class="col-md-6">
             <div class="card h-100">
                 <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title"><i class="bi bi-hdd me-1"></i>{{ __('Storage') }}</h6></div>
@@ -104,7 +101,6 @@
             </div>
         </div>
 
-        <!-- Jobs & Queue -->
         <div class="col-md-6">
             <div class="card h-100">
                 <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title"><i class="bi bi-gear me-1"></i>{{ __('Jobs & Queue') }}</h6></div>
@@ -133,7 +129,6 @@
             </div>
         </div>
 
-        <!-- System -->
         <div class="col-md-6">
             <div class="card h-100">
                 <div class="card-header"><h6 class="mb-0 fw-semibold fh-adm-section-title"><i class="bi bi-cpu me-1"></i>{{ __('System') }}</h6></div>

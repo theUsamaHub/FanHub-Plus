@@ -17,9 +17,6 @@ class CharacterController extends Controller
 {
     public function index(Request $request): View
     {
-        // Eager-load a limited slice of related content so the listing can
-        // surface the first few titles without an N+1 query. Full counts
-        // still come through withCount('contents').
         $query = CharacterProfile::with([
             'category',
             'imageMedia',
@@ -141,11 +138,6 @@ class CharacterController extends Controller
     private function formData(array $selectedContentIds = []): array
     {
         $categoryId = old('category_id');
-        // Build the initial Content list scoped to the current Category
-        // (preserved across validation failures). The "selected" IDs are
-        // always included even if their Category changed so the form can
-        // show stale selections on Edit until the admin picks a new
-        // Category — the JS layer then reloads from the lookup endpoint.
         $contentsQuery = Content::orderBy('title')->get(['id', 'title', 'type', 'status', 'category_id']);
         $contents = $categoryId
             ? $contentsQuery->where('category_id', $categoryId)

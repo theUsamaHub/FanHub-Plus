@@ -9,7 +9,6 @@
     <body>
         @include('partials.public-navbar')
 
-        <!-- Hero Section -->
         <section class="py-5 bg-white">
             <div class="container py-5">
                 <div class="row align-items-center">
@@ -49,7 +48,6 @@
             </div>
         </section>
 
-        <!-- Features Section -->
         <section id="features" class="py-5 bg-light">
             <div class="container py-5">
                 <div class="text-center mb-5">
@@ -127,7 +125,6 @@
             </div>
         </section>
 
-        <!-- More Features -->
         <section class="py-5 bg-white">
             <div class="container py-3">
                 <div class="text-center mb-5">
@@ -211,7 +208,6 @@
             </div>
         </section>
 
-        <!-- Newsletter -->
         <section class="bg-primary bg-opacity-10 py-5">
             <div class="container text-center">
                 <h4 class="fw-semibold mb-2">{{ __('Stay Updated') }}</h4>

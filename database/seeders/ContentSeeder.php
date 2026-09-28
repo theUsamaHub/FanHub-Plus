@@ -16,7 +16,6 @@ class ContentSeeder extends Seeder
         $admin = User::where('email', 'admin@example.com')->first() ?? User::first();
         $user = User::where('email', 'user@example.com')->first() ?? User::first();
 
-        // 1. Upcoming Content (10 Items) - Future release dates
         $upcomingContents = [
             ['title' => 'Upcoming Anime Movie Teaser Trailer 2027', 'type' => 'video', 'excerpt' => 'Sneak peek at the upcoming theatrical anime release.'],
             ['title' => 'Next-Gen VR MMORPG Launch Announcement', 'type' => 'article', 'excerpt' => 'Revolutionary VR MMORPG set to release next season.'],
@@ -53,7 +52,6 @@ class ContentSeeder extends Seeder
             );
         }
 
-        // 2. Trending Now Content (7 Items) - High popularity score & featured
         $trendingContents = [
             ['title' => 'Top 10 Must-Watch Anime of the Season', 'type' => 'article', 'excerpt' => 'Discover the best trending anime releases taking fans by storm.'],
             ['title' => 'Next-Gen Gaming Consoles Complete Breakdown', 'type' => 'article', 'excerpt' => 'In-depth benchmark analysis of next-generation console hardware.'],
@@ -87,7 +85,6 @@ class ContentSeeder extends Seeder
             );
         }
 
-        // 3. Fan Stories (4 Items) - User submitted articles
         $stories = [
             ['title' => 'My First Time Attending Tokyo Anime Expo: A Fan Memoir', 'excerpt' => 'An unforgettable journey through Akihabara and Tokyo Big Sight.'],
             ['title' => 'How Building Cosplay Props Changed My Creative Life', 'excerpt' => 'From EVA foam beginners tutorials to grand stage competition.'],

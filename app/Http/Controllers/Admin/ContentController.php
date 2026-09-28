@@ -177,9 +177,6 @@ class ContentController extends Controller
         ];
     }
 
-    /**
-     * Lightweight JSON payload used by the "View all" media modals.
-     */
     private function mediaPayload(array $mediaOptions): array
     {
         $payload = [];

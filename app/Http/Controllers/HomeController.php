@@ -26,6 +26,7 @@ class HomeController extends Controller
         }
 
         return view('home.index', [
+            'heroArtwork' => $homepage->heroArtwork(),
             ...$homepage->sections(),
             ...$merchData,
             'releases' => $homepage->releases($activeReleaseFilter),

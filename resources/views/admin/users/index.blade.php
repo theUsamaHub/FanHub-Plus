@@ -18,7 +18,6 @@
         </div>
     @endif
 
-    <!-- Stats -->
     <div class="row g-3 mb-4">
         <div class="col-md-4">
             <div class="card border-start border-primary border-4 h-100">
@@ -46,7 +45,6 @@
         </div>
     </div>
 
-    <!-- Search -->
     <div class="card mb-4 fh-adm-filter">
         <div class="card-body">
             <form method="GET" action="{{ route('admin.users.index') }}" class="row g-3">
@@ -77,7 +75,6 @@
         </div>
     </div>
 
-    <!-- Users Table -->
     <div class="card fh-adm-form-card">
         <div class="card-body p-0">
             <div class="table-responsive fh-adm-table-scroll">

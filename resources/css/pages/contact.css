@@ -1,9 +1,6 @@
 @import '../components/support-theme.css';
 @import '../../css/components/site-polish.css';
 
-/* ==========================================================================
-   CONTACT PAGE - VIP Design System
-   ========================================================================== */
 
 .contact-page {
     --contact-accent: var(--fh-accent);
@@ -15,9 +12,6 @@
     --contact-muted: var(--fh-muted);
 }
 
-/* ==========================================================================
-   HERO SECTION
-   ========================================================================== */
 
 .contact-hero {
     position: relative;
@@ -126,7 +120,6 @@
     transform: translateY(20px);
 }
 
-/* Hero Stats */
 .contact-hero__stats {
     display: flex;
     justify-content: center;
@@ -157,7 +150,6 @@
     letter-spacing: 0.1em;
 }
 
-/* Scroll Indicator */
 .contact-hero__scroll {
     position: absolute;
     bottom: 40px;
@@ -193,9 +185,6 @@
     50% { transform: translateY(6px); opacity: 1; }
 }
 
-/* ==========================================================================
-   FORM SECTION
-   ========================================================================== */
 
 .contact-form-section {
     padding: 80px 24px 120px;
@@ -225,7 +214,6 @@
     }
 }
 
-/* Form Wrapper */
 .contact-form-wrapper {
     position: sticky;
     top: 120px;
@@ -283,7 +271,6 @@
     font-size: 16px;
 }
 
-/* Alerts */
 .contact-alert {
     display: flex;
     align-items: center;
@@ -318,7 +305,6 @@
     flex-shrink: 0;
 }
 
-/* Form Fields */
 .contact-form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -367,10 +353,10 @@
     font-size: 16px;
     font-family: inherit;
     color: var(--contact-text);
-    background: var(--fh-bg);
+    background-color: var(--fh-bg);
     border: 1px solid var(--contact-border);
     border-radius: 12px;
-    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
 }
 
 .contact-field__input:hover,
@@ -387,7 +373,7 @@
     box-shadow:
         0 0 0 3px color-mix(in srgb, var(--fh-accent) 15%, transparent),
         0 4px 16px color-mix(in srgb, var(--fh-accent) 10%, transparent);
-    background: var(--fh-surface);
+    background-color: var(--fh-surface);
 }
 
 .contact-field__input--error,
@@ -410,6 +396,7 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23c2bfd6' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 16px center;
+    background-size: 20px 20px;
     padding-right: 48px;
 }
 
@@ -451,7 +438,6 @@
     font-weight: 600;
 }
 
-/* Honeypot */
 .contact-honeypot {
     position: absolute;
     left: -9999px;
@@ -459,7 +445,6 @@
     pointer-events: none;
 }
 
-/* Submit Button */
 .contact-submit {
     position: relative;
     width: 100%;
@@ -472,8 +457,8 @@
     font-weight: 700;
     font-size: 18px;
     letter-spacing: 0.05em;
-    color: #000;
-    background: linear-gradient(135deg, var(--contact-gold) 0%, #ffd600 100%);
+    color: #fff;
+    background: linear-gradient(135deg, #ff9a3d 0%, #ff6a1f 100%);
     border: none;
     border-radius: 14px;
     cursor: pointer;
@@ -485,7 +470,7 @@
 .contact-submit:hover:not(:disabled) {
     transform: translateY(-2px);
     box-shadow:
-        0 12px 32px rgba(255, 179, 0, 0.4),
+        0 12px 32px rgba(255, 122, 47, 0.4),
         0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 }
 
@@ -567,7 +552,6 @@
     to { transform: rotate(360deg); }
 }
 
-/* Privacy */
 .contact-form__privacy {
     display: flex;
     align-items: center;
@@ -590,9 +574,6 @@
     text-underline-offset: 2px;
 }
 
-/* ==========================================================================
-   INFO SIDE
-   ========================================================================== */
 
 .contact-info-wrapper {
     display: flex;
@@ -635,7 +616,6 @@
     color: var(--contact-text);
 }
 
-/* Contact Methods */
 .contact-methods {
     display: flex;
     flex-direction: column;
@@ -744,7 +724,6 @@
     color: var(--contact-accent);
 }
 
-/* Hours */
 .contact-hours {
     padding-top: 24px;
     border-top: 1px solid var(--contact-border);
@@ -783,7 +762,6 @@
     font-family: 'Rajdhani', sans-serif;
 }
 
-/* FAQ Card */
 .contact-faq-card h3 {
     font-family: 'Rajdhani', sans-serif;
     font-weight: 700;
@@ -854,9 +832,6 @@
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* ==========================================================================
-   TOAST
-   ========================================================================== */
 
 .contact-toast {
     position: fixed;
@@ -944,9 +919,6 @@
     to { width: 0%; }
 }
 
-/* ==========================================================================
-   ANIMATION UTILITIES
-   ========================================================================== */
 
 [data-animate] {
     opacity: 0;
@@ -1017,9 +989,6 @@
     to { opacity: 1; transform: scale(1); }
 }
 
-/* ==========================================================================
-   LIGHT THEME SUPPORT
-   ========================================================================== */
 
 [data-theme='light'] .contact-page {
     --contact-surface: #ffffff;
@@ -1056,7 +1025,7 @@
 [data-theme='light'] .contact-field__input,
 [data-theme='light'] .contact-field__select,
 [data-theme='light'] .contact-field__textarea {
-    background: #fafafa;
+    background-color: #fafafa;
     border-color: #e7e0f6;
     color: #1a1730;
 }
@@ -1065,13 +1034,13 @@
 [data-theme='light'] .contact-field__select:hover,
 [data-theme='light'] .contact-field__textarea:hover {
     border-color: color-mix(in srgb, var(--fh-accent) 50%, transparent);
-    background: #f0edfa;
+    background-color: #f0edfa;
 }
 
 [data-theme='light'] .contact-field__input:focus,
 [data-theme='light'] .contact-field__select:focus,
 [data-theme='light'] .contact-field__textarea:focus {
-    background: #ffffff;
+    background-color: #ffffff;
     box-shadow:
         0 0 0 3px color-mix(in srgb, var(--fh-accent) 15%, transparent),
         0 4px 16px color-mix(in srgb, var(--fh-accent) 10%, transparent);
@@ -1137,7 +1106,6 @@
     color: #1a1730;
 }
 
-/* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
     [data-animate] {
         opacity: 1 !important;
@@ -1174,9 +1142,6 @@
     }
 }
 
-/* ==========================================================================
-   FOCUS VISIBLE POLYFILL
-   ========================================================================== */
 
 .contact-field__input:focus-visible,
 .contact-field__select:focus-visible,
@@ -1185,9 +1150,6 @@
     outline-offset: 2px;
 }
 
-/* ==========================================================================
-   PRINT STYLES
-   ========================================================================== */
 
 @media print {
     .contact-hero__scroll,

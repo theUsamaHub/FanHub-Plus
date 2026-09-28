@@ -35,7 +35,6 @@ class OnboardingController extends Controller
         ]);
 
         DB::transaction(function () use ($request, $data) {
-            // Serialize double submissions so a completed setup cannot be overwritten.
             $user = $request->user()->newQuery()->lockForUpdate()->findOrFail($request->user()->id);
             if (! $user->requiresOnboarding()) return;
             $user->favoriteCategories()->sync($data['favorites']);

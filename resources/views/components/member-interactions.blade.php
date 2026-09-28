@@ -10,7 +10,11 @@
         <div class="community__feed">
             <div class="community__heading"><div><span class="community__eyebrow">FAN PERSPECTIVES</span><h2>Ratings &amp; reviews</h2></div><span class="community__count">{{ $reviews->total() }} {{ Str::plural('review', $reviews->total()) }}</span></div>
             <div class="community__summary">
-                <strong>{{ $ratingCount ? number_format($average, 1) : '—' }}<small> / 5</small></strong>
+                @if($ratingCount)
+                    <strong class="community__score">{{ number_format($average, 1) }}<small>/ 5</small></strong>
+                @else
+                    <strong class="community__unrated">Not rated yet</strong>
+                @endif
                 <div><div class="community__stars" aria-hidden="true">@for($star = 1; $star <= 5; $star++)<i class="bi {{ $average >= $star ? 'bi-star-fill' : ($average >= $star - 0.5 ? 'bi-star-half' : 'bi-star') }}"></i>@endfor</div><p>{{ $ratingCount }} {{ Str::plural('star rating', $ratingCount) }}@unless($ratingCount) · Be the first @endunless</p></div>
             </div>
             @if($type === 'character')

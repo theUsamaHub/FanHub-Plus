@@ -16,12 +16,10 @@ class CheckPermission
             return redirect()->route('login');
         }
 
-        // Admin always has all permissions
         if ($user->hasRole('admin')) {
             return $next($request);
         }
 
-        // Check if user has the specific permission through any of their roles
         $hasPermission = $user->roles->contains(function ($role) use ($permission) {
             return $role->hasPermission($permission);
         });

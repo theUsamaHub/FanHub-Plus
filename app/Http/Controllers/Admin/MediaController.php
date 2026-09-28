@@ -132,9 +132,6 @@ class MediaController extends Controller
             ->with('success', 'Media updated successfully.');
     }
 
-    /**
-     * Convert hours + minutes + seconds inputs into total seconds.
-     */
     private function durationFromParts(Request $request): ?float
     {
         $hours = (int) $request->input('duration_hours', 0);
@@ -146,16 +143,13 @@ class MediaController extends Controller
         return $total > 0 ? round($total, 2) : null;
     }
 
-    /**
-     * Initialize a chunked upload session for large files.
-     */
     public function initChunkedUpload(Request $request): \Illuminate\Http\JsonResponse
     {
         $request->validate([
             'filename' => ['required', 'string', 'max:255'],
             'total_size' => ['required', 'integer', 'min:1'],
             'total_chunks' => ['required', 'integer', 'min:1', 'max:1000'],
-            'chunk_size' => ['required', 'integer', 'min:1048576', 'max:10485760'], // 1MB-10MB
+            'chunk_size' => ['required', 'integer', 'min:1048576', 'max:10485760'],
             'mime_type' => ['required', 'string'],
             'category_id' => ['nullable', 'integer', Rule::exists('categories', 'id')->whereNull('deleted_at')],
             'alt_text' => ['nullable', 'string', 'max:255'],
@@ -176,7 +170,6 @@ class MediaController extends Controller
             'status' => 'uploading',
         ]);
 
-        // Create temp directory for chunks
         $disk = Storage::disk(config('filesystems.media_disk', 'public'));
         $tempDir = "uploads/chunks/{$media->id}";
         $disk->makeDirectory($tempDir);
@@ -188,9 +181,6 @@ class MediaController extends Controller
         ]);
     }
 
-    /**
-     * Upload a single chunk.
-     */
     public function uploadChunk(Request $request): \Illuminate\Http\JsonResponse
     {
         $request->validate([
@@ -216,9 +206,6 @@ class MediaController extends Controller
         ]);
     }
 
-    /**
-     * Complete chunked upload and assemble file.
-     */
     public function completeChunkedUpload(Request $request): \Illuminate\Http\JsonResponse
     {
         $request->validate([
@@ -237,7 +224,6 @@ class MediaController extends Controller
         $tempDir = "uploads/chunks/{$media->id}";
         $finalPath = "uploads/movies/{$media->id}_{$media->original_filename}";
 
-        // Assemble chunks
         $handle = $disk->open($finalPath, 'w');
         
         for ($i = 0; $i < $media->total_chunks; $i++) {
@@ -247,10 +233,8 @@ class MediaController extends Controller
         }
         $disk->close($handle);
 
-        // Clean up temp chunks
         $disk->deleteDirectory($tempDir);
 
-        // Get video dimensions and duration if video
         $duration = $this->durationFromParts(request());
         $filePath = $disk->path($finalPath);
         
@@ -262,25 +246,19 @@ class MediaController extends Controller
         ];
 
         if ($media->isVideo()) {
-            $info = @getimagesize($filePath); // For video, we can't get dimensions easily via getimagesize
-            // Use FFmpeg if available for duration
+            $info = @getimagesize($filePath);
             if ($duration === null && extension_loaded('ffmpeg')) {
-                // Could use FFmpeg here for accurate duration
             }
         }
 
         $media->update($updateData);
 
-        // Clean up temp if needed
         return response()->json([
             'media' => $media->fresh(),
             'message' => 'Upload completed successfully',
         ]);
     }
 
-    /**
-     * Cancel chunked upload and clean up.
-     */
     public function cancelChunkedUpload(Request $request): \Illuminate\Http\JsonResponse
     {
         $request->validate([
@@ -312,11 +290,6 @@ class MediaController extends Controller
         return back()->with('success', 'File deleted successfully.');
     }
 
-    /**
-     * Stream the original file to the admin's browser with a forced
-     * Content-Disposition: attachment header so the file downloads
-     * under its original filename (instead of playing inline).
-     */
     public function download(Media $media): BinaryFileResponse|StreamedResponse
     {
         if (! $media->hasValidPath()) {

@@ -177,7 +177,6 @@
                 referenceField.style.display = 'none';
             }
 
-            // Recipient filters are available for every newsletter type
             filterField.style.display = 'block';
         }
 

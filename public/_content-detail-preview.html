@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="">
+    <meta name="theme-color" content="#06060e">
+    <title>Eclipse of Aether | Fan Hub Plus</title>
+    <script>try { document.documentElement.dataset.theme = localStorage.getItem('fanhub-theme') === 'light' ? 'light' : 'dark'; } catch (e) {}</script>
+        <link rel="preload" as="style" href="http://127.0.0.1:8000/build/assets/public-9DXyFLnm.css" /><link rel="modulepreload" href="http://127.0.0.1:8000/build/assets/public-BEHqggcx.js" /><link rel="modulepreload" href="http://127.0.0.1:8000/build/assets/module.esm-o5A9fyoj.js" /><link rel="stylesheet" href="http://127.0.0.1:8000/build/assets/public-9DXyFLnm.css" /><script type="module" src="http://127.0.0.1:8000/build/assets/public-BEHqggcx.js"></script>        <link rel="preload" as="style" href="http://127.0.0.1:8000/build/assets/pagination-CeYfhhVD.css" /><link rel="preload" as="style" href="http://127.0.0.1:8000/build/assets/content-detail-BDTu3w_G.css" /><link rel="modulepreload" href="http://127.0.0.1:8000/build/assets/content-detail-Ciu6eIJ4.js" /><link rel="modulepreload" href="http://127.0.0.1:8000/build/assets/pagination-Cf_2Q2sc.js" /><link rel="stylesheet" href="http://127.0.0.1:8000/build/assets/pagination-CeYfhhVD.css" /><link rel="stylesheet" href="http://127.0.0.1:8000/build/assets/content-detail-BDTu3w_G.css" /><script type="module" src="http://127.0.0.1:8000/build/assets/content-detail-Ciu6eIJ4.js"></script></head>
+<body class="fh-site">
+    <script>
+        (function () {
+            try {
+                if (sessionStorage.getItem('fanhub-splash-shown') === '1') {
+                    document.documentElement.dataset.splashSeen = '1';
+                }
+            } catch (e) {   }
+        })();
+    </script>
+    <div id="splash-screen" data-splash style="position:fixed;inset:0;z-index:9999;background:#000;display:none;align-items:center;justify-content:center;transition:opacity 0.8s ease;">
+        <video id="splash-video" class="splash-desktop-only" autoplay muted playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;">
+            <source src="http://127.0.0.1:8000/videos/splash screen video.mp4" type="video/mp4">
+        </video>
+        <div class="splash-mobile-only" style="display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
+            <style>
+                @keyframes splashPulse { 0%,100%{opacity:.3;transform:scale(.95)} 50%{opacity:1;transform:scale(1)} }
+                @keyframes splashFadeUp { 0%{opacity:0;transform:translateY(12px)} 100%{opacity:1;transform:translateY(0)} }
+                @keyframes splashSpin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+                .splash-mobile-only { animation: splashFadeUp .5s ease forwards; }
+                .splash-mobile-only h1 { font-family:'Rajdhani',sans-serif; font-size:32px; font-weight:700; color:#fff; margin:0 0 8px; animation: splashPulse 1.4s ease infinite; letter-spacing:-0.5px; }
+                .splash-mobile-only h1 span { color:#FF922E; }
+                .splash-mobile-only p { font-family:'Saira',sans-serif; font-size:12px; color:rgba(255,255,255,.5); letter-spacing:4px; text-transform:uppercase; margin:0 0 24px; }
+                .splash-ring { width:36px; height:36px; border:2px solid rgba(255,255,255,.1); border-top-color:#FF922E; border-radius:50%; animation: splashSpin .7s linear infinite; }
+            </style>
+            <h1>FAN<span>HUB+</span></h1>
+            <p>Every universe. One home.</p>
+            <div class="splash-ring" aria-hidden="true"></div>
+        </div>
+        <button id="splash-skip" style="position:absolute;top:20px;right:20px;z-index:10000;background:rgba(0,0,0,0.5);color:white;border:1px solid rgba(255,255,255,.3);padding:8px 16px;border-radius:4px;cursor:pointer;font-family:'Saira',sans-serif;font-size:14px;transition:background .2s;">Skip</button>
+    </div>
+    <style>
+        @media(max-width:700px){
+            .splash-desktop-only{display:none!important}
+            .splash-mobile-only{display:flex!important}
+        }
+    </style>
+    <script>
+    (function(){
+        var splash=document.getElementById('splash-screen'),
+            video=document.getElementById('splash-video'),
+            skip=document.getElementById('splash-skip'),
+            STORAGE_KEY='fanhub-splash-shown';
+        try {
+            if (sessionStorage.getItem(STORAGE_KEY) === '1') {
+                if (splash) splash.parentNode && splash.parentNode.removeChild(splash);
+                return;
+            }
+        } catch (e) {   }
+
+        if (splash) splash.style.display='flex';
+
+        function markSeenAndHide(){
+            try { sessionStorage.setItem(STORAGE_KEY, '1'); } catch (e) {   }
+            splash.style.opacity='0';
+            setTimeout(function(){ splash.style.display='none'; }, 800);
+        }
+        if (skip) skip.addEventListener('click', markSeenAndHide);
+        if (video) video.addEventListener('ended', markSeenAndHide);
+        setTimeout(markSeenAndHide, 2000);
+    })();
+    </script>
+
+    <a class="fh-skip" href="#main-content">Skip to content</a>
+    <header class="fh-header" data-site-header>
+    <nav class="fh-nav" aria-label="Main navigation">
+        <a class="fh-brand fh-brand--premium" href="http://127.0.0.1:8000" aria-label="Fan Hub Plus home">
+    <svg class="fh-brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M24 2 43 13v22L24 46 5 35V13Z" fill="#ff951b"/>
+        <path d="M24 2v44L5 35V13Z" fill="#ffbe47"/>
+        <path d="m14 13 20 0-3 7H21v5h8l-3 7h-5v6l-7-4Z" fill="#161923"/>
+        <path d="M36 5v10m-5-5h10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+    <span class="fh-brand-wordmark">FanHub<span>Plus</span><small>EVERY UNIVERSE. ONE HOME.</small></span>
+</a>
+        <button class="fh-icon-button fh-mobile-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="site-navigation" data-mobile-toggle><svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="M5 8h22M5 16h22M5 24h22"/> </svg>
+</button>
+        <div class="fh-nav-links" id="site-navigation" data-navigation>
+            <a class="fh-nav-link " href="http://127.0.0.1:8000" >Home</a>
+            <div class="fh-fandoms" data-fandoms>
+                <button class="fh-nav-link fh-fandom-trigger " type="button" aria-expanded="false" aria-controls="fandom-menu" data-fandom-toggle>Fandoms <svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="m8 12 8 8 8-8"/> </svg>
+</button>
+                <div class="fh-mega" id="fandom-menu" data-fandom-menu hidden>
+                    <div class="fh-mega-heading"><span>EXPLORE FANDOMS</span><a href="http://127.0.0.1:8000/explore">View all &rarr;</a></div>
+                    <div class="fh-fandom-grid">
+                                            <a class="fh-fandom-card fh-fandom-card--anime" href="http://127.0.0.1:8000/explore?category=anime">
+                            <svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="M3 5q13 4 26 0M4 11h24M9 8v21M23 8v21M16 7v4M7 18h18"/> </svg>
+<span>Anime</span><svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="m12 6 10 10-10 10"/> </svg>
+                        </a>
+                                            <a class="fh-fandom-card fh-fandom-card--gaming" href="http://127.0.0.1:8000/explore?category=gaming">
+                            <svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="M10 7h12c4 0 5 5 7 15 1 5-3 7-6 3l-4-5h-6l-4 5c-3 4-7 2-6-3C5 12 6 7 10 7Z"/><path d="M8 13h6m-3-3v6m10-4h.1m4 4h.1M13 7l1-3h4l1 3"/> </svg>
+<span>Gaming</span><svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="m12 6 10 10-10 10"/> </svg>
+                        </a>
+                                            <a class="fh-fandom-card fh-fandom-card--movies" href="http://127.0.0.1:8000/explore?category=movies">
+                            <svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="m16 2 4 4 6 1 1 6 3 3-3 4-1 6-6 1-4 3-4-3-6-1-1-6-3-4 3-3 1-6 6-1Z"/><circle cx="16" cy="16" r="6"/> </svg>
+<span>Movies</span><svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="m12 6 10 10-10 10"/> </svg>
+                        </a>
+                                            <a class="fh-fandom-card fh-fandom-card--tv-shows" href="http://127.0.0.1:8000/explore?category=tv-shows">
+                            <svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <rect x="3" y="9" width="26" height="21" rx="2"/><path d="m10 2 6 7 6-7M7 14h14v11H7zM25 15v2m0 5v2"/> </svg>
+<span>TV Shows</span><svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="m12 6 10 10-10 10"/> </svg>
+                        </a>
+                                            <a class="fh-fandom-card fh-fandom-card--k-pop" href="http://127.0.0.1:8000/explore?category=k-pop">
+                            <svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="m2 11 7-8h14l7 8-14 19L2 11Zm0 0h28M9 3l7 27L23 3M9 3l7 8 7-8"/> </svg>
+<span>K-Pop</span><svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="m12 6 10 10-10 10"/> </svg>
+                        </a>
+                                            <a class="fh-fandom-card fh-fandom-card--comics" href="http://127.0.0.1:8000/explore?category=comics">
+                            <svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="M2 12c6-5 9-1 14-1s8-4 14 1c1 10-10 15-14 6C12 27 1 22 2 12Z"/><path d="M7 14h4v3H7zm14 0h4v3h-4zM7 6l9-3 9 3"/> </svg>
+<span>Comics</span><svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="m12 6 10 10-10 10"/> </svg>
+                        </a>
+                                            <a class="fh-fandom-card fh-fandom-card--manga" href="http://127.0.0.1:8000/explore?category=manga">
+                            <svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="M16 7C11 2 6 3 3 5v24c4-3 9-3 13 0 4-3 9-3 13 0V5c-3-2-8-3-13 2v22M7 10h4m-4 5h4m-4 5h4m10-10h4m-4 5h4m-4 5h4"/> </svg>
+<span>Manga</span><svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="m12 6 10 10-10 10"/> </svg>
+                        </a>
+                                            <a class="fh-fandom-card fh-fandom-card--cosplay" href="http://127.0.0.1:8000/explore?category=cosplay">
+                            <svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="M13 7a3 3 0 1 1 3 3v5L3 25c-1 1-1 3 1 3h24c2 0 2-2 1-3L16 15"/> </svg>
+<span>Cosplay</span><svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="m12 6 10 10-10 10"/> </svg>
+                        </a>
+                                        </div>
+                </div>
+            </div>
+                            <a class="fh-nav-link " href="http://127.0.0.1:8000/discover/characters">Characters</a>
+                            <a class="fh-nav-link " href="http://127.0.0.1:8000/discover/upcoming">Upcoming</a>
+                            <a class="fh-nav-link " href="http://127.0.0.1:8000/discover/merchandise">Merchandise</a>
+                        <a class="fh-nav-link " href="http://127.0.0.1:8000/events" >Events</a>
+            <a class="fh-nav-link " href="http://127.0.0.1:8000/contact" >Contact</a>
+        </div>
+        <div class="fh-nav-actions">
+            <button class="fh-icon-button fh-search-toggle" type="button" aria-label="Search Fan Hub Plus" data-search-open><svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <circle cx="14" cy="14" r="9"/><path d="m21 21 7 7"/> </svg>
+<span>Find your fandom...</span></button>
+            <span class="fh-action-divider" aria-hidden="true"></span>
+            <button class="fh-theme-toggle" type="button" role="switch" aria-checked="true" aria-label="Dark mode" data-theme-toggle><svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <circle cx="16" cy="16" r="6"/><path d="M16 2v4m0 20v4M2 16h4m20 0h4M6 6l3 3m14 14 3 3M6 26l3-3M23 9l3-3"/> </svg>
+</button>
+                            <a class="fh-login" href="http://127.0.0.1:8000/login" aria-label="Login or sign up"><svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <circle cx="16" cy="10" r="6"/><path d="M4 29v-3a12 12 0 0 1 24 0v3Z"/> </svg>
+<span>Login / Register</span></a>
+                    </div>
+    </nav>
+</header>
+<dialog class="fh-search-dialog" data-search-dialog aria-labelledby="search-title">
+    <button class="fh-icon-button fh-dialog-close" type="button" aria-label="Close search" data-search-close><svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="m8 8 16 16M24 8 8 24"/> </svg>
+</button>
+    <h2 id="search-title">Find your universe</h2>
+    <p>Search stories across all eight fandoms.</p>
+    <form action="http://127.0.0.1:8000/explore" method="GET" role="search">
+        <label for="site-search">Search Fan Hub Plus</label>
+        <div class="fh-search-field"><input id="site-search" name="q" type="search" maxlength="120" placeholder="Anime, games, stories..." required><button type="submit" class="fh-button">Search</button></div>
+    </form>
+     <p class="fh-search-join">New here? <a href="http://127.0.0.1:8000/register">Join FanHub+</a></p> </dialog>
+    <main id="main-content" tabindex="-1" class="fh-main content-detail-main"><article class="content-detail" data-content-detail>
+    <nav class="cd-breadcrumb" aria-label="Breadcrumb">
+        <a href="http://127.0.0.1:8000">Home</a><span>/</span>
+        <a href="http://127.0.0.1:8000/explore?category=anime">Anime</a><span>/</span>
+        <span aria-current="page">Eclipse of Aether</span>
+    </nav>
+            <div class="cd-hero">
+        <figure class="cd-poster"><img src="http://127.0.0.1:8000/images/fandoms/anime.png" alt="Eclipse of Aether" fetchpriority="high" width="560" height="620" data-image-fallback="http://127.0.0.1:8000/images/fandoms/cinema.png"></figure>
+        <header class="cd-intro">
+            <div class="cd-tags"><span class="cd-tag cd-tag--category">Anime</span></div>
+                        <h1>Eclipse of <span class="cd-title-accent">Aether</span></h1>
+            <div class="cd-meta">
+                <time datetime="2026-10-02">2026</time>                <span>Video</span>
+                                <span>Upcoming</span>            </div>
+            <p class="cd-synopsis">In a world where floating nations are sustained by a mysterious force known as Aether, a young outcast discovers he can wield the power that others fear. As ancient secrets awaken and the sky begins to fracture, he must choose between his own destiny and the fate of a world on the edge of collapse.</p>            <div class="cd-actions">
+                                    <a href="http://127.0.0.1:8000/login" class="cd-button cd-button--primary"><i class="bi bi-play-fill" aria-hidden="true"></i>Add to Watchlist</a>
+                    <a href="http://127.0.0.1:8000/login" class="cd-button"><i class="bi bi-bookmark" aria-hidden="true"></i>Add to Favorites</a>
+                                <button class="cd-button cd-button--share" type="button" data-share-url="http://127.0.0.1:8000" data-share-title="Eclipse of Aether" aria-label="Share Eclipse of Aether"><i class="bi bi-share" aria-hidden="true"></i></button>
+                <span class="cd-share-status" data-share-status role="status"></span>
+            </div>
+        </header>
+        <div class="cd-media">
+                            <div class="cd-trailer" data-trailer>
+                    <video controls playsinline preload="none" poster="http://127.0.0.1:8000/images/fandoms/anime.png" aria-label="Eclipse of Aether trailer" src="http://127.0.0.1:8000/storage/../videos/splash screen video.mp4"></video>
+                    <button type="button" class="cd-trailer-cover" data-trailer-play aria-label="Play Eclipse of Aether trailer" hidden>
+                        <span class="cd-trailer-label">Official Trailer</span>
+                        <span class="cd-duration">00:10</span>                        <span class="cd-play"><i class="bi bi-play-fill" aria-hidden="true"></i></span>
+                        <span class="cd-trailer-title"><strong>Eclipse of Aether</strong><span>Official Trailer</span></span>
+                    </button>
+                </div>
+                                        <div class="cd-audio" data-audio-player>
+                    <img src="http://127.0.0.1:8000/images/fandoms/anime.png" alt="" loading="lazy">
+                    <div class="cd-audio-body"><strong>Eclipse of Aether (Original Soundtrack)</strong><span>Eclipse of Aether</span>
+                        <audio controls preload="metadata" src="http://127.0.0.1:8000/storage/preview-only.mp3" aria-label="Eclipse of Aether (Original Soundtrack)"></audio>
+                        <div class="cd-audio-controls" hidden><button type="button" class="cd-audio-play" aria-label="Play audio" data-audio-toggle><i class="bi bi-play-fill" aria-hidden="true"></i></button><input type="range" min="0" max="100" value="0" step="0.1" aria-label="Audio position" data-audio-seek disabled><span data-audio-time>0:00 / 03:45</span></div>
+                    </div>
+                </div>
+                    </div>
+    </div>
+    <div class="cd-middle">
+        <section class="cd-gallery-section" aria-labelledby="cd-gallery-title">
+            <h2 class="cd-heading" id="cd-gallery-title"><i class="bi bi-images" aria-hidden="true"></i>Image Gallery</h2>
+                            <div class="cd-gallery-wrap">
+                    <div class="swiper cd-gallery" data-gallery-slider><div class="swiper-wrapper">
+                        <a class="swiper-slide cd-gallery-image" href="http://127.0.0.1:8000/images/fandoms/anime.png" data-gallery-image aria-label="Open image 1: Gallery scene 1"><img src="http://127.0.0.1:8000/images/fandoms/anime.png" alt="Gallery scene 1" loading="lazy" width="360" height="200"></a><a class="swiper-slide cd-gallery-image" href="http://127.0.0.1:8000/images/fandoms/gaming.png" data-gallery-image aria-label="Open image 2: Gallery scene 2"><img src="http://127.0.0.1:8000/images/fandoms/gaming.png" alt="Gallery scene 2" loading="lazy" width="360" height="200"></a><a class="swiper-slide cd-gallery-image" href="http://127.0.0.1:8000/images/fandoms/cinema.png" data-gallery-image aria-label="Open image 3: Gallery scene 3"><img src="http://127.0.0.1:8000/images/fandoms/cinema.png" alt="Gallery scene 3" loading="lazy" width="360" height="200"></a><a class="swiper-slide cd-gallery-image" href="http://127.0.0.1:8000/images/characters/character1.jpg" data-gallery-image aria-label="Open image 4: Gallery scene 4"><img src="http://127.0.0.1:8000/images/characters/character1.jpg" alt="Gallery scene 4" loading="lazy" width="360" height="200"></a><a class="swiper-slide cd-gallery-image" href="http://127.0.0.1:8000/images/hero/fandom-cards.png" data-gallery-image aria-label="Open image 5: Gallery scene 5"><img src="http://127.0.0.1:8000/images/hero/fandom-cards.png" alt="Gallery scene 5" loading="lazy" width="360" height="200"></a>                    </div></div>
+                    <button class="cd-arrow cd-arrow--prev" data-gallery-prev aria-label="Previous gallery images" hidden><i class="bi bi-chevron-left" aria-hidden="true"></i></button><button class="cd-arrow cd-arrow--next" data-gallery-next aria-label="Next gallery images" hidden><i class="bi bi-chevron-right" aria-hidden="true"></i></button><div class="cd-pagination" data-gallery-pagination></div>                </div>
+                    </section>
+        <aside class="cd-feature" aria-labelledby="cd-feature-title">
+            <h2 class="cd-heading" id="cd-feature-title"><i class="bi bi-file-earmark-richtext-fill" aria-hidden="true"></i>Featured Article</h2>
+            <div class="cd-feature-card">
+                <img src="http://127.0.0.1:8000/images/hero/fandom-cards.png" alt="" loading="lazy">
+                <div><span class="cd-tag cd-tag--category">Read &amp; explore</span>
+                    <h3>Complete World Guide: The Nations of Aether</h3>
+                    <p>In a world where floating nations are sustained by a mysterious force known as Aether, a young outcast discovers he...</p>
+                                            <a class="cd-download" href="http://127.0.0.1:8000/storage/preview-only.pdf" download><i class="bi bi-download" aria-hidden="true"></i>Download Article (PDF)<small>11.83 MB</small></a>                                    </div>
+            </div>
+        </aside>
+    </div>
+    <section class="cd-characters" aria-labelledby="cd-characters-title">
+        <h2 class="cd-heading" id="cd-characters-title"><i class="bi bi-people-fill" aria-hidden="true"></i>Main Characters</h2>
+                    <div class="cd-character-stage">
+                <div class="swiper cd-character-slider" data-character-coverflow><div class="swiper-wrapper">
+                                            <a class="swiper-slide cd-character" href="http://127.0.0.1:8000/characters/kael-ardyn"><img src="http://127.0.0.1:8000/images/fandoms/anime.png" alt="Gallery scene 1" loading="lazy" width="380" height="520" data-image-fallback="http://127.0.0.1:8000/images/characters/character1.jpg"><span class="cd-character-caption"><strong>Kael Ardyn</strong><span>Character in Eclipse of Aether</span></span></a>
+                                            <a class="swiper-slide cd-character" href="http://127.0.0.1:8000/characters/lyria-solen"><img src="http://127.0.0.1:8000/images/fandoms/gaming.png" alt="Gallery scene 2" loading="lazy" width="380" height="520" data-image-fallback="http://127.0.0.1:8000/images/characters/character1.jpg"><span class="cd-character-caption"><strong>Lyria Solen</strong><span>Character in Eclipse of Aether</span></span></a>
+                                            <a class="swiper-slide cd-character" href="http://127.0.0.1:8000/characters/darian-voss"><img src="http://127.0.0.1:8000/images/fandoms/cinema.png" alt="Gallery scene 3" loading="lazy" width="380" height="520" data-image-fallback="http://127.0.0.1:8000/images/characters/character1.jpg"><span class="cd-character-caption"><strong>Darian Voss</strong><span>Character in Eclipse of Aether</span></span></a>
+                                            <a class="swiper-slide cd-character" href="http://127.0.0.1:8000/characters/selene"><img src="http://127.0.0.1:8000/images/characters/character1.jpg" alt="Gallery scene 4" loading="lazy" width="380" height="520" data-image-fallback="http://127.0.0.1:8000/images/characters/character1.jpg"><span class="cd-character-caption"><strong>Selene</strong><span>Character in Eclipse of Aether</span></span></a>
+                                            <a class="swiper-slide cd-character" href="http://127.0.0.1:8000/characters/mira"><img src="http://127.0.0.1:8000/images/hero/fandom-cards.png" alt="Gallery scene 5" loading="lazy" width="380" height="520" data-image-fallback="http://127.0.0.1:8000/images/characters/character1.jpg"><span class="cd-character-caption"><strong>Mira</strong><span>Character in Eclipse of Aether</span></span></a>
+                                            <a class="swiper-slide cd-character" href="http://127.0.0.1:8000/characters/neris"><img src="http://127.0.0.1:8000/images/fandoms/anime.png" alt="Gallery scene 1" loading="lazy" width="380" height="520" data-image-fallback="http://127.0.0.1:8000/images/characters/character1.jpg"><span class="cd-character-caption"><strong>Neris</strong><span>Character in Eclipse of Aether</span></span></a>
+                                            <a class="swiper-slide cd-character" href="http://127.0.0.1:8000/characters/tahl"><img src="http://127.0.0.1:8000/images/fandoms/gaming.png" alt="Gallery scene 2" loading="lazy" width="380" height="520" data-image-fallback="http://127.0.0.1:8000/images/characters/character1.jpg"><span class="cd-character-caption"><strong>Tahl</strong><span>Character in Eclipse of Aether</span></span></a>
+                                    </div></div>
+                <button class="cd-arrow cd-arrow--prev" data-character-prev aria-label="Previous character" hidden><i class="bi bi-chevron-left" aria-hidden="true"></i></button><button class="cd-arrow cd-arrow--next" data-character-next aria-label="Next character" hidden><i class="bi bi-chevron-right" aria-hidden="true"></i></button>            </div>
+            </section>
+    <section class="cd-merchandise" aria-labelledby="cd-merch-title">
+        <div class="cd-section-header"><h2 class="cd-heading" id="cd-merch-title"><i class="bi bi-shop" aria-hidden="true"></i>Merchandise</h2><a class="cd-view-all" href="http://127.0.0.1:8000/discover/merchandise?content=1">View All <i class="bi bi-arrow-right" aria-hidden="true"></i></a> <div class="cd-inline-arrows"><button class="cd-arrow" data-merch-prev aria-label="Previous merchandise" hidden><i class="bi bi-chevron-left" aria-hidden="true"></i></button><button class="cd-arrow" data-merch-next aria-label="Next merchandise" hidden><i class="bi bi-chevron-right" aria-hidden="true"></i></button></div></div>
+        <div class="swiper cd-merch-slider" data-merch-slider><div class="swiper-wrapper">
+            <div class="swiper-slide cd-merch"><a href="http://127.0.0.1:8000/collection/fixture-1"><img src="http://127.0.0.1:8000/images/fandoms/gaming.png" alt="Gallery scene 2" loading="lazy" width="320" height="240" data-image-fallback="http://127.0.0.1:8000/images/merch-deafult.jpg"><span><strong>Aether collectible 1</strong><small>Collectible</small></span></a><a class="merch-heart" href="http://127.0.0.1:8000/login" data-bookmark-login aria-label="Log in to bookmark Aether collectible 1"><svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="M16 28 4 16C-3 8 8-1 16 8 24-1 35 8 28 16Z"/> </svg>
+</a>
+</div><div class="swiper-slide cd-merch"><a href="http://127.0.0.1:8000/collection/fixture-2"><img src="http://127.0.0.1:8000/images/fandoms/cinema.png" alt="Gallery scene 3" loading="lazy" width="320" height="240" data-image-fallback="http://127.0.0.1:8000/images/merch-deafult.jpg"><span><strong>Aether collectible 2</strong><small>Collectible</small></span></a><a class="merch-heart" href="http://127.0.0.1:8000/login" data-bookmark-login aria-label="Log in to bookmark Aether collectible 2"><svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="M16 28 4 16C-3 8 8-1 16 8 24-1 35 8 28 16Z"/> </svg>
+</a>
+</div><div class="swiper-slide cd-merch"><a href="http://127.0.0.1:8000/collection/fixture-3"><img src="http://127.0.0.1:8000/images/characters/character1.jpg" alt="Gallery scene 4" loading="lazy" width="320" height="240" data-image-fallback="http://127.0.0.1:8000/images/merch-deafult.jpg"><span><strong>Aether collectible 3</strong><small>Collectible</small></span></a><a class="merch-heart" href="http://127.0.0.1:8000/login" data-bookmark-login aria-label="Log in to bookmark Aether collectible 3"><svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="M16 28 4 16C-3 8 8-1 16 8 24-1 35 8 28 16Z"/> </svg>
+</a>
+</div><div class="swiper-slide cd-merch"><a href="http://127.0.0.1:8000/collection/fixture-4"><img src="http://127.0.0.1:8000/images/hero/fandom-cards.png" alt="Gallery scene 5" loading="lazy" width="320" height="240" data-image-fallback="http://127.0.0.1:8000/images/merch-deafult.jpg"><span><strong>Aether collectible 4</strong><small>Collectible</small></span></a><a class="merch-heart" href="http://127.0.0.1:8000/login" data-bookmark-login aria-label="Log in to bookmark Aether collectible 4"><svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="M16 28 4 16C-3 8 8-1 16 8 24-1 35 8 28 16Z"/> </svg>
+</a>
+</div><div class="swiper-slide cd-merch"><a href="http://127.0.0.1:8000/collection/fixture-5"><img src="http://127.0.0.1:8000/images/fandoms/anime.png" alt="Gallery scene 1" loading="lazy" width="320" height="240" data-image-fallback="http://127.0.0.1:8000/images/merch-deafult.jpg"><span><strong>Aether collectible 5</strong><small>Collectible</small></span></a><a class="merch-heart" href="http://127.0.0.1:8000/login" data-bookmark-login aria-label="Log in to bookmark Aether collectible 5"><svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="M16 28 4 16C-3 8 8-1 16 8 24-1 35 8 28 16Z"/> </svg>
+</a>
+</div><div class="swiper-slide cd-merch"><a href="http://127.0.0.1:8000/collection/fixture-6"><img src="http://127.0.0.1:8000/images/fandoms/gaming.png" alt="Gallery scene 2" loading="lazy" width="320" height="240" data-image-fallback="http://127.0.0.1:8000/images/merch-deafult.jpg"><span><strong>Aether collectible 6</strong><small>Collectible</small></span></a><a class="merch-heart" href="http://127.0.0.1:8000/login" data-bookmark-login aria-label="Log in to bookmark Aether collectible 6"><svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="M16 28 4 16C-3 8 8-1 16 8 24-1 35 8 28 16Z"/> </svg>
+</a>
+</div><div class="swiper-slide cd-merch"><a href="http://127.0.0.1:8000/collection/fixture-7"><img src="http://127.0.0.1:8000/images/fandoms/cinema.png" alt="Gallery scene 3" loading="lazy" width="320" height="240" data-image-fallback="http://127.0.0.1:8000/images/merch-deafult.jpg"><span><strong>Aether collectible 7</strong><small>Collectible</small></span></a><a class="merch-heart" href="http://127.0.0.1:8000/login" data-bookmark-login aria-label="Log in to bookmark Aether collectible 7"><svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="M16 28 4 16C-3 8 8-1 16 8 24-1 35 8 28 16Z"/> </svg>
+</a>
+</div><div class="swiper-slide cd-merch"><a href="http://127.0.0.1:8000/collection/fixture-8"><img src="http://127.0.0.1:8000/images/characters/character1.jpg" alt="Gallery scene 4" loading="lazy" width="320" height="240" data-image-fallback="http://127.0.0.1:8000/images/merch-deafult.jpg"><span><strong>Aether collectible 8</strong><small>Collectible</small></span></a><a class="merch-heart" href="http://127.0.0.1:8000/login" data-bookmark-login aria-label="Log in to bookmark Aether collectible 8"><svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="M16 28 4 16C-3 8 8-1 16 8 24-1 35 8 28 16Z"/> </svg>
+</a>
+</div>        </div></div>    </section>
+    <section class="cd-story" id="cd-story" aria-labelledby="cd-story-title"><h2 class="cd-heading" id="cd-story-title"><i class="bi bi-book" aria-hidden="true"></i>About Eclipse of Aether</h2><div class="cd-prose"><p>Temporary visual QA fixture. The live content database is unchanged.</p></div></section>        <section class="cd-related" aria-labelledby="cd-related-title"><h2 class="cd-heading" id="cd-related-title"><i class="bi bi-collection" aria-hidden="true"></i>More in Anime</h2><div class="cd-related-grid"><a class="cd-related-card" href="http://127.0.0.1:8000/stories/thethe"><img src="http://127.0.0.1:8000/images/fandoms/anime.png" alt="" loading="lazy"><span><strong>thethe</strong><small>erwerwrwer</small></span></a><a class="cd-related-card" href="http://127.0.0.1:8000/stories/top-10-must-watch-anime-of-the-season"><img src="http://127.0.0.1:8000/images/fandoms/anime.png" alt="" loading="lazy"><span><strong>Top 10 Must-Watch Anime of the Season</strong><small>Discover the best trending anime releases taking fans by storm.</small></span></a><a class="cd-related-card" href="http://127.0.0.1:8000/stories/my-first-time-attending-tokyo-anime-expo-a-fan-memoir"><img src="http://127.0.0.1:8000/images/fandoms/anime.png" alt="" loading="lazy"><span><strong>My First Time Attending Tokyo Anime Expo: A Fan Memoir</strong><small>An unforgettable journey through Akihabara and Tokyo Big Sight.</small></span></a></div></section>    <dialog class="cd-lightbox" data-gallery-dialog aria-label="Gallery image viewer"><button type="button" class="cd-lightbox-close" aria-label="Close image"><i class="bi bi-x-lg" aria-hidden="true"></i></button><figure><img alt="" data-lightbox-image><figcaption data-lightbox-caption></figcaption></figure><span class="cd-lightbox-hint">Click anywhere or press Esc to close</span></dialog>
+</article>
+</main>
+    <footer class="fh-footer-lite">
+    <div class="fh-footer-lite__main">
+        <div class="fh-footer-lite__brand">
+            <a class="fh-brand fh-brand--premium" href="http://127.0.0.1:8000" aria-label="Fan Hub Plus home">
+    <svg class="fh-brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M24 2 43 13v22L24 46 5 35V13Z" fill="#ff951b"/>
+        <path d="M24 2v44L5 35V13Z" fill="#ffbe47"/>
+        <path d="m14 13 20 0-3 7H21v5h8l-3 7h-5v6l-7-4Z" fill="#161923"/>
+        <path d="M36 5v10m-5-5h10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+    <span class="fh-brand-wordmark">FanHub<span>Plus</span><small>EVERY UNIVERSE. ONE HOME.</small></span>
+</a>
+            <p>Your favorite worlds. Your kind of people.<br>Find your next obsession with FanHub Plus.</p>
+            <a class="fh-footer-lite__explore" href="http://127.0.0.1:8000/explore">Find your fandom <svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="M3 16h25m-8-8 8 8-8 8"/> </svg>
+</a>
+        </div>
+                    <nav aria-label="Footer Explore">
+                <h2>Explore</h2>
+                <ul><li><a href="http://127.0.0.1:8000/explore">Fandoms</a></li><li><a href="http://127.0.0.1:8000/discover/characters">Characters</a></li><li><a href="http://127.0.0.1:8000/discover/upcoming">Upcoming</a></li><li><a href="http://127.0.0.1:8000/discover/merchandise">Merchandise</a></li><li><a href="http://127.0.0.1:8000/events">Events</a></li><li><a href="http://127.0.0.1:8000/contact">Contact</a></li></ul>
+            </nav>
+                    <nav aria-label="Footer Your space">
+                <h2>Your space</h2>
+                <ul><li><a href="http://127.0.0.1:8000/login">Login</a></li><li><a href="http://127.0.0.1:8000/register">Create account</a></li><li><a href="http://127.0.0.1:8000/account/bookmarks">Bookmarks</a></li></ul>
+            </nav>
+                    <nav aria-label="Footer FanHub Plus">
+                <h2>FanHub Plus</h2>
+                <ul><li><a href="http://127.0.0.1:8000/discover/feedback">Feedback</a></li><li><a href="http://127.0.0.1:8000/contact">Contact</a></li><li><a href="http://127.0.0.1:8000/discover/privacy">Privacy</a></li><li><a href="http://127.0.0.1:8000/discover/terms">Terms</a></li><li><a href="http://127.0.0.1:8000/sitemap">Sitemap</a></li></ul>
+            </nav>
+                <div class="fh-footer-lite__news">
+            <div class="fh-footer-lite__news-copy">
+                <h2>Newsletter</h2>
+                <p>New stories, events and drops — straight to your inbox.</p>
+            </div>
+            <form method="POST" action="http://127.0.0.1:8000/subscribe" class="fh-footer-lite__news-form">
+                <input type="hidden" name="_token" value="" autocomplete="off">                <label class="visually-hidden" for="footer_subscribe_email">Email address</label>
+                <input id="footer_subscribe_email" type="email" name="email" placeholder="you@example.com" required value="">
+                <button type="submit">Subscribe</button>
+            </form>
+                                </div>
+    </div>
+    <div class="fh-footer-lite__bottom">
+        <p>&copy; 2026 FanHub Plus. All rights reserved.</p>
+        <div class="fh-socials" aria-label="Social media">
+                                                                                                                                                                </div>
+        <a href="#main-content" class="fh-footer-top">Back to top &uarr;</a>
+    </div>
+</footer>
+        <div class="fh-chat" data-chatbot data-faq-url="http://127.0.0.1:8000/chatbot/faqs" data-message-url="http://127.0.0.1:8000/chatbot/message">
+    <button class="fh-chat__launcher" type="button" aria-expanded="false" aria-controls="fanhub-chat" aria-label="Open FanHub assistant">
+        <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-8 8H4l-2 2v-10a9 9 0 0 1 18 0Z"/><path d="M7 11h.01M11 11h.01M15 11h.01" stroke-width="3" stroke-linecap="round"/></svg>
+        <span>Ask FanHub</span><span class="fh-chat__spark" aria-hidden="true">✦</span>
+    </button>
+    <section id="fanhub-chat" class="fh-chat__panel" role="dialog" aria-label="FanHub assistant" hidden>
+        <header class="fh-chat__header">
+            <span class="fh-chat__avatar" aria-hidden="true">✦</span>
+            <div><h2>FanHub assistant</h2><p>Your companion across universes</p></div>
+            <button class="fh-chat__close" type="button" aria-label="Close chat">×</button>
+        </header>
+        <div class="fh-chat__body" data-lenis-prevent>
+            <div class="fh-chat__welcome"><span class="fh-chat__eyebrow">A LITTLE HELP. A NEW DISCOVERY.</span><h3>Hey, fellow fan <span aria-hidden="true">✧</span></h3><p>Find your next anime, explore a fandom, or ask about FanHub Plus.</p></div>
+            <div class="fh-chat__suggestions" aria-label="Suggested questions"></div>
+            <div class="fh-chat__messages" role="log" aria-label="Conversation" aria-live="polite" aria-relevant="additions"></div>
+            <div class="fh-chat__typing" hidden aria-hidden="true">
+                <div class="fh-chat__typing-bubble">
+                    <span class="fh-chat__typing-dot"></span>
+                    <span class="fh-chat__typing-dot"></span>
+                    <span class="fh-chat__typing-dot"></span>
+                </div>
+            </div>
+            <p class="fh-chat__status" role="status" hidden></p>
+            <div class="fh-chat__error" role="alert" hidden><span></span> <button type="button">Retry</button></div>
+        </div>
+        <form class="fh-chat__form">
+            <label class="fh-chat__sr" for="chat-message">Your question</label>
+            <div class="fh-chat__composer"><textarea id="chat-message" rows="1" maxlength="1500" placeholder="Ask anything anime…" required></textarea><button type="submit" aria-label="Send message"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m5 12 7-7 7 7M12 5v15"/></svg></button></div>
+            <p>Powered by Gemini · AI can make mistakes.<br>Chats are saved. AI questions are shared with Google.</p>
+        </form>
+    </section>
+</div>
+    <p class="merch-toast" data-bookmark-status role="status" aria-live="polite" hidden></p>
+<dialog class="merch-login-dialog" data-merch-login aria-labelledby="merch-login-title">
+    <button type="button" class="merch-dialog-close" data-close-merch-login aria-label="Close login prompt"><svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="m8 8 16 16M24 8 8 24"/> </svg>
+</button>
+    <svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="M16 28 4 16C-3 8 8-1 16 8 24-1 35 8 28 16Z"/> </svg>
+    <h2 id="merch-login-title">Keep your favourites close.</h2>
+    <p>Log in to save merchandise to your bookmarks and find it again anytime.</p>
+    <a class="join-button" href="http://127.0.0.1:8000/login">Log in <svg class="fh-icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+     <path d="M3 16h25m-8-8 8 8-8 8"/> </svg>
+</a>
+    <a class="merch-dialog-register" href="http://127.0.0.1:8000/register">New here? Join FanHub Plus</a>
+</dialog>
+    </body>
+</html>

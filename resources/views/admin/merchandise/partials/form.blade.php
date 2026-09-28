@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     categorySelect.addEventListener('change', function () {
-        // Clear Content + Character when Category changes.
+
         contentSelect.value = '';
         characterSelect.value = '';
         resetCharacter('Pick a content first.');

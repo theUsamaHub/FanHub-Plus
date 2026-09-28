@@ -20,17 +20,12 @@ class NearbyEventsOrderingTest extends TestCase
 
     public function test_nearby_events_are_sorted_by_distance(): void
     {
-        // Create events at different distances from origin (0, 0)
-        // Distance ~0 km
         $this->event('At origin', ['latitude' => 0, 'longitude' => 0, 'start_at' => now()->addDays(3)]);
         
-        // Distance ~4.4 km (0.04 degrees lat ≈ 4.4 km)
         $this->event('Close event', ['latitude' => 0.04, 'longitude' => 0, 'start_at' => now()->addDay()]);
         
-        // Distance ~11 km (0.1 degrees lat ≈ 11 km)
         $this->event('Far event', ['latitude' => 0.1, 'longitude' => 0, 'start_at' => now()->addDays(2)]);
         
-        // Distance ~22 km (0.2 degrees lat ≈ 22 km)
         $this->event('Farther event', ['latitude' => 0.2, 'longitude' => 0, 'start_at' => now()->addHours(5)]);
 
         $response = $this->postJson(route('events.nearby.search'), ['latitude' => 0, 'longitude' => 0, 'radius' => 50]);
@@ -39,8 +34,6 @@ class NearbyEventsOrderingTest extends TestCase
 
         $html = $response->json('html');
         
-        // Events should be ordered by distance (closest first)
-        // Find positions of each event in the HTML
         $posAtOrigin = strpos($html, 'At origin');
         $posClose = strpos($html, 'Close event');
         $posFar = strpos($html, 'Far event');
@@ -67,7 +60,6 @@ class NearbyEventsOrderingTest extends TestCase
 
         $html = $response->json('html');
         
-        // With sort=popular, should sort by popularity_score desc
         $posPopular = strpos($html, 'Popular but far');
         $posNotPopular = strpos($html, 'Not popular but close');
         
@@ -90,7 +82,6 @@ class NearbyEventsOrderingTest extends TestCase
 
         $html = $response->json('html');
         
-        // With sort=soonest (default), should sort by start_at
         $posSooner = strpos($html, 'Sooner but farther');
         $posLater = strpos($html, 'Later but close');
         

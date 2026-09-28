@@ -104,8 +104,6 @@ class Media extends Model
     }
 
     /**
-     * Split stored duration (seconds) into hours, minutes, and seconds parts.
-     *
      * @return array{hours: int, minutes: int, seconds: float}
      */
     public function getDurationPartsAttribute(): array
@@ -133,9 +131,6 @@ class Media extends Model
         return sprintf('%d:%02d:%s', $parts['hours'], $parts['minutes'], str_pad($seconds, 2, '0', STR_PAD_LEFT));
     }
 
-    /**
-     * Count entities that still point at this media record.
-     */
     public function referenceCount(): int
     {
         return Category::where('icon_media_id', $this->id)->count()

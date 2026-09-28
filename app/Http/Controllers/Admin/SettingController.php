@@ -33,7 +33,6 @@ class SettingController extends Controller
                 continue;
             }
 
-            // Skip empty password to keep existing
             if ($key === 'mail_password' && empty($value)) {
                 continue;
             }

@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-// Admin-only routes — no non-admin may enter /admin/*
 Route::prefix('admin')
     ->name('admin.')
     ->middleware(['auth', 'role:admin', 'ip-restrict'])
@@ -32,7 +31,6 @@ Route::prefix('admin')
 
         Route::resource('events', \App\Http\Controllers\Admin\EventController::class);
 
-        // Dependent-dropdown JSON endpoints (admin auth-protected via the parent group).
         Route::get('/categories/{category}/contents', [\App\Http\Controllers\Admin\RelationLookupController::class, 'contentsByCategory'])->name('lookups.contents-by-category');
         Route::get('/contents/{content}/characters', [\App\Http\Controllers\Admin\RelationLookupController::class, 'charactersByContent'])->name('lookups.characters-by-content');
         Route::get('/categories/{category}/characters', [\App\Http\Controllers\Admin\RelationLookupController::class, 'charactersByCategory'])->name('lookups.characters-by-category');
@@ -65,7 +63,6 @@ Route::prefix('admin')
         Route::delete('/media/{media}', [\App\Http\Controllers\Admin\MediaController::class, 'destroy'])->name('media.destroy');
         Route::get('/media/{media}/download', [\App\Http\Controllers\Admin\MediaController::class, 'download'])->name('media.download');
 
-        // Chunked upload for large files (movies)
         Route::post('/media/chunk/init', [\App\Http\Controllers\Admin\MediaController::class, 'initChunkedUpload'])->name('media.chunk.init');
         Route::post('/media/chunk/upload', [\App\Http\Controllers\Admin\MediaController::class, 'uploadChunk'])->name('media.chunk.upload');
         Route::post('/media/chunk/complete', [\App\Http\Controllers\Admin\MediaController::class, 'completeChunkedUpload'])->name('media.chunk.complete');
@@ -133,7 +130,6 @@ Route::prefix('admin')
         Route::get('/backup/{filename}', [\App\Http\Controllers\Admin\BackupController::class, 'download'])->name('backup.download');
         Route::delete('/backup/{filename}', [\App\Http\Controllers\Admin\BackupController::class, 'destroy'])->name('backup.destroy');
 
-        // Newsletters
         Route::resource('newsletters', \App\Http\Controllers\Admin\NewsletterController::class);
         Route::post('/newsletters/{newsletter}/send', [\App\Http\Controllers\Admin\NewsletterController::class, 'send'])->name('newsletters.send');
         Route::get('/newsletters/{newsletter}/preview', [\App\Http\Controllers\Admin\NewsletterController::class, 'preview'])->name('newsletters.preview');
