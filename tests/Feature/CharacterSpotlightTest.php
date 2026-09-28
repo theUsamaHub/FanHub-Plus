@@ -80,7 +80,7 @@ class CharacterSpotlightTest extends TestCase
             ->assertDontSee('data-character-carousel', false);
     }
 
-    public function test_detail_shows_only_linked_merchandise_and_live_events_from_public_stories(): void
+    public function test_detail_shows_only_linked_merchandise_without_events(): void
     {
         $category = Category::create(['name' => 'Anime', 'slug' => 'anime']);
         $character = CharacterProfile::create(['name' => 'Event hero', 'category_id' => $category->id]);
@@ -99,10 +99,11 @@ class CharacterSpotlightTest extends TestCase
         }
         $url = route('public.character', $character->slug);
         $this->get($url)->assertOk()->assertSee('Hero figure')->assertDontSee('Unrelated figure')
-            ->assertSee('Upcoming gathering')->assertSee('Ongoing gathering')->assertDontSee('Past gathering')
+            ->assertDontSee('Upcoming gathering')->assertDontSee('Ongoing gathering')->assertDontSee('Past gathering')
+            ->assertDontSee('character-events', false)
             ->assertDontSee('Draft gathering')->assertDontSee('Unrelated gathering');
         $story->update(['status' => 'draft']);
         $this->get($url)->assertOk()->assertDontSee('Upcoming gathering')->assertDontSee('Ongoing gathering')
-            ->assertSee('A story still unfolding')->assertSee('The next gathering awaits');
+            ->assertSee('A story still unfolding')->assertDontSee('The next gathering awaits');
     }
 }

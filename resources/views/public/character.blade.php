@@ -15,14 +15,12 @@
             <div class="character-detail__facts">
                 <a href="#character-content"><i class="bi bi-collection" aria-hidden="true"></i><small>Appears in</small><strong>{{ $stories->total() }} {{ Str::plural('story', $stories->total()) }}</strong></a>
                 <a href="#character-merchandise"><i class="bi bi-bag" aria-hidden="true"></i><small>Merchandise</small><strong>{{ $merchandise->total() }} {{ Str::plural('item', $merchandise->total()) }}</strong></a>
-                <a href="#character-events"><i class="bi bi-calendar-event" aria-hidden="true"></i><small>Events</small><strong>{{ $events->total() }} upcoming / live</strong></a>
             </div>
         </div>
     </header>
     <nav class="character-detail__nav" aria-label="Character sections">
         <a href="#character-content">Related content <span>{{ $stories->total() }}</span></a>
         <a href="#character-merchandise">Merchandise <span>{{ $merchandise->total() }}</span></a>
-        <a href="#character-events">Events <span>{{ $events->total() }}</span></a>
         <a href="#community">Community</a>
     </nav>
     <section class="character-detail__section" id="character-content" aria-labelledby="character-content-title">
@@ -52,22 +50,6 @@
             @endforelse
         </div>
         {{ $merchandise->links() }}
-    </section>
-    <section class="character-detail__section" id="character-events" aria-labelledby="character-events-title">
-        <div class="character-detail__heading"><h2 id="character-events-title"><i class="bi bi-calendar-event" aria-hidden="true"></i>Events</h2><a href="{{ route('events.index') }}">All events <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a></div>
-        <div class="character-detail__events">
-            @forelse($events as $event)
-                <a class="character-detail__event" href="{{ route('events.show', $event->slug) }}">
-                    <img src="{{ $event->artwork_url }}" data-image-fallback="{{ $event->fallback_artwork }}" width="240" height="180" alt="" loading="lazy">
-                    <time class="character-detail__date" datetime="{{ $event->start_at->toIso8601String() }}"><span>{{ $event->start_at->format('M') }}</span><strong>{{ $event->start_at->format('d') }}</strong><span>{{ $event->start_at->format('Y') }}</span></time>
-                    <div><span class="character-detail__meta">{{ $event->display_status }}</span><h3>{{ $event->title }}</h3><p>{{ implode(' • ', array_filter([$event->venue, $event->city])) ?: 'Location to be announced' }}</p></div>
-                    <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
-                </a>
-            @empty
-                <div class="character-detail__empty"><i class="bi bi-calendar-event" aria-hidden="true"></i><h3>The next gathering awaits</h3><p>No upcoming events are linked to this character’s stories yet.</p><a href="{{ route('events.index') }}">Discover all events</a></div>
-            @endforelse
-        </div>
-        {{ $events->links() }}
     </section>
     <x-member-interactions :item="$character" type="character" />
 </article>

@@ -167,14 +167,7 @@ class PublicSiteController extends Controller
             ->orderByDesc('view_count')->orderByDesc('id')->paginate(8, ['*'], 'merchandise_page')
             ->withQueryString()->fragment('character-merchandise');
 
-        $events = \App\Models\Event::published()->with(['category', 'coverMedia'])
-            ->whereHas('content', fn ($query) => $query->visibleToPublic()
-                ->whereHas('characters', fn ($query) => $query->whereKey($character->id)))
-            ->whereRaw('COALESCE(end_at, start_at) >= ?', [now()])
-            ->orderBy('start_at')->orderBy('id')->paginate(4, ['*'], 'events_page')
-            ->withQueryString()->fragment('character-events');
-
-        return view('public.character', compact('character', 'stories', 'merchandise', 'events'));
+        return view('public.character', compact('character', 'stories', 'merchandise'));
     }
 
     public function merchandise(MerchandiseItem $merchandise): View
