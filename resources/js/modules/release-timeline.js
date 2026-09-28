@@ -1,61 +1,75 @@
+import Swiper from 'swiper';
+import { Navigation, Pagination, A11y, Keyboard } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+
 export function initReleaseTimeline(page) {
     const section = page.querySelector('[data-upcoming-section]');
     if (!section) return;
     const filters = section.querySelector('[data-release-filters]');
     const previous = section.querySelector('[data-release-prev]');
     const next = section.querySelector('[data-release-next]');
+    const pagination = section.querySelector('[data-release-pagination]');
     const status = section.querySelector('[data-release-status]');
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-    let track;
+    let swiper;
     let request;
-    let cleanupTrack = () => {};
+    let resizeObserver;
 
-    const bindTrack = () => {
-        cleanupTrack();
-        track = section.querySelector('[data-release-track]');
-        previous.hidden = next.hidden = !track;
-        if (!track) return;
-        const update = () => {
-            previous.hidden = next.hidden = track.scrollWidth <= track.clientWidth + 2;
-            previous.disabled = track.scrollLeft <= 2;
-            next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
-            const cards = [...track.querySelectorAll('[data-release-card]')];
-            const trackRect = track.getBoundingClientRect();
-            const center = trackRect.left + trackRect.width / 2;
-            const closest = cards.reduce((best, card) => {
-                const rect = card.getBoundingClientRect();
-                const distance = Math.abs(rect.left + rect.width / 2 - center);
-                return !best || distance < best.distance ? { card, distance } : best;
-            }, null)?.card;
-            cards.forEach((card) => card.classList.toggle('is-centered', innerWidth > 700 && card === closest));
-        };
-        let frame;
-        const onScroll = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(update); };
-        const onKey = (event) => {
-            if (event.target !== track || innerWidth <= 700 || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+    const mount = () => {
+        resizeObserver?.disconnect();
+        resizeObserver = null;
+        swiper?.destroy(true, true);
+        swiper = null;
+        const container = section.querySelector('[data-release-swiper]');
+        previous.hidden = next.hidden = !container;
+        if (!container) {
+            pagination.replaceChildren();
+            return;
+        }
+        swiper = new Swiper(container, {
+            modules: [Navigation, Pagination, A11y, Keyboard],
+            slidesPerView: 'auto',
+            spaceBetween: 24,
+            speed: reducedMotion.matches ? 0 : 450,
+            watchOverflow: true,
+            navigation: { prevEl: previous, nextEl: next },
+            pagination: { el: pagination, clickable: true },
+            keyboard: { enabled: true, onlyInViewport: true },
+            a11y: {
+                containerMessage: 'Upcoming releases. Swipe, or use the arrow buttons and arrow keys to browse.',
+                prevSlideMessage: 'Previous releases',
+                nextSlideMessage: 'Next releases',
+            },
+        });
+        container.addEventListener('keydown', (event) => {
+            if (!['ArrowLeft', 'ArrowRight'].includes(event.key) || event.target.closest('button, a')) return;
             event.preventDefault();
-            move(event.key === 'ArrowLeft' ? -1 : 1);
+            if (event.key === 'ArrowRight') swiper.slideNext();
+            else swiper.slidePrev();
+        });
+        const updateCentered = () => {
+            const cards = [...container.querySelectorAll('[data-release-card]')];
+            const rect = container.getBoundingClientRect();
+            const center = rect.left + rect.width / 2;
+            let best = null;
+            cards.forEach((card) => {
+                const box = card.getBoundingClientRect();
+                const distance = Math.abs(box.left + box.width / 2 - center);
+                if (!best || distance < best.distance) best = { card, distance };
+            });
+            cards.forEach((card) => card.classList.toggle('is-centered', innerWidth > 700 && best?.card === card));
         };
-        track.addEventListener('scroll', onScroll, { passive: true });
-        track.addEventListener('keydown', onKey);
-        const resize = new ResizeObserver(update);
-        resize.observe(track);
-        update();
-        const boundTrack = track;
-        cleanupTrack = () => {
-            cancelAnimationFrame(frame);
-            boundTrack.removeEventListener('scroll', onScroll);
-            boundTrack.removeEventListener('keydown', onKey);
-            resize.disconnect();
-        };
+        swiper.on('slideChange', updateCentered);
+        updateCentered();
+        resizeObserver = new ResizeObserver(updateCentered);
+        resizeObserver.observe(container);
     };
-    const move = (direction) => {
-        const card = track?.querySelector('[data-release-card]');
-        if (card) track.scrollBy({ left: direction * (card.getBoundingClientRect().width + 24), behavior: reducedMotion.matches ? 'instant' : 'smooth' });
-    };
-    previous.addEventListener('click', () => move(-1));
-    next.addEventListener('click', () => move(1));
-    bindTrack();
+    mount();
+
+    reducedMotion.addEventListener('change', () => {
+        if (swiper) swiper.params.speed = reducedMotion.matches ? 0 : 450;
+    });
 
     const loadFilter = async (url, pushHistory = true) => {
         request?.abort();
@@ -81,7 +95,7 @@ export function initReleaseTimeline(page) {
             });
             section.querySelector('[data-releases-all]').href = document.querySelector('[data-releases-all]').href;
             if (pushHistory) history.pushState({ releaseFilter: selected }, '', url);
-            bindTrack();
+            mount();
             status.textContent = results.querySelector('[data-release-count]').textContent;
             page.dispatchEvent(new Event('releases:updated'));
         } catch (error) {

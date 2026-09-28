@@ -472,8 +472,8 @@
     font-weight: 700;
     font-size: 18px;
     letter-spacing: 0.05em;
-    color: #000;
-    background: linear-gradient(135deg, var(--contact-gold) 0%, #ffd600 100%);
+    color: #fff;
+    background: linear-gradient(135deg, #ff9a3d 0%, #ff6a1f 100%);
     border: none;
     border-radius: 14px;
     cursor: pointer;
@@ -485,7 +485,7 @@
 .contact-submit:hover:not(:disabled) {
     transform: translateY(-2px);
     box-shadow:
-        0 12px 32px rgba(255, 179, 0, 0.4),
+        0 12px 32px rgba(255, 122, 47, 0.4),
         0 0 0 1px rgba(255, 255, 255, 0.1) inset;
 }
 

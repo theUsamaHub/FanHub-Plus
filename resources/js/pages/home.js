@@ -73,14 +73,6 @@ if (page) {
                         scrollTrigger: { trigger: card, start: 'top 80%', once: true },
                     });
                 });
-                const progress = timeline.querySelector('[data-timeline-progress]');
-                if (progress) {
-                    gsap.from(progress, {
-                        [isMobile ? 'scaleY' : 'scaleX']: 0,
-                        ease: 'none',
-                        scrollTrigger: { trigger: timeline, start: 'top 85%', end: 'bottom 75%', scrub: .5 },
-                    });
-                }
             }, page);
             ScrollTrigger.refresh();
         };

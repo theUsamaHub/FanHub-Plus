@@ -3,6 +3,7 @@
 @section('main-class', 'member-main')
 @section('content')
 <div class="member-space">
+    <span class="member-space__label">MySpace</span>
     @unless(request()->routeIs('user.dashboard'))
     <nav class="member-nav" aria-label="Your account">
         @foreach(['user.dashboard' => 'Overview', 'user.bookmarks' => 'Bookmarks', 'user.favorites' => 'Fandoms', 'user.activity' => 'Activity', 'user.submissions' => 'My submissions', 'user.reviews' => 'Reviews', 'profile.edit' => 'Settings', 'user.feedback' => 'Feedback'] as $link => $label)

@@ -14,8 +14,8 @@ class AccountController extends Controller
 {
     public function preferences(Request $request)
     {
-        $data = $request->validate(['theme_preference' => 'required|in:dark,light,system']);
-        $request->user()->profile()->updateOrCreate([], $data);
+        $request->validate(['theme_preference' => ['nullable', Rule::in(['dark', 'light', 'system'])]]);
+
         return response()->json(['saved' => true]);
     }
 
@@ -83,43 +83,32 @@ class AccountController extends Controller
 
     private function saveSubmission(Request $request, Content $submission, FileUploadService $uploads, MemberLibrary $library)
     {
+        $hasCover = $submission->exists && $submission->media()->wherePivot('role', 'cover')->exists();
         $data = $request->validate([
             'title' => 'required|string|max:180', 'category_id' => ['required', Rule::exists('categories', 'id')->whereNull('deleted_at')],
-            'type' => 'required|in:article,image,video,audio', 'excerpt' => 'nullable|string|max:500',
+            'excerpt' => 'nullable|string|max:500',
             'body' => 'required|string|min:30|max:50000', 'intent' => 'required|in:draft,submit',
-            'cover' => 'nullable|image|mimes:jpg,jpeg,png,webp,gif|max:5120',
-            'attachment' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,gif,mp4,webm,mp3,wav,ogg,m4a', 'max:20480'],
+            'cover' => [($hasCover ? 'nullable' : 'required'), 'image', 'mimes:jpg,jpeg,png,webp,gif', 'max:5120'],
         ]);
-        if ($request->hasFile('attachment')) {
-            $kind = FileUploadService::mediaTypeFromMime($request->file('attachment')->getMimeType());
-            if ($data['type'] !== 'article' && $kind !== $data['type']) {
-                return back()->withInput()->withErrors(['attachment' => 'Choose a file matching the selected content type.']);
-            }
-        }
-        if ($data['intent'] === 'submit' && $data['type'] !== 'article' && ! $request->hasFile('attachment') && ! $submission->media()->where('media_type', $data['type'])->exists()) {
-            return back()->withInput()->withErrors(['attachment' => 'Please attach your image, video or audio before submitting.']);
-        }
-        $stored = [];
+        $data['type'] = $submission->type ?? 'article';
+        $cover = null;
         try {
-            foreach (['cover', 'attachment'] as $field) {
-                if ($request->hasFile($field)) $stored[$field] = $uploads->upload($request->file($field), 'uploads/submissions', null, $request->user()->id, $data['title']);
-            }
-            DB::transaction(function () use ($submission, $data, $stored, $request, $library) {
+            if ($request->hasFile('cover')) $cover = $uploads->upload($request->file('cover'), 'uploads/submissions', null, $request->user()->id, $data['title']);
+            DB::transaction(function () use ($submission, $data, $cover, $request, $library) {
                 $submission->fill(collect($data)->only(['title', 'category_id', 'type', 'excerpt', 'body'])->all());
                 if (! $submission->exists) $submission->slug = Str::slug($data['title']).'-'.Str::lower(Str::random(10));
                 $submission->forceFill(['submitted_by' => $request->user()->id, 'is_user_submitted' => true,
                     'status' => $data['intent'] === 'submit' ? 'pending_review' : 'draft', 'published_at' => null, 'reviewed_by' => null, 'is_featured' => false])->save();
-                foreach ($stored as $field => $media) {
-                    $role = $field === 'cover' ? 'cover' : match ($media->media_type) { 'video' => 'trailer', 'audio' => 'audio_clip', default => 'gallery' };
-                    $submission->media()->wherePivot('role', $role)->detach();
-                    $submission->media()->attach($media->id, ['role' => $role, 'sort_order' => 0]);
+                if ($cover) {
+                    $submission->media()->wherePivot('role', 'cover')->detach();
+                    $submission->media()->attach($cover->id, ['role' => 'cover', 'sort_order' => 0]);
                 }
                 if ($data['intent'] === 'submit') $library->activity('submitted', $submission);
             });
         } catch (\Throwable $e) {
-            foreach ($stored as $media) $uploads->delete($media);
+            if ($cover) $uploads->delete($cover);
             report($e);
-            return back()->withInput()->withErrors(['attachment' => 'We could not save your submission. Please try again.']);
+            return back()->withInput()->withErrors(['cover' => 'We could not save your submission. Please try again.']);
         }
         return redirect()->route('user.submissions')->with('success', $data['intent'] === 'submit' ? 'Submitted for moderator approval.' : 'Draft saved. You can finish it any time.');
     }

@@ -26,5 +26,7 @@
 _ide_helper.php
 Homestead.json
 Homestead.yaml
+/output
+/tmp
 Thumbs.db
 /.mimocode

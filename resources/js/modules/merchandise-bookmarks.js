@@ -62,3 +62,19 @@ document.addEventListener('error', (event) => fallback(event.target), true);
 document.querySelectorAll('[data-merch-image]').forEach((image) => {
     if (image.complete && !image.naturalWidth) fallback(image);
 });
+
+// Grid / List view toggle
+const products = document.getElementById('merch-products');
+const viewBtns = document.querySelectorAll('.merch-view-btn');
+if (products && viewBtns.length) {
+    viewBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const view = btn.dataset.view;
+            viewBtns.forEach((b) => b.setAttribute('aria-pressed', 'false'));
+            btn.setAttribute('aria-pressed', 'true');
+            products.dataset.view = view;
+            // Persist preference via cookie (30 days)
+            document.cookie = `merch_view=${view}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
+        });
+    });
+}
