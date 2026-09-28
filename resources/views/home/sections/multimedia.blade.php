@@ -8,6 +8,7 @@
         <p class="home-multimedia__eyebrow"><span></span>Fan creations<span></span></p>
         <h2 id="home-multimedia-title">Fan <span>Content</span></h2>
         <p class="home-section-subtitle">Fan art, clips, wallpapers and stories submitted by the community.</p>
+        <a class="fh-button home-multimedia__view-all" href="{{ route('public.fan-content.index') }}">View all <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
     </header>
     @if($multimediaItems->isNotEmpty())
         <div class="home-multimedia__rows">
@@ -21,7 +22,7 @@
                                     $mediaImage = $imageMedia?->url ?: $mediaFallback;
                                     $mediaIcon = match ($item->type) { 'video' => 'bi-play-circle', 'audio' => 'bi-music-note-beamed', default => 'bi-images' };
                                 @endphp
-                                <a class="home-multimedia__card" href="{{ route('public.content', $item->slug) }}" aria-label="{{ $item->title }}">
+                                <a class="home-multimedia__card" href="{{ route('public.fan-content.show', $item->slug) }}" data-fan-open data-fan-home aria-label="{{ $item->title }}" aria-haspopup="dialog">
                                     <img src="{{ $mediaImage }}" data-image-fallback="{{ $mediaFallback }}" alt="{{ $imageMedia?->alt_text ?: $item->title }}" width="256" height="144" loading="lazy" decoding="async">
                                     <span class="home-multimedia__caption"><i class="bi {{ $mediaIcon }}" aria-hidden="true"></i><strong>{{ $item->title }}</strong>@if($item->category)<small>{{ $item->category->name }}</small>@endif</span>
                                 </a>

@@ -10,7 +10,7 @@
 <div class="home-page" data-page="home" style="--home-dark-art: url('{{ asset(config('homepage.images.dark_background')) }}'); --home-light-art: url('{{ asset(config('homepage.images.light_background')) }}')">
 
     @include('home.sections.hero')
-  
+   
     <div class="home-scroll-content">
     @include('home.sections.fandoms')
 
@@ -31,4 +31,16 @@
     @include('home.sections.join-cta')
     </div>
 </div>
+
+<!-- Content Detail Modal -->
+@if(isset($featuredStories) && $featuredStories->isNotEmpty())
+    <x-content-modal :content="$featuredStories->first()" />
+@elseif(isset($trending) && $trending->isNotEmpty())
+    <x-content-modal :content="$trending->first()" />
+@else
+    <x-content-modal />
+@endif
+
+<!-- Fan Content Modal (opens when clicking fan content tiles in the home Fan Content section) -->
+@include('public.fan-content.modal')
 @endsection

@@ -21,7 +21,7 @@ class HomepageService
 
         $version = Cache::get('homepage:version', 'initial');
 
-        return Cache::remember('homepage:v4:'.$version.':'.today()->toDateString().':'.$key,
+        return Cache::remember('homepage:v5:'.$version.':'.today()->toDateString().':'.$key,
             config('homepage.cache_seconds'), $callback);
     }
 
