@@ -251,15 +251,36 @@ class PublicSiteController extends Controller
             $items = $query->orderByDesc('id')->paginate(12)->withQueryString();
             $hasFilters = $linkedContent !== null || $filters['q'] !== '' || $filters['category'] !== 'all' || $filters['status'] !== '' || $filters['tag'] !== '';
 
-            return view('public.merchandise-index', compact('items', 'filters', 'categories', 'hasFilters', 'linkedContent') + ['savedMerchandise' => $this->savedMerchandise()]);
+            $statsQuery = MerchandiseItem::forUser(auth()->user())
+                ->when($linkedContent, fn ($query) => $query->where('content_id', $linkedContent->id));
+            $stats = [
+                'total' => (clone $statsQuery)->count(),
+                'upcoming' => (clone $statsQuery)->upcoming()->count(),
+                'fandoms' => (clone $statsQuery)->distinct()->count('category_id'),
+            ];
+
+            return view('public.merchandise-index', compact('items', 'filters', 'categories', 'hasFilters', 'linkedContent', 'stats') + ['savedMerchandise' => $this->savedMerchandise()]);
         }
 
         if ($section === 'upcoming') {
             $filters = $homepage->releaseFilters();
             $filter = $request->query('category', 'all');
             abort_unless(is_string($filter) && in_array($filter, ['all', 'merchandise', ...$filters->pluck('slug')->all()], true), 404);
+            $validated = $request->validate([
+                'q' => ['nullable', 'string', 'max:120'],
+                'sort' => ['nullable', 'in:nearest,farthest,name,newest'],
+            ]);
+            $search = trim($validated['q'] ?? '');
+            $sort = $validated['sort'] ?? 'nearest';
 
-            return view('public.upcoming', ['releases' => $homepage->paginatedReleases($filter), 'filters' => $filters, 'activeFilter' => $filter]);
+            return view('public.upcoming', [
+                'releases' => $homepage->paginatedReleases($filter, $search, $sort),
+                'filters' => $filters,
+                'activeFilter' => $filter,
+                'stats' => $homepage->releaseStats() + ['fandoms' => $filters->count()],
+                'search' => $search,
+                'sort' => $sort,
+            ]);
         }
 
         return view('public.coming-soon', ['title' => self::SECTIONS[$section]]);
