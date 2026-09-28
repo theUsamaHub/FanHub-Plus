@@ -3,15 +3,7 @@
     <button type="button" class="fh-adm-sidebar-toggle" onclick="toggleSidebarCollapse()" aria-label="{{ __('Collapse sidebar') }}" title="{{ __('Collapse sidebar') }}">
         <i class="bi bi-chevron-double-left"></i>
     </button>
-    <a class="fh-adm-brand" href="{{ route('admin.dashboard') }}">
-        <x-site-icon name="crown" class="fh-brand__crown fh-adm-brand-mark" />
-        <div class="fh-adm-brand-copy">
-            <div class="fh-brand fh-adm-brand-word">
-                <span>FAN<span class="fh-brand__accent">HUB+</span></span>
-            </div>
-            <span class="fh-adm-brand-sub">{{ __('Guild Command') }}</span>
-        </div>
-    </a>
+    <x-site-brand class="fh-adm-brand" :href="route('admin.dashboard')" aria-label="Fan Hub Plus admin dashboard" />
 
     <nav class="fh-adm-nav" aria-label="{{ __('Admin navigation') }}">
         <div class="fh-adm-nav-group">{{ __('Overview') }}</div>

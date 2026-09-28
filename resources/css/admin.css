@@ -4286,3 +4286,12 @@ body.fh-admin .fh-adm-media-empty p {
         display: none;
     }
 }
+
+/* Shared navbar identity, sized for the expanded and collapsed admin sidebar. */
+body.fh-admin .fh-adm-brand.fh-brand--premium { gap: 10px; font: normal 800 22px/1 Arial, sans-serif; letter-spacing: -1px; }
+body.fh-admin .fh-adm-brand .fh-brand-mark { width: 38px; height: 42px; flex: 0 0 auto; color: var(--fh-adm-text); overflow: visible; }
+body.fh-admin .fh-adm-brand .fh-brand-wordmark { min-width: 0; white-space: nowrap; transform: none; }
+body.fh-admin .fh-adm-brand .fh-brand-wordmark > span { color: #fca129; }
+body.fh-admin .fh-adm-brand .fh-brand-wordmark small { display: block; margin-top: 6px; font: 600 6px/1 Arial, sans-serif; letter-spacing: 1.3px; color: var(--fh-adm-dim); }
+body.fh-admin.is-sidebar-collapsed .fh-adm-brand .fh-brand-wordmark { display: none; }
+body.fh-admin.is-sidebar-collapsed .fh-adm-brand .fh-brand-mark { width: 32px; height: 36px; }
