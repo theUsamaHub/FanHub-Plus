@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PublicSiteController;
 
-Route::get('/chatbot/faqs', [\App\Http\Controllers\ChatbotController::class, 'faqs'])->middleware('throttle:60,1')->name('chatbot.faqs');
-Route::post('/chatbot/message', [\App\Http\Controllers\ChatbotController::class, 'message'])->middleware('throttle:12,1')->name('chatbot.message');
+Route::get('/assistant/faqs', [\App\Http\Controllers\ChatbotController::class, 'faqs'])->middleware('throttle:60,1')->name('chatbot.faqs');
+Route::post('/assistant/message', [\App\Http\Controllers\ChatbotController::class, 'message'])->middleware('throttle:12,1')->name('chatbot.message');
 
 Route::get('/explore', [PublicSiteController::class, 'explore'])->name('public.explore');
 Route::get('/fan-content', [\App\Http\Controllers\FanContentController::class, 'index'])->name('public.fan-content.index');

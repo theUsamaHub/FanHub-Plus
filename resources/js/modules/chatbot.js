@@ -1,6 +1,12 @@
 const chat = document.querySelector('[data-chatbot]');
 
 if (chat) {
+    // This deployment lives in a subdirectory; keep its full path on the live host.
+    const liveBaseUrl = window.location.hostname === 'fanhubplus.infinityfree.io'
+        ? 'https://fanhubplus.infinityfree.io/FanHub-Plus/public'
+        : null;
+    const faqUrl = liveBaseUrl ? `${liveBaseUrl}/assistant/faqs` : chat.dataset.faqUrl;
+    const messageUrl = liveBaseUrl ? `${liveBaseUrl}/assistant/message` : chat.dataset.messageUrl;
     const panel = chat.querySelector('.fh-chat__panel');
     const launcher = chat.querySelector('.fh-chat__launcher');
     const input = chat.querySelector('textarea');
@@ -94,7 +100,7 @@ if (chat) {
         autoResize();
         scroll();
         try {
-            const response = await fetch(chat.dataset.messageUrl, {
+            const response = await fetch(messageUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', Accept: 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
                 body: JSON.stringify({ message: text, page: window.location.pathname }),
@@ -122,7 +128,7 @@ if (chat) {
 
     async function loadSuggestions() {
         try {
-            const response = await fetch(chat.dataset.faqUrl, { headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(10000) });
+            const response = await fetch(faqUrl, { headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(10000) });
             if (!response.ok) throw new Error('FAQ unavailable');
             const data = await response.json();
             const questions = data.faqs.length ? data.faqs.map(faq => faq.question) : ['Recommend an anime for a beginner', 'What is the difference between anime and manga?'];
