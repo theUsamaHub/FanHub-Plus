@@ -32,6 +32,10 @@
     </div>
 </div>
 
+<button class="home-scroll-top" type="button" data-scroll-top aria-label="Back to top" title="Back to top" hidden>
+    <x-site-icon name="arrow" />
+</button>
+
 <!-- Content Detail Modal -->
 @if(isset($featuredStories) && $featuredStories->isNotEmpty())
     <x-content-modal :content="$featuredStories->first()" />

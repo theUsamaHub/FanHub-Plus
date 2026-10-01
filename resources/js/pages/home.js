@@ -16,6 +16,26 @@ import { initHomeEvents } from '../modules/home-events';
 const page = document.querySelector('[data-page="home"]');
 
 if (page) {
+    let homeScroll;
+    const scrollTopButton = document.querySelector('[data-scroll-top]');
+    if (scrollTopButton) {
+        const updateScrollTopButton = () => {
+            scrollTopButton.hidden = window.scrollY < 400;
+        };
+        window.addEventListener('scroll', updateScrollTopButton, { passive: true });
+        window.addEventListener('pageshow', updateScrollTopButton);
+        updateScrollTopButton();
+
+        scrollTopButton.addEventListener('click', () => {
+            document.getElementById('main-content')?.focus({ preventScroll: true });
+            if (homeScroll) {
+                homeScroll.scrollTo(0, { duration: 1.2 });
+            } else {
+                window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+            }
+        });
+    }
+
     gsap.registerPlugin(ScrollTrigger);
     initExploreFandoms(page);
     initMultimedia(page);
@@ -36,6 +56,7 @@ if (page) {
             anchors: { offset: -90 },
             prevent: (node) => Boolean(node.closest('[data-lenis-prevent], [data-navigation], dialog')),
         });
+        homeScroll = lenis;
         const tick = (time) => lenis.raf(time * 1000);
         lenis.on('scroll', ScrollTrigger.update);
         gsap.ticker.add(tick);
@@ -89,6 +110,7 @@ if (page) {
             timelineContext?.revert();
             gsap.ticker.remove(tick);
             lenis.destroy();
+            homeScroll = null;
         };
     });
 
