@@ -1,4 +1,5 @@
 <x-auth-shell title="Find your people." subtitle="Create your account. Make yourself at home.">
+<x-social-login />
 <form method="POST" action="{{ route('register') }}">
 @csrf
 <x-auth-field name="name" label="Your name" autocomplete="name" placeholder="What should we call you?" maxlength="255" />

@@ -86,6 +86,12 @@ a:focus-visible,button:focus-visible,input:focus-visible { outline:2px solid var
 
 .fh-auth-status { color:#a8e3b9; background:#183328; border:1px solid #325a41; border-radius:10px; padding:12px; margin-bottom:20px; }
 
+.fh-auth-social { display:grid; gap:10px; }
+.fh-auth .fh-auth-social-button { display:flex; align-items:center; justify-content:center; gap:12px; min-height:48px; padding:12px 18px; border:1px solid #555b70; border-radius:10px; background:#171b28; color:#f4f4f8; text-decoration:none; font-size:14px; }
+.fh-auth .fh-auth-social-button:hover { background:#252b3d; border-color:var(--auth-accent); }
+.fh-auth .fh-auth-social-button:focus-visible { outline:2px solid var(--auth-accent); outline-offset:3px; }
+.fh-auth-social-divider { margin:18px 0; text-align:center; color:var(--auth-muted); font-size:12px; }
+
 @media(max-width:1180px) { .fh-auth-shell { margin-inline:28px; } }
 @media(max-width:680px) {
 .fh-auth-header { padding:22px 20px; }

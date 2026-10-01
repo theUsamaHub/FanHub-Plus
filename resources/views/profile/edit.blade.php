@@ -16,6 +16,11 @@
 
     <div class="row g-4">
         <div class="col-lg-8">
+            @if(\App\Support\SocialLogin::providers())
+                <div class="card mb-4 fh-adm-profile-card"><div class="card-body p-4">
+                    @include('profile.partials.social-accounts')
+                </div></div>
+            @endif
             <div class="card mb-4 fh-adm-profile-card">
                 <div class="card-body p-4">
                     @include('profile.partials.update-profile-information-form')

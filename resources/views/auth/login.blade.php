@@ -1,5 +1,6 @@
 <x-auth-shell title="Welcome back." subtitle="Your favorite worlds are waiting for you.">
 <x-auth-session-status class="fh-auth-status" :status="session('status')" />
+<x-social-login />
 <form method="POST" action="{{ route('login') }}">
 @csrf
 <x-auth-field name="email" label="Email address" type="email" autocomplete="username" placeholder="you@example.com" />

@@ -33,6 +33,11 @@ class User extends Authenticatable implements \Illuminate\Contracts\Auth\MustVer
         return $this->belongsToMany(Role::class);
     }
 
+    public function socialAccounts(): HasMany
+    {
+        return $this->hasMany(SocialAccount::class);
+    }
+
     public function profile(): HasOne
     {
         return $this->hasOne(UserProfile::class);
