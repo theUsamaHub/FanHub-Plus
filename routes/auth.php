@@ -11,6 +11,13 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('auth/{provider}/redirect', [\App\Http\Controllers\Auth\SocialAuthController::class, 'redirect'])
+    ->whereIn('provider', ['google', 'discord'])->middleware(['guest', 'throttle:10,1'])->name('social.redirect');
+Route::get('auth/{provider}/connect', [\App\Http\Controllers\Auth\SocialAuthController::class, 'connect'])
+    ->whereIn('provider', ['google', 'discord'])->middleware(['auth', 'password.confirm', 'throttle:10,1'])->name('social.connect');
+Route::get('auth/{provider}/callback', [\App\Http\Controllers\Auth\SocialAuthController::class, 'callback'])
+    ->whereIn('provider', ['google', 'discord'])->middleware('throttle:10,1')->name('social.callback');
+
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');

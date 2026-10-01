@@ -2,6 +2,7 @@
 @section('member-content')
 <header class="member-page-heading"><p>MAKE YOURSELF AT HOME</p><h1>A space that feels like you.</h1><span>Your profile, favorite fandoms and reading preferences.</span></header>
 <div class="member-editor-layout"><div class="member-settings-stack">
+@include('user.partials.connected-accounts')
 <form class="member-panel member-form" action="{{ route('profile.update') }}" method="post" enctype="multipart/form-data">@csrf @method('PATCH')
 <div class="member-profile-avatar">
     @if ($user->profile?->avatarMedia?->url)
@@ -20,7 +21,15 @@
 <fieldset><legend>Your favorite fandoms</legend><input type="hidden" name="favorites_present" value="1"><div class="member-checks">@foreach($categories as $category)<label><input type="checkbox" name="favorites[]" value="{{ $category->id }}" @checked(in_array($category->id, old('favorites_present') ? old('favorites', []) : $selected))>{{ $category->name }}</label>@endforeach</div></fieldset>
 
 <button class="member-button">Save changes</button></form>
-<form class="member-panel member-form" action="{{ route('password.update') }}" method="post">@csrf @method('PUT')<h2>Update password</h2><label>Current password<input type="password" name="current_password" required autocomplete="current-password"></label><div class="member-form-grid"><label>New password<input type="password" name="password" required minlength="8" autocomplete="new-password"></label><label>Confirm new password<input type="password" name="password_confirmation" required minlength="8" autocomplete="new-password"></label></div>@foreach($errors->updatePassword->all() as $error)<p role="alert">{{ $error }}</p>@endforeach<button class="member-button member-button--quiet">Update password</button></form>
+<section class="member-panel member-password" id="profile-password" aria-labelledby="profile-password-title">
+<div class="member-password__heading"><span class="member-kicker">ACCOUNT SECURITY</span><h2 id="profile-password-title">Your FanHub password</h2><p class="member-muted">Manage the password you use to sign in with email.</p></div>
+@if($user->socialAccounts->isNotEmpty())
+<aside class="member-password__note" aria-labelledby="provider-password-title">
+    <i class="bi bi-info-circle" aria-hidden="true"></i>
+    <div><h3 id="provider-password-title">Joined with Google or Discord?</h3><p>If you haven't set a FanHub password yet, create one before using this form, connecting another account, or deleting your account.</p><ol><li>Sign out of FanHub, then open <strong>Log in → Forgot password</strong>.</li><li>Enter the email shown in your FanHub profile.</li><li>Use the emailed link to set your password, then sign in again.</li></ol><p class="member-password__reminder">Already set a FanHub password? Update it below. Your Google or Discord password is separate and should never be entered here.</p></div>
+</aside>
+@endif
+<form class="member-form" action="{{ route('password.update') }}" method="post">@csrf @method('PUT')<h3 class="member-password__form-title">Update password</h3><label>Current password<input type="password" name="current_password" required autocomplete="current-password"></label><div class="member-form-grid"><label>New password<input type="password" name="password" required minlength="8" autocomplete="new-password"></label><label>Confirm new password<input type="password" name="password_confirmation" required minlength="8" autocomplete="new-password"></label></div>@foreach($errors->updatePassword->all() as $error)<p role="alert">{{ $error }}</p>@endforeach<button class="member-button member-button--quiet">Update password</button></form></section>
 <details class="member-panel member-danger"><summary>Delete your account</summary><form class="member-form" action="{{ route('profile.destroy') }}" method="post" data-confirm="Permanently delete your account and saved collections? This cannot be undone.">@csrf @method('DELETE')<p class="member-muted">This permanently removes your account and its saved collections. Enter your password to confirm.</p><label>Password<input name="password" type="password" autocomplete="current-password" required></label>@foreach($errors->userDeletion->all() as $error)<p role="alert">{{ $error }}</p>@endforeach<button class="member-button member-button--quiet">Permanently delete account</button></form></details>
 </div><aside class="member-panel member-editor-note"><span class="member-kicker">ACCOUNT DETAILS</span><h2>Good to have you here.</h2><p>Your preferences follow you whenever you sign in. Notes and bookmarks are visible only to you.</p><h3>Email verification</h3>@if($user->hasVerifiedEmail())<p>Your email address is verified.</p>@else<p>Your email address hasn’t been verified yet.</p><form method="post" action="{{ route('verification.send') }}">@csrf<button class="member-button member-button--quiet">Send verification link</button></form>@endif</aside></div>
 @endsection

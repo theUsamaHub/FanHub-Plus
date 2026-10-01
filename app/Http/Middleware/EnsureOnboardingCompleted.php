@@ -12,7 +12,7 @@ class EnsureOnboardingCompleted
     public function handle(Request $request, Closure $next)
     {
         $user = $request->user();
-        if (! $user || $request->routeIs('onboarding.*', 'login', 'register', 'logout', 'password.*', 'verification.*', 'storage.serve', 'unsubscribe')
+        if (! $user || $request->routeIs('onboarding.*', 'social.*', 'login', 'register', 'logout', 'password.*', 'verification.*', 'storage.serve', 'unsubscribe')
             || $request->is('login', 'register', 'forgot-password', 'reset-password', 'confirm-password')
             || ! $user->requiresOnboarding() || Category::count() < 3) {
             return $next($request);

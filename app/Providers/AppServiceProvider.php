@@ -22,6 +22,10 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        EventFacade::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event) {
+            $event->extendSocialite('discord', \SocialiteProviders\Discord\Provider::class);
+        });
+
         foreach ([Content::class, Event::class, MerchandiseItem::class, Category::class, CharacterProfile::class, Media::class] as $model) {
             $model::observe(HomepageCacheObserver::class);
         }
