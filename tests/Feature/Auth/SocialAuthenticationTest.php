@@ -55,6 +55,32 @@ class SocialAuthenticationTest extends TestCase
         $this->get('/auth/github/redirect')->assertNotFound();
     }
 
+    public function test_live_host_preserves_deployment_path_in_login_links(): void
+    {
+        $base = 'https://fanhubplus.infinityfree.io/FanHub-Plus/public';
+        $this->get('https://fanhubplus.infinityfree.io/login')->assertOk()
+            ->assertSee($base.'/auth/google/redirect', false)
+            ->assertSee($base.'/auth/discord/redirect', false)
+            ->assertSee($base.'/login', false);
+        $this->get('http://localhost/login')->assertOk()
+            ->assertDontSee($base, false);
+    }
+
+    public function test_live_provider_redirect_uses_full_callback_path(): void
+    {
+        foreach (['google', 'discord'] as $provider) {
+            $response = $this->get("https://fanhubplus.infinityfree.io/auth/$provider/redirect")->assertRedirect();
+            parse_str(parse_url($response->headers->get('Location'), PHP_URL_QUERY), $query);
+            $this->assertSame("https://fanhubplus.infinityfree.io/FanHub-Plus/public/auth/$provider/callback", $query['redirect_uri']);
+        }
+    }
+
+    public function test_live_callback_error_returns_to_subdirectory_login(): void
+    {
+        $this->get('https://fanhubplus.infinityfree.io/auth/google/callback')
+            ->assertRedirect('https://fanhubplus.infinityfree.io/FanHub-Plus/public/login');
+    }
+
     public function test_real_drivers_generate_state_and_expected_scopes(): void
     {
         foreach (['google' => 'accounts.google.com', 'discord' => 'discord.com'] as $provider => $host) {
