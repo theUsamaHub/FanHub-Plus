@@ -13,7 +13,10 @@
     #splash-screen .splash-track::after { content:''; display:block; width:45%; height:100%; border-radius:inherit; background:linear-gradient(90deg,#ff922e,#ffd65a); animation:splashTravel 1.2s ease-in-out infinite alternate; }
     #splash-video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .25s ease; }
     #splash-screen.is-playing #splash-video { opacity:1; }
-    #splash-screen.is-playing .splash-brand { opacity:0; pointer-events:none; }
+    #splash-screen.splash-desktop .splash-brand { display:none; }
+    #splash-screen.splash-desktop { background:transparent; }
+    #splash-screen.splash-desktop:not(.is-playing) { pointer-events:none; }
+    #splash-screen.splash-desktop:not(.is-playing) #splash-skip { visibility:hidden; }
     #splash-skip { position:absolute; top:max(20px,env(safe-area-inset-top)); right:max(20px,env(safe-area-inset-right)); z-index:2; padding:10px 18px; min-height:44px; border:1px solid #ffffff40; border-radius:24px; background:#100c18b3; color:#fff9f2; font:600 13px Arial,sans-serif; cursor:pointer; }
     #splash-skip:focus-visible { outline:2px solid #ffd65a; outline-offset:4px; }
     @keyframes splashTravel { from { transform:translateX(0); } to { transform:translateX(125%); } }
@@ -70,24 +73,27 @@
     }
     function adaptToDevice() {
         if (!mobile.matches && !reducedMotion.matches) return;
-        splash.classList.remove('is-playing');
-        stopVideo();
-        clearTimeout(playbackTimer);
-        playbackTimer = setTimeout(dismiss, 1200);
+        dismiss();
     }
     splash.hidden = false;
     skip.addEventListener('click', dismiss);
     splash.addEventListener('keydown', event => { if (event.key === 'Escape') dismiss(); });
     mobile.addEventListener('change', adaptToDevice);
     reducedMotion.addEventListener('change', adaptToDevice);
-    // Includes the fade: the intro never covers the page longer than four seconds.
-    deadline = setTimeout(dismiss, 3750);
-    if (mobile.matches || reducedMotion.matches || navigator.connection?.saveData) {
+    if (mobile.matches) {
         playbackTimer = setTimeout(dismiss, 1200);
         return;
     }
+    splash.classList.add('splash-desktop');
+    if (reducedMotion.matches || navigator.connection?.saveData) {
+        dismiss();
+        return;
+    }
+    // Keep the page visible while waiting; a late video must never interrupt it.
+    deadline = setTimeout(dismiss, 1000);
     video.addEventListener('playing', () => {
         if (dismissed) return;
+        clearTimeout(deadline);
         splash.classList.add('is-playing');
         if (!playbackTimer) playbackTimer = setTimeout(dismiss, 2000);
     });
