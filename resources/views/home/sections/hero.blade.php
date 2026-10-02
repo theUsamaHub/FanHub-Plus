@@ -1,5 +1,6 @@
 <section class="fan-hero" aria-labelledby="fan-hero-title" data-video-hero>
-    <video class="fan-hero__video" muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1">
+    <img class="fan-hero__fallback" src="{{ asset('images/herofallbackimage.png') }}" alt="" fetchpriority="high" aria-hidden="true">
+    <video class="fan-hero__video" poster="{{ asset('images/herofallbackimage.png') }}" muted loop playsinline preload="metadata" aria-hidden="true" tabindex="-1">
         <source src="{{ asset('videos/akatsuki-assemble.1920x1080.mp4') }}" type="video/mp4">
     </video>
     <div class="fan-hero__shade" aria-hidden="true"></div>

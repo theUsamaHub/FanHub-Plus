@@ -20,9 +20,14 @@ if (hero) {
     button.hidden = false;
     button.addEventListener('click', () => { wantsPlayback = video.paused; syncPlayback(); });
     video.addEventListener('play', updateButton);
+    video.addEventListener('playing', () => { hero.classList.add('is-video-ready'); });
     video.addEventListener('pause', updateButton);
-    video.addEventListener('error', () => { button.hidden = true; });
-    video.querySelector('source').addEventListener('error', () => { button.hidden = true; });
+    const showFallback = () => {
+        hero.classList.remove('is-video-ready');
+        button.hidden = true;
+    };
+    video.addEventListener('error', showFallback);
+    video.querySelector('source').addEventListener('error', showFallback);
     reducedMotion.addEventListener('change', () => { wantsPlayback = !reducedMotion.matches; syncPlayback(); });
     document.addEventListener('visibilitychange', syncPlayback);
     new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; syncPlayback(); }, { threshold: .05 }).observe(hero);

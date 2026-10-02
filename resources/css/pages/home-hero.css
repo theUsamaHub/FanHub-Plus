@@ -28,8 +28,11 @@
     color: #FFF9F2;
     box-shadow: 0 0 32px #F4513217;
 }
-.fan-hero__video, .fan-hero__shade { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; }
-.fan-hero__video { object-fit: cover; object-position: center 40%; }
+.fan-hero__fallback, .fan-hero__video, .fan-hero__shade { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; }
+.fan-hero__fallback, .fan-hero__video { object-fit: cover; object-position: center 40%; }
+.fan-hero__video { opacity: 0; transition: opacity .3s ease; }
+.fan-hero.is-video-ready .fan-hero__video { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .fan-hero__video { transition: none; } }
 .fan-hero__shade { z-index: -1; background: linear-gradient(90deg, #100A12ED 0%, #100A12B0 33%, #100A1220 68%), linear-gradient(0deg, #100A12F5, transparent 48%); }
 .fan-hero__content { width: min(650px, 62%); padding: clamp(40px, 5vw, 82px) 0 32px clamp(26px, 5vw, 80px); }
 .fan-hero__eyebrow { display: flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 600; letter-spacing: 2.6px; color: var(--brand-yellow); margin: 0 0 24px; }
