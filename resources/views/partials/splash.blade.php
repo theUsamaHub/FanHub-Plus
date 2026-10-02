@@ -14,9 +14,7 @@
     #splash-video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .25s ease; }
     #splash-screen.is-playing #splash-video { opacity:1; }
     #splash-screen.splash-desktop .splash-brand { display:none; }
-    #splash-screen.splash-desktop { background:transparent; }
-    #splash-screen.splash-desktop:not(.is-playing) { pointer-events:none; }
-    #splash-screen.splash-desktop:not(.is-playing) #splash-skip { visibility:hidden; }
+    #splash-screen.splash-desktop { background:#080810; }
     #splash-skip { position:absolute; top:max(20px,env(safe-area-inset-top)); right:max(20px,env(safe-area-inset-right)); z-index:2; padding:10px 18px; min-height:44px; border:1px solid #ffffff40; border-radius:24px; background:#100c18b3; color:#fff9f2; font:600 13px Arial,sans-serif; cursor:pointer; }
     #splash-skip:focus-visible { outline:2px solid #ffd65a; outline-offset:4px; }
     @keyframes splashTravel { from { transform:translateX(0); } to { transform:translateX(125%); } }
@@ -89,8 +87,8 @@
         dismiss();
         return;
     }
-    // Keep the page visible while waiting; a late video must never interrupt it.
-    deadline = setTimeout(dismiss, 1000);
+    // Cover the homepage while buffering so the intro is always shown first.
+    deadline = setTimeout(dismiss, 2000);
     video.addEventListener('playing', () => {
         if (dismissed) return;
         clearTimeout(deadline);
