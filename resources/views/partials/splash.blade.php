@@ -48,6 +48,7 @@
     const mobile = matchMedia('(max-width: 700px)');
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
     let dismissed = false;
+    let fallbackShown = false;
     let playbackTimer;
     let deadline;
     function stopVideo() {
@@ -75,6 +76,15 @@
         if (!mobile.matches && !reducedMotion.matches) return;
         dismiss();
     }
+    function showFallback() {
+        if (dismissed || fallbackShown) return;
+        fallbackShown = true;
+        clearTimeout(deadline);
+        clearTimeout(playbackTimer);
+        stopVideo();
+        splash.classList.remove('splash-desktop', 'is-playing');
+        playbackTimer = setTimeout(dismiss, 1200);
+    }
     splash.hidden = false;
     skip.addEventListener('click', dismiss);
     splash.addEventListener('keydown', event => { if (event.key === 'Escape') dismiss(); });
@@ -89,17 +99,17 @@
         dismiss();
         return;
     }
-    // Keep the page visible while waiting; a late video must never interrupt it.
-    deadline = setTimeout(dismiss, 1000);
+    // Once the logo fallback appears, late video events cannot replace it.
+    deadline = setTimeout(showFallback, 1500);
     video.addEventListener('playing', () => {
-        if (dismissed) return;
+        if (dismissed || fallbackShown) return;
         clearTimeout(deadline);
         splash.classList.add('is-playing');
         if (!playbackTimer) playbackTimer = setTimeout(dismiss, 2000);
     });
-    video.addEventListener('ended', dismiss);
-    video.addEventListener('error', dismiss);
+    video.addEventListener('ended', () => { if (!fallbackShown) dismiss(); });
+    video.addEventListener('error', showFallback);
     video.src = video.dataset.src;
-    video.play().catch(dismiss);
+    video.play().catch(showFallback);
 })();
 </script>
