@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 
 class ActivityLog extends Model
@@ -208,17 +209,23 @@ class ActivityLog extends Model
         $key = $target->getKey();
         $slug = $target->slug ?? null;
 
-        return match ($this->auditable_type) {
-            Category::class => route('admin.categories.edit', $key),
-            CharacterProfile::class => route('admin.characters.edit', $key),
-            Content::class => route('admin.contents.edit', $slug ?: $key),
-            Event::class => route('admin.events.edit', $key),
-            MerchandiseItem::class => route('admin.merchandise.edit', $key),
-            Role::class => route('admin.roles.edit', $key),
-            Tag::class => route('admin.tags.edit', $key),
-            User::class => route('admin.users.edit', $key),
+        $name = match ($this->auditable_type) {
+            Category::class => 'admin.categories.edit',
+            CharacterProfile::class => 'admin.characters.edit',
+            Content::class => 'admin.contents.edit',
+            Event::class => 'admin.events.edit',
+            MerchandiseItem::class => 'admin.merchandise.edit',
+            Role::class => 'admin.roles.edit',
+            Tag::class => 'admin.tags.edit',
+            User::class => 'admin.users.show',
             default => null,
         };
+
+        if ($name === null || ! Route::has($name)) {
+            return null;
+        }
+
+        return route($name, $this->auditable_type === Content::class ? ($slug ?: $key) : $key);
     }
 
     /**
